@@ -10,7 +10,7 @@ import 'package:ofypets_mobile_app/models/payment_methods.dart';
 import 'package:ofypets_mobile_app/models/product.dart';
 import 'package:ofypets_mobile_app/models/variant.dart';
 import 'package:ofypets_mobile_app/models/address.dart';
-import 'package:ofypets_mobile_app/screens/product_detail.dart';
+import 'package:ofypets_mobile_app/telas/product_detail.dart';
 import 'package:ofypets_mobile_app/utils/constants.dart';
 import 'package:ofypets_mobile_app/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
