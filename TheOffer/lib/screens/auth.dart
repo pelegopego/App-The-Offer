@@ -53,9 +53,9 @@ class _AuthenticationState extends State<Authentication>
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     return MaterialApp(
-      color: Colors.green,
+      color: Colors.secundariaTheOffer,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.secundariaTheOffer,
         accentColor: Colors.white,
       ),
       home: DefaultTabController(
@@ -64,7 +64,7 @@ class _AuthenticationState extends State<Authentication>
           key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: false,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.secundariaTheOffer,
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(),
@@ -72,7 +72,7 @@ class _AuthenticationState extends State<Authentication>
             bottom: TabBar(
               indicatorWeight: 4.0,
               controller: _tabController,
-              indicatorColor: Colors.green,
+              indicatorColor: Colors.secundariaTheOffer,
               tabs: [
                 Padding(
                   padding: EdgeInsets.all(12.0),
@@ -128,7 +128,7 @@ class _AuthenticationState extends State<Authentication>
                     height: 35.0,
                   ),
                   _isLoader
-                      ? CircularProgressIndicator(backgroundColor: Colors.green)
+                      ? CircularProgressIndicator(backgroundColor: Colors.secundariaTheOffer)
                       : Container(
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.all(15),
@@ -156,7 +156,7 @@ class _AuthenticationState extends State<Authentication>
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: Colors.green,
+                          color: Colors.secundariaTheOffer,
                           fontSize: 14.0),
                     ),
                   )
@@ -195,7 +195,7 @@ class _AuthenticationState extends State<Authentication>
                   height: 45.0,
                 ),
                 _isLoader
-                    ? CircularProgressIndicator(backgroundColor: Colors.green)
+                    ? CircularProgressIndicator(backgroundColor: Colors.secundariaTheOffer)
                     : Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(15),
@@ -425,7 +425,7 @@ class _AuthenticationState extends State<Authentication>
         FlatButton(
           child: Text('Later',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.green.shade300)),
+                  fontWeight: FontWeight.bold, color: Colors.secundariaTheOffer.shade300)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -433,7 +433,7 @@ class _AuthenticationState extends State<Authentication>
         FlatButton(
           child: Text('Entrar',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.green.shade300)),
+                  fontWeight: FontWeight.bold, color: Colors.secundariaTheOffer.shade300)),
           onPressed: () {
             Navigator.pop(context);
             MaterialPageRoute route =

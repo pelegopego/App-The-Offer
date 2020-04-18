@@ -74,7 +74,7 @@ class _Payubiztelastate extends State<PayubizScreen> {
             hidden: true,
             initialChild: Center(
               child: CircularProgressIndicator(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.secundariaTheOffer,
               ),
             ),
           )),

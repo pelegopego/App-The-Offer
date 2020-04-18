@@ -100,7 +100,7 @@ class _OrderList extends State<OrderList> {
       body: Padding(
           padding: const EdgeInsets.only(top: 3.0),
           child: Theme(
-            data: ThemeData(primarySwatch: Colors.green),
+            data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
             child: ListView.builder(
                 controller: scrollController,
                 itemCount: ordersList.length + 1,
@@ -126,7 +126,7 @@ class _OrderList extends State<OrderList> {
                 }),
           )),
       /*Theme(
-        data: ThemeData(primarySwatch: Colors.green),
+        data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
         child: PagewiseListView(
           pageSize: PAGE_SIZE,
           itemBuilder: orderItem,
@@ -264,7 +264,7 @@ class _OrderList extends State<OrderList> {
   getOrderStatus(detailOrder) {
     if (detailOrder.paymentState == 'balance_due' &&
         detailOrder.shipState == 'shipped') {
-      return Text('Comprado', style: TextStyle(color: Colors.green));
+      return Text('Comprado', style: TextStyle(color: Colors.secundariaTheOffer));
     } else if (detailOrder.paymentState == 'balance_due') {
       return Text('Pendente', style: TextStyle(color: Colors.blue));
     } else if (detailOrder.paymentState == 'void') {

@@ -171,7 +171,7 @@ class _ProductSearchState extends State<ProductSearch> {
                 padding: const EdgeInsets.only(top: 90.0),
                 child: isSearched && !model.isLoading
                     ? Theme(
-                        data: ThemeData(primarySwatch: Colors.green),
+                        data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
                         child: ListView.builder(
                             controller: scrollController,
                             itemCount: searchProducts.length + 1,
@@ -248,7 +248,7 @@ class _ProductSearchState extends State<ProductSearch> {
                   visible: model.isLoading,
                   child: Center(
                     child: CircularProgressIndicator(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.secundariaTheOffer,
                     ),
                   )),
               // )
@@ -355,7 +355,7 @@ class _ProductSearchState extends State<ProductSearch> {
           ),
           Expanded(
             child: Theme(
-                data: ThemeData(primarySwatch: Colors.green),
+                data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: EdgeInsets.all(8.0),

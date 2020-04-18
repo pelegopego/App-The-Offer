@@ -43,7 +43,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
           backgroundColor: Colors.white,
           appBar: AppBar(
             centerTitle: false,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.secundariaTheOffer,
             leading: IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -187,7 +187,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
         FlatButton(
           child: Text('Okay',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.green.shade300)),
+                  fontWeight: FontWeight.bold, color: Colors.secundariaTheOffer.shade300)),
           onPressed: () {
             Navigator.pop(context);
           },

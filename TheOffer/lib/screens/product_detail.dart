@@ -334,7 +334,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.green,
+                      color: Colors.secundariaTheOffer,
                       style: BorderStyle.solid,
                       width: 1.0,
                     ),
@@ -348,7 +348,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         child: Text(
                           "AVALIE O PRODUTO",
                           style: TextStyle(
-                            color: Colors.green,
+                            color: Colors.secundariaTheOffer,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1,
@@ -463,7 +463,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     decoration: BoxDecoration(
                         border: Border.all(
                           color: quantity == index
-                              ? Colors.green
+                              ? Colors.secundariaTheOffer
                               : Colors.grey.shade300,
                         ),
                         borderRadius: BorderRadius.circular(5)),
@@ -475,7 +475,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       index.toString(),
                       style: TextStyle(
                           color: quantity == index
-                              ? Colors.green
+                              ? Colors.secundariaTheOffer
                               : Colors.grey.shade300),
                     )),
               );
@@ -493,7 +493,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
           value: optionValue.name,
           child: Text(
             optionValue.name,
-            style: TextStyle(color: Colors.green),
+            style: TextStyle(color: Colors.secundariaTheOffer),
           ),
         ));
       });
@@ -509,7 +509,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         child: DropdownButton(
           elevation: 0,
           isExpanded: true,
-          iconEnabledColor: Colors.green,
+          iconEnabledColor: Colors.secundariaTheOffer,
           items: getVariants(),
           value: selectedProduct.optionValues[0].name,
           onChanged: (value) {
@@ -553,7 +553,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   width: 50,
                   decoration: BoxDecoration(
                       border: Border.all(
-                        color: quantity == index ? Colors.green : Colors.grey,
+                        color: quantity == index ? Colors.secundariaTheOffer : Colors.grey,
                       ),
                       borderRadius: BorderRadius.circular(5)),
                   alignment: Alignment.center,
@@ -563,7 +563,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   child: Text(
                     index.toString(),
                     style: TextStyle(
-                        color: quantity == index ? Colors.green : Colors.grey),
+                        color: quantity == index ? Colors.secundariaTheOffer : Colors.grey),
                   )),
             ));
           });
@@ -600,7 +600,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
   //                       border: Border.all(
   //                     color: selectedProduct.optionValues[0].name ==
   //                             optionValue.name
-  //                         ? Colors.green
+  //                         ? Colors.secundariaTheOffer
   //                         : Colors.black,
   //                   )),
   //                   alignment: Alignment.centerLeft,
@@ -611,7 +611,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
   //                     style: TextStyle(
   //                         color: selectedProduct.optionValues[0].name ==
   //                                 optionValue.name
-  //                             ? Colors.green
+  //                             ? Colors.secundariaTheOffer
   //                             : Colors.black),
   //                   ))));
   //         });
@@ -772,7 +772,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                           style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.normal,
-                              color: Colors.green,
+                              color: Colors.secundariaTheOffer,
                               fontFamily: fontFamily),
                         ),
                       ),
@@ -947,7 +947,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       height: _deviceSize.height * 0.47,
                       alignment: Alignment.center,
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Colors.secundariaTheOffer,
                       ),
                     )
                   : Container(
@@ -1036,7 +1036,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               shape: RoundedRectangleBorder(
                 side: BorderSide(
                   color:
-                      selectedProduct.isOrderable ? Colors.green : Colors.grey,
+                      selectedProduct.isOrderable ? Colors.secundariaTheOffer : Colors.grey,
                 ),
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -1044,7 +1044,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 selectedProduct.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
                 style: TextStyle(
                     color: selectedProduct.isOrderable
-                        ? Colors.green
+                        ? Colors.secundariaTheOffer
                         : Colors.grey),
               ),
               onPressed: selectedProduct.isOrderable
@@ -1223,7 +1223,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green),
+                    color: Colors.secundariaTheOffer),
               ),
             ),
             onPressed: () async {

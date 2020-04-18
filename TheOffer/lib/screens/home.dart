@@ -141,7 +141,7 @@ class _Hometelastate extends State<HomeScreen> {
                       height: _deviceSize.height * 0.5,
                       alignment: Alignment.center,
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Colors.secundariaTheOffer,
                       ),
                     )
                   ]))
@@ -210,7 +210,7 @@ class _Hometelastate extends State<HomeScreen> {
                       height: _deviceSize.height * 0.47,
                       alignment: Alignment.center,
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Colors.secundariaTheOffer,
                       ),
                     )
                   ]))
@@ -248,17 +248,17 @@ class _Hometelastate extends State<HomeScreen> {
       },
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline, color: Colors.green),
+          icon: Icon(Icons.person_outline, color: Colors.secundariaTheOffer),
           title: Text('ENTRAR'),
         ),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
-              color: Colors.green,
+              color: Colors.secundariaTheOffer,
             ),
             title: Text('CRIAR CONTA',
                 style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.secundariaTheOffer,
                     fontSize: 15,
                     fontWeight: FontWeight.w600))),
       ],

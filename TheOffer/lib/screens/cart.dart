@@ -134,7 +134,7 @@ class _CartState extends State<Cart> {
           child: model.isLoading
               ? Center(
                   child: CircularProgressIndicator(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.secundariaTheOffer,
                   ),
                 )
               : FlatButton(
@@ -377,7 +377,7 @@ class _CartState extends State<Cart> {
                         border: Border.all(
                           color:
                               model.lineItems[lineItemIndex].quantity == index
-                                  ? Colors.green
+                                  ? Colors.secundariaTheOffer
                                   : Colors.grey,
                         ),
                         borderRadius: BorderRadius.circular(5)),
@@ -388,7 +388,7 @@ class _CartState extends State<Cart> {
                       style: TextStyle(
                           color:
                               model.lineItems[lineItemIndex].quantity == index
-                                  ? Colors.green
+                                  ? Colors.secundariaTheOffer
                                   : Colors.grey),
                     )),
               );

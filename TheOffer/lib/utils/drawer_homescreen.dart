@@ -81,7 +81,7 @@ class _HomeDrawer extends State<HomeDrawer> {
       return ListTile(
         leading: Icon(
           Icons.favorite,
-          color: Colors.green,
+          color: Colors.secundariaTheOffer,
         ),
         trailing: Container(
           width: 30.0,
@@ -89,7 +89,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           child: favCount != null && favCount > 0
               ? Stack(
                   children: <Widget>[
-                    Icon(Icons.brightness_1, size: 30.0, color: Colors.green),
+                    Icon(Icons.brightness_1, size: 30.0, color: Colors.secundariaTheOffer),
                     Center(
                       child: Text(
                         '${favCount}',
@@ -108,7 +108,7 @@ class _HomeDrawer extends State<HomeDrawer> {
         ),
         title: Text(
           'Favoritos',
-          style: TextStyle(color: Colors.green),
+          style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
           if (model.isAuthenticated) {
@@ -132,11 +132,11 @@ class _HomeDrawer extends State<HomeDrawer> {
       return ListTile(
         leading: Icon(
           Icons.person,
-          color: Colors.green,
+          color: Colors.secundariaTheOffer,
         ),
         title: Text(
           'Minha conta',
-          style: TextStyle(color: Colors.green),
+          style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
           if (model.isAuthenticated) {
@@ -160,11 +160,11 @@ class _HomeDrawer extends State<HomeDrawer> {
       return ListTile(
         leading: Icon(
           Icons.receipt,
-          color: Colors.green,
+          color: Colors.secundariaTheOffer,
         ),
         title: Text(
           'Histórico de pedidos',
-          style: TextStyle(color: Colors.green),
+          style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
           if (model.isAuthenticated) {
@@ -323,7 +323,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               signInLineTile()
             ]),
-            decoration: BoxDecoration(color: Colors.green),
+            decoration: BoxDecoration(color: Colors.secundariaTheOffer),
           ),
           ListTile(
             onTap: () {
@@ -332,11 +332,11 @@ class _HomeDrawer extends State<HomeDrawer> {
             },
             leading: Icon(
               Icons.home,
-              color: Colors.green,
+              color: Colors.secundariaTheOffer,
             ),
             title: Text(
               'Página inicial',
-              style: TextStyle(color: Colors.green),
+              style: TextStyle(color: Colors.secundariaTheOffer),
             ),
           ),
           favoritesLineTile(),

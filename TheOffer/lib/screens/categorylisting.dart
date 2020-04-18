@@ -185,7 +185,7 @@ class _CategoryListingState extends State<CategoryListing> {
                   child: !_isLoading ? body(level) : Container(),
                 ),
                 Container(
-                  color: Colors.green,
+                  color: Colors.secundariaTheOffer,
                   height: 59.0,
                   child: Column(
                     children: <Widget>[
@@ -310,7 +310,7 @@ class _CategoryListingState extends State<CategoryListing> {
   Widget categoryDropDown() {
     return Expanded(
       child: Theme(
-        data: ThemeData(primarySwatch: Colors.green),
+        data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
         child: ListView(
           children: [
             ExpansionTile(
@@ -396,7 +396,7 @@ class _CategoryListingState extends State<CategoryListing> {
         break;
       case 2:
         return Theme(
-          data: ThemeData(primarySwatch: Colors.green),
+          data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
           child: Padding(
             padding: const EdgeInsets.only(top: 50.0),
             child: ListView.builder(

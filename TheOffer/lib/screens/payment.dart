@@ -109,7 +109,7 @@ class _Paymenttelastate extends State<PaymentScreen> {
             _character = value;
           });
         },
-        activeColor: Colors.green,
+        activeColor: Colors.secundariaTheOffer,
       );
     });
   }
@@ -131,13 +131,13 @@ class _Paymenttelastate extends State<PaymentScreen> {
         child: model.isLoading
             ? Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.secundariaTheOffer,
                 ),
               )
             : FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
-                color: Colors.green,
+                color: Colors.secundariaTheOffer,
                 child: Text(
                   _character == ''
                       ? 'SELECIONE O MÉTODO DE PAGAMENTO'

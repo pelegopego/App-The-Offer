@@ -91,7 +91,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
           ),
           Expanded(
             child: Theme(
-                data: ThemeData(primarySwatch: Colors.green),
+                data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
                 child: ListView.separated(
                   shrinkWrap: true,
                   padding: EdgeInsets.all(8.0),

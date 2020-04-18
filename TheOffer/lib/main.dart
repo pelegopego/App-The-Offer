@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           '/home' : (context) => HomeScreen()
         },
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.secundariaTheOffer,
           accentColor: Colors.white,
         ),
         home: HomeScreen(),

@@ -163,7 +163,7 @@ class _BrandListState extends State<BrandList> {
                                       }),
                                   padding: EdgeInsets.only(top: 59.0))
                               : Theme(
-                                  data: ThemeData(primarySwatch: Colors.green),
+                                  data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 90.0),
                                     child: ListView.builder(
@@ -207,7 +207,7 @@ class _BrandListState extends State<BrandList> {
                                   ),
                                 )),
                   Container(
-                      color: Colors.green,
+                      color: Colors.secundariaTheOffer,
                       height: 60.0,
                       child: Column(children: [
                         Row(
@@ -341,7 +341,7 @@ class _BrandListState extends State<BrandList> {
           ),
           Expanded(
             child: Theme(
-                data: ThemeData(primarySwatch: Colors.green),
+                data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: EdgeInsets.all(8.0),

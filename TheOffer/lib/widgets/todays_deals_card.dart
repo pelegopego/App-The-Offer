@@ -44,7 +44,7 @@ class _AddToCartState extends State<AddToCart> {
             : widget.index == selectedIndex
                 ? Center(
                     child: CircularProgressIndicator(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.secundariaTheOffer,
                   ))
                 : buttonContent(widget.index, widget.product),
       );
@@ -56,7 +56,7 @@ Widget buttonContent(int index, Product product) {
   return Text(
     product.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
     style: TextStyle(
-        color: product.isOrderable ? Colors.green : Colors.grey,
+        color: product.isOrderable ? Colors.secundariaTheOffer : Colors.grey,
         fontSize: 14,
         fontWeight: FontWeight.w500),
   );
