@@ -2,19 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/models/brand.dart';
-import 'package:ofypets_mobile_app/models/option_type.dart';
-import 'package:ofypets_mobile_app/models/option_value.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/search.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/drawer_homescreen.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/product_container.dart';
-import 'package:ofypets_mobile_app/widgets/shopping_cart_button.dart';
+import 'package:theoffer/models/brand.dart';
+import 'package:theoffer/models/option_type.dart';
+import 'package:theoffer/models/option_value.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/search.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/product_container.dart';
+import 'package:theoffer/widgets/shopping_cart_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class BrandList extends StatefulWidget {
@@ -45,11 +45,11 @@ class _BrandListState extends State<BrandList> {
   static const int PAGE_SIZE = 20;
   String _currentItem;
   List filterItems = [
-    "Newest",
-    "Avg.Customer Review",
-    "Most Reviews",
-    "A TO Z",
-    "Z TO A"
+    "Novos",
+    "Média de avaliação dos compradores",
+    "Mais vistos",
+    "A até Z",
+    "Z até A"
   ];
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
@@ -99,7 +99,7 @@ class _BrandListState extends State<BrandList> {
               key: _scaffoldKey,
               appBar: AppBar(
                 elevation: 0.0,
-                title: Text('Shop'),
+                title: Text('Comprar'),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.search),
@@ -176,13 +176,13 @@ class _BrandListState extends State<BrandList> {
                                           }
                                           if (hasMore &&
                                               productsByBrand.length == 0) {
-                                            print("LENGTH 00000000");
+                                            print("Comprimento 00000000");
                                             return Padding(
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 50.0),
                                               child: Center(
                                                 child: Text(
-                                                  'No Product Found',
+                                                  'Não foi encontrado produto',
                                                   style:
                                                       TextStyle(fontSize: 20.0),
                                                   textAlign: TextAlign.center,
@@ -309,7 +309,7 @@ class _BrandListState extends State<BrandList> {
                   title: Row(
                     children: <Widget>[
                       Text(
-                        'Sort By:  ',
+                        'Ordenar por:  ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -403,7 +403,7 @@ class _BrandListState extends State<BrandList> {
       hasMore = false;
     });
     print(
-        "GET PRODUCTS BY BRAND +${Settings.SERVER_URL + 'api/v1/taxons/products?id=$brandId&page=$currentPage&per_page=$perPage&data_set=small'}");
+        "Ver produtos por marca +${Settings.SERVER_URL + 'api/v1/taxons/products?id=$brandId&page=$currentPage&per_page=$perPage&data_set=small'}");
     var response;
 
     if (sortBy != null) {
@@ -461,19 +461,19 @@ class _BrandListState extends State<BrandList> {
     setState(() {
       _currentItem = selectedCity;
       switch (_currentItem) {
-        case 'Newest':
+        case 'Novos':
           sortingWith = 'updated_at+asc';
           break;
-        case 'Avg.Customer Review':
+        case 'Média de avaliação dos compradore':
           sortingWith = 'avg_rating+desc ';
           break;
-        case 'Most Reviews':
+        case 'Mais vistos':
           sortingWith = 'reviews_count+desc';
           break;
-        case 'A TO Z':
+        case 'A até Z':
           sortingWith = 'name+asc';
           break;
-        case 'Z TO A':
+        case 'Z até A':
           sortingWith = 'name+desc';
           break;
       }

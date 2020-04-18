@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
+import 'package:theoffer/utils/constants.dart';
 
 class ReturnPolicy extends StatelessWidget {
   @override

@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/account.dart';
-import 'package:ofypets_mobile_app/screens/auth.dart';
-import 'package:ofypets_mobile_app/screens/favorites.dart';
-import 'package:ofypets_mobile_app/screens/order_history.dart';
-import 'package:ofypets_mobile_app/screens/retun_policy.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/account.dart';
+import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/favorites.dart';
+import 'package:theoffer/screens/order_history.dart';
+import 'package:theoffer/screens/retun_policy.dart';
+import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -60,7 +60,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               color: Colors.grey,
             ),
             title: Text(
-              'Sign Out',
+              'Sair',
               style: TextStyle(color: Colors.grey),
             ),
             onTap: () {
@@ -107,7 +107,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                 ),
         ),
         title: Text(
-          'Favorites',
+          'Favoritos',
           style: TextStyle(color: Colors.green),
         ),
         onTap: () {
@@ -135,7 +135,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           color: Colors.green,
         ),
         title: Text(
-          'Account',
+          'Minha conta',
           style: TextStyle(color: Colors.green),
         ),
         onTap: () {
@@ -163,7 +163,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           color: Colors.green,
         ),
         title: Text(
-          'Order History',
+          'Histórico de pedidos',
           style: TextStyle(color: Colors.green),
         ),
         onTap: () {
@@ -193,7 +193,7 @@ class _HomeDrawer extends State<HomeDrawer> {
             children: <Widget>[
               GestureDetector(
                 child: Text(
-                  'Sign in',
+                  'Entrar',
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w300),
                 ),
@@ -208,7 +208,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w300)),
               GestureDetector(
-                child: Text('Create Account',
+                child: Text('Criar conta',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w300)),
                 onTap: () {
@@ -225,7 +225,7 @@ class _HomeDrawer extends State<HomeDrawer> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text('Hi, ${formatName()}!',
+                Text('Oi, ${formatName()}!',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w500))
               ],
@@ -254,12 +254,12 @@ class _HomeDrawer extends State<HomeDrawer> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Sign Out"),
-            content: new Text("Are you sure you want to sign out?"),
+            title: Text("Sair"),
+            content: new Text("Você deseja realmente sair?"),
             actions: <Widget>[
               new FlatButton(
                 child: Text(
-                  "Cancel",
+                  "Cancelar",
                   style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () {
@@ -312,7 +312,7 @@ class _HomeDrawer extends State<HomeDrawer> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                'ofypets',
+                'TheOffer',
                 style: TextStyle(
                     fontFamily: 'HolyFat', fontSize: 65, color: Colors.white),
               ),
@@ -335,7 +335,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               color: Colors.green,
             ),
             title: Text(
-              'Home',
+              'Página inicial',
               style: TextStyle(color: Colors.green),
             ),
           ),
@@ -344,32 +344,32 @@ class _HomeDrawer extends State<HomeDrawer> {
           Divider(color: Colors.grey,),
           ListTile(
             title: Text(
-              '24/7 Help',
+              'Ajuda',
             ),
           ),
           InkWell(
             onTap: () {
-              _callMe('917-6031-568');
+              _callMe('+55 (49) 9 9903-1587');
             },
             child: ListTile(
               leading: Icon(
                 Icons.call,
               ),
               title: Text(
-                'Call: 917-6031-568',
+                '+55 (49) 9 9903-1587',
               ),
             ),
           ),
           InkWell(
             onTap: () {
-              _sendMail('support@ofypets.com');
+              _sendMail('supporte@theoffer.com.br');
             },
             child: ListTile(
               leading: Icon(
                 Icons.mail,
               ),
               title: Text(
-                'Email: support@ofypets.com',
+                'supporte@theoffer.com.br',
               ),
             ),
           ),
@@ -402,7 +402,7 @@ _sendMail(String email) async {
   if (await canLaunch(uri)) {
     await launch(uri);
   } else {
-    throw 'Could not launch $uri';
+    throw 'Não foi possível $uri';
   }
 }
 
@@ -411,6 +411,6 @@ _callMe(String phone) async {
   if (await canLaunch(uri)) {
     await launch(uri);
   } else {
-    throw 'Could not launch $uri';
+    throw 'Não foi possível $uri';
   }
 }

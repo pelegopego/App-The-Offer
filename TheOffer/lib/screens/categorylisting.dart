@@ -2,21 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/models/category.dart';
-import 'package:ofypets_mobile_app/models/option_type.dart';
-import 'package:ofypets_mobile_app/models/option_value.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/search.dart';
-import 'package:ofypets_mobile_app/utils/color_list.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/drawer_homescreen.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/product_container.dart';
-import 'package:ofypets_mobile_app/widgets/shopping_cart_button.dart';
+import 'package:theoffer/models/category.dart';
+import 'package:theoffer/models/option_type.dart';
+import 'package:theoffer/models/option_value.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/search.dart';
+import 'package:theoffer/utils/color_list.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/product_container.dart';
+import 'package:theoffer/widgets/shopping_cart_button.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class CategoryListing extends StatefulWidget {
   final String categoryName;
@@ -59,11 +59,11 @@ class _CategoryListingState extends State<CategoryListing> {
   String _currentCategory = '';
   int _currentCatIndex;
   List filterItems = [
-    "Newest",
-    "Avg.Customer Review",
-    "Most Reviews",
-    "A TO Z",
-    "Z TO A"
+    "Novos",
+    "Média de avaliação dos compradores",
+    "Mais vistos",
+    "A até Z",
+    "Z até A"
   ];
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
@@ -162,7 +162,7 @@ class _CategoryListingState extends State<CategoryListing> {
         child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text('Shop'),
+              title: Text('Comprar'),
               elevation: 0.0,
               actions: <Widget>[
                 IconButton(
@@ -255,7 +255,7 @@ class _CategoryListingState extends State<CategoryListing> {
                       title: Row(
                         children: <Widget>[
                           Text(
-                            'Sort By:  ',
+                            'Ordenar por:  ',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -288,7 +288,7 @@ class _CategoryListingState extends State<CategoryListing> {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, left: 16.0),
                       child: Text(
-                        '$totalCount Results',
+                        '$totalCount Resultados',
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Colors.white),
                       ),
@@ -350,7 +350,7 @@ class _CategoryListingState extends State<CategoryListing> {
                 padding: EdgeInsets.symmetric(vertical: 50.0),
                 child: Center(
                   child: Text(
-                    'No Product Found',
+                    'Não foram encontrados produtos',
                     style: TextStyle(fontSize: 20.0),
                     textAlign: TextAlign.center,
                   ),
@@ -375,7 +375,7 @@ class _CategoryListingState extends State<CategoryListing> {
                 padding: EdgeInsets.symmetric(vertical: 50.0),
                 child: Center(
                   child: Text(
-                    'No Product Found',
+                    'Não foram encontrados produtos',
                     style: TextStyle(fontSize: 20.0),
                     textAlign: TextAlign.center,
                   ),
@@ -408,12 +408,12 @@ class _CategoryListingState extends State<CategoryListing> {
                         context, productsByCategory[index], index);
                   }
                   if (hasMore && productsByCategory.length == 0) {
-                    print("LENGTH 00000000");
+                    print("TAMANHO 00000000");
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 50.0),
                       child: Center(
                         child: Text(
-                          'No Product Found',
+                          'Não foram encontrados produtos',
                           style: TextStyle(fontSize: 20.0),
                           textAlign: TextAlign.center,
                         ),
@@ -449,7 +449,7 @@ class _CategoryListingState extends State<CategoryListing> {
   Widget textField(
       String text, FontWeight fontWeight, int categoryLevel, Color textColor) {
     int sublevel;
-    print("LEVEL ${level == 2} BUILDING TEXTFIELD $text");
+    print("NÍVEL ${level == 2} MONTANDO CAMPOS DE TEXTO $text");
 
     return GestureDetector(
         onTap: () {
@@ -460,7 +460,7 @@ class _CategoryListingState extends State<CategoryListing> {
             }
             level = level - sublevel;
           });
-          print("LEVEL $level BUILDING TEXTFIELD $text");
+          print("NÍVEL $level MONTANDO CAMPOS DE TEXTO $text");
         },
         child: Text(
           text,
@@ -698,19 +698,19 @@ class _CategoryListingState extends State<CategoryListing> {
     setState(() {
       _currentItem = selectedCity;
       switch (_currentItem) {
-        case 'Newest':
+        case 'Novos':
           sortingWith = 'updated_at+asc';
           break;
-        case 'Avg.Customer Review':
+        case "Média de avaliação dos compradores":
           sortingWith = 'avg_rating+desc ';
           break;
-        case 'Most Reviews':
+        case "Mais vistos":
           sortingWith = 'reviews_count+desc';
           break;
-        case 'A TO Z':
+        case "A até Z":
           sortingWith = 'name+asc';
           break;
-        case 'Z TO A':
+        case "Z até A":
           sortingWith = 'name+desc';
           break;
       }

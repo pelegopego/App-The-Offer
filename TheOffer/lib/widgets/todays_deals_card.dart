@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/widgets/rating_bar.dart';
-import 'package:ofypets_mobile_app/widgets/snackbar.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/widgets/rating_bar.dart';
+import 'package:theoffer/widgets/snackbar.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class AddToCart extends StatefulWidget {
@@ -54,7 +54,7 @@ class _AddToCartState extends State<AddToCart> {
 
 Widget buttonContent(int index, Product product) {
   return Text(
-    product.isOrderable ? 'ADD TO CART' : 'OUT OF STOCK',
+    product.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
     style: TextStyle(
         color: product.isOrderable ? Colors.green : Colors.grey,
         fontSize: 14,

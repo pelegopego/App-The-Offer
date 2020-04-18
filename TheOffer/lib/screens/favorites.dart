@@ -2,17 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/models/favorites.dart';
-import 'package:ofypets_mobile_app/models/option_type.dart';
-import 'package:ofypets_mobile_app/models/option_value.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/drawer_homescreen.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/shopping_cart_button.dart';
+import 'package:theoffer/models/favorites.dart';
+import 'package:theoffer/models/option_type.dart';
+import 'package:theoffer/models/option_value.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/shopping_cart_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -64,7 +64,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: false,
-          title: Text('Favorites'),
+          title: Text('Favoritos'),
           actions: <Widget>[
             shoppingCartIconButton(),
           ],
@@ -137,7 +137,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   height: 10.0,
                 ),
                 Text(
-                  'Welcome to Favorites',
+                  'Favoritos',
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 35.0, vertical: 5),
                   child: Text(
-                    "Save, organize, and shop all your pet's favorites in one spot!",
+                    "Salve e organize, seus produtos favoritos!",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black, fontSize: 16.0),
                   ),
@@ -174,7 +174,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           ModalRoute.withName(Navigator.defaultRouteName));
                     },
                     child: Text(
-                      'START SHOPPING',
+                      'INICIAR COMPRAS',
                       style: TextStyle(color: Colors.white),
                     )),
               ),
@@ -264,7 +264,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                     await getHeaders();
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
-                                    'Removing from Favorites, please wait.',
+                                    'Removendo dos favoritos, aguarde.',
                                   ),
                                   duration: Duration(seconds: 1),
                                 ));
@@ -289,7 +289,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                     _scaffoldKey.currentState
                                         .showSnackBar(SnackBar(
                                       content:
-                                          Text('Oops! Something went wrong'),
+                                          Text('Ocorreu algum erro'),
                                       duration: Duration(seconds: 1),
                                     ));
                                   }
@@ -305,7 +305,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Price',
+                              'Preço',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   fontSize: 15, color: Colors.grey.shade700),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/models/category.dart';
+import 'package:theoffer/models/category.dart';
 
 class FilterDrawer extends StatefulWidget {
   Function getSortingData;
@@ -20,11 +20,11 @@ class FilterDrawer extends StatefulWidget {
 
 class _FilterDrawerState extends State<FilterDrawer> {
   List filterItems = [
-    "Newest",
-    "Avg.Customer Review",
-    "Most Reviews",
-    "A TO Z",
-    "Z TO A"
+    "Novos",
+    "Média de avaliação dos compradores",
+    "Mais vistos",
+    "A até Z",
+    "Z até A"
   ];
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
@@ -66,7 +66,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   title: Row(
                     children: <Widget>[
                       Text(
-                        'Sort By:  ',
+                        'Ordenar por:  ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -115,25 +115,25 @@ class _FilterDrawerState extends State<FilterDrawer> {
       ),
     );
   }
-
+  
   void changedDropDownItem(String selectedCity) {
     String sortingWith = '';
     setState(() {
       _currentItem = selectedCity;
       switch (_currentItem) {
-        case 'Newest':
+        case 'Novos':
           sortingWith = 'updated_at+asc';
           break;
-        case 'Avg.Customer Review':
+        case 'Média de avaliação dos compradores':
           sortingWith = 'avg_rating+desc ';
           break;
-        case 'Most Reviews':
+        case 'Mais vistos':
           sortingWith = 'reviews_count+desc';
           break;
-        case 'A TO Z':
+        case 'A até Z':
           sortingWith = 'name+asc';
           break;
-        case 'Z TO A':
+        case 'Z até A':
           sortingWith = 'name+desc';
           break;
       }

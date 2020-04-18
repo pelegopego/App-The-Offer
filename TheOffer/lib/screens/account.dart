@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/change_email.dart';
-import 'package:ofypets_mobile_app/screens/change_password.dart';
-import 'package:ofypets_mobile_app/screens/my_address.dart';
-import 'package:ofypets_mobile_app/screens/order_history.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
-import 'package:ofypets_mobile_app/models/address.dart';
-import 'package:ofypets_mobile_app/utils/drawer_homescreen.dart';
-import 'package:ofypets_mobile_app/screens/retun_policy.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/change_email.dart';
+import 'package:theoffer/screens/change_password.dart';
+import 'package:theoffer/screens/my_address.dart';
+import 'package:theoffer/screens/order_history.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/models/address.dart';
+import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/screens/retun_policy.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +37,7 @@ class _AccountState extends State<Account> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Account"),
+        title: Text("Minha conta"),
       ),
       body: Container(
         child: accountOptions(),
@@ -63,7 +63,7 @@ class _AccountState extends State<Account> {
             color: Colors.grey.shade100,
             child: ListTile(
               title: Text(
-                "Customer since $createdAtString",
+                "Cliente desde $createdAtString",
                 style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
@@ -74,7 +74,7 @@ class _AccountState extends State<Account> {
           ),
           ListTile(
             title: Text(
-              "Order History",
+              "Histórico de pedidos",
               style: _textStyle,
             ),
             onTap: () {
@@ -83,7 +83,7 @@ class _AccountState extends State<Account> {
           ),
           ListTile(
             title: Text(
-              "Addresses",
+              "Endereços",
               style: _textStyle,
             ),
             onTap: () {
@@ -92,7 +92,7 @@ class _AccountState extends State<Account> {
           ),
           ListTile(
             title: Text(
-              "Change Email",
+              "Mudar email",
               style: _textStyle,
             ),
             onTap: () {
@@ -101,7 +101,7 @@ class _AccountState extends State<Account> {
           ),
           ListTile(
             title: Text(
-              "Change Password",
+              "Mudar senha",
               style: _textStyle,
             ),
             onTap: () {
@@ -112,7 +112,7 @@ class _AccountState extends State<Account> {
             color: Colors.grey.shade100,
             child: ListTile(
               title: Text(
-                "24/7 Help & Info",
+                "Ajuda e informações",
                 style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
@@ -123,21 +123,21 @@ class _AccountState extends State<Account> {
           ),
           InkWell(
             onTap: () {
-              _callMe('917-6031-568');
+              _callMe('+55 (49) 9 9903-1587');
             },
             child: ListTile(
               title: Text(
-                'Call: 917-6031-568',
+                '+55 (49) 9 9903-1587',
               ),
             ),
           ),
           InkWell(
             onTap: () {
-              _sendMail('support@ofypets.com');
+              _sendMail('suporte@theoffer.com');
             },
             child: ListTile(
               title: Text(
-                'Email: support@ofypets.com',
+                'suporte@theoffer.com',
               ),
             ),
           ),
@@ -149,7 +149,7 @@ class _AccountState extends State<Account> {
             },
             child: ListTile(
               title: Text(
-                'Return Policy',
+                'Política de reembolso',
               ),
             ),
           ),
@@ -165,7 +165,7 @@ class _AccountState extends State<Account> {
         if (model.isAuthenticated) {
           return ListTile(
             title: Text(
-              'Sign Out',
+              'Sair',
               style: TextStyle(
                 color: Colors.red,
               ),
@@ -186,12 +186,12 @@ class _AccountState extends State<Account> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Sign Out"),
-            content: new Text("Are you sure you want to sign out?"),
+            title: Text("Sair"),
+            content: new Text("Você deseja realmente sair da conta?"),
             actions: <Widget>[
               new FlatButton(
                 child: Text(
-                  "Cancel",
+                  "Cancelar",
                   style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () {
@@ -267,7 +267,7 @@ class _AccountState extends State<Account> {
     if (await canLaunch(uri)) {
       await launch(uri);
     } else {
-      throw 'Could not launch $uri';
+      throw 'Não foi possível acessar $uri';
     }
   }
 
@@ -276,7 +276,7 @@ class _AccountState extends State<Account> {
     if (await canLaunch(uri)) {
       await launch(uri);
     } else {
-      throw 'Could not launch $uri';
+      throw 'Não foi possível acessar $uri';
     }
   }
 }

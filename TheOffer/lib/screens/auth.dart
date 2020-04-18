@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/forget_password.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/forget_password.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,18 +77,18 @@ class _AuthenticationState extends State<Authentication>
                 Padding(
                   padding: EdgeInsets.all(12.0),
                   child: Text(
-                    "SIGN IN",
+                    "ENTRAR",
                     style: TextStyle(fontSize: 13),
                   ),
                 ),
                 Text(
-                  "CREATE ACCOUNT",
+                  "CRIAR CONTA",
                   style: TextStyle(fontSize: 13),
                 )
               ],
             ),
             title: Text(
-              'ofypets',
+              'TheOffer',
               style: TextStyle(fontFamily: 'HolyFat', fontSize: 50),
             ),
           ),
@@ -136,7 +136,7 @@ class _AuthenticationState extends State<Authentication>
                             textColor: Colors.white,
                             color: Colors.deepOrange,
                             child: Text(
-                              'SIGN IN',
+                              'ENTRAR',
                               style: TextStyle(fontSize: 12.0),
                             ),
                             onPressed: () => _submitLogin(model),
@@ -152,7 +152,7 @@ class _AuthenticationState extends State<Authentication>
                       }));
                     },
                     child: Text(
-                      'FORGOT YOUR PASSWORD?',
+                      'Esqueceu sua senha?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -202,7 +202,7 @@ class _AuthenticationState extends State<Authentication>
                         child: FlatButton(
                           textColor: Colors.white,
                           color: Colors.deepOrange,
-                          child: Text('CREATE ACCOUNT',
+                          child: Text('CRIAR CONTA',
                               style: TextStyle(fontSize: 12.0)),
                           onPressed: () => _submitForm(),
                         )),
@@ -231,7 +231,7 @@ class _AuthenticationState extends State<Authentication>
             if (value.isEmpty ||
                 !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                     .hasMatch(value)) {
-              return 'Please enter a valid email';
+              return 'Informe um email válido';
             }
             return null;
           },
@@ -247,8 +247,8 @@ class _AuthenticationState extends State<Authentication>
       child: TextFormField(
         decoration: InputDecoration(
             labelText: isLimitCharacter
-                ? 'Password (Atleast 6 Characters)'
-                : 'Password',
+                ? 'Senha (Mínimo de 6 dígitos)'
+                : 'Senha',
             labelStyle: TextStyle(color: Colors.grey),
             contentPadding: EdgeInsets.all(0.0),
             enabledBorder: _underlineInputBorder),
@@ -256,7 +256,7 @@ class _AuthenticationState extends State<Authentication>
         controller: _passwordTextController,
         validator: (String value) {
           if (value.isEmpty || value.length < 6) {
-            return 'Password must be atleast 6 characters';
+            return 'A senha precisa possuir pelo menos 6 dígitos.';
           }
           return null;
         },
@@ -275,14 +275,14 @@ class _AuthenticationState extends State<Authentication>
           child: TextFormField(
             decoration: InputDecoration(
               labelStyle: TextStyle(color: Colors.grey),
-              labelText: 'Confirm Password',
+              labelText: 'Confirmar senha',
               enabledBorder: _underlineInputBorder,
               contentPadding: EdgeInsets.all(0.0),
             ),
             obscureText: true,
             validator: (String value) {
               if (_passwordTextController.text != value) {
-                return 'Passwords do not match.';
+                return 'As senhas estão diferentes.';
               }
               return null;
             },
@@ -320,10 +320,10 @@ class _AuthenticationState extends State<Authentication>
     );
 
     final Map<String, dynamic> responseData = json.decode(response.body);
-    String message = 'Something went wrong.';
+    String message = 'Ocorreu algum erro.';
     bool hasError = true;
     if (responseData.containsKey('id')) {
-      message = 'Login successfuly.';
+      message = 'Entrou com sucesso.';
       hasError = false;
     } else if (responseData.containsKey('error')) {
       message = responseData["error"];
@@ -379,12 +379,12 @@ class _AuthenticationState extends State<Authentication>
     );
 
     final Map<String, dynamic> responseData = json.decode(response.body);
-    String message = 'Something went wrong.';
+    String message = 'Ocorreu algum erro.';
     bool hasError = true;
 
     if (responseData.containsKey('id')) {
       print('success');
-      message = 'Register successfuly.';
+      message = 'Registrado com sucesso.';
       hasError = false;
     } else if (responseData.containsKey('errors')) {
       message = "Email " + responseData["errors"]["email"][0];
@@ -400,7 +400,7 @@ class _AuthenticationState extends State<Authentication>
           context: context,
           builder: (BuildContext context) {
             return _alertDialog('Success!',
-                "Account Created Successfully! Sign in to Continue", context);
+                "Conta criada com sucesso! Entre para continuar.", context);
           });
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text('${successInformation['message']}'),
@@ -431,7 +431,7 @@ class _AuthenticationState extends State<Authentication>
           },
         ),
         FlatButton(
-          child: Text('Sign In',
+          child: Text('Entrar',
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.green.shade300)),
           onPressed: () {

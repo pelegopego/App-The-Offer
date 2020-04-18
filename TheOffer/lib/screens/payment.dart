@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/models/payment_methods.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/order_response.dart';
-import 'package:ofypets_mobile_app/screens/payubiz.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/utils/params.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/widgets/order_details_card.dart';
-import 'package:ofypets_mobile_app/widgets/snackbar.dart';
-import 'package:ofypets_mobile_app/screens/update_address.dart';
+import 'package:theoffer/models/payment_methods.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/order_response.dart';
+import 'package:theoffer/screens/payubiz.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/utils/params.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/widgets/order_details_card.dart';
+import 'package:theoffer/widgets/snackbar.dart';
+import 'package:theoffer/screens/update_address.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _PaymentScreenState();
+    return _Paymenttelastate();
   }
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class _Paymenttelastate extends State<PaymentScreen> {
   bool _proceedPressed = false;
   bool _isLoading = false;
   static List<PaymentMethod> paymentMethods = List();
@@ -66,7 +66,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-            title: Text('Payment Methods'),
+            title: Text('Métodos de pagamento'),
             bottom: model.isLoading || _isLoading
                 ? PreferredSize(
                     child: LinearProgressIndicator(),
@@ -140,10 +140,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 color: Colors.green,
                 child: Text(
                   _character == ''
-                      ? 'SELECT PAYMENT METHOD'
+                      ? 'SELECIONE O MÉTODO DE PAGAMENTO'
                       : _character == 'COD'
-                          ? 'PAY ON DELIVERY'
-                          : 'CONTINUE TO PAYUBIZ',
+                          ? 'PAGAR NA ENTREGA'
+                          : 'CONTINUAR PARA O PAGSEGURO',
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -198,7 +198,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     setState(() {
                       _proceedPressed = true;
                     });
-                    print('PAYUBIZ');
+                    print('PAGSEGURO');
                     bool isComplete = false;
                     // isComplete = await model.completeOrder(paymentMethods.first.id);
                     model.paymentMethods.forEach((paymentMethodObj) async {
@@ -211,11 +211,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     });
                     isComplete = await model.completeOrder(selectedPaymentId);
                     if (isComplete) {
-                      print("IS COMPLETE TRUE");
+                      print("CONFIRMA");
                       bool isChanged = false;
 
                       if (model.order.state == 'payment') {
-                        print("STATE CHANGE TO PAYMENT");
+                        print("ESTADO DO PAGAMENTO MUDOU");
                         isChanged = await model.changeState();
                       }
                       if (isChanged) {

@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/models/line_item.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/payment.dart';
-import 'package:ofypets_mobile_app/screens/update_address.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/order_details_card.dart';
-import 'package:ofypets_mobile_app/widgets/snackbar.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
+import 'package:theoffer/models/line_item.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/payment.dart';
+import 'package:theoffer/screens/update_address.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/order_details_card.dart';
+import 'package:theoffer/widgets/snackbar.dart';
+import 'package:theoffer/utils/constants.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 
@@ -40,7 +40,7 @@ class _AddressPageState extends State<AddressPage> {
   void initState() {
     super.initState();
     setState(() {
-      print("ORDER ADDRESS PAGE INIT-------");
+      print("PÁGINA De ENDEREÇO DO PEDIDO INÍCIO-------");
       String adjustMentTotal =
           ScopedModel.of<MainModel>(context, rebuildOnChange: false)
               .order
@@ -75,7 +75,7 @@ class _AddressPageState extends State<AddressPage> {
                     Navigator.pop(context);
                   }),
               centerTitle: false,
-              title: Text('Review Order'),
+              title: Text('Revisar pedido'),
               bottom: model.isLoading
                   ? PreferredSize(
                       child: LinearProgressIndicator(),
@@ -93,7 +93,7 @@ class _AddressPageState extends State<AddressPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0, top: 35.0),
                       child: Text(
-                        'Shipping Address',
+                        'Endereço de entrega',
                         style: TextStyle(
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.w200,
@@ -112,7 +112,7 @@ class _AddressPageState extends State<AddressPage> {
                                     ? ''
                                     : model.order.shipAddress != null
                                         ? ''
-                                        : 'ADD NEW ADDRESS',
+                                        : 'ADICIONAR NOVO ENDEREÇO',
                                 style: TextStyle(
                                     color: Colors.green,
                                     fontWeight: FontWeight.bold),
@@ -136,7 +136,7 @@ class _AddressPageState extends State<AddressPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0, top: 0.0),
                       child: Text(
-                        'Promotion',
+                        'Promoção',
                         style: TextStyle(
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.w200,
@@ -151,7 +151,7 @@ class _AddressPageState extends State<AddressPage> {
                       padding: const EdgeInsets.only(
                           left: 15.0, top: 15.0, bottom: 10.0),
                       child: Text(
-                        'Order Summary',
+                        'Resumo do pedido',
                         style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 16.0,
@@ -196,7 +196,7 @@ class _AddressPageState extends State<AddressPage> {
                 // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 color: Colors.deepOrange,
                 child: Text(
-                  'PLACE ORDER',
+                  'Faça seu pedido',
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -241,7 +241,7 @@ class _AddressPageState extends State<AddressPage> {
       });
     }
     if (stateChanged) {
-      print('STATE IS CHANGED, FETCH CURRENT ORDER');
+      print('Estado modificado, encomendar pedido atual');
       bool fetched = await model.fetchCurrentOrder();
       bool paymentFetched = await model.getPaymentMethods();
       MaterialPageRoute payment =
@@ -273,7 +273,7 @@ class _AddressPageState extends State<AddressPage> {
                                 child: TextFormField(
                                   initialValue: promocode,
                                   decoration: InputDecoration(
-                                    labelText: 'Promo Code',
+                                    labelText: 'Código promocional',
                                     labelStyle: TextStyle(color: Colors.grey),
                                     contentPadding: EdgeInsets.all(0.0),
                                   ),
@@ -288,7 +288,7 @@ class _AddressPageState extends State<AddressPage> {
                             FlatButton(
                                 child: Container(
                                   child: Text(
-                                    'APPLY',
+                                    'Aplicar',
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -373,7 +373,7 @@ class _AddressPageState extends State<AddressPage> {
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            'The coupon code was successfully applied to your order. You will save ${model.order.displayAdjustmentTotal.toString().substring(1)}.',
+                            'O cupom foi aplicado ao pedido. Você economizou ${model.order.displayAdjustmentTotal.toString().substring(1)}.',
                             style: TextStyle(color: Colors.grey),
                           ),
                         ),
@@ -401,7 +401,7 @@ class _AddressPageState extends State<AddressPage> {
                             child: Padding(
                               padding: EdgeInsets.only(right: 10, bottom: 10),
                               child: Text(
-                                'Remove',
+                                'Remover.',
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold),
@@ -458,7 +458,7 @@ class _AddressPageState extends State<AddressPage> {
                             Navigator.push(context, payment);
                           },
                           child: Text(
-                            'EDIT',
+                            'Editar',
                             style: TextStyle(
                                 color: Colors.green,
                                 fontSize: 15.0,
@@ -473,7 +473,7 @@ class _AddressPageState extends State<AddressPage> {
                       model.order.shipAddress.pincode),
                   textFieldContainer(model.order.shipAddress.stateName),
                   textFieldContainer(
-                      'Mobile: ' + ' - ' + model.order.shipAddress.mobile),
+                      'Celular: ' + ' - ' + model.order.shipAddress.mobile),
                 ],
               ),
             ),
@@ -496,7 +496,7 @@ class _AddressPageState extends State<AddressPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Order Total: ',
+                        'Total do pedido: ',
                         style: TextStyle(
                             color: Colors.grey.shade600,
                             fontWeight: FontWeight.bold,
@@ -621,7 +621,7 @@ class _AddressPageState extends State<AddressPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        'Qty: ${lineItems[index].quantity.toString()}',
+                                        'Qtd: ${lineItems[index].quantity.toString()}',
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             color: Colors.grey.shade700,

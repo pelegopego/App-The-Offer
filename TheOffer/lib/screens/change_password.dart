@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/utils/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +32,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Password"),
+          title: Text("Senha"),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
@@ -67,16 +67,16 @@ class _ChangePasswordState extends State<ChangePassword> {
     return TextFormField(
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Please enter password';
+          return 'Insira uma senha';
         }
         if (value.length < 6) {
-          return 'Password should be atleast 6 characters long';
+          return 'A senha deve possuir pelo menos 6 dígitos';
         }
       },
       obscureText: true,
       controller: _newPasswordTextFieldController,
       decoration: InputDecoration(
-        labelText: "New Password",
+        labelText: "Nova senha",
       ),
       onSaved: (String value) {
         setState(() {
@@ -90,17 +90,17 @@ class _ChangePasswordState extends State<ChangePassword> {
     return TextFormField(
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Please confirm new password';
+          return 'Confirme a nova senha';
         }
         if (_newPasswordTextFieldController.text !=
             _confirmTextFieldController.text) {
-          return 'Password does not match';
+          return 'As senhas não conferem';
         }
       },
       obscureText: true,
       controller: _confirmTextFieldController,
       decoration: InputDecoration(
-        labelText: "Confirm Password",
+        labelText: "Confirmar senha",
       ),
     );
   }
@@ -112,7 +112,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           color: Colors.deepOrange,
           disabledColor: Colors.grey,
           child: Text(
-            'SET NEW PASSWORD',
+            'ATUALIZAR SENHA',
             style: TextStyle(color: Colors.white),
           ),
           onPressed: _savingNewPassword
@@ -154,7 +154,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       _confirmTextFieldController.text = '';
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to change password"),
+        content: Text("Erro ao alterar a senha"),
         duration: Duration(seconds: 1),
       ));
     }
@@ -166,7 +166,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Password"),
-            content: new Text("Password changed successfully."),
+            content: new Text("Senha alterada com sucesso."),
             actions: <Widget>[
               new FlatButton(
                 child: Text(

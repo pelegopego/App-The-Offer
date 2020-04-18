@@ -3,31 +3,31 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/models/category.dart';
-import 'package:ofypets_mobile_app/models/option_type.dart';
-import 'package:ofypets_mobile_app/models/option_value.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/auth.dart';
-import 'package:ofypets_mobile_app/screens/search.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/drawer_homescreen.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/category_box.dart';
-import 'package:ofypets_mobile_app/widgets/shopping_cart_button.dart';
-import 'package:ofypets_mobile_app/widgets/todays_deals_card.dart';
-import 'package:ofypets_mobile_app/models/banners.dart';
+import 'package:theoffer/models/category.dart';
+import 'package:theoffer/models/option_type.dart';
+import 'package:theoffer/models/option_value.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/search.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/category_box.dart';
+import 'package:theoffer/widgets/shopping_cart_button.dart';
+import 'package:theoffer/widgets/todays_deals_card.dart';
+import 'package:theoffer/models/banners.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomeScreenState();
+    return _Hometelastate();
   }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _Hometelastate extends State<HomeScreen> {
   final MainModel _model = MainModel();
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Container(
               padding: EdgeInsets.all(10),
               child: Text(
-                'ofypets',
+                'TheOffer',
                 textAlign: TextAlign.start,
                 style: TextStyle(fontFamily: 'HolyFat', fontSize: 50),
               )),
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           width: 8.0,
                         ),
-                        Text('Shop by Category',
+                        Text('Comprar por categoria',
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: _deviceSize.width,
                             color: Colors.white,
                             child: Center(
-                              child: Text('No items present'),
+                              child: Text('Sem itens para exibir'),
                             ),
                           ),
                         ]),
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             width: 8.0,
                           ),
-                          Text('Today\'s Deals',
+                          Text('Ofertas do dia',
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
@@ -249,14 +249,14 @@ class _HomeScreenState extends State<HomeScreen> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline, color: Colors.green),
-          title: Text('SIGN IN'),
+          title: Text('ENTRAR'),
         ),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
               color: Colors.green,
             ),
-            title: Text('CREATE ACCOUNT',
+            title: Text('CRIAR CONTA',
                 style: TextStyle(
                     color: Colors.green,
                     fontSize: 15,
@@ -464,7 +464,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListTile(
                 leading: Icon(Icons.search),
                 title: Text(
-                  'Find the best for your pet...',
+                  'Encontrar produtos...',
                   style: TextStyle(fontWeight: FontWeight.w300),
                 ),
               ),

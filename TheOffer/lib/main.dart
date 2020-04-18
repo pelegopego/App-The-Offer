@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/home.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/home.dart';
+import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() {
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       model: _model,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'TheOffer',
         initialRoute: '/home',
         routes: {
           '/home' : (context) => HomeScreen()

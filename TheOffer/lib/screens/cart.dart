@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/address.dart';
-import 'package:ofypets_mobile_app/screens/auth.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/address.dart';
+import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class Cart extends StatefulWidget {
@@ -42,7 +42,7 @@ class _CartState extends State<Cart> {
                 icon: Icon(Icons.close),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: Text('Shopping Cart'),
+              title: Text('Carrinho'),
               bottom: model.isLoading
                   ? PreferredSize(
                       child: LinearProgressIndicator(),
@@ -101,7 +101,7 @@ class _CartState extends State<Cart> {
             : model.order.itemTotal == '0.0'
                 ? ''
                 : total
-                    ? 'Cart SubTotal (${model.order.totalQuantity} items): '
+                    ? 'Valor do carrinho (${model.order.totalQuantity} items): '
                     : model.order.displaySubTotal;
       }
 
@@ -143,27 +143,27 @@ class _CartState extends State<Cart> {
                   color: Colors.deepOrange,
                   child: Text(
                     model.order == null
-                        ? 'BROWSE ITEMS'
+                        ? 'PROCURAR ITENS'
                         : model.order.itemTotal == '0.0'
-                            ? 'BROWSE ITEMS'
-                            : 'PROCEED TO CHECKOUT',
+                            ? 'PROCURAR ITENS'
+                            : 'FINALIZAR',
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,
                         fontWeight: FontWeight.w300),
                   ),
                   onPressed: () async {
-                    print("MODEL ORDER STATE ___________ ${model.order.state}");
+                    print("ESTADO DO PEDIDO ___________ ${model.order.state}");
                     if (model.order != null) {
                       if (model.order.itemTotal != '0.0') {
                         if (model.isAuthenticated) {
                           if (model.order.state == 'cart') {
-                            print('STATE IS CART, CHANGE');
+                            print('NO CARRINHO, MUDAR');
                             bool _stateischanged = await model.changeState();
                             if (_stateischanged) {
                               if (model.order.state == 'address') {
                                 print(
-                                    'DELIVERY, CHANGING STATE BEFORE GOING TO ADDRESS');
+                                    'EM ENTREGA');
                                 _stateischanged = await model.changeState();
                               }
                             }
@@ -178,7 +178,7 @@ class _CartState extends State<Cart> {
                                       builder: (context) => AddressPage());
                               Navigator.push(context, addressRoute);
                             } else {
-                              print("FETCH CURRENT ORDER ERROR");
+                              print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
                             }
                           } else {
                             stateChanged = await model.fetchCurrentOrder();
@@ -190,7 +190,7 @@ class _CartState extends State<Cart> {
                                       builder: (context) => AddressPage());
                               Navigator.push(context, addressRoute);
                             } else {
-                              print("FETCH CURRENT ORDER ERROR");
+                              print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
                             }
                           }
                         } else {
@@ -349,7 +349,7 @@ class _CartState extends State<Cart> {
 
   Widget quantityRow(MainModel model, int lineItemIndex) {
     print(
-        "LINE ITEM TOTAL IN HAND, ${model.lineItems[lineItemIndex].variant.totalOnHand} ISBACKORDERABLE ${model.lineItems[lineItemIndex].variant.isBackOrderable}");
+        "QUANTIDADE DE ITENS NO CARRINHO, ${model.lineItems[lineItemIndex].variant.totalOnHand} ISBACKORDERABLE ${model.lineItems[lineItemIndex].variant.isBackOrderable}");
     return Container(
         height: 60.0,
         child: ListView.builder(

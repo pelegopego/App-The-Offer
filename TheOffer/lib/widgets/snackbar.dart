@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/screens/update_address.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/screens/update_address.dart';
 
 final processSnackbar = SnackBar(
-  content: Text('Adding Product to the cart...'),
+  content: Text('Adicionando produto ao carrinho...'),
   duration: Duration(seconds: 1),
 );
 final completeSnackbar = SnackBar(
-  content: Text('Product Added Successfully!'),
+  content: Text('Produto adicionado com sucesso!'),
   duration: Duration(seconds: 1),
 );
 final codAvailable = SnackBar(
-  content: Text('Cash on Delivery is available!'),
+  content: Text('Pagar na entrega disponível!'),
   duration: Duration(seconds: 1),
 );
 final codNotAvailable = SnackBar(
-  content: Text('Cash on Delivery is not available!'),
+  content: Text('Pagar na entrega não disponível!'),
   duration: Duration(seconds: 1),
 );
 
 final insufficientAmt = SnackBar(
   content: Text(
-      'Order should be greater than $CURRENCY_SYMBOL ${FREE_SHIPPING_AMOUNT.toString()} for COD'),
+      'Preço por item $CURRENCY_SYMBOL ${FREE_SHIPPING_AMOUNT.toString()} for COD'),
   duration: Duration(seconds: 3),
 );
 final codEmpty = SnackBar(
-  content: Text('Please enter a Pincode!'),
+  content: Text('Informe um código PIN!'),
   duration: Duration(seconds: 1),
 );
 final promoEmpty = SnackBar(
-  content: Text('Please enter a Promo Code!'),
+  content: Text('Informe um código promocional!'),
   duration: Duration(seconds: 1),
 );
 final ErrorSnackbar = SnackBar(
-  content: Text('Please Enter title and review'),
+  content: Text('Informe o título da avaliação'),
   duration: Duration(seconds: 1),
 );
 final LoginErroSnackbar = SnackBar(
-  content: Text('Please Login to write review.'),
+  content: Text('Entre em sua conta para avaliar.'),
   duration: Duration(seconds: 1),
 );

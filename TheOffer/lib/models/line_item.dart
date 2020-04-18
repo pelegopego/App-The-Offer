@@ -1,4 +1,4 @@
-import 'package:ofypets_mobile_app/models/variant.dart';
+import 'package:theoffer/models/variant.dart';
 
 class LineItem {
   final int id;

@@ -54,7 +54,7 @@ class ConnectivityManager {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text(
-                'ofypets',
+                'TheOffer',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: 'HolyFat', fontSize: 50, color: Colors.white),
@@ -127,7 +127,7 @@ class _ConnectivityPageState extends State<ConnectivityPage> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Text(
-                  'ofypets',
+                  'TheOffer',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: 'HolyFat', fontSize: 50, color: Colors.white),

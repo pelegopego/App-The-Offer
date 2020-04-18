@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/models/category.dart';
-import 'package:ofypets_mobile_app/screens/brandslisting.dart';
-import 'package:ofypets_mobile_app/screens/categorylisting.dart';
-import 'package:ofypets_mobile_app/utils/color_list.dart';
+import 'package:theoffer/models/category.dart';
+import 'package:theoffer/screens/brandslisting.dart';
+import 'package:theoffer/screens/categorylisting.dart';
+import 'package:theoffer/utils/color_list.dart';
 
 Widget categoryBox(int index, BuildContext context, Size _deviceSize,
     List<Category> categories) {
@@ -29,7 +29,7 @@ Widget categoryBox(int index, BuildContext context, Size _deviceSize,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Shop By Brand',
+                            'Comprar por marca',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/cart.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/cart.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 Widget shoppingCartIconButton() {

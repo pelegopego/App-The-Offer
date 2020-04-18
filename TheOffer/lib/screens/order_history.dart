@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:ofypets_mobile_app/models/order.dart';
-import 'package:ofypets_mobile_app/screens/order_response.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/shopping_cart_button.dart';
+import 'package:theoffer/models/order.dart';
+import 'package:theoffer/screens/order_response.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/shopping_cart_button.dart';
 
 class OrderList extends StatefulWidget {
   @override
@@ -44,7 +44,7 @@ class _OrderList extends State<OrderList> {
   Size _deviceSize;
 
   Future<List<Order>> getOrdersLists() async {
-    print("GET ORDER LIST");
+    print("Lista de pedidos");
     setState(() {
       hasMore = false;
     });
@@ -94,7 +94,7 @@ class _OrderList extends State<OrderList> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text('Order History'),
+        title: Text('Histórico de pedidos'),
         actions: <Widget>[shoppingCartIconButton()],
       ),
       body: Padding(
@@ -183,7 +183,7 @@ class _OrderList extends State<OrderList> {
                   height: 10.0,
                 ),
                 Text(
-                  'No Previous Orders',
+                  'Não possui pedidos efetuados',
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -197,7 +197,7 @@ class _OrderList extends State<OrderList> {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 35.0, vertical: 5),
                   child: Text(
-                    'We will save items you buy here for fast and easy shopping',
+                    'Compre aqui!',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black, fontSize: 16.0),
                   ),
@@ -220,7 +220,7 @@ class _OrderList extends State<OrderList> {
                           ModalRoute.withName(Navigator.defaultRouteName));
                     },
                     child: Text(
-                      'START SHOPPING',
+                      'IR AS COMPRAS',
                       style: TextStyle(color: Colors.white),
                     )),
               ),
@@ -264,16 +264,16 @@ class _OrderList extends State<OrderList> {
   getOrderStatus(detailOrder) {
     if (detailOrder.paymentState == 'balance_due' &&
         detailOrder.shipState == 'shipped') {
-      return Text('Shipped', style: TextStyle(color: Colors.green));
+      return Text('Comprado', style: TextStyle(color: Colors.green));
     } else if (detailOrder.paymentState == 'balance_due') {
-      return Text('Pending', style: TextStyle(color: Colors.blue));
+      return Text('Pendente', style: TextStyle(color: Colors.blue));
     } else if (detailOrder.paymentState == 'void') {
-      return Text('Canceled', style: TextStyle(color: Colors.red));
+      return Text('Cancelado', style: TextStyle(color: Colors.red));
     } else if (detailOrder.paymentState == 'paid' &&
         detailOrder.shipState == 'shipped') {
-      return Text('Completed', style: TextStyle(color: Colors.grey));
+      return Text('Finalizado', style: TextStyle(color: Colors.grey));
     } else {
-      return Text('Processing', style: TextStyle(color: Colors.amber));
+      return Text('Em processo', style: TextStyle(color: Colors.amber));
     }
   }
 }

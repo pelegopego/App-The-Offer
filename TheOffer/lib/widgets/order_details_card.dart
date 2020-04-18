@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
+import 'package:theoffer/scoped-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 
@@ -12,14 +12,14 @@ Widget orderDetailCard() {
             margin: EdgeInsets.all(10),
             child: Column(
               children: <Widget>[
-                amountRow('Subtotal:', model.order.displaySubTotal, model,
+                amountRow('Mercadorias:', model.order.displaySubTotal, model,
                     Colors.grey.shade700),
-                amountRow('Shipping:', model.order.shipTotal, model,
+                amountRow('Entrega:', model.order.shipTotal, model,
                     Colors.grey.shade700),
-                amountRow('Adjustments:', model.order.displayAdjustmentTotal, model,
+                amountRow('Taxas:', model.order.displayAdjustmentTotal, model,
                     Colors.grey.shade700),    
                 amountRow(
-                    'Order Total:', model.order.displayTotal, model, Colors.red)
+                    'Total do pedido:', model.order.displayTotal, model, Colors.red)
               ],
             ),
           );

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/locator.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                   Navigator.of(context).pop();
                 }),
             title: Text(
-              'Forgot Password',
+              'Esqueci minha senha',
               style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
             ),
           ),
@@ -67,7 +67,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                         height: 20.0,
                       ),
                       Text(
-                        'Please enter the email address used to create your account.',
+                        'Informe o email da sua conta.',
                         style: TextStyle(fontSize: 16.0, color: Colors.black87, fontWeight: FontWeight.w100, ),
                       ),
                       SizedBox(
@@ -83,7 +83,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                           if (value.isEmpty ||
                               !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                                   .hasMatch(value)) {
-                            return 'Please enter a valid email';
+                            return 'Informe um email válido';
                           }
                           return null;
                         },
@@ -102,7 +102,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                               child: RaisedButton(
                                 textColor: Colors.white,
                                 color: Colors.deepOrange,
-                                child: Text('RESET PASSWORD'),
+                                child: Text('REDEFINIR SENHA'),
                                 onPressed: () => _submitFogetPassword(),
                               ),
                             ),
@@ -144,14 +144,14 @@ class _ForgetPasswordState extends State<ForgetPassword>
     );
 
     final Map<String, dynamic> responseData = json.decode(response.body);
-    String message = 'Something went wrong.';
+    String message = 'Ocorreu algum erro.';
     bool hasError = true;
 
     if (responseData.containsKey('id')) {
-      message = 'Password reset successfully. Please check register mail.';
+      message = 'Senha alterada com sucesso, verifique seu email.';
       hasError = false;
     } else if (responseData.containsKey('error')) {
-      message = "Email does not exist.";
+      message = "O email é inválido.";
     }
 
     final Map<String, dynamic> successInformation = {
@@ -164,14 +164,14 @@ class _ForgetPasswordState extends State<ForgetPassword>
           context: context,
           builder: (BuildContext context) {
             return _alertDialog(
-                'Success!', successInformation['message'], context);
+                'Sucesso!', successInformation['message'], context);
           });
     } else {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return _alertDialog(
-                'An Error Occurred!', successInformation['message'], context);
+                'Ocorreu algum erro!', successInformation['message'], context);
           });
     }
     setState(() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/widgets/rating_bar.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 Widget productContainer(BuildContext myContext, Product product, int index) {
@@ -106,7 +106,7 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                           textAlign: TextAlign.start,
                           text: TextSpan(children: [
                             TextSpan(
-                              text: 'FREE 1-2 Day ',
+                              text: 'Grátis 1-2 Dias ',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 10.0,
@@ -114,8 +114,8 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                             ),
                             TextSpan(
                               text: double.parse(product.price) < 699
-                                  ? 'shipping over Rs.699'
-                                  : 'shipping',
+                                  ? 'Entrega abaixo de Rs.699'
+                                  : 'Entrega',
                               style:
                                   TextStyle(fontSize: 12, color: Colors.black),
                             ),

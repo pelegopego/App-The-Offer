@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/update_address.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/update_address.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class MyAddressPage extends StatefulWidget {
@@ -38,7 +38,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
               model.shipAddress != null
                   ? FlatButton(
                       child: Text(
-                        'EDIT',
+                        'EDITAR',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
@@ -50,7 +50,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                     )
                   : Container()
             ],
-            title: Text('Addresses'),
+            title: Text('Endereços'),
             centerTitle: false,
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
@@ -216,7 +216,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                   height: 35.0,
                 ),
                 Text(
-                  'No Saved Addresses',
+                  'Sem endereços salvos',
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -230,7 +230,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 35.0, vertical: 5),
                   child: Text(
-                    'Let us know where to ship all of your Ofypets goodies.',
+                    'Informe seus endereços.',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black, fontSize: 16.0),
                   ),

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ofypets_mobile_app/utils/params.dart';
-import 'package:ofypets_mobile_app/screens/payubiz.dart';
+import 'package:theoffer/utils/params.dart';
+import 'package:theoffer/screens/payubiz.dart';
 
 class OrderResponse extends StatefulWidget {
   final String orderNumber;
@@ -47,9 +47,9 @@ class _OrderResponseState extends State<OrderResponse> {
   }
 
   getOrderDetails() async {
-    print("---------GETTING ORDER RESPONSE-------");
+    print("---------BUSCANDO REQUISIÇÃO DE PEDIDO-------");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("ORDER NUMBER ${widget.orderNumber}");
+    print("PEDIDO NÚMERO ${widget.orderNumber}");
     if (widget.orderNumber != null) {
       Map<String, String> headers = await getHeaders();
       await http
@@ -125,14 +125,14 @@ class _OrderResponseState extends State<OrderResponse> {
                                     ? new Text(
                                         widget.success != null &&
                                                 !widget.success
-                                            ? 'Payment Failed!! Please try again.'
-                                            : 'Your order successfully placed!',
+                                            ? 'Seu pagamento falho, tente novamente..'
+                                            : 'Seu pedido foi efetivado!',
                                         style: new TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.w500),
                                       )
                                     : new Text(
-                                        'Your Order Details!',
+                                        'Detalhes do pedido!',
                                         style: new TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.w500),
@@ -148,14 +148,14 @@ class _OrderResponseState extends State<OrderResponse> {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                new Text('ORDER DETAILS'),
+                                new Text('DETALHE DO PEDIDO'),
                                 Divider(),
                                 SizedBox(height: 5),
                                 new Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Expanded(child: new Text('Order Number')),
+                                    Expanded(child: new Text('Número do pedido')),
                                     Expanded(
                                         child: new Text(responseBody["number"] +
                                             ' ( ${responseBody["total_quantity"]} items )'))
@@ -166,7 +166,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Expanded(child: new Text('Order Date')),
+                                    Expanded(child: new Text('Data do pedido')),
                                     Expanded(
                                         child: responseBody["completed_at"] !=
                                                 null
@@ -174,7 +174,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                                 DateTime.parse((responseBody[
                                                         "completed_at"]
                                                     .split('+05:30')[0])))))
-                                            : Text("Date Missing!"))
+                                            : Text("Faltou a data!"))
                                   ],
                                 ),
                                 SizedBox(height: 10),
@@ -182,7 +182,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Expanded(child: new Text('Payment Mode')),
+                                    Expanded(child: new Text('Modo de pagamento')),
                                     Expanded(
                                         child: new Text(
                                             (responseBody["payments"][0]
@@ -196,7 +196,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Expanded(child: new Text('Payment Status')),
+                                    Expanded(child: new Text('Status do pagamento')),
                                     getPaymentStatus(responseBody),
                                   ],
                                 ),
@@ -205,7 +205,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Expanded(child: new Text('Shipping')),
+                                    Expanded(child: new Text('Entrega')),
                                     Expanded(
                                         child: responseBody["shipment_state"] !=
                                                 null
@@ -225,7 +225,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Expanded(child: new Text('Order Total')),
+                                    Expanded(child: new Text('Total do pedido')),
                                     Expanded(
                                         child: new Text(
                                             (responseBody["display_total"]),
@@ -252,7 +252,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                                 },
                                                 child: !_isLoading
                                                     ? new Text(
-                                                        'Retry Payment (Payubiz)',
+                                                        'Tentar pagamento novamente (Payubiz)',
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),
@@ -280,7 +280,7 @@ class _OrderResponseState extends State<OrderResponse> {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                new Text('DELIVERY ADDRESS'),
+                                new Text('ENDEREÇO DE ENTREGA'),
                                 Divider(),
                                 new Text(
                                     responseBody["ship_address"]["full_name"] +
@@ -336,7 +336,7 @@ class _OrderResponseState extends State<OrderResponse> {
     List<Widget> list = [];
     list.add(new Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[new Text('ITEMS'), Divider()],
+      children: <Widget>[new Text('ITENS'), Divider()],
     ));
     items.forEach((item) => {
           list.add(
@@ -365,7 +365,7 @@ class _OrderResponseState extends State<OrderResponse> {
                         SizedBox(height: 5),
                         new Text('${item["variant"]["name"]}'),
                         SizedBox(height: 5),
-                        new Text('Qty : ${item["quantity"]}'),
+                        new Text('Qtd : ${item["quantity"]}'),
                         SizedBox(height: 5),
                         item["variant"]["options_text"] != null
                             ? new Text('${item["variant"]["options_text"]}')

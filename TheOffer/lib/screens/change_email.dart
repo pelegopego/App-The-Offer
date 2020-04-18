@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/utils/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ofypets_mobile_app/utils/headers.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class EmailEdit extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class EmailEdit extends StatefulWidget {
 
 class _EmailEditState extends State<EmailEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email = 'sagar@gmail.com';
+  String _email = 'email@theoffer.com';
   final TextEditingController _textFieldController = TextEditingController();
   bool _fetchingEmail = true;
   bool _savingEmail = false;
@@ -90,7 +90,7 @@ class _EmailEditState extends State<EmailEdit> {
         if (value.isEmpty ||
             !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                 .hasMatch(value)) {
-          return 'Please enter valid email address';
+          return 'Informe um email válido';
         }
       },
       controller: _textFieldController,
@@ -113,7 +113,7 @@ class _EmailEditState extends State<EmailEdit> {
           disabledColor: Colors.grey,
           // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           child: Text(
-            'SAVE',
+            'SALVAR',
             style: TextStyle(color: Colors.white),
           ),
           onPressed: _savingEmail

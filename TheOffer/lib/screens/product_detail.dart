@@ -5,24 +5,24 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:ofypets_mobile_app/models/option_type.dart';
-import 'package:ofypets_mobile_app/models/option_value.dart';
-import 'package:ofypets_mobile_app/models/product.dart';
-import 'package:ofypets_mobile_app/models/review.dart';
-import 'package:ofypets_mobile_app/scoped-models/main.dart';
-import 'package:ofypets_mobile_app/screens/auth.dart';
-import 'package:ofypets_mobile_app/screens/review_detail.dart';
-import 'package:ofypets_mobile_app/screens/search.dart';
-import 'package:ofypets_mobile_app/utils/connectivity_state.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart';
-import 'package:ofypets_mobile_app/utils/constants.dart' as prefix0;
-import 'package:ofypets_mobile_app/utils/headers.dart';
-import 'package:ofypets_mobile_app/utils/locator.dart';
-import 'package:ofypets_mobile_app/widgets/rating_bar.dart';
-import 'package:ofypets_mobile_app/widgets/shopping_cart_button.dart';
-import 'package:ofypets_mobile_app/widgets/snackbar.dart';
-import 'package:ofypets_mobile_app/screens/cart.dart';
-import 'package:ofypets_mobile_app/widgets/todays_deals_card.dart';
+import 'package:theoffer/models/option_type.dart';
+import 'package:theoffer/models/option_value.dart';
+import 'package:theoffer/models/product.dart';
+import 'package:theoffer/models/review.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/review_detail.dart';
+import 'package:theoffer/screens/search.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/utils/constants.dart' as prefix0;
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/widgets/rating_bar.dart';
+import 'package:theoffer/widgets/shopping_cart_button.dart';
+import 'package:theoffer/widgets/snackbar.dart';
+import 'package:theoffer/screens/cart.dart';
+import 'package:theoffer/widgets/todays_deals_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,11 +31,11 @@ class ProductDetailScreen extends StatefulWidget {
   ProductDetailScreen(this.product);
   @override
   State<StatefulWidget> createState() {
-    return _ProductDetailScreenState();
+    return _ProductDetailtelastate();
   }
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen>
+class _ProductDetailtelastate extends State<ProductDetailScreen>
     with SingleTickerProviderStateMixin {
   bool _isFavorite = false;
   bool discount = true;
@@ -163,7 +163,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                 onPressed: () {
                   Navigator.pop(context);
                 }),
-            title: Text('Item Details'),
+            title: Text('Detalhes do item'),
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.search),
@@ -187,7 +187,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                         text: 'HIGHLIGHTS',
                       ),
                       Tab(
-                        text: 'REVIEWS',
+                        text: 'Avaliações',
                       )
                     ],
                   ),
@@ -217,7 +217,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
               Container(
                 height: 400,
                 alignment: Alignment.center,
-                child: Text("No Reviews found"),
+                child: Text("Produto não avaliado"),
               )
             ],
           ));
@@ -270,14 +270,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("${total_reviews} Customer Reviews",
+                      Text("${total_reviews} Avaliações de clientes",
                           style: TextStyle(
                               fontSize: 12.0, fontWeight: FontWeight.w400)),
                       SizedBox(
                         height: 6.0,
                       ),
                       Text(
-                          "Recommended by ${recommended_percent}% of reviewers",
+                          "Recomendado por ${recommended_percent}% dos avaliadores",
                           style: TextStyle(
                               fontSize: 15.0, fontWeight: FontWeight.w600)),
                     ],
@@ -318,7 +318,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                     // Scaffold.of(context).showSnackBar(LoginErroSnackbar);
                     _scaffoldKey.currentState.showSnackBar(SnackBar(
                       content: Text(
-                        'Please Login to write review.',
+                        'Precisa entrar na conta para avaliar.',
                       ),
                       action: SnackBarAction(
                         label: 'LOGIN',
@@ -346,7 +346,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                     children: <Widget>[
                       Center(
                         child: Text(
-                          "WRITE A REVIEW",
+                          "AVALIE O PRODUTO",
                           style: TextStyle(
                             color: Colors.green,
                             fontSize: 16,
@@ -431,14 +431,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   String getReviewByText(Review review) {
     RegExp exp = new RegExp(r"([^@]+)");
     var now = DateTime.parse(review.created_at);
-    var formatter = new DateFormat('MMM d y');
+    var formatter = new DateFormat('DD/MM/YYYY');
 
-    return "By ${exp.firstMatch(review.name).group(0)} - ${formatter.format(now)}";
+    return "Por ${exp.firstMatch(review.name).group(0)} - ${formatter.format(now)}";
   }
 
   Widget quantityRow(MainModel model, Product selectedProduct) {
     print(
-        "SELECTED PRODUCT ---> ${selectedProduct.totalOnHand}  ${selectedProduct.slug}");
+        "PRODUTO SELECIONADO ---> ${selectedProduct.totalOnHand}  ${selectedProduct.slug}");
     return Container(
         height: 60.0,
         child: ListView.builder(
@@ -683,7 +683,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                           if (authToken == null) {
                             _scaffoldKey.currentState.showSnackBar(SnackBar(
                               content: Text(
-                                'Please Login to add to Favorites',
+                                'Entre na sua conta para adicionar aos favoritos',
                               ),
                               action: SnackBarAction(
                                 label: 'LOGIN',
@@ -697,7 +697,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                           } else {
                             _scaffoldKey.currentState.showSnackBar(SnackBar(
                               content: Text(
-                                'Adding to Favorites, please wait.',
+                                'Adicionando aos favoritos aguarde.',
                               ),
                               duration: Duration(seconds: 1),
                             ));
@@ -715,7 +715,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                 _isFavorite = true;
                               });
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                content: Text('Product marked as favorite!'),
+                                content: Text('Produto adicionado aos favoritos!'),
                                 duration: Duration(seconds: 1),
                               ));
                             });
@@ -723,7 +723,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                         } else {
                           _scaffoldKey.currentState.showSnackBar(SnackBar(
                             content: Text(
-                              'Removing from Favorites, please wait.',
+                              'Removendo produto dos favoritos, aguarde.',
                             ),
                             duration: Duration(seconds: 1),
                           ));
@@ -745,7 +745,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                               ));
                             } else {
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                content: Text('Oops! Something went wrong'),
+                                content: Text('Ocorreu um erro'),
                                 duration: Duration(seconds: 1),
                               ));
                             }
@@ -768,7 +768,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
-                          'By ${selectedProduct.name.split(' ')[0]}',
+                          'Por ${selectedProduct.name.split(' ')[0]}',
                           style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.normal,
@@ -810,7 +810,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        'Size ',
+                        'Tamanho ',
                         style: TextStyle(
                           fontSize: 14,
                           fontFamily: fontFamily,
@@ -830,7 +830,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        'Quantity ',
+                        'Quantidade ',
                         style: TextStyle(fontSize: 14, fontFamily: fontFamily),
                       ),
                     )
@@ -847,7 +847,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       height: 18,
                     )
                   : Container(),
-              buildPriceRow('Price: ', selectedProduct.displayPrice,
+              buildPriceRow('Preço: ', selectedProduct.displayPrice,
                   strike: discount,
                   originalPrice:
                       '${selectedProduct.currencySymbol} ${selectedProduct.costPrice}'),
@@ -860,7 +860,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   ? Column(
                       children: <Widget>[
                         buildPriceRow(
-                            'You Save: ',
+                            'Economizou: ',
                             '${selectedProduct.currencySymbol}' +
                                 (double.parse(selectedProduct.costPrice) -
                                         double.parse(selectedProduct.price))
@@ -894,7 +894,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                     textAlign: TextAlign.start,
                     text: TextSpan(children: [
                       TextSpan(
-                        text: 'Free 1-2 Day ',
+                        text: 'Grátis 1-2 Dias ',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.0,
@@ -904,8 +904,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                         text: double.parse(selectedProduct.costPrice.substring(
                                     1, selectedProduct.costPrice.length - 1)) <
                                 699
-                            ? 'shipping over Rs.699'
-                            : 'shipping',
+                            ? 'Entrega abaixo de Rs.699'
+                            : 'Entrega',
                         style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                     ]),
@@ -934,7 +934,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       color: Colors.white,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 10.0),
-                        title: Text('You May Also like',
+                        title: Text('Você também pode gostar',
                             style: TextStyle(
                                 fontSize: 14,
                                 // fontWeight: FontWeight.w600,
@@ -966,7 +966,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
               Container(
                   padding: EdgeInsets.only(left: 10.0, top: 20.0),
                   alignment: Alignment.centerLeft,
-                  child: Text("Description",
+                  child: Text("Descrição",
                       style: TextStyle(
                           fontSize: 15.0, fontWeight: FontWeight.w600))),
               HtmlWidget(htmlDescription),
@@ -995,7 +995,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                selectedProduct.isOrderable ? 'BUY NOW' : 'OUT OF STOCK',
+                selectedProduct.isOrderable ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
                 style: TextStyle(
                     color: selectedProduct.isOrderable
                         ? Colors.deepOrange
@@ -1041,7 +1041,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                selectedProduct.isOrderable ? 'ADD TO CART' : 'OUT OF STOCK',
+                selectedProduct.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
                 style: TextStyle(
                     color: selectedProduct.isOrderable
                         ? Colors.green
@@ -1105,7 +1105,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text(
-                        'Please Login to write review.',
+                        'Por favor, entre em sua conta para avaliar.',
                       ),
                       action: SnackBarAction(
                         label: 'LOGIN',
@@ -1205,7 +1205,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
             child: TextFormField(
               initialValue: pincode,
               decoration: InputDecoration(
-                  labelText: 'Pin Code',
+                  labelText: 'Codigo',
                   labelStyle: TextStyle(color: Colors.grey),
                   contentPadding: EdgeInsets.all(0.0)),
               onSaved: (String value) {
@@ -1219,7 +1219,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
         FlatButton(
             child: Container(
               child: Text(
-                'CHECK',
+                'VERIFICAR',
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
