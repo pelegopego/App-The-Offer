@@ -255,7 +255,7 @@ class _OrderResponseState extends State<OrderResponse> {
                                                         'Tentar pagamento novamente (Payubiz)',
                                                         style: TextStyle(
                                                             color:
-                                                                Colors.white),
+                                                                Colors.principalTheOffer),
                                                       )
                                                     : CupertinoActivityIndicator()),
                                           ),
@@ -326,7 +326,7 @@ class _OrderResponseState extends State<OrderResponse> {
                   )
                 : Center(
                     child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.principalTheOffer,
                   )),
           ));
     });

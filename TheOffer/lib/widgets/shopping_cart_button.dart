@@ -25,7 +25,7 @@ Widget shoppingCartIconButton() {
                 iconSize: 30,
                 icon: new Icon(
                   Icons.shopping_cart,
-                  color: Colors.white,
+                  color: Colors.principalTheOffer,
                 ),
                 onPressed: null,
               ),

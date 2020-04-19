@@ -69,7 +69,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                         'Ordenar por:  ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.principalTheOffer,
                             fontSize: 18.0),
                       ),
                       DropdownButton(
@@ -80,7 +80,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                         value: _currentItem,
                         icon: Icon(
                           Icons.arrow_drop_down,
-                          color: Colors.white,
+                          color: Colors.principalTheOffer,
                         ),
                         items: _dropDownMenuItems,
                         onChanged: changedDropDownItem,

@@ -40,7 +40,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.principalTheOffer,
           appBar: AppBar(
             centerTitle: false,
             backgroundColor: Colors.secundariaTheOffer,
@@ -51,7 +51,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                 }),
             title: Text(
               'Esqueci minha senha',
-              style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 1),
+              style: TextStyle(fontSize: 22, color: Colors.principalTheOffer, fontWeight: FontWeight.w600, letterSpacing: 1),
             ),
           ),
           body: SingleChildScrollView(
@@ -96,11 +96,11 @@ class _ForgetPasswordState extends State<ForgetPassword>
                       ),
                       _isLoader
                           ? CircularProgressIndicator(
-                              backgroundColor: Colors.white)
+                              backgroundColor: Colors.principalTheOffer)
                           : Container(
                               width: MediaQuery.of(context).size.width,
                               child: RaisedButton(
-                                textColor: Colors.white,
+                                textColor: Colors.principalTheOffer,
                                 color: Colors.deepOrange,
                                 child: Text('REDEFINIR SENHA'),
                                 onPressed: () => _submitFogetPassword(),

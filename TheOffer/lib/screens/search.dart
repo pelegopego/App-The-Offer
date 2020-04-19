@@ -110,7 +110,7 @@ class _ProductSearchState extends State<ProductSearch> {
           key: _scaffoldKey,
           appBar: AppBar(
             elevation: 1.0,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.principalTheOffer,
             leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
@@ -199,7 +199,7 @@ class _ProductSearchState extends State<ProductSearch> {
                                   padding: EdgeInsets.symmetric(vertical: 25.0),
                                   child: Center(
                                       child: CircularProgressIndicator(
-                                    backgroundColor: Colors.white,
+                                    backgroundColor: Colors.principalTheOffer,
                                   )),
                                 );
                               } else {
@@ -215,7 +215,7 @@ class _ProductSearchState extends State<ProductSearch> {
                     elevation: 2.0,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
+                      color: Colors.principalTheOffer,
                       height: 50.0,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 18.0, left: 16.0),
@@ -238,7 +238,7 @@ class _ProductSearchState extends State<ProductSearch> {
                     },
                     child: Icon(
                       Icons.filter_list,
-                      color: Colors.white,
+                      color: Colors.principalTheOffer,
                     ),
                     backgroundColor: Colors.orange,
                   ),
@@ -326,7 +326,7 @@ class _ProductSearchState extends State<ProductSearch> {
                         'Sort By:  ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.principalTheOffer,
                             fontSize: 18.0),
                       ),
                       DropdownButton(
@@ -338,13 +338,13 @@ class _ProductSearchState extends State<ProductSearch> {
                         hint: Text(
                           _currentItem,
                           style: TextStyle(
-                              color: Colors.white70,
+                              color: Colors.principalTheOffer,
                               fontWeight: FontWeight.bold),
                         ),
                         value: null,
                         icon: Icon(
                           Icons.arrow_drop_down,
-                          color: Colors.white,
+                          color: Colors.principalTheOffer,
                         ),
                         items: _dropDownMenuItems,
                         onChanged: changedDropDownItem,

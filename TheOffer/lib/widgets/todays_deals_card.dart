@@ -44,7 +44,7 @@ class _AddToCartState extends State<AddToCart> {
             : widget.index == selectedIndex
                 ? Center(
                     child: CircularProgressIndicator(
-                    backgroundColor: Colors.secundariaTheOffer,
+                    backgroundColor: Colors.principalTheOffer,
                   ))
                 : buttonContent(widget.index, widget.product),
       );
@@ -56,7 +56,7 @@ Widget buttonContent(int index, Product product) {
   return Text(
     product.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
     style: TextStyle(
-        color: product.isOrderable ? Colors.secundariaTheOffer : Colors.grey,
+        color: Colors.principalTheOffer,
         fontSize: 14,
         fontWeight: FontWeight.w500),
   );
@@ -76,6 +76,7 @@ Widget todaysDealsCard(int index, List<Product> todaysDealProducts,
         child: SizedBox(
             width: _deviceSize.width * 0.4,
             child: Card(
+              color: Colors.secundariaTheOffer, 
               elevation: 0.0,
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.grey.withOpacity(0.4)),
@@ -100,7 +101,8 @@ Widget todaysDealsCard(int index, List<Product> todaysDealProducts,
                     child: Text(
                       displayProduct.name,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
+                      maxLines: 3, 
+                      style: TextStyle(color: Colors.principalTheOffer),
                     ),
                   ),
                   Container(
@@ -111,9 +113,8 @@ Widget todaysDealsCard(int index, List<Product> todaysDealProducts,
                         displayProduct.displayPrice,
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                            color: Colors.red,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15),
+                            fontSize: 15, color: Colors.principalTheOffer),
                       ),
                     ),
                   ),
@@ -124,7 +125,8 @@ Widget todaysDealsCard(int index, List<Product> todaysDealProducts,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         ratingBar(displayProduct.avgRating, 20),
-                        Text(displayProduct.reviewsCount),
+                        Text(displayProduct.reviewsCount,  
+                             style: TextStyle(color: Colors.principalTheOffer)),
                       ],
                     ),
                   ),

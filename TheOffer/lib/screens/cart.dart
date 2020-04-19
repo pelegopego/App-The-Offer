@@ -149,7 +149,7 @@ class _CartState extends State<Cart> {
                             : 'FINALIZAR',
                     style: TextStyle(
                         fontSize: 15,
-                        color: Colors.white,
+                        color: Colors.principalTheOffer,
                         fontWeight: FontWeight.w300),
                   ),
                   onPressed: () async {
@@ -227,7 +227,7 @@ class _CartState extends State<Cart> {
                   elevation: 1,
                   margin: EdgeInsets.all(8.0),
                   child: Container(
-                    color: Colors.white,
+                    color: Colors.principalTheOffer,
                     child: GestureDetector(
                       onTap: () {},
                       child: Row(
@@ -239,7 +239,7 @@ class _CartState extends State<Cart> {
                                 padding: EdgeInsets.all(15),
                                 height: 150,
                                 width: 100,
-                                color: Colors.white,
+                                color: Colors.principalTheOffer,
                                 child: FadeInImage(
                                   image: NetworkImage(
                                       model.lineItems[index].variant.image !=

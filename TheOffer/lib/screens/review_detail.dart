@@ -209,7 +209,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
                           child: Text(
                             "Submit Review",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.principalTheOffer,
                               fontSize: 18,
                             ),
                           ),

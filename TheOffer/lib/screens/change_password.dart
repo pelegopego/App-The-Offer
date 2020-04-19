@@ -113,7 +113,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           disabledColor: Colors.grey,
           child: Text(
             'ATUALIZAR SENHA',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.principalTheOffer),
           ),
           onPressed: _savingNewPassword
               ? null

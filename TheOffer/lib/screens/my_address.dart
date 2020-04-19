@@ -39,7 +39,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                   ? FlatButton(
                       child: Text(
                         'EDITAR',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.principalTheOffer),
                       ),
                       onPressed: () {
                         MaterialPageRoute payment = MaterialPageRoute(
@@ -97,7 +97,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                 },
                 child: Icon(
                   Icons.add,
-                  color: Colors.white,
+                  color: Colors.principalTheOffer,
                 ),
                 backgroundColor: Colors.deepOrange,
               )
@@ -124,7 +124,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
         builder: (BuildContext context, Widget child, MainModel model) {
       if (model.shipAddress != null) {
         return Container(
-          color: Colors.white,
+          color: Colors.principalTheOffer,
           width: MediaQuery.of(context).size.width,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

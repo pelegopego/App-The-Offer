@@ -105,7 +105,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               padding: EdgeInsets.symmetric(vertical: 10.0),
                               child: Center(
                                   child: CircularProgressIndicator(
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.principalTheOffer,
                               )),
                             );
                           } else {
@@ -175,7 +175,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     },
                     child: Text(
                       'INICIAR COMPRAS',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.principalTheOffer),
                     )),
               ),
             ),
@@ -213,7 +213,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 padding: EdgeInsets.all(10),
                 height: 150,
                 width: 150,
-                color: Colors.white,
+                color: Colors.principalTheOffer,
                 child: FadeInImage(
                   image: NetworkImage(
                       favorite.image != null ? favorite.image : ''),

@@ -128,7 +128,7 @@ class _BrandListState extends State<BrandList> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Container(
-                                            color: Colors.white,
+                                            color: Colors.principalTheOffer,
                                             child: Column(children: [
                                               GestureDetector(
                                                   onTap: () {
@@ -144,7 +144,7 @@ class _BrandListState extends State<BrandList> {
                                                     getBrandProducts(0);
                                                   },
                                                   child: Container(
-                                                      color: Colors.white,
+                                                      color: Colors.principalTheOffer,
                                                       width: _deviceSize.width,
                                                       alignment:
                                                           Alignment.centerLeft,
@@ -197,7 +197,7 @@ class _BrandListState extends State<BrandList> {
                                               child: Center(
                                                   child:
                                                       CircularProgressIndicator(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.principalTheOffer,
                                               )),
                                             );
                                           } else {
@@ -228,7 +228,7 @@ class _BrandListState extends State<BrandList> {
                                   child: Text(
                                     _heading,
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.principalTheOffer,
                                         fontSize: 20,
                                         fontWeight: _isSelected
                                             ? FontWeight.w200
@@ -244,7 +244,7 @@ class _BrandListState extends State<BrandList> {
                                     child: Text(
                                       ' > ',
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.principalTheOffer,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w200),
                                     ),
@@ -259,7 +259,7 @@ class _BrandListState extends State<BrandList> {
                                     child: Text(
                                       _brandName,
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.principalTheOffer,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -283,7 +283,7 @@ class _BrandListState extends State<BrandList> {
                             },
                             child: Icon(
                               Icons.filter_list,
-                              color: Colors.white,
+                              color: Colors.principalTheOffer,
                             ),
                             backgroundColor: Colors.orange,
                           ),
@@ -312,7 +312,7 @@ class _BrandListState extends State<BrandList> {
                         'Ordenar por:  ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.principalTheOffer,
                             fontSize: 18.0),
                       ),
                       DropdownButton(
@@ -324,12 +324,12 @@ class _BrandListState extends State<BrandList> {
                         value: null,
                         icon: Icon(
                           Icons.arrow_drop_down,
-                          color: Colors.white,
+                          color: Colors.principalTheOffer,
                         ),
                         hint: Text(
                           _currentItem,
                           style: TextStyle(
-                              color: Colors.white70,
+                              color: Colors.principalTheOffer,
                               fontWeight: FontWeight.bold),
                         ),
                         items: _dropDownMenuItems,

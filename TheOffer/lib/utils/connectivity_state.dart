@@ -57,7 +57,7 @@ class ConnectivityManager {
                 'TheOffer',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: 'HolyFat', fontSize: 50, color: Colors.white),
+                    fontFamily: 'HolyFat', fontSize: 50, color: Colors.principalTheOffer),
               ),
             ),
             Column(
@@ -72,7 +72,7 @@ class ConnectivityManager {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'You are not connected to internet',
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                    style: TextStyle(color: Colors.principalTheOffer, fontSize: 18.0),
                   ),
                 ),
               ],
@@ -130,7 +130,7 @@ class _ConnectivityPageState extends State<ConnectivityPage> {
                   'TheOffer',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontFamily: 'HolyFat', fontSize: 50, color: Colors.white),
+                      fontFamily: 'HolyFat', fontSize: 50, color: Colors.principalTheOffer),
                 ),
               ),
             ),
@@ -141,14 +141,14 @@ class _ConnectivityPageState extends State<ConnectivityPage> {
                 children: <Widget>[
                   Icon(
                     Icons.signal_wifi_off,
-                    color: Colors.white,
+                    color: Colors.principalTheOffer,
                     size: 80.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'You are not connected to the internet.',
-                      style: TextStyle(color: Colors.white, fontSize: 22.0),
+                      style: TextStyle(color: Colors.principalTheOffer, fontSize: 22.0),
                       textAlign: TextAlign.center,
                     ),
                   ),

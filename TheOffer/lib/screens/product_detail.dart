@@ -156,7 +156,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
           key: _scaffoldKey,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.principalTheOffer,
           appBar: AppBar(
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
@@ -256,7 +256,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                             child: Text(
                               rating.toStringAsFixed(1),
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.principalTheOffer,
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.w300),
                             ),
@@ -380,7 +380,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   child: Text(
                     review.rating.toString(),
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.principalTheOffer,
                         fontSize: 15.0,
                         fontWeight: FontWeight.w300),
                   ),
@@ -931,7 +931,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 children: <Widget>[
                   Container(
                       width: _deviceSize.width,
-                      color: Colors.white,
+                      color: Colors.principalTheOffer,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 10.0),
                         title: Text('Você também pode gostar',
@@ -1073,7 +1073,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             ? FloatingActionButton(
                 child: Icon(
                   Icons.shopping_cart,
-                  color: Colors.white,
+                  color: Colors.principalTheOffer,
                 ),
                 onPressed: selectedProduct.isOrderable
                     ? () {
@@ -1095,7 +1095,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             : FloatingActionButton(
                 child: Icon(
                   Icons.add,
-                  color: Colors.white,
+                  color: Colors.principalTheOffer,
                 ),
                 onPressed: () {
                   if (model.isAuthenticated) {

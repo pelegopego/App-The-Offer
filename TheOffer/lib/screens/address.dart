@@ -106,7 +106,7 @@ class _AddressPageState extends State<AddressPage> {
                             height: 40,
                             margin: EdgeInsets.only(left: 40, right: 120),
                             child: FlatButton(
-                              color: Colors.white,
+                              color: Colors.principalTheOffer,
                               child: Text(
                                 model.isLoading
                                     ? ''
@@ -199,7 +199,7 @@ class _AddressPageState extends State<AddressPage> {
                   'Faça seu pedido',
                   style: TextStyle(
                       fontSize: 15,
-                      color: Colors.white,
+                      color: Colors.principalTheOffer,
                       fontWeight: FontWeight.w300),
                 ),
                 onPressed: model.order.shipAddress != null
@@ -530,7 +530,7 @@ class _AddressPageState extends State<AddressPage> {
                   borderRadius: BorderRadius.circular(12)),
               margin: EdgeInsets.all(4.0),
               child: Container(
-                color: Colors.white,
+                color: Colors.terciariaTheOffer,
                 child: GestureDetector(
                   onTap: () {},
                   child: Row(
@@ -543,7 +543,7 @@ class _AddressPageState extends State<AddressPage> {
                               padding: EdgeInsets.all(10),
                               height: 80,
                               width: 80,
-                              color: Colors.white,
+                              color: Colors.principalTheOffer,
                               child: FadeInImage(
                                 image: NetworkImage(
                                     lineItems[index].variant.image != null

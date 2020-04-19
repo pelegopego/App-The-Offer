@@ -66,7 +66,7 @@ class _Payubiztelastate extends State<PayubizScreen> {
                   fontSize: 18),
             ),
             centerTitle: true,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.principalTheOffer,
           ),
           body: WebviewScaffold(
             url: widget.url,

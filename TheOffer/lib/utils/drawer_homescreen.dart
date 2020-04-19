@@ -94,7 +94,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                       child: Text(
                         '${favCount}',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.principalTheOffer,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -195,7 +195,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                 child: Text(
                   'Entrar',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w300),
+                      color: Colors.principalTheOffer, fontWeight: FontWeight.w300),
                 ),
                 onTap: () {
                   MaterialPageRoute route = MaterialPageRoute(
@@ -206,11 +206,11 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               Text(' | ',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w300)),
+                      color: Colors.principalTheOffer, fontWeight: FontWeight.w300)),
               GestureDetector(
                 child: Text('Criar conta',
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w300)),
+                        color: Colors.principalTheOffer, fontWeight: FontWeight.w300)),
                 onTap: () {
                   MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) => Authentication(1));
@@ -227,7 +227,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               children: <Widget>[
                 Text('Oi, ${formatName()}!',
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500))
+                        color: Colors.principalTheOffer, fontWeight: FontWeight.w500))
               ],
             ),
           );
@@ -304,6 +304,7 @@ class _HomeDrawer extends State<HomeDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Drawer(
       child: ListView(
         padding: EdgeInsets.all(0.0),
@@ -314,12 +315,12 @@ class _HomeDrawer extends State<HomeDrawer> {
               Text(
                 'TheOffer',
                 style: TextStyle(
-                    fontFamily: 'HolyFat', fontSize: 65, color: Colors.white),
+                    fontFamily: 'HolyFat', fontSize: 65, color: Colors.principalTheOffer),
               ),
               Text(
                 '1.0.0',
                 style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+                    TextStyle(color: Colors.principalTheOffer, fontWeight: FontWeight.w300),
               ),
               signInLineTile()
             ]),
@@ -341,10 +342,11 @@ class _HomeDrawer extends State<HomeDrawer> {
           ),
           favoritesLineTile(),
           accountListTile(),
-          Divider(color: Colors.grey,),
+          Divider(color: Colors.secundariaTheOffer),
           ListTile(
             title: Text(
               'Ajuda',
+              style: TextStyle(color: Colors.secundariaTheOffer),
             ),
           ),
           InkWell(
@@ -354,9 +356,11 @@ class _HomeDrawer extends State<HomeDrawer> {
             child: ListTile(
               leading: Icon(
                 Icons.call,
+                color: Colors.secundariaTheOffer,
               ),
               title: Text(
                 '+55 (49) 9 9903-1587',
+              style: TextStyle(color: Colors.secundariaTheOffer),
               ),
             ),
           ),
@@ -367,9 +371,11 @@ class _HomeDrawer extends State<HomeDrawer> {
             child: ListTile(
               leading: Icon(
                 Icons.mail,
+                color: Colors.secundariaTheOffer,
               ),
               title: Text(
                 'supporte@theoffer.com.br',
+              style: TextStyle(color: Colors.secundariaTheOffer),
               ),
             ),
           ),
@@ -382,13 +388,15 @@ class _HomeDrawer extends State<HomeDrawer> {
             child: ListTile(
               leading: Icon(
                 Icons.assignment,
+                color: Colors.secundariaTheOffer,
               ),
               title: Text(
                 'Return Policy',
+              style: TextStyle(color: Colors.secundariaTheOffer),
               ),
             ),
           ),
-          Divider(color: Colors.grey,),
+          Divider(color: Colors.secundariaTheOffer),
           logOutButton()
         ],
       ),

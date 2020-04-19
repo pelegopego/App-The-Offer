@@ -13,7 +13,7 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
         },
         child: Container(
           padding: EdgeInsets.only(top: 15.0),
-          color: Colors.white,
+          color: Colors.principalTheOffer,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -24,7 +24,7 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                       Container(
                         height: 100,
                         width: 150,
-                        color: Colors.white,
+                        color: Colors.principalTheOffer,
                         child: FadeInImage(
                           image: NetworkImage(
                               product.image != null ? product.image : ''),

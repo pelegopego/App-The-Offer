@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         },
         theme: ThemeData(
           primarySwatch: Colors.secundariaTheOffer,
-          accentColor: Colors.white,
+          accentColor: Colors.principalTheOffer,
         ),
         home: HomeScreen(),
       ),

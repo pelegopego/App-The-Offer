@@ -56,7 +56,7 @@ class _AuthenticationState extends State<Authentication>
       color: Colors.secundariaTheOffer,
       theme: ThemeData(
         primarySwatch: Colors.secundariaTheOffer,
-        accentColor: Colors.white,
+        accentColor: Colors.terciariaTheOffer,
       ),
       home: DefaultTabController(
         length: 2,
@@ -133,7 +133,7 @@ class _AuthenticationState extends State<Authentication>
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.all(15),
                           child: FlatButton(
-                            textColor: Colors.white,
+                            textColor: Colors.principalTheOffer,
                             color: Colors.deepOrange,
                             child: Text(
                               'ENTRAR',
@@ -200,7 +200,7 @@ class _AuthenticationState extends State<Authentication>
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
-                          textColor: Colors.white,
+                          textColor: Colors.principalTheOffer,
                           color: Colors.deepOrange,
                           child: Text('CRIAR CONTA',
                               style: TextStyle(fontSize: 12.0)),

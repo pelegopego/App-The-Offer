@@ -76,7 +76,7 @@
 //     double logoOffset = MediaQuery.of(context).size.height / 3.5;
 
 //     return Scaffold(
-//       backgroundColor: Colors.white,
+//       backgroundColor: Colors.principalTheOffer,
 //       body: Stack(
 //         fit: StackFit.expand,
 //         children: <Widget>[

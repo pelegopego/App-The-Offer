@@ -118,7 +118,7 @@ class _OrderList extends State<OrderList> {
                         height: _deviceSize.height,
                         child: Center(
                             child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.principalTheOffer,
                         )));
                   } else {
                     return Container();
@@ -221,7 +221,7 @@ class _OrderList extends State<OrderList> {
                     },
                     child: Text(
                       'IR AS COMPRAS',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.principalTheOffer),
                     )),
               ),
             ),

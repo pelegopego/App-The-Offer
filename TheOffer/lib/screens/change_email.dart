@@ -114,7 +114,7 @@ class _EmailEditState extends State<EmailEdit> {
           // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           child: Text(
             'SALVAR',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.principalTheOffer),
           ),
           onPressed: _savingEmail
               ? null

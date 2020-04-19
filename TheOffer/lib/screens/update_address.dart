@@ -498,7 +498,7 @@ class _UpdateAddressState extends State<UpdateAddress> {
         },
         child: Text(
           'SAVE ADDRESS',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.principalTheOffer),
         ),
       );
     });

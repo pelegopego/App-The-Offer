@@ -14,7 +14,6 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/category_box.dart';
 import 'package:theoffer/widgets/shopping_cart_button.dart';
 import 'package:theoffer/widgets/todays_deals_card.dart';
 import 'package:theoffer/models/banners.dart';
@@ -75,14 +74,14 @@ class _Hometelastate extends State<HomeScreen> {
     );
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold(
+      return Scaffold( 
         appBar: AppBar(
           title: Container(
               padding: EdgeInsets.all(10),
               child: Text(
                 'TheOffer',
                 textAlign: TextAlign.start,
-                style: TextStyle(fontFamily: 'HolyFat', fontSize: 50),
+                style: TextStyle(fontFamily: 'HolyFat', fontSize: 50, color:  Colors.principalTheOffer),
               )),
           actions: <Widget>[
             shoppingCartIconButton(),
@@ -91,10 +90,11 @@ class _Hometelastate extends State<HomeScreen> {
             preferredSize: Size(_deviceSize.width, 70),
             child: searchBar(),
           ),
+        iconTheme: new IconThemeData(color: Colors.principalTheOffer)
         ),
         drawer: HomeDrawer(),
         body: Container(
-          color: Colors.white,
+          color: Colors.terciariaTheOffer,
           child: CustomScrollView(slivers: [
             SliverList(
               delegate: SliverChildListDelegate([
@@ -106,102 +106,6 @@ class _Hometelastate extends State<HomeScreen> {
               child: Divider(
                 height: 1.0,
               ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                  width: _deviceSize.width,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.category,
-                          color: Colors.blue,
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Text('Comprar por categoria',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: fontFamily)),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-            ),
-            _isCategoryLoading
-                ? SliverList(
-                    delegate: SliverChildListDelegate([
-                    Container(
-                      height: _deviceSize.height * 0.5,
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.secundariaTheOffer,
-                      ),
-                    )
-                  ]))
-                : categories.length > 0
-                    ? SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                        delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                          return categoryBox(
-                              index, context, _deviceSize, categories);
-                        }, childCount: categories.length + 1),
-                      )
-                    : SliverList(
-                        delegate: SliverChildListDelegate([
-                          Container(
-                            width: _deviceSize.width,
-                            color: Colors.white,
-                            child: Center(
-                              child: Text('Sem itens para exibir'),
-                            ),
-                          ),
-                        ]),
-                      ),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 20.0,
-                color: Colors.grey.withOpacity(0.1),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Divider(
-                height: 1.0,
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                    width: _deviceSize.width,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.local_offer,
-                            color: Colors.orange,
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text('Ofertas do dia',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: fontFamily)),
-                        ],
-                      ),
-                    ))
-              ]),
             ),
             _isDealsLoading
                 ? SliverList(
@@ -240,6 +144,7 @@ class _Hometelastate extends State<HomeScreen> {
 
   Widget bottomNavigationBar() {
     return BottomNavigationBar(
+      backgroundColor: Colors.secundariaTheOffer,
       onTap: (index) {
         MaterialPageRoute route =
             MaterialPageRoute(builder: (context) => Authentication(index));
@@ -248,17 +153,20 @@ class _Hometelastate extends State<HomeScreen> {
       },
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline, color: Colors.secundariaTheOffer),
-          title: Text('ENTRAR'),
-        ),
+          icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
+          title: Text('ENTRAR',
+              style: TextStyle(
+                    color: Colors.principalTheOffer,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600))),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
-              color: Colors.secundariaTheOffer,
+              color: Colors.principalTheOffer,
             ),
             title: Text('CRIAR CONTA',
                 style: TextStyle(
-                    color: Colors.secundariaTheOffer,
+                    color: Colors.principalTheOffer,
                     fontSize: 15,
                     fontWeight: FontWeight.w600))),
       ],
@@ -462,10 +370,10 @@ class _Hometelastate extends State<HomeScreen> {
               height: 49,
               margin: EdgeInsets.all(010),
               child: ListTile(
-                leading: Icon(Icons.search),
+                leading: Icon(Icons.search, color: Colors.secundariaTheOffer),
                 title: Text(
                   'Encontrar produtos...',
-                  style: TextStyle(fontWeight: FontWeight.w300),
+                  style: TextStyle(fontWeight: FontWeight.w300, color: Colors.secundariaTheOffer),
                 ),
               ),
             ),

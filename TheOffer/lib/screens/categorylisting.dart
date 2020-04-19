@@ -92,7 +92,7 @@ class _CategoryListingState extends State<CategoryListing> {
       }
     });
     header
-        .add(textField(widget.categoryName, FontWeight.w100, 0, Colors.white));
+        .add(textField(widget.categoryName, FontWeight.w100, 0, Colors.principalTheOffer));
     getCategory();
     locator<ConnectivityManager>().initConnectivity(context);
   }
@@ -224,7 +224,7 @@ class _CategoryListingState extends State<CategoryListing> {
                           },
                           child: Icon(
                             Icons.filter_list,
-                            color: Colors.white,
+                            color: Colors.principalTheOffer,
                           ),
                           backgroundColor: Colors.orange,
                         ),
@@ -258,7 +258,7 @@ class _CategoryListingState extends State<CategoryListing> {
                             'Ordenar por:  ',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Colors.principalTheOffer,
                                 fontSize: 18.0),
                           ),
                           DropdownButton(
@@ -271,13 +271,13 @@ class _CategoryListingState extends State<CategoryListing> {
                             hint: Text(
                               _currentItem,
                               style: TextStyle(
-                                  color: Colors.white70,
+                                  color: Colors.principalTheOffer,
                                   fontWeight: FontWeight.bold,
                                   ),
                             ),
                             icon: Icon(
                               Icons.arrow_drop_down,
-                              color: Colors.white60,
+                              color: Colors.principalTheOffer,
                             ),
                             items: _dropDownMenuItems,
                             onChanged: changedDropDownItem,
@@ -290,7 +290,7 @@ class _CategoryListingState extends State<CategoryListing> {
                       child: Text(
                         '$totalCount Resultados',
                         textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.principalTheOffer),
                       ),
                     ),
                   ],
@@ -330,7 +330,7 @@ class _CategoryListingState extends State<CategoryListing> {
     List<Widget> progressBar = [];
     progressBar.add(
       CircularProgressIndicator(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.principalTheOffer,
       ),
     );
     return progressBar;
@@ -425,7 +425,7 @@ class _CategoryListingState extends State<CategoryListing> {
                       padding: EdgeInsets.symmetric(vertical: 25.0),
                       child: Center(
                           child: CircularProgressIndicator(
-                        backgroundColor: Colors.white,
+                        backgroundColor: Colors.principalTheOffer,
                       )),
                     );
                   } else {
@@ -465,7 +465,7 @@ class _CategoryListingState extends State<CategoryListing> {
         child: Text(
           text,
           style: TextStyle(
-              color: level == 2 ? Colors.white : Colors.white60,
+              color: level == 2 ? Colors.principalTheOffer : Colors.principalTheOffer,
               fontSize: 18,
               fontWeight: level == 2 ? FontWeight.w500 : fontWeight),
         ));
@@ -485,11 +485,11 @@ class _CategoryListingState extends State<CategoryListing> {
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       child: Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.white60,
+                        color: Colors.principalTheOffer,
                         size: 16,
                       )),
                   textField(categoryList[index].name, FontWeight.w100, 1,
-                      Colors.white)
+                      Colors.principalTheOffer)
                 ],
               ));
             });
@@ -503,11 +503,11 @@ class _CategoryListingState extends State<CategoryListing> {
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       child: Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.white60,
+                        color: Colors.principalTheOffer,
                         size: 16,
                       )),
                   textField(subCategoryList[index].name, FontWeight.w100, 2,
-                      Colors.white)
+                      Colors.principalTheOffer)
                 ],
               ));
             });
@@ -525,7 +525,7 @@ class _CategoryListingState extends State<CategoryListing> {
           child: Text(
             level == 0 ? categoryList[index].name : subCategoryList[index].name,
             style: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                color: Colors.principalTheOffer, fontSize: 20, fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
         ));
@@ -541,10 +541,10 @@ class _CategoryListingState extends State<CategoryListing> {
                 padding: EdgeInsets.symmetric(horizontal: 12),
                 child: Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.white60,
+                  color: Colors.principalTheOffer,
                   size: 16,
                 )),
-            textField(subCatName, FontWeight.w100, 2, Colors.white)
+            textField(subCatName, FontWeight.w100, 2, Colors.principalTheOffer)
           ],
         ));
       });

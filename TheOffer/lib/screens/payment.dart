@@ -146,7 +146,7 @@ class _Paymenttelastate extends State<PaymentScreen> {
                           : 'CONTINUAR PARA O PAGSEGURO',
                   style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: Colors.principalTheOffer,
                       fontWeight: FontWeight.w300),
                 ),
                 onPressed: () async {
