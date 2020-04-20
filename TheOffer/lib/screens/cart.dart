@@ -35,7 +35,7 @@ class _CartState extends State<Cart> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.terciariaTheOffer,
           appBar: AppBar(
               centerTitle: false,
               leading: IconButton(
@@ -55,6 +55,7 @@ class _CartState extends State<Cart> {
           body: !model.isLoading || model.order != null ? body() : Container(),
           bottomNavigationBar: BottomAppBar(
               child: Container(
+                  color: Colors.secundariaTheOffer,
                   height: 100,
                   child: Column(children: [
                     Padding(
@@ -112,11 +113,11 @@ class _CartState extends State<Cart> {
               style: total
                   ? TextStyle(
                       fontSize: 15,
-                      color: Colors.grey.shade700,
+                      color: Colors.principalTheOffer,
                       fontWeight: FontWeight.bold)
                   : TextStyle(
                       fontSize: 16.5,
-                      color: Colors.red,
+                      color: Colors.principalTheOffer,
                       fontWeight: FontWeight.bold),
             );
     });
@@ -140,7 +141,7 @@ class _CartState extends State<Cart> {
               : FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
-                  color: Colors.deepOrange,
+                  color: Colors.principalTheOffer,
                   child: Text(
                     model.order == null
                         ? 'PROCURAR ITENS'
@@ -149,8 +150,7 @@ class _CartState extends State<Cart> {
                             : 'FINALIZAR',
                     style: TextStyle(
                         fontSize: 15,
-                        color: Colors.principalTheOffer,
-                        fontWeight: FontWeight.w300),
+                        color: Colors.secundariaTheOffer),
                   ),
                   onPressed: () async {
                     print("ESTADO DO PEDIDO ___________ ${model.order.state}");
@@ -227,7 +227,7 @@ class _CartState extends State<Cart> {
                   elevation: 1,
                   margin: EdgeInsets.all(8.0),
                   child: Container(
-                    color: Colors.principalTheOffer,
+                    color: Colors.secundariaTheOffer,
                     child: GestureDetector(
                       onTap: () {},
                       child: Row(
@@ -239,7 +239,7 @@ class _CartState extends State<Cart> {
                                 padding: EdgeInsets.all(15),
                                 height: 150,
                                 width: 100,
-                                color: Colors.principalTheOffer,
+                                color: Colors.secundariaTheOffer,
                                 child: FadeInImage(
                                   image: NetworkImage(
                                       model.lineItems[index].variant.image !=
@@ -276,7 +276,7 @@ class _CartState extends State<Cart> {
                                             text:
                                                 '${model.lineItems[index].variant.name.split(' ')[0]} ',
                                             style: TextStyle(
-                                                color: Colors.black,
+                                                color: Colors.principalTheOffer,
                                                 fontSize: 15.0,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -293,8 +293,7 @@ class _CartState extends State<Cart> {
                                                         .variant.name.length),
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                fontWeight: FontWeight.w100,
-                                                color: Colors.black),
+                                                color: Colors.principalTheOffer),
                                           ),
                                         ]),
                                       ),
@@ -306,7 +305,7 @@ class _CartState extends State<Cart> {
                                       padding: EdgeInsets.only(top: 0),
                                       child: IconButton(
                                         iconSize: 24,
-                                        color: Colors.grey,
+                                        color: Colors.principalTheOffer,
                                         icon: Icon(Icons.close),
                                         onPressed: () {
                                           model.removeProduct(
@@ -325,15 +324,13 @@ class _CartState extends State<Cart> {
                                   model.lineItems[index].variant.displayPrice,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                      color: Colors.red,
+                                      color: Colors.principalTheOffer,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
                               ),
                               SizedBox(height: 12),
                               quantityRow(model, index),
-                              SizedBox(height: 3),
-                              Divider()
                             ],
                           )),
                         ],
@@ -377,8 +374,8 @@ class _CartState extends State<Cart> {
                         border: Border.all(
                           color:
                               model.lineItems[lineItemIndex].quantity == index
-                                  ? Colors.secundariaTheOffer
-                                  : Colors.grey,
+                                  ? Colors.principalTheOffer
+                                  : Colors.principalTheOffer,
                         ),
                         borderRadius: BorderRadius.circular(5)),
                     alignment: Alignment.center,
@@ -388,8 +385,8 @@ class _CartState extends State<Cart> {
                       style: TextStyle(
                           color:
                               model.lineItems[lineItemIndex].quantity == index
-                                  ? Colors.secundariaTheOffer
-                                  : Colors.grey),
+                                  ? Colors.principalTheOffer
+                                  : Colors.principalTheOffer),
                     )),
               );
             }
