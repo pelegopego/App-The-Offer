@@ -201,7 +201,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         return GestureDetector(
           onTap: () {
             // getProductDetail(favorite.slug);
-            model.getProductDetail(favorite.slug, context);
+            model.getProdutoDetalhe(1, context);//*bug
           },
           child: Card(
             elevation: 2,

@@ -7,28 +7,24 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:theoffer/models/option_type.dart';
 import 'package:theoffer/models/option_value.dart';
-import 'package:theoffer/models/product.dart';
-import 'package:theoffer/models/review.dart';
+import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/auth.dart';
-import 'package:theoffer/screens/review_detail.dart';
 import 'package:theoffer/screens/search.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/constants.dart' as prefix0;
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:theoffer/widgets/shopping_cart_button.dart';
 import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/screens/cart.dart';
-import 'package:theoffer/widgets/todays_deals_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  final Product product;
-  ProductDetailScreen(this.product);
+  final Produto produto;
+  ProductDetailScreen(this.produto);
   @override
   State<StatefulWidget> createState() {
     return _ProductDetailtelastate();
@@ -42,10 +38,10 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
   bool _isLoading = true;
   TabController _tabController;
   Size _deviceSize;
-  int quantity = 1;
-  Product selectedProduct;
+  int quantidade = 1;
+  Produto produtoSelecionado;
   String htmlDescription;
-  List<Product> similarProducts = List();
+  List<Produto> produtosSimilares = List();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String pincode = '';
@@ -53,42 +49,12 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
   @override
   void initState() {
     _tabController = TabController(length: 1, vsync: this);
-    if (widget.product.hasVariants != null) {
-      if (widget.product.hasVariants) {
-        selectedProduct = widget.product.variants.first;
-        _isFavorite = widget.product.variants.first.favoritedByUser;
-        discount = (double.parse(widget.product.variants.first.costPrice) -
-                    double.parse(widget.product.variants.first.price)) >
-                0
-            ? true
-            : false;
-        htmlDescription = widget.product.variants.first.description != null
-            ? widget.product.variants.first.description
-            : '';
-      } else {
-        _isFavorite = widget.product.favoritedByUser;
-        selectedProduct = widget.product;
-        discount = (double.parse(widget.product.costPrice) -
-                    double.parse(widget.product.price)) >
-                0
-            ? true
-            : false;
-        htmlDescription = widget.product.description != null
-            ? widget.product.description
-            : '';
-      }
-    } else {
-      _isFavorite = widget.product.favoritedByUser;
-      selectedProduct = widget.product;
-      discount = (double.parse(widget.product.costPrice) -
-                  double.parse(widget.product.price)) >
-              0
-          ? true
-          : false;
+      _isFavorite = true;
+      produtoSelecionado = widget.produto;
+      discount = false;
       htmlDescription =
-          widget.product.description != null ? widget.product.description : '';
-    }
-    getSimilarProducts();
+          widget.produto.descricao != null ? widget.produto.descricao : '';
+    //getSimilarProducts();
     locator<ConnectivityManager>().initConnectivity(context);
     // _dropDownVariantItems = getVariants();
     super.initState();
@@ -164,10 +130,10 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               width: 335,
               child: GestureDetector(
                 onTap: () {
-                  if (model.isAuthenticated) {
+                  /*if (model.isAuthenticated) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                            ReviewDetailScreen(selectedProduct)));
+                            ReviewDetailScreen(produtoSelecionado)));
                   } else {
                     // Scaffold.of(context).showSnackBar(LoginErroSnackbar);
                     _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -183,7 +149,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         },
                       ),
                     ));
-                  }
+                  }*/
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -218,18 +184,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
     });
   }
 
-  Widget quantityRow(MainModel model, Product selectedProduct) {
+  Widget linhaQuantidade(MainModel model, Produto produtoSelecionado) {
     print(
-        "PRODUTO SELECIONADO ---> ${selectedProduct.totalOnHand}  ${selectedProduct.slug}");
+        "PRODUTO SELECIONADO ---> ${produtoSelecionado.quantidade}  ${produtoSelecionado.id}");
     return Container(
         height: 60.0,color: Colors.secundariaTheOffer,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: selectedProduct.totalOnHand > 20
-              ? 21
-              : selectedProduct.isBackOrderable
-                  ? 21
-                  : selectedProduct.totalOnHand + 1,
+          itemCount: 20,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return Container();
@@ -237,14 +199,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    quantity = index;
+                    quantidade = index;
                   });
                 },
                 child: Container(
                     width: 45,
                     decoration: BoxDecoration(
                         border: Border.all(
-                          color: quantity == index
+                          color: quantidade == index
                               ? Colors.principalTheOffer
                               : Colors.principalTheOffer,
                         ),
@@ -256,7 +218,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     child: Text(
                       index.toString(),
                       style: TextStyle(
-                          color: quantity == index
+                          color: quantidade == index
                               ? Colors.principalTheOffer
                               : Colors.principalTheOffer),
                     )),
@@ -288,10 +250,11 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                             alignment: Alignment.center,    
                             height: 300,
                             width: 220,
-                            child: FadeInImage(
-                              image: NetworkImage(selectedProduct.image != null
-                                  ? selectedProduct.image
-                                  : ''),
+                            child: FadeInImage(/*
+                              image: NetworkImage(produtoSelecionado.image != null
+                                  ? produtoSelecionado.image
+                                  : ''),  converter pra base 64 */
+                              image:NetworkImage(''),
                               placeholder: AssetImage(
                                   'images/placeholders/no-product-image.png'),
                             ),
@@ -340,7 +303,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                             http
                                 .post(Settings.SERVER_URL + 'favorite_products',
                                     body: json.encode({
-                                      'id': widget.product.reviewProductId
+                                      'id': widget.produto.id
                                           .toString()
                                     }),
                                     headers: headers)
@@ -366,7 +329,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                           http
                               .delete(
                                   Settings.SERVER_URL +
-                                      'favorite_products/${widget.product.reviewProductId}',
+                                      'favorite_products/${widget.produto.id}',
                                   headers: headers)
                               .then((response) {
                             Map<dynamic, dynamic> responseBody =
@@ -404,7 +367,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
-                          '${selectedProduct.name.split(' ')[0]}',
+                          '${produtoSelecionado.titulo}',
                           style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.normal,
@@ -414,10 +377,12 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       ),
                       Row(
                         children: <Widget>[
-                          ratingBar(selectedProduct.avgRating, 20),
+                          //ratingBar(produtoSelecionado.avgRating, 20),
+                          ratingBar(5, 20),
                           Container(
                               margin: EdgeInsets.only(right: 10),
-                              child: Text(selectedProduct.reviewsCount, 
+                              //child: Text(produtoSelecionado.reviewsCount,
+                              child: Text('145', 
                                           style: TextStyle(color: Colors.principalTheOffer)),
                               ),
                         ],
@@ -431,7 +396,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  selectedProduct.name,
+                  produtoSelecionado.titulo,
                   style: TextStyle(
                       fontSize: 17,
                       letterSpacing: 0.5,
@@ -441,7 +406,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   textAlign: TextAlign.start,
                 ),
               ),
-              selectedProduct.isOrderable
+              produtoSelecionado.quantidade > 0
                   ? Container(
                       alignment: Alignment.centerLeft,
                       color: Colors.secundariaTheOffer,
@@ -452,8 +417,8 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       ),
                     )
                   : Container(),
-              selectedProduct.isOrderable
-                  ? quantityRow(model, selectedProduct)
+              produtoSelecionado.quantidade > 0
+                  ? linhaQuantidade(model, produtoSelecionado)
                   : Container(),
               Divider(color: Colors.secundariaTheOffer),
               discount
@@ -461,11 +426,11 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       height: 18,
                     )
                   : Container(),
-              buildPriceRow('Preço: ', selectedProduct.displayPrice,
+              linhaPrecos('Preço: ', '0',
                   strike: discount,
-                  originalPrice:
-                      '${selectedProduct.currencySymbol} ${selectedProduct.costPrice}'),
-              discount
+                  valor:
+                      '${produtoSelecionado.valor}'),
+              /*discount
                   ? Column(
                       children: <Widget>[
                         buildPriceRow(
@@ -487,7 +452,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                                 '%)  '),
                       ],
                     )
-                  : Container(),
+                  : Container(),*/
               Divider(color: Colors.secundariaTheOffer),
               SizedBox(
                 height: 12.0,
@@ -524,18 +489,18 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         backgroundColor: Colors.secundariaTheOffer,
                       ),
                     )
-                  : Container(
+                  : Container(/*
                       height: 355,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: similarProducts.length,
+                        itemCount: produtosSimilares.length,
                         itemBuilder: (context, index) {
-                          return todaysDealsCard(
-                              index, similarProducts, _deviceSize, context);
+                          return cardProdutos(
+                              index, produtosSimilares, _deviceSize, context);
                           // similarProductCard(index, similarProducts,
                           //     _deviceSize, context, true);
                         },
-                      ),
+                      ),*/
                     ),
               Container(
                   color: Colors.secundariaTheOffer,
@@ -569,15 +534,15 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                selectedProduct.isOrderable ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
+                produtoSelecionado.quantidade > 0 ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
                 style: TextStyle(color: Colors.principalTheOffer),
               ),
-              onPressed: selectedProduct.isOrderable
+              onPressed: produtoSelecionado.quantidade > 0
                   ? () {
                       Scaffold.of(context).showSnackBar(processSnackbar);
-                      if (selectedProduct.isOrderable) {
-                        model.addProduct(
-                            variantId: selectedProduct.id, quantity: quantity);
+                      if (produtoSelecionado.quantidade > 0) {
+                        model.adicionarProduto(
+                            variantId: produtoSelecionado.id, quantidade: quantidade);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                           MaterialPageRoute route =
@@ -606,18 +571,18 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                selectedProduct.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
+                produtoSelecionado.quantidade > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
                 style: TextStyle(
-                    color: selectedProduct.isOrderable
+                    color: produtoSelecionado.quantidade > 0
                         ? Colors.principalTheOffer
                         : Colors.principalTheOffer),
               ),
-              onPressed: selectedProduct.isOrderable
+              onPressed: produtoSelecionado.quantidade > 0
                   ? () {
                       Scaffold.of(context).showSnackBar(processSnackbar);
-                      if (selectedProduct.isOrderable) {
-                        model.addProduct(
-                            variantId: selectedProduct.id, quantity: quantity);
+                      if (produtoSelecionado.quantidade > 0) {
+                        model.adicionarProduto(
+                            variantId: produtoSelecionado.id, quantidade: quantidade);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
@@ -640,20 +605,20 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   Icons.shopping_cart,
                   color: Colors.secundariaTheOffer,
                 ),
-                onPressed: selectedProduct.isOrderable
+                onPressed: produtoSelecionado.quantidade > 0 
                     ? () {
                         Scaffold.of(context).showSnackBar(processSnackbar);
-                        selectedProduct.isOrderable
-                            ? model.addProduct(
-                                variantId: selectedProduct.id,
-                                quantity: quantity)
+                        produtoSelecionado.quantidade > 0
+                            ? model.adicionarProduto(
+                                variantId: produtoSelecionado.id,
+                                quantidade: quantidade)
                             : null;
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
                       }
                     : () {},
-                backgroundColor: selectedProduct.isOrderable
+                backgroundColor: produtoSelecionado.quantidade > 0
                     ? Colors.principalTheOffer
                     : Colors.principalTheOffer,
               )
@@ -662,11 +627,11 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   Icons.add,
                   color: Colors.blue,
                 ),
-                onPressed: () {
+                onPressed: () {/*
                   if (model.isAuthenticated) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                            ReviewDetailScreen(selectedProduct)));
+                            ReviewDetailScreen(produtoSelecionado)));
                   } else {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text(
@@ -681,15 +646,15 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         },
                       ),
                     ));
-                  }
+                  }*/
                 },
                 backgroundColor: Colors.orange);
       },
     );
   }
 
-  Widget buildPriceRow(String key, String value,
-      {bool strike, String originalPrice, String discountPercent}) {
+  Widget linhaPrecos(String key, String value,
+      {bool strike, String valor}) {
       return Container(
             color: Colors.secundariaTheOffer,
             child: Row(
@@ -714,7 +679,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               ? RichText(
                   text: TextSpan(children: [
                     TextSpan(
-                        text: originalPrice,
+                        text: valor,
                         style: TextStyle(
                             color: Colors.principalTheOffer,
                             decoration: TextDecoration.lineThrough)),
@@ -732,7 +697,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   ? RichText(
                       text: TextSpan(children: [
                         TextSpan(
-                            text: discountPercent,
+                            text: '0',
                             style: TextStyle(
                               color: Colors.principalTheOffer,
                             )),
@@ -812,15 +777,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
       ],
     );
   }
-
+/*
   getSimilarProducts() {
     Map<String, dynamic> responseBody = Map();
-    List<Product> variants = [];
     List<OptionValue> optionValues = [];
     List<OptionType> optionTypes = [];
     http
         .get(Settings.SERVER_URL +
-            'api/v1/taxons/products?id=${widget.product.taxonId}&per_page=15&data_set=small')
+            'api/v1/taxons/products?id=${widget.produto.taxonId}&per_page=15&data_set=small')
         .then((response) {
       responseBody = json.decode(response.body);
       responseBody['products'].forEach((product) {
@@ -903,5 +867,5 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         _isLoading = false;
       });
     });
-  }
+  }*/
 }

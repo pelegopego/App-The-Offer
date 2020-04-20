@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/brand.dart';
 import 'package:theoffer/models/category.dart';
-import 'package:theoffer/models/product.dart';
+import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -26,9 +26,9 @@ class _ProductSearchState extends State<ProductSearch> {
   String slug = '';
   TextEditingController _controller = TextEditingController();
   // List<SearchProduct> searchProducts = [];
-  List<Product> searchProducts = [];
+  List<Produto> listaProdutosPesquisa = [];
   bool _isLoading = false;
-  Product tappedProduct = Product();
+  Produto produtoSelecionado = Produto();
   final int perPage = TWENTY;
   int currentPage = ONE;
   int subCatId = ZERO;
@@ -44,7 +44,7 @@ class _ProductSearchState extends State<ProductSearch> {
   String _currentItem;
   Map<dynamic, dynamic> responseBody;
   List<Brand> brands = [];
-  List<Product> productsByBrand = [];
+  List<Produto> produtosPorMarca = [];
   String sortBy = '';
   List filterItems = [
     "Newest",
@@ -78,16 +78,16 @@ class _ProductSearchState extends State<ProductSearch> {
       setState(() {
         slug = widget.slug;
         isSearched = true;
-        searchProducts = [];
+        listaProdutosPesquisa = [];
         currentPage = 1;
       });
-      searchProduct();
+      pesquisarProduto();
     }
     scrollController.addListener(() {
       if (scrollController.offset >=
               scrollController.position.maxScrollExtent &&
           !scrollController.position.outOfRange) {
-        searchProduct();
+        pesquisarProduto();
       }
     });
     getBrandsList();
@@ -130,9 +130,9 @@ class _ProductSearchState extends State<ProductSearch> {
                 },
                 onSubmitted: (value) {
                   isSearched = true;
-                  searchProducts = [];
+                  listaProdutosPesquisa = [];
                   currentPage = 1;
-                  searchProduct();
+                  pesquisarProduto();
                   // print("ENTER PRESSED ------> $value");
                 },
                 autofocus: true,
@@ -156,7 +156,7 @@ class _ProductSearchState extends State<ProductSearch> {
                       _controller.clear();
                       slug = '';
                       setState(() {
-                        searchProducts.clear();
+                        listaProdutosPesquisa.clear();
                       });
                     });
                   },
@@ -174,15 +174,15 @@ class _ProductSearchState extends State<ProductSearch> {
                         data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
                         child: ListView.builder(
                             controller: scrollController,
-                            itemCount: searchProducts.length + 1,
+                            itemCount: listaProdutosPesquisa.length + 1,
                             itemBuilder: (mainContext, index) {
-                              if (index < searchProducts.length) {
+                              if (index < listaProdutosPesquisa.length) {
                                 return productContainer(
                                     _scaffoldKey.currentContext,
-                                    searchProducts[index],
+                                    listaProdutosPesquisa[index],
                                     index);
                               }
-                              if (hasMore && searchProducts.length == 0) {
+                              if (hasMore && listaProdutosPesquisa.length == 0) {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(vertical: 50.0),
                                   child: Center(
@@ -210,7 +210,7 @@ class _ProductSearchState extends State<ProductSearch> {
                     : Container(),
               ),
               Visibility(
-                  visible: searchProducts.length > 0,
+                  visible: listaProdutosPesquisa.length > 0,
                   child: Material(
                     elevation: 2.0,
                     child: Container(
@@ -228,7 +228,7 @@ class _ProductSearchState extends State<ProductSearch> {
                     ),
                   )),
               Visibility(
-                visible: searchProducts.length > 0,
+                visible: listaProdutosPesquisa.length > 0,
                 child: Container(
                   padding: EdgeInsets.only(right: 20.0, top: 20.0),
                   alignment: Alignment.topRight,
@@ -257,7 +257,7 @@ class _ProductSearchState extends State<ProductSearch> {
     });
   }
 
-  Future<List<Product>> searchProduct() async {
+  Future<List<Produto>> pesquisarProduto() async {
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> responseBody = Map();
     print('SENDING REQUEST $slug');
@@ -281,21 +281,21 @@ class _ProductSearchState extends State<ProductSearch> {
     }
     currentPage++;
     responseBody = json.decode(response.body);
-
     responseBody['data'].forEach((searchObj) {
-      searchProducts.add(Product(
-          reviewProductId: searchObj['id'],
-          name: searchObj['attributes']['name'],
-          image: searchObj['attributes']['product_url'],
-          currencySymbol: searchObj['attributes']['currency_symbol'],
-          displayPrice: searchObj['attributes']['currency_symbol'] +
-              searchObj['attributes']['price'],
-          price: searchObj['attributes']['price'],
-          costPrice: searchObj['attributes']['cost_price'],
-          slug: searchObj['attributes']['slug'],
-          avgRating: double.parse(searchObj['attributes']['avg_rating']),
-          reviewsCount: searchObj['attributes']['reviews_count'].toString()));
-    });
+      listaProdutosPesquisa.add(Produto(
+        id                    : int.parse(searchObj['data']['included']['id']),
+        titulo                : searchObj['data']['attributes']['titulo'],
+        descricao             : searchObj['data']['attributes']['descricao'],
+        imagem                : searchObj['data']['attributes']['imagem'],
+        valor                 : searchObj['data']['attributes']['valor'],
+        quantidade            : double.parse(searchObj['data']['attributes']['quantidade']),
+        dataInicial           : searchObj['data']['attributes']['dataInicial'],
+        dataFinal             : searchObj['data']['attributes']['dataFinal'],
+        dataCadastro          : searchObj['data']['attributes']['dataCadastro'],
+        modalidadeRecebimento1: int.parse(searchObj['data']['attributes']['modalidadeRecebimento1']),
+        modalidadeRecebimento2: int.parse(searchObj['data']['attributes']['modalidadeRecebimento2']),
+        usuarioId             : int.parse(searchObj['data']['attributes']['usuario_id'])));
+      });
     totalCount = responseBody['pagination']['total_count'];
     setState(() {
       hasMore = true;
@@ -303,9 +303,9 @@ class _ProductSearchState extends State<ProductSearch> {
     });
 
     print(hasMore);
-    print(searchProducts.length);
+    print(listaProdutosPesquisa.length);
 
-    return searchProducts;
+    return listaProdutosPesquisa;
   }
 
   Widget filterDrawer() {
@@ -363,14 +363,14 @@ class _ProductSearchState extends State<ProductSearch> {
                     return GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
-                          productsByBrand = [];
+                          produtosPorMarca = [];
                           setState(() {
                             _isLoading = true;
                             slug = brands[index].name;
                             isSearched = true;
-                            searchProducts = [];
+                            listaProdutosPesquisa = [];
                             currentPage = 1;
-                            searchProduct();
+                            pesquisarProduto();
                           });
                         },
                         child: Container(
@@ -429,10 +429,10 @@ class _ProductSearchState extends State<ProductSearch> {
           break;
       }
       isSearched = true;
-      searchProducts = [];
+      listaProdutosPesquisa = [];
       currentPage = 1;
       this.sortBy = sortingWith;
-      searchProduct();
+      pesquisarProduto();
     });
   }
 }

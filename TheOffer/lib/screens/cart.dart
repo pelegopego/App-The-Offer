@@ -39,10 +39,10 @@ class _CartState extends State<Cart> {
           appBar: AppBar(
               centerTitle: false,
               leading: IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(Icons.close, color: Colors.principalTheOffer),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: Text('Carrinho'),
+              title: Text('Carrinho', style: TextStyle(color: Colors.principalTheOffer),),
               bottom: model.isLoading
                   ? PreferredSize(
                       child: LinearProgressIndicator(),
@@ -363,9 +363,9 @@ class _CartState extends State<Cart> {
             } else {
               return GestureDetector(
                 onTap: () {
-                  model.addProduct(
+                  model.adicionarProduto(
                     variantId: model.lineItems[lineItemIndex].variantId,
-                    quantity: index - model.lineItems[lineItemIndex].quantity,
+                    quantidade: index - model.lineItems[lineItemIndex].quantity,
                   );
                 },
                 child: Container(

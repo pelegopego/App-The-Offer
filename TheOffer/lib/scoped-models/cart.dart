@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/line_item.dart';
-import 'package:theoffer/models/option_type.dart';
-import 'package:theoffer/models/option_value.dart';
 import 'package:theoffer/models/order.dart';
 import 'package:theoffer/models/payment_methods.dart';
-import 'package:theoffer/models/product.dart';
+import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/variant.dart';
 import 'package:theoffer/models/address.dart';
 import 'package:theoffer/screens/product_detail.dart';
@@ -47,133 +45,44 @@ mixin CartModel on Model {
     notifyListeners();
   }
 
-  void getProductDetail(String slug, BuildContext context,
+  void getProdutoDetalhe(int id, BuildContext context,
       [bool isSimilarListing = false]) async {
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> responseBody = Map();
-    Product tappedProduct = Product();
+    Produto produtoDetalhado = Produto();
     _isLoading = true;
     notifyListeners();
     // setLoading(true);
     print(
-        "PRODUCT SLUG ------> ${Settings.SERVER_URL + 'api/v1/products/$slug?data_set=large'}}");
-    http.Response response = await http.get(
-        Settings.SERVER_URL + 'api/v1/products/$slug?data_set=large',
-        headers: headers);
-
+        "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produtos/$id'}");
+    http.Response response = await http.get(Configuracoes.BASE_URL + 'produtos/$id', headers: headers);
     responseBody = json.decode(response.body);
-
-    List<Product> variants = [];
-    List<OptionValue> optionValues = [];
-    List<OptionType> optionTypes = [];
-
-    int reviewProductId = responseBody['data']['attributes']["id"];
-    variants = [];
-    if (responseBody['data']['attributes']['has_variants']) {
-      responseBody['data']['included']['variants'].forEach((variant) {
-        print(
-            "TOTAL ON HAND ${variant['data']['attributes']['total_on_hand']}");
-        optionValues = [];
-        optionTypes = [];
-        variant['data']['included']['option_values'].forEach((option) {
-          optionValues.add(OptionValue(
-            id: option['data']['attributes']['id'],
-            name: option['data']['attributes']['name'],
-            optionTypeId: option['data']['attributes']['option_type_id'],
-            optionTypeName: option['data']['attributes']['option_type_name'],
-            optionTypePresentation: option['data']['attributes']
-                ['option_type_presentation'],
-          ));
-        });
-        variants.add(Product(
-            favoritedByUser: responseBody['data']['attributes']
-                ['is_favorited_by_current_user'],
-            id: variant['data']['attributes']['id'],
-            name: variant['data']['attributes']['name'],
-            description: variant['data']['attributes']['description'],
-            optionValues: optionValues,
-            displayPrice: variant['data']['attributes']['display_price'],
-            price: variant['data']['attributes']['price'],
-            currencySymbol: responseBody['data']['attributes']
-                ['currency_symbol'],
-            costPrice: variant['data']['attributes']['cost_price'],
-            image: variant['data']['included']['images'][0]['data']
-                ['attributes']['product_url'],
-            isOrderable: variant['data']['attributes']['is_orderable'],
-            isBackOrderable: variant['data']['attributes']['is_backorderable'],
-            avgRating:
-                double.parse(responseBody['data']['attributes']['avg_rating']),
-            reviewsCount:
-                responseBody['data']['attributes']['reviews_count'].toString(),
-            totalOnHand: variant['data']['attributes']['total_on_hand'],
-            reviewProductId: reviewProductId));
-      });
-      responseBody['data']['included']['option_types'].forEach((optionType) {
-        optionTypes.add(OptionType(
-            id: optionType['data']['attributes']['id'],
-            name: optionType['data']['attributes']['name'],
-            position: optionType['data']['attributes']['position'],
-            presentation: optionType['data']['attributes']['presentation']));
-      });
-      tappedProduct = Product(
-        favoritedByUser: responseBody['data']['attributes']
-            ['is_favorited_by_current_user'],
-        name: responseBody['data']['attributes']['name'],
-        displayPrice: responseBody['data']['attributes']['display_price'],
-        currencySymbol: responseBody['data']['attributes']['currency_symbol'],
-        price: responseBody['data']['attributes']['price'],
-        costPrice: responseBody['data']['attributes']['cost_price'],
-        avgRating:
-            double.parse(responseBody['data']['attributes']['avg_rating']),
-        reviewsCount:
-            responseBody['data']['attributes']['reviews_count'].toString(),
-        image: responseBody['data']['included']['master']['data']['included']
-            ['images'][0]['data']['attributes']['product_url'],
-        variants: variants,
-        reviewProductId: reviewProductId,
-        hasVariants: responseBody['data']['attributes']['has_variants'],
-        optionTypes: optionTypes,
-        taxonId: responseBody['data']['attributes']['taxon_ids'].first,
+     produtoDetalhado = Produto(
+        id                    : int.parse(responseBody['data']['included']['id']),
+        titulo                : responseBody['data']['attributes']['titulo'],
+        descricao             : responseBody['data']['attributes']['descricao'],
+        imagem                : responseBody['data']['attributes']['imagem'],
+        valor                 : responseBody['data']['attributes']['valor'],
+        quantidade            : double.parse(responseBody['data']['attributes']['quantidade']),
+        dataInicial           : responseBody['data']['attributes']['dataInicial'],
+        dataFinal             : responseBody['data']['attributes']['dataFinal'],
+        dataCadastro          : responseBody['data']['attributes']['dataCadastro'],
+        modalidadeRecebimento1: int.parse(responseBody['data']['attributes']['modalidadeRecebimento1']),
+        modalidadeRecebimento2: int.parse(responseBody['data']['attributes']['modalidadeRecebimento2']),
+        usuarioId             : int.parse(responseBody['data']['attributes']['usuario_id'])
       );
-    } else {
-      tappedProduct = Product(
-        favoritedByUser: responseBody['data']['attributes']
-            ['is_favorited_by_current_user'],
-        id: responseBody['data']['included']['id'],
-        name: responseBody['data']['attributes']['name'],
-        displayPrice: responseBody['data']['attributes']['display_price'],
-        price: responseBody['data']['attributes']['price'],
-        currencySymbol: responseBody['data']['attributes']['currency_symbol'],
-        costPrice: responseBody['data']['attributes']['cost_price'],
-        avgRating:
-            double.parse(responseBody['data']['attributes']['avg_rating']),
-        reviewsCount:
-            responseBody['data']['attributes']['reviews_count'].toString(),
-        image: responseBody['data']['included']['master']['data']['included']
-            ['images'][0]['data']['attributes']['product_url'],
-        hasVariants: responseBody['data']['attributes']['has_variants'],
-        totalOnHand: responseBody['data']['attributes']['total_on_hand'],
-        isOrderable: responseBody['data']['included']['master']['data']
-            ['attributes']['is_orderable'],
-        isBackOrderable: responseBody['data']['included']['master']['data']
-            ['attributes']['is_backorderable'],
-        reviewProductId: reviewProductId,
-        description: responseBody['data']['attributes']['description'],
-        taxonId: responseBody['data']['attributes']['taxon_ids'].first,
-      );
-    }
 
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => ProductDetailScreen(tappedProduct));
+        builder: (context) => ProductDetailScreen(produtoDetalhado));
     if (isSimilarListing) Navigator.pop(context);
     Navigator.push(context, route);
     _isLoading = false;
     notifyListeners();
   }
 
-  void addProduct({int variantId, int quantity}) async {
+  void adicionarProduto({int variantId, int quantidade}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("quantity $quantity");
+    print("quantidade $quantidade");
 
     _lineItems.clear();
     _isLoading = true;
@@ -181,9 +90,9 @@ mixin CartModel on Model {
     final String orderToken = prefs.getString('orderToken');
 
     if (orderToken != null) {
-      createNewLineItem(variantId, quantity);
+      createNewLineItem(variantId, quantidade);
     } else {
-      createNewOrder(variantId, quantity);
+      createNewOrder(variantId, quantidade);
     }
     notifyListeners();
   }

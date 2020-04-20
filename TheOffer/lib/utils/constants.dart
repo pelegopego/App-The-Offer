@@ -1,3 +1,10 @@
+class Configuracoes {
+  // static const String SERVER_URL = 'https://ofypets.indiepet.co.in/';
+  // static const String WEB_URL = 'https://beta.ofypets.com/';
+  static const String IP = '10.0.0.22';
+  static const String BASE_URL = 'http://' + IP + ':8080/theoffer/api/index.php/';  
+}
+
 class Settings {
   // static const String SERVER_URL = 'https://ofypets.indiepet.co.in/';
   // static const String WEB_URL = 'https://beta.ofypets.com/';

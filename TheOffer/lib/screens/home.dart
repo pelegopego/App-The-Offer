@@ -1,12 +1,8 @@
 import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/models/category.dart';
-import 'package:theoffer/models/option_type.dart';
-import 'package:theoffer/models/option_value.dart';
-import 'package:theoffer/models/product.dart';
+import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/auth.dart';
 import 'package:theoffer/screens/search.dart';
@@ -31,11 +27,9 @@ class _Hometelastate extends State<HomeScreen> {
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
   bool _isBannerLoading = true;
-  bool _isCategoryLoading = true;
-  bool _isDealsLoading = true;
+  bool _produtosLoading = true;
   bool _isAuthenticated = false;
-  List<Product> todaysDealProducts = [];
-  List<Category> categories = [];
+  List<Produto> listaProdutos = [];
   List<BannerImage> banners = [];
   List<String> bannerImageUrls = [];
   List<String> bannerLinks = [];
@@ -45,9 +39,8 @@ class _Hometelastate extends State<HomeScreen> {
   void initState() {
     super.initState();
     // getFavoritesCount();
-    getBanners();
-    getCategories();
-    getTodaysDeals();
+    //getBanners();
+    getProdutos();
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -107,7 +100,7 @@ class _Hometelastate extends State<HomeScreen> {
                 height: 1.0,
               ),
             ),
-            _isDealsLoading
+            _produtosLoading
                 ? SliverList(
                     delegate: SliverChildListDelegate([
                     Container(
@@ -123,10 +116,10 @@ class _Hometelastate extends State<HomeScreen> {
                       height: 355,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: todaysDealProducts.length,
+                        itemCount: listaProdutos.length,
                         itemBuilder: (context, index) {
-                          return todaysDealsCard(
-                              index, todaysDealProducts, _deviceSize, context);
+                          return cardProdutos(
+                              index, listaProdutos, _deviceSize, context);
                         },
                       ),
                     ),
@@ -223,36 +216,9 @@ class _Hometelastate extends State<HomeScreen> {
             ),
           ));
     }
-  }
+  }/*
 
-  getCategories() async {
-    int petsId;
-    http.Response response = await http
-        .get(Settings.SERVER_URL + 'api/v1/taxonomies?q[name_cont]=Pets');
-    responseBody = json.decode(response.body);
-    petsId = responseBody['taxonomies'][0]['id'];
-    http
-        .get(Settings.SERVER_URL +
-            'api/v1/taxonomies?q[name_cont]=Pets&set=nested')
-        .then((response) {
-      responseBody = json.decode(response.body);
-      responseBody['taxonomies'][0]['root']['taxons'].forEach((category) {
-        setState(() {
-          categories.add(Category(
-              parentId: petsId,
-              name: category['name'],
-              image: category['icon'],
-              id: category['id']));
-        });
-      });
-      setState(() {
-        _isCategoryLoading = false;
-      });
-    });
-  }
-
-  getTodaysDeals() async {
-    String todaysDealsId;
+  getProdutos() async {
     http.Response response = await http.get(
         Settings.SERVER_URL + 'api/v1/taxonomies?q[name_cont]=Today\'s Deals');
     responseBody = json.decode(response.body);
@@ -267,86 +233,35 @@ class _Hometelastate extends State<HomeScreen> {
     http
         .get(Settings.SERVER_URL +
             'api/v1/taxons/products?id=$todaysDealsId&per_page=20&data_set=small')
-        .then((response) {
+*/
+  getProdutos() async {    
+    setState(() {
+      _produtosLoading = true;
+      listaProdutos = [];
+    });
+    http.get(Configuracoes.BASE_URL + 'produtos/').then((response) {
       responseBody = json.decode(response.body);
-      responseBody['products'].forEach((product) {
-        int reviewProductId = product["id"];
-        variants = [];
-        if (product['has_variants']) {
-          product['variants'].forEach((variant) {
-            optionValues = [];
-            optionTypes = [];
-            variant['option_values'].forEach((option) {
-              setState(() {
-                optionValues.add(OptionValue(
-                  id: option['id'],
-                  name: option['name'],
-                  optionTypeId: option['option_type_id'],
-                  optionTypeName: option['option_type_name'],
-                  optionTypePresentation: option['option_type_presentation'],
-                ));
-              });
-            });
-            setState(() {
-              variants.add(Product(
-                  id: variant['id'],
-                  name: variant['name'],
-                  slug: variant['slug'],
-                  description: variant['description'],
-                  optionValues: optionValues,
-                  displayPrice: variant['display_price'],
-                  image: variant['images'][0]['product_url'],
-                  isOrderable: variant['is_orderable'],
-                  avgRating: double.parse(product['avg_rating']),
-                  reviewsCount: product['reviews_count'].toString(),
-                  reviewProductId: reviewProductId));
-            });
-          });
-          product['option_types'].forEach((optionType) {
-            setState(() {
-              optionTypes.add(OptionType(
-                  id: optionType['id'],
-                  name: optionType['name'],
-                  position: optionType['position'],
-                  presentation: optionType['presentation']));
-            });
-          });
+      responseBody['produtos'].forEach((produtoJson) {
           setState(() {
-            todaysDealProducts.add(Product(
-                taxonId: product['taxon_ids'].first,
-                id: product['id'],
-                name: product['name'],
-                slug: product['slug'],
-                displayPrice: product['display_price'],
-                avgRating: double.parse(product['avg_rating']),
-                reviewsCount: product['reviews_count'].toString(),
-                image: product['master']['images'][0]['product_url'],
-                variants: variants,
-                reviewProductId: reviewProductId,
-                hasVariants: product['has_variants'],
-                optionTypes: optionTypes));
-          });
-        } else {
-          setState(() {
-            todaysDealProducts.add(Product(
-              taxonId: product['taxon_ids'].first,
-              id: product['id'],
-              name: product['name'],
-              slug: product['slug'],
-              displayPrice: product['display_price'],
-              avgRating: double.parse(product['avg_rating']),
-              reviewsCount: product['reviews_count'].toString(),
-              image: product['master']['images'][0]['product_url'],
-              hasVariants: product['has_variants'],
-              isOrderable: product['master']['is_orderable'],
-              reviewProductId: reviewProductId,
-              description: product['description'],
+            listaProdutos.add(Produto(
+                                 id: int.parse(produtoJson['id']),
+                             titulo: produtoJson['titulo'],
+                          descricao: produtoJson['descricao'],
+                             imagem: produtoJson['imagem'],
+                              valor: produtoJson['valor'],
+                         quantidade: double.parse(produtoJson['quantidade']),
+                        dataInicial: produtoJson['dataInicial'],
+                          dataFinal: produtoJson['dataFinal'],
+                       dataCadastro: produtoJson['dataCadastro'],
+             modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
+             modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
+                          usuarioId: int.parse(produtoJson['usuario_id'])
             ));
           });
         }
-      });
+      );
       setState(() {
-        _isDealsLoading = false;
+        _produtosLoading = false;
       });
     });
   }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:theoffer/models/product.dart';
+import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-Widget productContainer(BuildContext myContext, Product product, int index) {
+Widget productContainer(BuildContext myContext, Produto produtoSelecionado, int index) {
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
     return GestureDetector(
         onTap: () {
-          model.getProductDetail(product.slug, myContext);
+          model.getProdutoDetalhe(produtoSelecionado.id, myContext);
         },
         child: Container(
           padding: EdgeInsets.only(top: 15.0),
@@ -26,8 +26,8 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                         width: 150,
                         color: Colors.principalTheOffer,
                         child: FadeInImage(
-                          image: NetworkImage(
-                              product.image != null ? product.image : ''),
+                          image: NetworkImage(/*
+                              produtoSelecionado.image != null ? produtoSelecionado.image :*/ ''),
                           placeholder: AssetImage(
                               'images/placeholders/no-product-image.png'),
                         ),
@@ -59,16 +59,16 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                       child: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                            text: '${product.name.split(' ')[0]} ',
+                            text: '${produtoSelecionado.titulo} ',
                             style: TextStyle(
                                 color: Color(0xff676767),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
-                            text: product.name.substring(
-                                product.name.split(' ')[0].length + 1,
-                                product.name.length),
+                            text: produtoSelecionado.titulo.substring(
+                                produtoSelecionado.titulo.split(' ')[0].length + 1,
+                                produtoSelecionado.titulo.length),
                             style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.grey.shade500,
@@ -84,7 +84,7 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            product.displayPrice,
+                            produtoSelecionado.valor.toString(),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 color: Colors.red,
@@ -92,9 +92,9 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                                 fontSize: 18),
                           ),
                         ),
-                        product.costPrice != null && product.costPrice != ''
+                        /*product.costPrice != null && product.costPrice != ''
                             ? discountPrice(product)
-                            : Container(),
+                            :*/ Container(),
                       ],
                     ),
                     SizedBox(height: 7),
@@ -112,10 +112,7 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                                   fontSize: 10.0,
                                   fontWeight: FontWeight.w600),
                             ),
-                            TextSpan(
-                              text: double.parse(product.price) < 699
-                                  ? 'Entrega abaixo de Rs.699'
-                                  : 'Entrega',
+                            TextSpan(text: 'Entrega',
                               style:
                                   TextStyle(fontSize: 12, color: Colors.black),
                             ),
@@ -127,11 +124,11 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        ratingBar(product.avgRating, 20),
+                        ratingBar(5, 20),
                         SizedBox(
                           width: 5.0,
                         ),
-                        Text(product.reviewsCount),
+                        Text('145'),
                       ],
                     ),
                     SizedBox(
@@ -150,7 +147,7 @@ Widget productContainer(BuildContext myContext, Product product, int index) {
         ));
   });
 }
-
+/*
 Widget discountPrice(Product product) {
   if (double.parse(product.costPrice) - double.parse(product.price) > 0) {
     return Container(
@@ -170,3 +167,4 @@ Widget discountPrice(Product product) {
     return Container();
   }
 }
+*/
