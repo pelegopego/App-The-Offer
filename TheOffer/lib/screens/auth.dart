@@ -28,7 +28,7 @@ class _AuthenticationState extends State<Authentication>
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _passwordTextController = TextEditingController();
   final UnderlineInputBorder _underlineInputBorder =
-      UnderlineInputBorder(borderSide: BorderSide(color: Colors.black54));
+      UnderlineInputBorder(borderSide: BorderSide(color: Colors.secundariaTheOffer));
 
   bool _isLoader = false;
   TabController _tabController;
@@ -53,6 +53,7 @@ class _AuthenticationState extends State<Authentication>
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       color: Colors.secundariaTheOffer,
       theme: ThemeData(
         primarySwatch: Colors.secundariaTheOffer,
@@ -61,35 +62,36 @@ class _AuthenticationState extends State<Authentication>
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
+          backgroundColor: Colors.terciariaTheOffer,
           key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: false,
             backgroundColor: Colors.secundariaTheOffer,
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: Icon(Icons.close, color: Colors.principalTheOffer),
               onPressed: () => Navigator.of(context).pop(),
             ),
             bottom: TabBar(
               indicatorWeight: 4.0,
               controller: _tabController,
-              indicatorColor: Colors.secundariaTheOffer,
+              indicatorColor: Colors.principalTheOffer,
               tabs: [
                 Padding(
                   padding: EdgeInsets.all(12.0),
                   child: Text(
                     "ENTRAR",
-                    style: TextStyle(fontSize: 13),
+                    style: TextStyle(fontSize: 13, color: Colors.principalTheOffer),
                   ),
                 ),
                 Text(
                   "CRIAR CONTA",
-                  style: TextStyle(fontSize: 13),
+                  style: TextStyle(fontSize: 13, color: Colors.principalTheOffer),
                 )
               ],
             ),
             title: Text(
               'TheOffer',
-              style: TextStyle(fontFamily: 'HolyFat', fontSize: 50),
+              style: TextStyle(fontFamily: 'HolyFat', fontSize: 50, color: Colors.principalTheOffer),
             ),
           ),
           body: TabBarView(
@@ -108,11 +110,9 @@ class _AuthenticationState extends State<Authentication>
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-          child: Container(
+        child:  Container(
             width: targetWidth,
-            child: Form(
+            child: Form( 
               key: _formKeyForLogin,
               child: Column(
                 children: <Widget>[
@@ -134,7 +134,7 @@ class _AuthenticationState extends State<Authentication>
                           padding: EdgeInsets.all(15),
                           child: FlatButton(
                             textColor: Colors.principalTheOffer,
-                            color: Colors.deepOrange,
+                            color: Colors.secundariaTheOffer,
                             child: Text(
                               'ENTRAR',
                               style: TextStyle(fontSize: 12.0),
@@ -164,7 +164,6 @@ class _AuthenticationState extends State<Authentication>
               ),
             ),
           ),
-        ),
       );
     });
   }
@@ -201,7 +200,7 @@ class _AuthenticationState extends State<Authentication>
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
                           textColor: Colors.principalTheOffer,
-                          color: Colors.deepOrange,
+                          color: Colors.secundariaTheOffer,
                           child: Text('CRIAR CONTA',
                               style: TextStyle(fontSize: 12.0)),
                           onPressed: () => _submitForm(),
@@ -220,9 +219,12 @@ class _AuthenticationState extends State<Authentication>
   Widget _buildEmailTextField() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(
+        child: TextFormField(    
+          style: TextStyle(
+              color: Colors.secundariaTheOffer,
+          ),
           decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.grey),
+              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
               labelText: 'Email',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: _underlineInputBorder),
@@ -245,13 +247,17 @@ class _AuthenticationState extends State<Authentication>
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
       child: TextFormField(
+          style: TextStyle(
+              color: Colors.secundariaTheOffer,
+          ),
         decoration: InputDecoration(
             labelText: isLimitCharacter
                 ? 'Senha (Mínimo de 6 dígitos)'
                 : 'Senha',
-            labelStyle: TextStyle(color: Colors.grey),
+            labelStyle: TextStyle(color: Colors.secundariaTheOffer),
             contentPadding: EdgeInsets.all(0.0),
-            enabledBorder: _underlineInputBorder),
+            enabledBorder: _underlineInputBorder
+            ),
         obscureText: true,
         controller: _passwordTextController,
         validator: (String value) {
@@ -270,11 +276,12 @@ class _AuthenticationState extends State<Authentication>
   Widget _buildPasswordConfirmTextField() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: Theme(
-          data: ThemeData(hintColor: Colors.grey.shade700),
           child: TextFormField(
+            style: TextStyle(
+                color: Colors.secundariaTheOffer,
+            ),
             decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.grey),
+              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
               labelText: 'Confirmar senha',
               enabledBorder: _underlineInputBorder,
               contentPadding: EdgeInsets.all(0.0),
@@ -287,7 +294,7 @@ class _AuthenticationState extends State<Authentication>
               return null;
             },
           ),
-        ));
+        );
   }
 
   void _submitLogin(MainModel model) async {
