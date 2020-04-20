@@ -39,7 +39,7 @@ class _Hometelastate extends State<HomeScreen> {
   void initState() {
     super.initState();
     // getFavoritesCount();
-    //getBanners();
+    getBanners();
     getProdutos();
     locator<ConnectivityManager>().initConnectivity(context);
   }
@@ -100,6 +100,7 @@ class _Hometelastate extends State<HomeScreen> {
                 height: 1.0,
               ),
             ),
+            
             _produtosLoading
                 ? SliverList(
                     delegate: SliverChildListDelegate([
@@ -113,7 +114,19 @@ class _Hometelastate extends State<HomeScreen> {
                   ]))
                 : SliverToBoxAdapter(
                     child: Container(
-                      height: 355,
+                      height: 290,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listaProdutos.length,
+                        itemBuilder: (context, index) {
+                          return cardProdutos(
+                              index, listaProdutos, _deviceSize, context);
+                        },
+                      ),
+                    ),
+                  ), SliverToBoxAdapter(
+                    child: Container(
+                      height: 290,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: listaProdutos.length,
@@ -217,7 +230,7 @@ class _Hometelastate extends State<HomeScreen> {
           ));
     }
   }
-  
+
   getProdutos() async {    
     String imagemJson = ''; 
     setState(() {
@@ -227,8 +240,8 @@ class _Hometelastate extends State<HomeScreen> {
     http.get(Configuracoes.BASE_URL + 'produtos/').then((response) {
       responseBody = json.decode(response.body);
       responseBody['produtos'].forEach((produtoJson) {
-        imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
-        imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+      imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
+      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
           setState(() { 
             listaProdutos.add(Produto(
                                  id: int.parse(produtoJson['id']),

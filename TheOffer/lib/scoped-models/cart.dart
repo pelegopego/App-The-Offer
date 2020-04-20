@@ -47,30 +47,35 @@ mixin CartModel on Model {
 
   void getProdutoDetalhe(int id, BuildContext context,
       [bool isSimilarListing = false]) async {
+    String imagemJson = ''; 
     Map<String, String> headers = await getHeaders();
-    Map<String, dynamic> responseBody = Map();
+    Map<String, dynamic> responseBody;
     Produto produtoDetalhado = Produto();
     _isLoading = true;
     notifyListeners();
     // setLoading(true);
     print(
         "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produtos/$id'}");
-    http.Response response = await http.get(Configuracoes.BASE_URL + 'produtos/$id', headers: headers);
+    http.Response response = await http.get(Configuracoes.BASE_URL + 'produtos/$id/', headers: headers);
     responseBody = json.decode(response.body);
-     produtoDetalhado = Produto(
-        id                    : int.parse(responseBody['data']['included']['id']),
-        titulo                : responseBody['data']['attributes']['titulo'],
-        descricao             : responseBody['data']['attributes']['descricao'],
-        imagem                : responseBody['data']['attributes']['imagem'],
-        valor                 : responseBody['data']['attributes']['valor'],
-        quantidade            : double.parse(responseBody['data']['attributes']['quantidade']),
-        dataInicial           : responseBody['data']['attributes']['dataInicial'],
-        dataFinal             : responseBody['data']['attributes']['dataFinal'],
-        dataCadastro          : responseBody['data']['attributes']['dataCadastro'],
-        modalidadeRecebimento1: int.parse(responseBody['data']['attributes']['modalidadeRecebimento1']),
-        modalidadeRecebimento2: int.parse(responseBody['data']['attributes']['modalidadeRecebimento2']),
-        usuarioId             : int.parse(responseBody['data']['attributes']['usuario_id'])
+    responseBody['produtos'].forEach((produtoJson) {
+    imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
+    imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+    produtoDetalhado = Produto(
+        id                    : int.parse(produtoJson['id']),
+        titulo                : produtoJson['titulo'],
+        descricao             : produtoJson['descricao'],
+        imagem                : imagemJson,
+        valor                 : produtoJson['valor'],
+        quantidade            : double.parse(produtoJson['quantidade']),
+        dataInicial           : produtoJson['dataInicial'],
+        dataFinal             : produtoJson['dataFinal'],
+        dataCadastro          : produtoJson['dataCadastro'],
+        modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
+        modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
+        usuarioId             : int.parse(produtoJson['usuario_id'])
       );
+      });
 
     MaterialPageRoute route = MaterialPageRoute(
         builder: (context) => ProductDetailScreen(produtoDetalhado));

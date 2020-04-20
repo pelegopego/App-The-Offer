@@ -21,6 +21,19 @@ import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/screens/cart.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:typed_data';
+
+Image imageFromBase64String(String base64String) {
+  return Image.memory(base64Decode(base64String));
+}
+
+Uint8List dataFromBase64String(String base64String) {
+  return base64Decode(base64String);
+}
+
+String base64String(Uint8List data) {
+  return base64Encode(data);
+}
 
 class ProductDetailScreen extends StatefulWidget {
   final Produto produto;
@@ -77,14 +90,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
           backgroundColor: Colors.terciariaTheOffer,
           appBar: AppBar(
             leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back, color: Colors.principalTheOffer),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
-            title: Text('Detalhes do item'),
+            title: Text('Detalhes do item', style: TextStyle(color: Colors.principalTheOffer),),
             actions: <Widget>[
               IconButton(
-                icon: Icon(Icons.search),
+                icon: Icon(Icons.search, color: Colors.principalTheOffer),
                 onPressed: () {
                   MaterialPageRoute route =
                       MaterialPageRoute(builder: (context) => ProductSearch());
@@ -233,7 +246,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         builder: (BuildContext context, Widget child, MainModel model) {
       return SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
           child: Column(
             children: <Widget>[
               Stack(
@@ -243,25 +256,21 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        // Expanded(
-                        //   child:
+                         Expanded(
+                           child:
                         Center(
                           child: Container(
                             alignment: Alignment.center,    
-                            height: 300,
-                            width: 220,
-                            child: FadeInImage(/*
-                              image: NetworkImage(produtoSelecionado.image != null
-                                  ? produtoSelecionado.image
-                                  : ''),  converter pra base 64 */
-                              image:NetworkImage(''),
+                            height: 320,
+                            width: 390,
+                            child: FadeInImage(
+                              image: MemoryImage(dataFromBase64String(produtoSelecionado.imagem)),
                               placeholder: AssetImage(
                                   'images/placeholders/no-product-image.png'),
                             ),
                           ),
                         )
-
-                        // ),
+                        ),
                       ],
                     ),
                   ),
@@ -426,7 +435,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       height: 18,
                     )
                   : Container(),
-              linhaPrecos('Preço: ', '0',
+              linhaPrecos('Preço: ', produtoSelecionado.valor,
                   strike: discount,
                   valor:
                       '${produtoSelecionado.valor}'),

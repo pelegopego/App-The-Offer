@@ -8,6 +8,17 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
 import 'dart:typed_data';
 
+Image imageFromBase64String(String base64String) {
+  return Image.memory(base64Decode(base64String));
+}
+
+Uint8List dataFromBase64String(String base64String) {
+  return base64Decode(base64String);
+}
+
+String base64String(Uint8List data) {
+  return base64Encode(data);
+}
 
 class AddToCart extends StatefulWidget {
   List<Produto> todaysDealProducts;
@@ -26,7 +37,7 @@ class _AddToCartState extends State<AddToCart> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return FlatButton(
+      return FlatButton (
         onPressed: widget.produto.quantidade > 0
             ? () async {
                 print('selectedProductIndex');
@@ -66,19 +77,6 @@ Widget buttonContent(int index, Produto produto) {
   );
 }
 
-
-Image imageFromBase64String(String base64String) {
-  return Image.memory(base64Decode(base64String));
-}
-
-Uint8List dataFromBase64String(String base64String) {
-  return base64Decode(base64String);
-}
-
-String base64String(Uint8List data) {
-  return base64Encode(data);
-}
-
 Widget cardProdutos(int index, List<Produto> listaProdutos,
     Size _deviceSize, BuildContext context) {
   Produto produtoDetalhado = listaProdutos[index];
@@ -92,24 +90,23 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
             width: _deviceSize.width * 0.4,
             child: Card(
               color: Colors.secundariaTheOffer, 
-              elevation: 0.0,
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.grey.withOpacity(0.4)),
                   borderRadius: BorderRadius.circular(4.0)),
               child: Column(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.all(15),
                     child: FadeInImage(
                       image: MemoryImage(dataFromBase64String(produtoDetalhado.imagem)),
                       placeholder: AssetImage(
                           'images/placeholders/no-product-image.png'),
-                      height: 120,
+                      height: 140,
+                      width: 140,
                     ),
                   ),
                   Container(
                     width: double.infinity,
-                    height: 50,
+                    height: 30,
                     padding: EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
                       produtoDetalhado.titulo,
@@ -121,7 +118,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                   Container(
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0, top: 20.0),
+                      padding: const EdgeInsets.only(left: 12.0, top: 10.0),
                       child: Text(
                         produtoDetalhado.valor.toString(),
                         textAlign: TextAlign.start,
@@ -133,7 +130,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 12.0, top: 20.0, bottom: 20.0),
+                        left: 12.0, top: 5.0, bottom: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -145,6 +142,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                   ),
                   Divider(
                     height: 1.0,
+                    color: Colors.principalTheOffer,
                   ),
                   AddToCart(produtoDetalhado, index, listaProdutos),
                 ],
