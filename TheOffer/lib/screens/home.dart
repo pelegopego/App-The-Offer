@@ -216,25 +216,10 @@ class _Hometelastate extends State<HomeScreen> {
             ),
           ));
     }
-  }/*
-
-  getProdutos() async {
-    http.Response response = await http.get(
-        Settings.SERVER_URL + 'api/v1/taxonomies?q[name_cont]=Today\'s Deals');
-    responseBody = json.decode(response.body);
-    todaysDealsId = responseBody['taxonomies'][0]['id'].toString();
-    List<Product> variants = [];
-    List<OptionValue> optionValues = [];
-    List<OptionType> optionTypes = [];
-    setState(() {
-      _isDealsLoading = true;
-      todaysDealProducts = [];
-    });
-    http
-        .get(Settings.SERVER_URL +
-            'api/v1/taxons/products?id=$todaysDealsId&per_page=20&data_set=small')
-*/
+  }
+  
   getProdutos() async {    
+    String imagemJson = ''; 
     setState(() {
       _produtosLoading = true;
       listaProdutos = [];
@@ -242,12 +227,14 @@ class _Hometelastate extends State<HomeScreen> {
     http.get(Configuracoes.BASE_URL + 'produtos/').then((response) {
       responseBody = json.decode(response.body);
       responseBody['produtos'].forEach((produtoJson) {
-          setState(() {
+        imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
+        imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+          setState(() { 
             listaProdutos.add(Produto(
                                  id: int.parse(produtoJson['id']),
                              titulo: produtoJson['titulo'],
                           descricao: produtoJson['descricao'],
-                             imagem: produtoJson['imagem'],
+                             imagem: imagemJson,
                               valor: produtoJson['valor'],
                          quantidade: double.parse(produtoJson['quantidade']),
                         dataInicial: produtoJson['dataInicial'],
