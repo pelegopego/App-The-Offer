@@ -137,7 +137,7 @@ class _Hometelastate extends State<HomeScreen> {
           ]),
         ),
         bottomNavigationBar:
-            !model.isAuthenticated ? bottomNavigationBar() : null,
+            bottomNavigationBar(),
       );
     });
   }

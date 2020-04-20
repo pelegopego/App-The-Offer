@@ -43,13 +43,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
   TabController _tabController;
   Size _deviceSize;
   int quantity = 1;
-  double _rating;
   Product selectedProduct;
-  bool _hasVariants = false;
-  List<Review> reviews = [];
-  int total_reviews = 0;
-  double recommended_percent = 0;
-  double avg_rating = 0;
   String htmlDescription;
   List<Product> similarProducts = List();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -58,10 +52,9 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
     if (widget.product.hasVariants != null) {
       if (widget.product.hasVariants) {
-        _hasVariants = widget.product.hasVariants;
         selectedProduct = widget.product.variants.first;
         _isFavorite = widget.product.variants.first.favoritedByUser;
         discount = (double.parse(widget.product.variants.first.costPrice) -
@@ -95,7 +88,6 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
       htmlDescription =
           widget.product.description != null ? widget.product.description : '';
     }
-    get_reviews();
     getSimilarProducts();
     locator<ConnectivityManager>().initConnectivity(context);
     // _dropDownVariantItems = getVariants();
@@ -109,46 +101,6 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
     locator<ConnectivityManager>().dispose();
   }
 
-  get_reviews() {
-    Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'token-type': 'Bearer',
-      'ng-api': 'true',
-    };
-    reviews = [];
-    String url = Settings.SERVER_URL +
-        "products/${selectedProduct.reviewProductId}/reviews";
-    http.get(url, headers: headers).then((response) {
-      responseBody = json.decode(response.body);
-      double total = 0;
-      double total_given_rating = 0;
-      responseBody['rating_summery'].forEach((rating) {
-        if (rating['percentage'] != null) {
-          total += rating["percentage"];
-        }
-        total_given_rating += rating['rating'] * rating['count'];
-      });
-      total_reviews = responseBody['total_ratings'];
-      if (total_reviews > 0) {
-        avg_rating = (total_given_rating / total_reviews);
-      }
-      recommended_percent = total;
-      responseBody['reviews'].forEach((review) {
-        reviews.add(Review(
-            id: review['id'],
-            name: review['name'],
-            title: review['title'],
-            review: review['review'],
-            rating: review['rating'].toDouble(),
-            approved: review['approved'],
-            created_at: review['created_at'],
-            updated_at: review['updated_at']));
-      });
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     _deviceSize = MediaQuery.of(context).size;
@@ -156,7 +108,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
           key: _scaffoldKey,
-          backgroundColor: Colors.principalTheOffer,
+          backgroundColor: Colors.terciariaTheOffer,
           appBar: AppBar(
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
@@ -180,15 +132,12 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               child: Column(
                 children: [
                   TabBar(
-                    indicatorWeight: 4.0,
+                    indicatorWeight: 1,
                     controller: _tabController,
                     tabs: <Widget>[
                       Tab(
-                        text: 'HIGHLIGHTS',
+                        text: '',
                       ),
-                      Tab(
-                        text: 'Avaliações',
-                      )
                     ],
                   ),
                   model.isLoading ? LinearProgressIndicator() : Container()
@@ -198,105 +147,10 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
           ),
           body: TabBarView(
             controller: _tabController,
-            children: <Widget>[highlightsTab(), reviewsTab()],
+            children: <Widget>[highlightsTab()],
           ),
           floatingActionButton: addToCartFAB());
     });
-  }
-
-  Widget reviewsTab() {
-    if (reviews.length == 0) {
-      return Container(
-          alignment: Alignment.center,
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10,
-              ),
-              writeReview(),
-              Container(
-                height: 400,
-                alignment: Alignment.center,
-                child: Text("Produto não avaliado"),
-              )
-            ],
-          ));
-    }
-    return ListView.builder(
-      itemCount: reviews.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        if (index == 0) {
-          return rating_summary(avg_rating, recommended_percent, total_reviews);
-        }
-        return review(reviews[index - 1]);
-      },
-    );
-  }
-
-  Widget rating_summary(rating, recommended_percent, total_reviews) {
-    return Card(
-      elevation: 2.5,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.all(20.0),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.orange),
-                            child: Text(
-                              rating.toStringAsFixed(1),
-                              style: TextStyle(
-                                  color: Colors.principalTheOffer,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ),
-                          ratingBar(rating, 14)
-                        ],
-                      ),
-                    )),
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("${total_reviews} Avaliações de clientes",
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      SizedBox(
-                        height: 6.0,
-                      ),
-                      Text(
-                          "Recomendado por ${recommended_percent}% dos avaliadores",
-                          style: TextStyle(
-                              fontSize: 15.0, fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Divider(
-              height: 1.0,
-              indent: 100.0,
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            writeReview(),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget writeReview() {
@@ -364,89 +218,17 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
     });
   }
 
-  Widget review(Review review) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.orange),
-                  child: Text(
-                    review.rating.toString(),
-                    style: TextStyle(
-                        color: Colors.principalTheOffer,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-                ratingBar(review.rating, 12)
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom:
-                          BorderSide(color: Color(0xFFDCDCDC), width: 0.7))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: Text(review.title,
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.bold)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: Text(getReviewByText(review),
-                        style: TextStyle(
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(review.review,
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.w300)),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  String getReviewByText(Review review) {
-    RegExp exp = new RegExp(r"([^@]+)");
-    var now = DateTime.parse(review.created_at);
-    var formatter = new DateFormat('DD/MM/YYYY');
-
-    return "Por ${exp.firstMatch(review.name).group(0)} - ${formatter.format(now)}";
-  }
-
   Widget quantityRow(MainModel model, Product selectedProduct) {
     print(
         "PRODUTO SELECIONADO ---> ${selectedProduct.totalOnHand}  ${selectedProduct.slug}");
     return Container(
-        height: 60.0,
+        height: 60.0,color: Colors.secundariaTheOffer,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: selectedProduct.totalOnHand > 12
-              ? 13
+          itemCount: selectedProduct.totalOnHand > 20
+              ? 21
               : selectedProduct.isBackOrderable
-                  ? 13
+                  ? 21
                   : selectedProduct.totalOnHand + 1,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
@@ -463,8 +245,8 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     decoration: BoxDecoration(
                         border: Border.all(
                           color: quantity == index
-                              ? Colors.secundariaTheOffer
-                              : Colors.grey.shade300,
+                              ? Colors.principalTheOffer
+                              : Colors.principalTheOffer,
                         ),
                         borderRadius: BorderRadius.circular(5)),
                     alignment: Alignment.center,
@@ -475,161 +257,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       index.toString(),
                       style: TextStyle(
                           color: quantity == index
-                              ? Colors.secundariaTheOffer
-                              : Colors.grey.shade300),
+                              ? Colors.principalTheOffer
+                              : Colors.principalTheOffer),
                     )),
               );
             }
           },
         ));
   }
-
-  List<DropdownMenuItem<String>> getVariants() {
-    List<DropdownMenuItem<String>> items = new List();
-
-    widget.product.variants.forEach((variant) {
-      variant.optionValues.forEach((optionValue) {
-        items.add(DropdownMenuItem(
-          value: optionValue.name,
-          child: Text(
-            optionValue.name,
-            style: TextStyle(color: Colors.secundariaTheOffer),
-          ),
-        ));
-      });
-    });
-    return items;
-  }
-
-  Widget variantDropDown() {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 15),
-        width: _deviceSize.width,
-        height: 60,
-        child: DropdownButton(
-          elevation: 0,
-          isExpanded: true,
-          iconEnabledColor: Colors.secundariaTheOffer,
-          items: getVariants(),
-          value: selectedProduct.optionValues[0].name,
-          onChanged: (value) {
-            widget.product.variants.forEach((variant) {
-              print(variant.optionValues[0]);
-              if (variant.optionValues[0].name == value) {
-                setState(() {
-                  selectedProduct = variant;
-                  discount = (double.parse(variant.costPrice) -
-                              double.parse(variant.price)) >
-                          0
-                      ? true
-                      : false;
-                });
-              }
-            });
-          },
-        ));
-  }
-
-  Widget variantRow(int index) {
-    if (widget.product.hasVariants != null) {
-      if (widget.product.hasVariants) {
-        List<Widget> optionValueNames = [];
-        List<Widget> optionTypeNames = [];
-        widget.product.optionTypes.forEach((optionType) {
-          optionTypeNames.add(Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.all(10),
-              child: Text(optionType.name)));
-        });
-        widget.product.variants.forEach((variant) {
-          variant.optionValues.forEach((optionValue) {
-            optionValueNames.add(GestureDetector(
-              onTap: () {
-                setState(() {
-                  quantity = index;
-                });
-              },
-              child: Container(
-                  width: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: quantity == index ? Colors.secundariaTheOffer : Colors.grey,
-                      ),
-                      borderRadius: BorderRadius.circular(5)),
-                  alignment: Alignment.center,
-                  // margin: EdgeInsets.all(10),
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    index.toString(),
-                    style: TextStyle(
-                        color: quantity == index ? Colors.secundariaTheOffer : Colors.grey),
-                  )),
-            ));
-          });
-        });
-      }
-    }
-  }
-
-  // Widget variantRow() {
-  //   if (widget.product.hasVariants != null) {
-  //     if (widget.product.hasVariants) {
-  //       List<Widget> optionValueNames = [];
-  //       widget.product.variants.forEach((variant) {
-  //         variant.optionValues.forEach((optionValue) {
-  //           optionValueNames.add(GestureDetector(
-  //               onTap: () {
-  //                 setState(() {
-  //                   widget.product.variants.forEach((variant) {
-  //                     if (variant.optionValues[0] == optionValue) {
-  //                       setState(() {
-  //                         selectedProduct = variant;
-  //                         discount = (double.parse(variant.costPrice) -
-  //                                     double.parse(variant.price)) >
-  //                                 0
-  //                             ? true
-  //                             : false;
-  //                       });
-  //                     }
-  //                   });
-  //                 });
-  //               },
-  //               child: Container(
-  //                   decoration: BoxDecoration(
-  //                       border: Border.all(
-  //                     color: selectedProduct.optionValues[0].name ==
-  //                             optionValue.name
-  //                         ? Colors.secundariaTheOffer
-  //                         : Colors.black,
-  //                   )),
-  //                   alignment: Alignment.centerLeft,
-  //                   margin: EdgeInsets.all(10),
-  //                   padding: EdgeInsets.all(10),
-  //                   child: Text(
-  //                     optionValue.name,
-  //                     style: TextStyle(
-  //                         color: selectedProduct.optionValues[0].name ==
-  //                                 optionValue.name
-  //                             ? Colors.secundariaTheOffer
-  //                             : Colors.black),
-  //                   ))));
-  //         });
-  //       });
-  //       return Container(
-  //         height: 60.0,
-  //         child: ListView(
-  //           scrollDirection: Axis.horizontal,
-  //           children: optionValueNames,
-  //         ),
-  //       );
-  //     } else {
-  //       return Container();
-  //     }
-  //   } else {
-  //     return Container();
-  //   }
-  // }
 
   Widget highlightsTab() {
     return ScopedModelDescendant<MainModel>(
@@ -642,6 +277,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               Stack(
                 children: <Widget>[
                   Container(
+                    color: Colors.secundariaTheOffer,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -649,7 +285,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         //   child:
                         Center(
                           child: Container(
-                            alignment: Alignment.center,
+                            alignment: Alignment.center,    
                             height: 300,
                             width: 220,
                             child: FadeInImage(
@@ -672,7 +308,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       padding: EdgeInsets.only(top: 40, right: 15.0),
                       alignment: Alignment.topRight,
                       icon: Icon(Icons.favorite),
-                      color: _isFavorite ? Colors.orange : Colors.grey,
+                      color: _isFavorite ? Colors.principalTheOffer : Colors.grey,
                       onPressed: () async {
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
@@ -756,10 +392,10 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   )
                 ],
               ),
-              Divider(),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Container(
+                  color: Colors.secundariaTheOffer,
                   width: _deviceSize.width,
                   alignment: Alignment.centerRight,
                   child: Row(
@@ -768,11 +404,11 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
-                          'Por ${selectedProduct.name.split(' ')[0]}',
+                          '${selectedProduct.name.split(' ')[0]}',
                           style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.normal,
-                              color: Colors.secundariaTheOffer,
+                              color: Colors.principalTheOffer,
                               fontFamily: fontFamily),
                         ),
                       ),
@@ -781,7 +417,9 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                           ratingBar(selectedProduct.avgRating, 20),
                           Container(
                               margin: EdgeInsets.only(right: 10),
-                              child: Text(selectedProduct.reviewsCount)),
+                              child: Text(selectedProduct.reviewsCount, 
+                                          style: TextStyle(color: Colors.principalTheOffer)),
+                              ),
                         ],
                       )
                     ],
@@ -789,6 +427,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 ),
               ),
               Container(
+                color: Colors.secundariaTheOffer,
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.all(10),
                 child: Text(
@@ -797,51 +436,26 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       fontSize: 17,
                       letterSpacing: 0.5,
                       fontWeight: FontWeight.bold,
-                      fontFamily: fontFamily),
+                      fontFamily: fontFamily,
+                      color: Colors.principalTheOffer),
                   textAlign: TextAlign.start,
                 ),
               ),
-              SizedBox(
-                height: 18,
-              ),
-              widget.product.hasVariants &&
-                      selectedProduct.optionValues.length > 0
-                  ? Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'Tamanho ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: fontFamily,
-                        ),
-                      ),
-                    )
-                  : Container(),
-              widget.product.hasVariants &&
-                      selectedProduct.optionValues.length > 0
-                  ? variantDropDown()
-                  : Container(),
-              SizedBox(
-                height: 18,
-              ),
               selectedProduct.isOrderable
                   ? Container(
                       alignment: Alignment.centerLeft,
+                      color: Colors.secundariaTheOffer,
                       padding: EdgeInsets.all(10),
                       child: Text(
                         'Quantidade ',
-                        style: TextStyle(fontSize: 14, fontFamily: fontFamily),
+                        style: TextStyle(fontSize: 14, fontFamily: fontFamily, color: Colors.principalTheOffer),
                       ),
                     )
                   : Container(),
-              SizedBox(
-                height: 5,
-              ),
               selectedProduct.isOrderable
                   ? quantityRow(model, selectedProduct)
                   : Container(),
-              Divider(),
+              Divider(color: Colors.secundariaTheOffer),
               discount
                   ? SizedBox(
                       height: 18,
@@ -851,11 +465,6 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   strike: discount,
                   originalPrice:
                       '${selectedProduct.currencySymbol} ${selectedProduct.costPrice}'),
-              discount
-                  ? SizedBox(
-                      height: 12,
-                    )
-                  : Container(),
               discount
                   ? Column(
                       children: <Widget>[
@@ -879,51 +488,16 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       ],
                     )
                   : Container(),
+              Divider(color: Colors.secundariaTheOffer),
               SizedBox(
-                height: 18,
-              ),
-              Divider(
-                height: 1.0,
-              ),
-              Container(
-                height: 40.0,
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 5.0, top: 0.0),
-                  child: RichText(
-                    textAlign: TextAlign.start,
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: 'Grátis 1-2 Dias ',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(
-                        text: double.parse(selectedProduct.costPrice.substring(
-                                    1, selectedProduct.costPrice.length - 1)) <
-                                699
-                            ? 'Entrega abaixo de Rs.699'
-                            : 'Entrega',
-                        style: TextStyle(fontSize: 12, color: Colors.black),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-              Divider(),
-              pincodeBox(model, context),
-              Divider(),
-              SizedBox(
-                height: 10.0,
+                height: 12.0,
               ),
               addToCartFlatButton(),
               SizedBox(
                 height: 12.0,
               ),
-              !selectedProduct.isOrderable ? Container() : buyNowFlatButton(),
-              Divider(),
+              buyNowFlatButton(),
+              Divider(color: Colors.principalTheOffer),
               SizedBox(
                 height: 2,
               ),
@@ -931,14 +505,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                 children: <Widget>[
                   Container(
                       width: _deviceSize.width,
-                      color: Colors.principalTheOffer,
+                      color: Colors.secundariaTheOffer,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 10.0),
                         title: Text('Você também pode gostar',
                             style: TextStyle(
                                 fontSize: 14,
                                 // fontWeight: FontWeight.w600,
-                                color: Colors.black)),
+                                color: Colors.principalTheOffer)),
                       )),
                 ],
               ),
@@ -964,12 +538,19 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       ),
                     ),
               Container(
+                  color: Colors.secundariaTheOffer,
                   padding: EdgeInsets.only(left: 10.0, top: 20.0),
                   alignment: Alignment.centerLeft,
                   child: Text("Descrição",
                       style: TextStyle(
-                          fontSize: 15.0, fontWeight: FontWeight.w600))),
-              HtmlWidget(htmlDescription),
+                          fontSize: 15.0, fontWeight: FontWeight.w600, color: Colors.principalTheOffer))),
+              Container(
+                  color: Colors.secundariaTheOffer,
+                  padding: EdgeInsets.only(left: 10.0, top: 20.0),
+                  alignment: Alignment.centerLeft,
+                  child: Text(htmlDescription,
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.w600, color: Colors.principalTheOffer))),
             ],
           ),
         ),
@@ -983,23 +564,13 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Container(
+            color: Colors.secundariaTheOffer,
             width: double.infinity,
             height: 45.0,
             child: FlatButton(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: selectedProduct.isOrderable
-                      ? Colors.deepOrange
-                      : Colors.grey,
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
               child: Text(
                 selectedProduct.isOrderable ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
-                style: TextStyle(
-                    color: selectedProduct.isOrderable
-                        ? Colors.deepOrange
-                        : Colors.grey),
+                style: TextStyle(color: Colors.principalTheOffer),
               ),
               onPressed: selectedProduct.isOrderable
                   ? () {
@@ -1030,22 +601,16 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Container(
+            color: Colors.secundariaTheOffer,
             width: double.infinity,
             height: 45.0,
             child: FlatButton(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color:
-                      selectedProduct.isOrderable ? Colors.secundariaTheOffer : Colors.grey,
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
               child: Text(
                 selectedProduct.isOrderable ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
                 style: TextStyle(
                     color: selectedProduct.isOrderable
-                        ? Colors.secundariaTheOffer
-                        : Colors.grey),
+                        ? Colors.principalTheOffer
+                        : Colors.principalTheOffer),
               ),
               onPressed: selectedProduct.isOrderable
                   ? () {
@@ -1073,7 +638,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             ? FloatingActionButton(
                 child: Icon(
                   Icons.shopping_cart,
-                  color: Colors.principalTheOffer,
+                  color: Colors.secundariaTheOffer,
                 ),
                 onPressed: selectedProduct.isOrderable
                     ? () {
@@ -1089,13 +654,13 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       }
                     : () {},
                 backgroundColor: selectedProduct.isOrderable
-                    ? Colors.deepOrange
-                    : Colors.grey,
+                    ? Colors.principalTheOffer
+                    : Colors.principalTheOffer,
               )
             : FloatingActionButton(
                 child: Icon(
                   Icons.add,
-                  color: Colors.principalTheOffer,
+                  color: Colors.blue,
                 ),
                 onPressed: () {
                   if (model.isAuthenticated) {
@@ -1125,7 +690,9 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
 
   Widget buildPriceRow(String key, String value,
       {bool strike, String originalPrice, String discountPercent}) {
-    return Row(
+      return Container(
+            color: Colors.secundariaTheOffer,
+            child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
@@ -1136,6 +703,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             style: TextStyle(
               fontSize: 17,
               fontFamily: fontFamily,
+              color: Colors.principalTheOffer,
             ),
           ),
         ),
@@ -1148,14 +716,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     TextSpan(
                         text: originalPrice,
                         style: TextStyle(
-                            color: Colors.grey,
+                            color: Colors.principalTheOffer,
                             decoration: TextDecoration.lineThrough)),
                     TextSpan(text: '   '),
                     TextSpan(
                         text: value,
                         style: TextStyle(
                             fontSize: 18,
-                            color: Colors.red,
+                            color: Colors.principalTheOffer,
                             fontFamily: fontFamily,
                             fontWeight: FontWeight.bold)),
                   ]),
@@ -1166,13 +734,13 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         TextSpan(
                             text: discountPercent,
                             style: TextStyle(
-                              color: Colors.red,
+                              color: Colors.principalTheOffer,
                             )),
                         TextSpan(
                             text: value,
                             style: TextStyle(
                                 fontSize: 18,
-                                color: Colors.red,
+                                color: Colors.principalTheOffer,
                                 fontFamily: fontFamily,
                                 fontWeight: FontWeight.bold)),
                       ]),
@@ -1181,14 +749,14 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       value,
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.red,
+                        color: Colors.principalTheOffer,
                         fontWeight: FontWeight.bold,
                         fontFamily: fontFamily,
                       ),
                     ),
         ),
       ],
-    );
+    ));
   }
 
   Widget pincodeBox(MainModel model, BuildContext context) {
