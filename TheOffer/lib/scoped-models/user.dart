@@ -4,25 +4,25 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/models/address.dart';
+//import 'package:theoffer/models/address.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/scoped-models/main.dart';
 
 mixin UserModel on Model {
   bool _isAuthenticated = false;
   MainModel model;
-  Address _shipAddress;
+  //Address _shipAddress;
 
   bool get isAuthenticated {
     return _isAuthenticated;
   }
-
+/*
   Address get shipAddress {
     return _shipAddress;
-  }
+  }*/
 
   void set shipAddress(addr) {
-    _shipAddress = addr;
+   // _shipAddress = addr;
     notifyListeners();
   }
 
@@ -46,7 +46,7 @@ mixin UserModel on Model {
         Settings.SERVER_URL + 'api/v1/users/${prefs.getInt('id')}',
         headers: headers);
     responseBody = json.decode(response.body);
-    if (responseBody['ship_address'] != null) {
+/*    if (responseBody['ship_address'] != null) {
       _shipAddress = Address(
         id: responseBody['ship_address']['id'],
         firstName: responseBody['ship_address']['firstname'],
@@ -63,6 +63,6 @@ mixin UserModel on Model {
       notifyListeners();
     } else {
       _shipAddress = null;
-    }
+    }*/
   }
 }

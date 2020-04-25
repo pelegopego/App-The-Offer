@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:theoffer/models/Pedido.dart';
 
 
 Widget orderDetailCard() {
+
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-    return model.order == null
+    return model.pedido == null
         ? Container()
         : Container(
             margin: EdgeInsets.all(10),
             child: Column(
               children: <Widget>[
-                amountRow('Mercadorias:', model.order.displaySubTotal, model,
+                amountRow('Mercadorias:', model.pedido.somaValorTotalPedido().toString(), model,
                     Colors.grey.shade700),
-                amountRow('Entrega:', model.order.shipTotal, model,
+                /*amountRow('Entrega:', model.pedido.shipTotal, model,
                     Colors.grey.shade700),
                 amountRow('Taxas:', model.order.displayAdjustmentTotal, model,
-                    Colors.grey.shade700),    
+                    Colors.grey.shade700),*/    
                 amountRow(
-                    'Total do pedido:', model.order.displayTotal, model, Colors.red)
+                    'Total do pedido:', model.pedido.somaValorTotalPedido().toString(), model, Colors.red)
               ],
             ),
           );

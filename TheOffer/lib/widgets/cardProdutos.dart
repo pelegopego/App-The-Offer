@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/models/Produto.dart';
@@ -6,19 +5,7 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
-import 'dart:typed_data';
-
-Image imageFromBase64String(String base64String) {
-  return Image.memory(base64Decode(base64String));
-}
-
-Uint8List dataFromBase64String(String base64String) {
-  return base64Decode(base64String);
-}
-
-String base64String(Uint8List data) {
-  return base64Encode(data);
-}
+import 'package:theoffer/utils/ImageHelper.dart';
 
 class AddToCart extends StatefulWidget {
   List<Produto> todaysDealProducts;
@@ -47,7 +34,10 @@ class _AddToCartState extends State<AddToCart> {
                 });
                 if (widget.produto.quantidade > 0) {
                   Scaffold.of(context).showSnackBar(processSnackbar);
-                  model.adicionarProduto(variantId: widget.produto.id, quantidade: 1);
+                  model.adicionarProduto(
+                           usuarioId: 1,//user 
+                           produtoId: widget.produto.id, 
+                           quantidade: 1);
                   if (!model.isLoading) {
                     Scaffold.of(context).showSnackBar(completeSnackbar);
                   }

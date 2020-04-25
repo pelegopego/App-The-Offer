@@ -34,7 +34,7 @@ class _Paymenttelastate extends State<PaymentScreen> {
   void initState() {
     super.initState();
     locator<ConnectivityManager>().initConnectivity(context);
-    checkShipmentAvailability();
+    //checkShipmentAvailability();
   }
 
   @override
@@ -43,17 +43,17 @@ class _Paymenttelastate extends State<PaymentScreen> {
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
-
+/*
   checkShipmentAvailability() async {
     bool _isShippableResponse = await _model.shipmentAvailability(
         pincode: ScopedModel.of<MainModel>(context, rebuildOnChange: false)
-            .order
+            .pedido
             .shipAddress
             .pincode);
     setState(() {
       _isShippable = _isShippableResponse;
     });
-  }
+  }*/
 
 // In the State of a stateful widget:
   @override
@@ -152,7 +152,7 @@ class _Paymenttelastate extends State<PaymentScreen> {
                 onPressed: () async {
                   if (_character == 'COD') {
                     if (_isShippable &&
-                        double.parse(model.order.total) >=
+                        model.pedido.somaValorTotalPedido() >=
                             FREE_SHIPPING_AMOUNT) {
                       bool isComplete = false;
                       model.paymentMethods.forEach((paymentMethodObj) async {
@@ -161,20 +161,20 @@ class _Paymenttelastate extends State<PaymentScreen> {
                             selectedPaymentId = paymentMethodObj.id;
                           });
                         }
-                      });
+                      });/*
                       isComplete = await model.completeOrder(selectedPaymentId);
                       if (isComplete) {
                         bool isChanged = false;
 
-                        if (model.order.state == 'payment') {
+                        if (model.pedido.state == ) {
                           isChanged = await model.changeState();
                         }
                         if (isChanged) {
                           pushSuccessPage();
                         }
-                      }
+                      }*/
                     } else {
-                      if (double.parse(model.order.total) <
+                      if (model.pedido.somaValorTotalPedido() <
                           FREE_SHIPPING_AMOUNT) {
                         _scaffoldKey.currentState.showSnackBar(insufficientAmt);
                       } else if (!_isShippable) {
@@ -183,11 +183,11 @@ class _Paymenttelastate extends State<PaymentScreen> {
                           duration: Duration(seconds: 3),
                           action: SnackBarAction(
                             label: 'CHANGE',
-                            onPressed: () {
+                            onPressed: () {/*
                               MaterialPageRoute route = MaterialPageRoute(
                                   builder: (context) => UpdateAddress(
-                                      model.order.shipAddress, true));
-                              Navigator.pushReplacement(context, route);
+                                      model.pedido.endereco, true));
+                              Navigator.pushReplacement(context, route);*/
                             },
                           ),
                         );
@@ -209,7 +209,7 @@ class _Paymenttelastate extends State<PaymentScreen> {
                         });
                       }
                     });
-                    isComplete = await model.completeOrder(selectedPaymentId);
+                    /*isComplete = await model.finalizarPedido(selectedPaymentId);
                     if (isComplete) {
                       print("CONFIRMA");
                       bool isChanged = false;
@@ -226,7 +226,7 @@ class _Paymenttelastate extends State<PaymentScreen> {
                             builder: (context) => PayubizScreen(url));
                         Navigator.push(context, payment);
                       }
-                    }
+                    }*/
                   }
                 },
               ),

@@ -5,6 +5,7 @@ import 'package:theoffer/screens/auth.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:theoffer/utils/ImageHelper.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     super.initState();
+    
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -52,7 +54,7 @@ class _CartState extends State<Cart> {
                       child: Container(),
                       preferredSize: Size.fromHeight(10),
                     )),
-          body: !model.isLoading || model.order != null ? body() : Container(),
+          body: !model.isLoading || model.pedido != null ? body() : Container(),
           bottomNavigationBar: BottomAppBar(
               child: Container(
                   color: Colors.secundariaTheOffer,
@@ -67,10 +69,10 @@ class _CartState extends State<Cart> {
     });
   }
 
-  Widget deleteButton(int index) {
+  Widget botaoDeletar(int index) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Text(model.lineItems[index].variant.quantity.toString());
+      return Text(model.listaItensPedido[index].produto.quantidade.toString());
     });
   }
 
@@ -96,14 +98,9 @@ class _CartState extends State<Cart> {
   Widget cartData(bool total) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+
       String getText() {
-        return model.order == null
-            ? ''
-            : model.order.itemTotal == '0.0'
-                ? ''
-                : total
-                    ? 'Valor do carrinho (${model.order.totalQuantity} items): '
-                    : model.order.displaySubTotal;
+        return 'Valor do carrinho (${model.pedido.somaValorTotalPedido()} items): ';
       }
 
       return getText() == null
@@ -142,65 +139,63 @@ class _CartState extends State<Cart> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
                   color: Colors.principalTheOffer,
-                  child: Text(
-                    model.order == null
-                        ? 'PROCURAR ITENS'
-                        : model.order.itemTotal == '0.0'
+                  child: Text(/*
+                    model.pedido == null
+                        ? */'ATUALIZAR STATUS'/*
+                        : model.pedido.itemTotal == '0.0'
                             ? 'PROCURAR ITENS'
-                            : 'FINALIZAR',
+                            : 'FINALIZAR'*/,
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.secundariaTheOffer),
                   ),
                   onPressed: () async {
-                    print("ESTADO DO PEDIDO ___________ ${model.order.state}");
-                    if (model.order != null) {
-                      if (model.order.itemTotal != '0.0') {
-                        if (model.isAuthenticated) {
-                          if (model.order.state == 'cart') {
-                            print('NO CARRINHO, MUDAR');
-                            bool _stateischanged = await model.changeState();
-                            if (_stateischanged) {
-                              if (model.order.state == 'address') {
-                                print(
-                                    'EM ENTREGA');
-                                _stateischanged = await model.changeState();
-                              }
-                            }
-                            setState(() {
-                              stateChanged = _stateischanged;
-                            });
-                            if (stateChanged) {
-                              // print('STATE IS CHANGED, FETCH CURRENT ORDER');
-                              // model.fetchCurrentOrder();
-                              MaterialPageRoute addressRoute =
-                                  MaterialPageRoute(
-                                      builder: (context) => AddressPage());
-                              Navigator.push(context, addressRoute);
-                            } else {
-                              print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
-                            }
-                          } else {
-                            stateChanged = await model.fetchCurrentOrder();
-                            if (stateChanged) {
-                              // print('STATE IS CHANGED, FETCH CURRENT ORDER');
-                              // model.fetchCurrentOrder();
-                              MaterialPageRoute addressRoute =
-                                  MaterialPageRoute(
-                                      builder: (context) => AddressPage());
-                              Navigator.push(context, addressRoute);
-                            } else {
-                              print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
+                    print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
+                    if (model.pedido != null) {
+                      if (model.isAuthenticated) {
+                        if (model.pedido.status == 1) {
+                          print('NO CARRINHO');
+                          //bool _stateischanged = await model.changeState();
+                          bool _stateischanged = false;
+                          if (_stateischanged) {
+                            if (model.pedido.status == 6) {
+                              print(
+                                  'SAIU PARA ENTREGA');
+                              //_stateischanged = await model.changeState();
+                              _stateischanged = true;
                             }
                           }
+                          setState(() {
+                            stateChanged = _stateischanged;
+                          });
+                          if (stateChanged) {
+                            // print('STATE IS CHANGED, FETCH CURRENT ORDER');
+                            // model.fetchCurrentOrder();
+                     /*       MaterialPageRoute addressRoute =
+                                MaterialPageRoute(
+                                    builder: (context) => AddressPage());
+                            Navigator.push(context, addressRoute);*/
+                          } else {
+                            print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
+                          }
                         } else {
-                          MaterialPageRoute authRoute = MaterialPageRoute(
-                              builder: (context) => Authentication(0));
-                          Navigator.push(context, authRoute);
+                          stateChanged = await model.localizarCarrinho(model.pedido.id, model.pedido.usuarioId);
+                          if (stateChanged) {
+                            // print('STATE IS CHANGED, FETCH CURRENT ORDER');
+                            // model.fetchCurrentOrder();
+                            /*
+                            MaterialPageRoute addressRoute =
+                                MaterialPageRoute(
+                                    builder: (context) => AddressPage());
+                            Navigator.push(context, addressRoute);*/
+                          } else {
+                            print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
+                          }
                         }
                       } else {
-                        Navigator.popUntil(context,
-                            ModalRoute.withName(Navigator.defaultRouteName));
+                        MaterialPageRoute authRoute = MaterialPageRoute(
+                            builder: (context) => Authentication(0));
+                        Navigator.push(context, authRoute);
                       }
                     } else {
                       Navigator.popUntil(context,
@@ -241,11 +236,7 @@ class _CartState extends State<Cart> {
                                 width: 100,
                                 color: Colors.secundariaTheOffer,
                                 child: FadeInImage(
-                                  image: NetworkImage(
-                                      model.lineItems[index].variant.image !=
-                                              null
-                                          ? model.lineItems[index].variant.image
-                                          : ''),
+                                 image: MemoryImage(dataFromBase64String(model.listaItensPedido[index].produto.imagem)),
                                   placeholder: AssetImage(
                                       'images/placeholders/no-product-image.png'),
                                 ),
@@ -274,23 +265,20 @@ class _CartState extends State<Cart> {
                                         text: TextSpan(children: [
                                           TextSpan(
                                             text:
-                                                '${model.lineItems[index].variant.name.split(' ')[0]} ',
+                                                '${model.listaItensPedido[index].produto.titulo.split(' ')[0]} ',
                                             style: TextStyle(
                                                 color: Colors.principalTheOffer,
                                                 fontSize: 15.0,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           TextSpan(
-                                            text: model
-                                                .lineItems[index].variant.name
+                                            text: model.listaItensPedido[index].produto.titulo
                                                 .substring(
-                                                    model.lineItems[index]
-                                                            .variant.name
+                                                    model.listaItensPedido[index].produto.titulo
                                                             .split(' ')[0]
                                                             .length +
                                                         1,
-                                                    model.lineItems[index]
-                                                        .variant.name.length),
+                                                    model.listaItensPedido[index].produto.titulo.length),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.principalTheOffer),
@@ -308,8 +296,9 @@ class _CartState extends State<Cart> {
                                         color: Colors.principalTheOffer,
                                         icon: Icon(Icons.close),
                                         onPressed: () {
-                                          model.removeProduct(
-                                              model.lineItems[index].id);
+                                          model.removerProdutoCarrinho(model.listaItensPedido[index].pedidoId,
+                                              1,//user
+                                              model.listaItensPedido[index].produtoId);
                                         },
                                       ),
                                     ),
@@ -321,7 +310,7 @@ class _CartState extends State<Cart> {
                               Container(
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                  model.lineItems[index].variant.displayPrice,
+                                  model.listaItensPedido[index].produto.valor,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: Colors.principalTheOffer,
@@ -338,7 +327,7 @@ class _CartState extends State<Cart> {
                     ),
                   ),
                 ));
-          }, childCount: model.lineItems.length),
+          }, childCount: model.listaItensPedido.length),
         );
       },
     );
@@ -346,17 +335,13 @@ class _CartState extends State<Cart> {
 
   Widget quantityRow(MainModel model, int lineItemIndex) {
     print(
-        "QUANTIDADE DE ITENS NO CARRINHO, ${model.lineItems[lineItemIndex].variant.totalOnHand} ISBACKORDERABLE ${model.lineItems[lineItemIndex].variant.isBackOrderable}");
+        "QUANTIDADE DE ITENS NO CARRINHO, ${model.listaItensPedido[lineItemIndex].quantidade}");
     return Container(
         height: 60.0,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           // itemExtent: 50,
-          itemCount: model.lineItems[lineItemIndex].variant.totalOnHand > 38
-              ? 39
-              : model.lineItems[lineItemIndex].variant.isBackOrderable
-                  ? 39
-                  : model.lineItems[lineItemIndex].variant.totalOnHand + 1,
+          itemCount: model.listaItensPedido[lineItemIndex].quantidade,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               return Container();
@@ -364,8 +349,9 @@ class _CartState extends State<Cart> {
               return GestureDetector(
                 onTap: () {
                   model.adicionarProduto(
-                    variantId: model.lineItems[lineItemIndex].variantId,
-                    quantidade: index - model.lineItems[lineItemIndex].quantity,
+                    usuarioId: 1,//user
+                    produtoId: model.listaItensPedido[lineItemIndex].produtoId,
+                    quantidade: index - model.listaItensPedido[lineItemIndex].quantidade,
                   );
                 },
                 child: Container(
@@ -373,7 +359,7 @@ class _CartState extends State<Cart> {
                     decoration: BoxDecoration(
                         border: Border.all(
                           color:
-                              model.lineItems[lineItemIndex].quantity == index
+                              model.listaItensPedido[lineItemIndex].quantidade == index
                                   ? Colors.principalTheOffer
                                   : Colors.principalTheOffer,
                         ),
@@ -384,7 +370,7 @@ class _CartState extends State<Cart> {
                       index.toString(),
                       style: TextStyle(
                           color:
-                              model.lineItems[lineItemIndex].quantity == index
+                              model.listaItensPedido[lineItemIndex].quantidade == index
                                   ? Colors.principalTheOffer
                                   : Colors.principalTheOffer),
                     )),

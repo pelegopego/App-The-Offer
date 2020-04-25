@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:theoffer/models/order.dart';
+import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/screens/order_response.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -25,7 +25,7 @@ class _OrderList extends State<OrderList> {
   int currentPage = ONE;
   int subCatId = ZERO;
   static const int PAGE_SIZE = 20;
-  List<Order> ordersList = [];
+  List<Pedido> listaPedidos = [];
   Map<dynamic, dynamic> responseBody;
   final scrollController = ScrollController();
   bool hasMore = false;
@@ -43,7 +43,7 @@ class _OrderList extends State<OrderList> {
 
   Size _deviceSize;
 
-  Future<List<Order>> getOrdersLists() async {
+  Future<List<Pedido>> getOrdersLists() async {
     print("Lista de pedidos");
     setState(() {
       hasMore = false;
@@ -58,28 +58,23 @@ class _OrderList extends State<OrderList> {
 
     currentPage++;
     responseBody = json.decode(response);
-    print('ORDER LIST RESPONSE $responseBody');
+    print('RETORNO HISTÓRICO DE PEDIDOS $responseBody');
 
-    responseBody['orders'].forEach((order) {
-      if (order["completed_at"] != null) {
-        setState(() {
-          ordersList.add(Order(
-              completedAt: order["completed_at"],
-              imageUrl: order["line_items"][0]["variant"]["images"][0]
-                  ["small_url"],
-              displayTotal: order["display_total"],
-              number: order["number"],
-              paymentMethod: order["payments"][0]["payment_method"]["name"],
-              paymentState: order["payment_state"],
-              shipState: order["shipment_state"]));
-          orderListResponse.add(order);
-        });
-      }
+    responseBody['pedidos'].forEach((pedido) {
+      setState(() {
+        listaPedidos.add(Pedido(
+            id: pedido["completed_at"],
+            dataInclusao: pedido['dataInclusao'],
+            dataConfirmacao: pedido['dataConfirmacao'],
+            status: pedido["status"]
+            /* listaItenspedido */));
+        orderListResponse.add(pedido);
+      });
     });
     setState(() {
       hasMore = true;
     });
-    return ordersList;
+    return listaPedidos;
   }
 
   @override
@@ -103,14 +98,14 @@ class _OrderList extends State<OrderList> {
             data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
             child: ListView.builder(
                 controller: scrollController,
-                itemCount: ordersList.length + 1,
+                itemCount: listaPedidos.length + 1,
                 itemBuilder: (mainContext, index) {
-                  if (index < ordersList.length) {
+                  if (index < listaPedidos.length) {
                     // return favoriteCard(
                     //     context, searchProducts[index], index);
-                    return orderItem(context, ordersList[index], index);
+                    return orderItem(context,listaPedidos[index], index);
                   }
-                  if (hasMore && ordersList.length == 0) {
+                  if (hasMore && listaPedidos.length == 0) {
                     return noProductFoundWidget();
                   }
                   if (!hasMore) {
@@ -136,31 +131,29 @@ class _OrderList extends State<OrderList> {
     );
   }
 
-  Widget orderItem(BuildContext context, Order order, int index) {
-    if (order.completedAt != null) {
-      return GestureDetector(
-        onTap: () {
-          goToDetailsPage(orderListResponse[index]);
-        },
-        child: Card(
-          child: new Container(
-            width: _deviceSize.width,
-            margin: EdgeInsets.all(5),
-            child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ListTile(
-                      leading: orderVariantImage(order.imageUrl),
-                      title: Text('${order.number}'),
-                      subtitle: Text((formatter.format(DateTime.parse(
-                          (order.completedAt.split('+05:30')[0]))))),
-                      trailing: trailingSpace(order),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10.0)),
-                ]),
-          ),
+  Widget orderItem(BuildContext context, Pedido pedido, int index) {
+    return GestureDetector(
+      onTap: () {
+        goToDetailsPage(orderListResponse[index]);
+      },
+      child: Card(
+        child: new Container(
+          width: _deviceSize.width,
+          margin: EdgeInsets.all(5),
+          child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                    //leading: orderVariantImage(pedido.imageUrl),
+                    title: Text('${pedido.id}'),
+                    subtitle: Text((formatter.format(DateTime.parse(
+                        (pedido.dataInclusao.split('+05:30')[0]))))),
+                    trailing: trailingSpace(pedido),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10.0)),
+              ]),
         ),
-      );
-    }
+      ),
+    );
   }
 
   Widget noProductFoundWidget() {

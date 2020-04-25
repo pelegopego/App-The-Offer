@@ -298,7 +298,7 @@ class _HomeDrawer extends State<HomeDrawer> {
       prefs.clear();
       model.clearData();
       model.loggedInUser();
-      model.fetchCurrentOrder();
+      model.localizarCarrinho(null, 1);//user
     });
   }
 

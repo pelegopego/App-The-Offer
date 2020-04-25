@@ -1,12 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
-import 'package:theoffer/models/option_type.dart';
-import 'package:theoffer/models/option_value.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/auth.dart';
@@ -21,19 +16,7 @@ import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/screens/cart.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:typed_data';
-
-Image imageFromBase64String(String base64String) {
-  return Image.memory(base64Decode(base64String));
-}
-
-Uint8List dataFromBase64String(String base64String) {
-  return base64Decode(base64String);
-}
-
-String base64String(Uint8List data) {
-  return base64Encode(data);
-}
+import 'package:theoffer/utils/ImageHelper.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Produto produto;
@@ -551,7 +534,9 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidade > 0) {
                         model.adicionarProduto(
-                            variantId: produtoSelecionado.id, quantidade: quantidade);
+                            usuarioId: 1/*user*/,
+                            produtoId: produtoSelecionado.id,
+                            quantidade: quantidade);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                           MaterialPageRoute route =
@@ -591,7 +576,9 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidade > 0) {
                         model.adicionarProduto(
-                            variantId: produtoSelecionado.id, quantidade: quantidade);
+                            usuarioId: 1/*user*/, 
+                            produtoId: produtoSelecionado.id,
+                            quantidade: quantidade);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
@@ -619,7 +606,8 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                         Scaffold.of(context).showSnackBar(processSnackbar);
                         produtoSelecionado.quantidade > 0
                             ? model.adicionarProduto(
-                                variantId: produtoSelecionado.id,
+                                usuarioId: 1/*user*/,
+                                produtoId: produtoSelecionado.id,
                                 quantidade: quantidade)
                             : null;
                         if (!model.isLoading) {

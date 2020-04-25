@@ -165,7 +165,7 @@ class _EmailEditState extends State<EmailEdit> {
         .then((response) {
       prefs.clear();
       model.loggedInUser();
-      model.fetchCurrentOrder();
+      model.localizarCarrinho(null, 1);//user
     });
     Navigator.popUntil(
         context, ModalRoute.withName(Navigator.defaultRouteName));

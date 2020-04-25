@@ -11,7 +11,7 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/shopping_cart_button.dart';
-import 'package:theoffer/widgets/todays_deals_card.dart';
+import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -249,7 +249,7 @@ class _Hometelastate extends State<HomeScreen> {
                           descricao: produtoJson['descricao'],
                              imagem: imagemJson,
                               valor: produtoJson['valor'],
-                         quantidade: double.parse(produtoJson['quantidade']),
+                         quantidade: int.parse(produtoJson['quantidade']),
                         dataInicial: produtoJson['dataInicial'],
                           dataFinal: produtoJson['dataFinal'],
                        dataCadastro: produtoJson['dataCadastro'],

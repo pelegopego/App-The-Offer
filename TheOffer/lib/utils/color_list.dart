@@ -20,3 +20,4 @@ List<Color> colorList = [
   Colors.secundariaTheOffer.shade300,
   Colors.red.shade300
 ];
+//* colocar as cores do c:flutter aq

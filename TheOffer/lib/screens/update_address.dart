@@ -436,7 +436,7 @@ class _UpdateAddressState extends State<UpdateAddress> {
           headers: headers, body: json.encode(profileAddressData));
       updateResponse = json.decode(response.body);
       if (updateResponse['status'] == 'Address added Successfully!') {
-        await model.fetchCurrentOrder();
+        await model.localizarCarrinho(null, 1);//user
         await model.getAddress();
         // Navigator.pop(context);
         setState(() {
@@ -468,7 +468,7 @@ class _UpdateAddressState extends State<UpdateAddress> {
         orderUpdateResponse = json.decode(response.body);
         updateResponse = json.decode(response.body);
         if (updateResponse.containsKey('id')) {
-          await model.fetchCurrentOrder();
+          await model.localizarCarrinho(null, 1);//user
         }
       }
       http.Response response = await http.post(
@@ -477,7 +477,7 @@ class _UpdateAddressState extends State<UpdateAddress> {
           body: json.encode(profileAddressData));
       updateResponse = json.decode(response.body);
       if (updateResponse['status'] == 'Address updated Successfully!') {
-        await model.fetchCurrentOrder();
+        await model.localizarCarrinho(null, 1);//user
         await model.getAddress();
         // Navigator.pop(context);
         setState(() {

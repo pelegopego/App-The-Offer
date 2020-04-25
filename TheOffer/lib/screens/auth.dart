@@ -347,7 +347,7 @@ class _AuthenticationState extends State<Authentication>
       prefs.setString('spreeApiKey', responseData['spree_api_key']);
       prefs.setString('createdAt', responseData['created_at']);
       model.getAddress();
-      model.fetchCurrentOrder();
+      model.localizarCarrinho(null, 1);
       model.loggedInUser();
       Navigator.of(context).pop();
     } else {

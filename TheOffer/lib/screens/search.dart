@@ -288,7 +288,7 @@ class _ProductSearchState extends State<ProductSearch> {
         descricao             : searchObj['data']['attributes']['descricao'],
         imagem                : searchObj['data']['attributes']['imagem'],
         valor                 : searchObj['data']['attributes']['valor'],
-        quantidade            : double.parse(searchObj['data']['attributes']['quantidade']),
+        quantidade            : int.parse(searchObj['data']['attributes']['quantidade']),
         dataInicial           : searchObj['data']['attributes']['dataInicial'],
         dataFinal             : searchObj['data']['attributes']['dataFinal'],
         dataCadastro          : searchObj['data']['attributes']['dataCadastro'],

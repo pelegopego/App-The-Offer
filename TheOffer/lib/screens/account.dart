@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/change_email.dart';
 import 'package:theoffer/screens/change_password.dart';
-import 'package:theoffer/screens/my_address.dart';
+//import 'package:theoffer/screens/my_address.dart';
 import 'package:theoffer/screens/order_history.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
-import 'package:theoffer/models/address.dart';
+//import 'package:theoffer/models/address.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/screens/retun_policy.dart';
 
@@ -223,7 +223,7 @@ class _AccountState extends State<Account> {
       prefs.clear();
       model.clearData();
       model.loggedInUser();
-      model.fetchCurrentOrder();
+      model.localizarCarrinho(null, 1);//*user
     });
     Navigator.popUntil(
         context, ModalRoute.withName(Navigator.defaultRouteName));
@@ -253,11 +253,11 @@ class _AccountState extends State<Account> {
         }
         break;
       case "change_address":
-        {
+        {/*
           MaterialPageRoute orderList =
               MaterialPageRoute(builder: (context) => MyAddressPage());
           Navigator.push(context, orderList);
-        }
+        */}
     }
   }
 

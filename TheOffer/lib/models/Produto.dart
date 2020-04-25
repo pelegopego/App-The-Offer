@@ -4,7 +4,8 @@ class Produto {
     final String descricao;
     final String imagem;
     final String valor;
-    final double quantidade;
+    final double valorNumerico;
+    final int quantidade;
   final String dataInicial;
   final String dataFinal;
   final String dataCadastro;
@@ -18,6 +19,7 @@ class Produto {
     this.descricao,
     this.imagem,    
     this.valor,
+    this.valorNumerico,
     this.quantidade,
     this.dataInicial,
     this.dataFinal,

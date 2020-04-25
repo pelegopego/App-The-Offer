@@ -2,34 +2,34 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/models/line_item.dart';
-import 'package:theoffer/models/order.dart';
+import 'package:theoffer/models/itemPedido.dart';
+import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/models/variant.dart';
-import 'package:theoffer/models/address.dart';
+//import 'package:theoffer/models/address.dart';
 import 'package:theoffer/screens/product_detail.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 mixin CartModel on Model {
   bool hi = false;
 
-  List<LineItem> _lineItems = [];
-  Order _order;
+  List<ItemPedido> _listaItensPedido = [];
+  Pedido _pedido;
   bool _isLoading = false;
   List<PaymentMethod> _paymentMethods = [];
 
-  Map<dynamic, dynamic> lineItemObject = Map();
+  Map<dynamic, dynamic> objetoItemPedido = Map();
 
-  List<LineItem> get lineItems {
-    return List.from(_lineItems);
+  List<ItemPedido> get listaItensPedido {
+    return List.from(listaItensPedido);
   }
 
-  Order get order {
-    return _order;
+  Pedido get pedido {
+    return _pedido;
   }
 
   List<PaymentMethod> get paymentMethods {
@@ -56,7 +56,7 @@ mixin CartModel on Model {
     // setLoading(true);
     print(
         "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produtos/$id'}");
-    http.Response response = await http.get(Configuracoes.BASE_URL + 'produtos/$id/', headers: headers);
+    http.Response response = await http.get(Configuracoes.BASE_URL + 'produtos/$id/');
     responseBody = json.decode(response.body);
     responseBody['produtos'].forEach((produtoJson) {
     imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
@@ -67,7 +67,7 @@ mixin CartModel on Model {
         descricao             : produtoJson['descricao'],
         imagem                : imagemJson,
         valor                 : produtoJson['valor'],
-        quantidade            : double.parse(produtoJson['quantidade']),
+        quantidade            : int.parse(produtoJson['quantidade']),
         dataInicial           : produtoJson['dataInicial'],
         dataFinal             : produtoJson['dataFinal'],
         dataCadastro          : produtoJson['dataCadastro'],
@@ -85,37 +85,37 @@ mixin CartModel on Model {
     notifyListeners();
   }
 
-  void adicionarProduto({int variantId, int quantidade}) async {
+  void adicionarProduto({int usuarioId, int produtoId, int quantidade}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     print("quantidade $quantidade");
 
-    _lineItems.clear();
+    _listaItensPedido.clear();
     _isLoading = true;
     notifyListeners();
     final String orderToken = prefs.getString('orderToken');
 
     if (orderToken != null) {
-      createNewLineItem(variantId, quantidade);
+      adicionarItemCarrinho(usuarioId, produtoId, quantidade);
     } else {
-      createNewOrder(variantId, quantidade);
+      criarCarrinho(usuarioId, produtoId, quantidade);
     }
     notifyListeners();
   }
 
-  void removeProduct(int lineItemId) async {
+  void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _isLoading = true;
-    _lineItems.clear();
+    _listaItensPedido.clear();
     notifyListeners();
     http
-        .delete(Settings.SERVER_URL +
-            'api/v1/orders/${prefs.getString('orderNumber')}/line_items/$lineItemId?order_token=${prefs.getString('orderToken')}')
+        .delete(Settings.SERVER_URL /*+
+            'api/v1/orders/${prefs.getString('orderNumber')}/line_items/$lineItemId?order_token=${prefs.getString('orderToken')}'*/)
         .then((response) {
-      fetchCurrentOrder();
+      localizarCarrinho(pedidoId, usuarioId);
     });
   }
 
-  void createNewOrder(int variantId, int quantity) async {
+  void criarCarrinho(int usuarioId, int produtoId, int quantidade) async {
     Map<String, String> headers = await getHeaders();
     Map<dynamic, dynamic> responseBody;
     Map<dynamic, dynamic> orderParams = Map();
@@ -124,7 +124,7 @@ mixin CartModel on Model {
     orderParams = {
       'order': {
         'line_items': {
-          '0': {'variant_id': variantId, 'quantity': quantity}
+          '0': {'variant_id': 1, 'quantity': quantidade}
         }
       }
     };
@@ -135,127 +135,97 @@ mixin CartModel on Model {
       responseBody = json.decode(response.body);
       prefs.setString('orderToken', responseBody['token']);
       prefs.setString('orderNumber', responseBody['number']);
-      fetchCurrentOrder();
+      localizarCarrinho(null, usuarioId);
     });
   }
 
-  void createNewLineItem(int variantId, int quantity) async {
-    print("CREATING NEW LINEITEM");
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
-
-    lineItemObject = {
-      "line_item": {"variant_id": variantId, "quantity": quantity}
-    };
+  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade) async {
+    print("ADICIONANDO ITEM AO CARRINHO");
+        objetoItemPedido = {
+          "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString()
+        };
     http
         .post(
-            Settings.SERVER_URL +
-                'api/v1/orders/${prefs.getString('orderNumber')}/line_items?order_token=${prefs.getString('orderToken')}',
-            headers: headers,
-            body: json.encode(lineItemObject))
+            Configuracoes.BASE_URL + 'pedido/adicionarProdutoCarrinho/',
+            body: objetoItemPedido)
         .then((response) {
-      print("ADD PRODUCT RESPONSE _______");
+      print("ADICIONANDO PRODUTO AO CARRINHO _______");
       print(json.decode(response.body).toString());
-      fetchCurrentOrder();
+      localizarCarrinho(null, usuarioId);
     });
   }
 
-  Future<bool> fetchCurrentOrder() async {
-    print("FETCH CURRENT ORDER");
-    // _isLoading = true;
+  Future<bool> localizarCarrinho(int pedidoId, int usuarioId) async {
+    print("LOCALIZANDO CARRINHO");
+     _isLoading = true;
     notifyListeners();
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
-    String url = '';
-    LineItem lineItem;
-    Variant variant;
-    Address shipAddress;
+    Produto produto;
+    ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String orderToken = prefs.getString('orderToken');
-    final String spreeApiKey = prefs.getString('spreeApiKey');
-
+/*
     if (orderToken != null && spreeApiKey == null) {
       url =
           'api/v1/orders/${prefs.getString('orderNumber')}?order_token=${prefs.getString('orderToken')}';
     } else if (spreeApiKey != null) {
       url = 'api/v1/orders/current';
     }
-
+*/
     try {
-      if (url != '') {
-        _lineItems.clear();
-        http.Response response =
-            await http.get(Settings.SERVER_URL + url, headers: headers);
-        responseBody = json.decode(response.body);
-        responseBody['line_items'].forEach((lineItem) {
-          variant = Variant(
-              image: lineItem['variant']['images'][0]['product_url'],
-              displayPrice: lineItem['variant']['display_price'],
-              name: lineItem['variant']['name'],
-              quantity: lineItem['quantity'],
-              isBackOrderable: lineItem['variant']['is_backorderable'],
-              totalOnHand: lineItem['variant']['total_on_hand']);
-
-          lineItem = LineItem(
-              id: lineItem['id'],
-              displayAmount: lineItem['display_amount'],
-              quantity: lineItem['quantity'],
-              total: lineItem['total'],
-              variant: variant,
-              variantId: lineItem['variant_id']);
-          _lineItems.add(lineItem);
-          notifyListeners();
-        });
-        if (responseBody['ship_address'] != null) {
-          shipAddress = Address(
-            id: responseBody['ship_address']['id'],
-            firstName: responseBody['ship_address']['firstname'],
-            lastName: responseBody['ship_address']['lastname'],
-            stateName: responseBody['ship_address']['state']['name'],
-            stateAbbr: responseBody['ship_address']['state']['abbr'],
-            address2: responseBody['ship_address']['address2'],
-            city: responseBody['ship_address']['city'],
-            address1: responseBody['ship_address']['address1'],
-            mobile: responseBody['ship_address']['phone'],
-            pincode: responseBody['ship_address']['zipcode'],
-            stateId: responseBody['ship_address']['state_id'],
-          );
-        } else {
-          shipAddress = null;
-        }
-        _order = Order(
-            total: responseBody['total'],
-            id: responseBody['id'],
-            itemTotal: responseBody['item_total'],
-            adjustments: responseBody['adjustments'],
-            adjustmentTotal: responseBody['adjustment_total'],
-            displayAdjustmentTotal: responseBody['display_adjustment_total'],
-            displaySubTotal: responseBody['display_item_total'],
-            displayTotal: responseBody['display_total'],
-            lineItems: _lineItems,
-            shipTotal: responseBody['display_ship_total'],
-            totalQuantity: responseBody['total_quantity'],
-            state: responseBody['state'],
-            shipAddress: shipAddress);
-        _isLoading = false;
-        prefs.setString('numberOfItems', _lineItems.length.toString());
-        prefs.setString('orderToken', responseBody['token']);
-        prefs.setString('orderNumber', responseBody['number']);
+      _listaItensPedido.clear();
+      objetoItemPedido = {
+        "usuario": usuarioId.toString(), "pedido": pedidoId.toString(), "status": 1.toString()
+      };
+      http.Response response =
+          await http.post(Configuracoes.BASE_URL + 'pedido/localizar', 
+          body: objetoItemPedido);
+      responseBody = json.decode(response.body);
+      responseBody['pedidos'].forEach((pedidosJson) {
+             produto = Produto(
+              id                    : int.parse(pedidosJson['produto_id']),
+              titulo                : pedidosJson['titulo'],
+              descricao             : pedidosJson['descricao'],
+              imagem                : pedidosJson['imagem'],
+              valor                 : pedidosJson['valor'],
+              valorNumerico         : double.parse(pedidosJson['valorNumerico']),
+              quantidade            : int.parse(pedidosJson['quantidade']),
+              dataInicial           : pedidosJson['dataInicial'],
+              dataFinal             : pedidosJson['dataFinal'],
+              dataCadastro          : pedidosJson['DataCadastro'],
+              modalidadeRecebimento1: int.parse(pedidosJson['modalidadeRecebimento1']),
+              modalidadeRecebimento2: int.parse(pedidosJson['modalidadeRecebimento2']),
+              usuarioId             : int.parse(pedidosJson['usuario_id'])
+              );
+          
+            itemPedido = ItemPedido(
+                pedidoId  : int.parse(pedidosJson['pedido_id']),
+                produtoId : int.parse(pedidosJson['produto_id']),
+                quantidade: int.parse(pedidosJson['quantidade_item']),
+                produto: produto);
+            _listaItensPedido.add(itemPedido);
         notifyListeners();
-      } else {
-        _lineItems = [];
-      }
-      print("SHIPPING TOTAL AFTER FCO ${_order.displayTotal}",);
+       });   
+      _pedido = Pedido(
+          id              : int.parse(responseBody['pedidos'][0]['pedido_id']),
+          usuarioId       : int.parse(responseBody['pedidos'][0]['usuario_id']),
+          dataInclusao    : responseBody['pedidos'][0]['dataInclusao'],
+          dataConfirmacao : responseBody['pedidos'][0]['dataConfirmacao'],
+          status          : int.parse(responseBody['pedidos'][0]['status']),
+          listaItensPedido: _listaItensPedido);
 
-      print("SHIPPING TOTAL AFTER FCO ${_order.shipTotal}",);
-      return true;
+      _isLoading = false;
+      prefs.setString('numeroItens', _listaItensPedido.length.toString());
+      prefs.setString('orderToken', responseBody['token']);
+      prefs.setString('orderNumber', responseBody['number']);
+      notifyListeners();
+    return true;
     } catch (error) {
       _isLoading = false;
       notifyListeners();
       return false;
     }
   }
-
+/*
   Future<bool> changeState() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> headers = await getHeaders();
@@ -273,9 +243,8 @@ mixin CartModel on Model {
     print("ORDER STATE CHANGED -------> ${json.decode(response.body)}");
     print(
         "ORDER STATE PAYMENTS ARRAY ------> ${json.decode(response.body)['payments']}");
-    _order = Order(
-        total: responseBody['total'],
-        id: responseBody['id'],
+    _pedido = Pedido(
+        id: responseBody[''],
         itemTotal: responseBody['item_total'],
         adjustments: responseBody['adjustments'],
         adjustmentTotal: responseBody['adjustment_total'],
@@ -344,14 +313,14 @@ mixin CartModel on Model {
     notifyListeners();
     return true;
   }
-
+*/
   clearData() async {
     print("CLEAR DATA");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('orderToken', null);
     prefs.setString('orderNumber', null);
-    _lineItems.clear();
-    _order = null;
+    _listaItensPedido.clear();
+    _pedido = null;
     notifyListeners();
   }
 

@@ -39,9 +39,9 @@ Widget shoppingCartIconButton() {
                           size: 21.0, color: Colors.yellow),
                       new Center(
                         child: new Text(
-                          model.order == null
+                          model.pedido == null
                               ? '0'
-                              : model.order.totalQuantity.toString(),
+                              : model.pedido.listaItensPedido.length.toString(),
                           style: new TextStyle(
                               color: Colors.black,
                               fontSize: 11.0,

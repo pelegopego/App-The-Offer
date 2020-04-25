@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+/*import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:theoffer/models/line_item.dart';
+import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/payment.dart';
 import 'package:theoffer/screens/update_address.dart';
@@ -40,10 +40,10 @@ class _AddressPageState extends State<AddressPage> {
   void initState() {
     super.initState();
     setState(() {
-      print("PÁGINA De ENDEREÇO DO PEDIDO INÍCIO-------");
+      print("PÁGINA DE ENDEREÇO DO PEDIDO INÍCIO-------");
       String adjustMentTotal =
           ScopedModel.of<MainModel>(context, rebuildOnChange: false)
-              .order
+              .pedido
               .adjustmentTotal;
       print(adjustMentTotal);
       promoChecked = isPromoDiscount = adjustMentTotal != '0.0';
@@ -663,3 +663,4 @@ class _AddressPageState extends State<AddressPage> {
     );
   }
 }
+*/
