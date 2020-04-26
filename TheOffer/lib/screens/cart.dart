@@ -220,8 +220,8 @@ class _CartState extends State<Cart> {
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.all(15),
-                                height: 150,
-                                width: 100,
+                                height: 170,
+                                width: 180,
                                 color: Colors.secundariaTheOffer,
                                 child: FadeInImage(
                                  image: MemoryImage(dataFromBase64String(model.pedido.listaItensPedido[index].produto.imagem)),
