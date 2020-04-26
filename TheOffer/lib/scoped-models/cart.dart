@@ -67,6 +67,7 @@ mixin CartModel on Model {
         descricao             : produtoJson['descricao'],
         imagem                : imagemJson,
         valor                 : produtoJson['valor'],
+        valorNumerico         : double.parse(produtoJson['valorNumerico']),
         quantidade            : int.parse(produtoJson['quantidade']),
         dataInicial           : produtoJson['dataInicial'],
         dataFinal             : produtoJson['dataFinal'],

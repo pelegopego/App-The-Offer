@@ -244,18 +244,19 @@ class _Hometelastate extends State<HomeScreen> {
       imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
           setState(() { 
             listaProdutos.add(Produto(
-                                 id: int.parse(produtoJson['id']),
-                             titulo: produtoJson['titulo'],
-                          descricao: produtoJson['descricao'],
-                             imagem: imagemJson,
-                              valor: produtoJson['valor'],
-                         quantidade: int.parse(produtoJson['quantidade']),
-                        dataInicial: produtoJson['dataInicial'],
-                          dataFinal: produtoJson['dataFinal'],
-                       dataCadastro: produtoJson['dataCadastro'],
+             id                    : int.parse(produtoJson['id']),
+             titulo                : produtoJson['titulo'],
+             descricao             : produtoJson['descricao'],
+             imagem                : imagemJson,
+             valor                 : produtoJson['valor'],
+             valorNumerico         : double.parse(produtoJson['valorNumerico']),
+             quantidade            : int.parse(produtoJson['quantidade']),
+             dataInicial           : produtoJson['dataInicial'],
+             dataFinal             : produtoJson['dataFinal'],
+             dataCadastro          : produtoJson['dataCadastro'],
              modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
              modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
-                          usuarioId: int.parse(produtoJson['usuario_id'])
+             usuarioId             : int.parse(produtoJson['usuario_id'])
             ));
           });
         }

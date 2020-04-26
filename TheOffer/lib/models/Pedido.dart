@@ -26,11 +26,10 @@ class Pedido {
 
   double somaValorTotalPedido() {
     double somaValor;   
-    int contador;   
-    
+    ItemPedido itemPedido;
     somaValor = 0;
-    for(contador = 0 ; contador >= this.listaItensPedido.length; contador++) { 
-        somaValor = somaValor + this.listaItensPedido[contador].produto.valorNumerico; 
+    for(itemPedido in this.listaItensPedido) { 
+        somaValor = somaValor + itemPedido.produto.valorNumerico; 
     } 
     return somaValor;
   }
