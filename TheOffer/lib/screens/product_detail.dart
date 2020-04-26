@@ -182,7 +182,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
 
   Widget linhaQuantidade(MainModel model, Produto produtoSelecionado) {
     print(
-        "PRODUTO SELECIONADO ---> ${produtoSelecionado.quantidade}  ${produtoSelecionado.id}");
+        "PRODUTO SELECIONADO ---> ${produtoSelecionado.id}");
     return Container(
         height: 60.0,color: Colors.secundariaTheOffer,
         child: ListView.builder(
@@ -203,7 +203,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     decoration: BoxDecoration(
                         border: Border.all(
                           color: quantidade == index
-                              ? Colors.principalTheOffer
+                              ? Colors.white
                               : Colors.principalTheOffer,
                         ),
                         borderRadius: BorderRadius.circular(5)),
@@ -215,8 +215,8 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       index.toString(),
                       style: TextStyle(
                           color: quantidade == index
-                              ? Colors.principalTheOffer
-                              : Colors.principalTheOffer),
+                              ? Colors.white
+                              : Colors.principalTheOffer,),
                     )),
               );
             }

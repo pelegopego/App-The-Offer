@@ -159,6 +159,7 @@ mixin CartModel on Model {
     print("LOCALIZANDO CARRINHO");
      _isLoading = true;
     notifyListeners();
+    String imagemJson = ''; 
     Map<dynamic, dynamic> responseBody;
     Produto produto;
     ItemPedido itemPedido;
@@ -179,13 +180,16 @@ mixin CartModel on Model {
       http.Response response =
           await http.post(Configuracoes.BASE_URL + 'pedido/localizar', 
           body: objetoItemPedido);
+          
       responseBody = json.decode(response.body);
       responseBody['pedidos'].forEach((pedidosJson) {
+      imagemJson = pedidosJson['imagem'].replaceAll('\/', '/');
+      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
              produto = Produto(
               id                    : int.parse(pedidosJson['produto_id']),
               titulo                : pedidosJson['titulo'],
               descricao             : pedidosJson['descricao'],
-              imagem                : pedidosJson['imagem'],
+              imagem                : imagemJson,
               valor                 : pedidosJson['valor'],
               valorNumerico         : double.parse(pedidosJson['valorNumerico']),
               quantidade            : int.parse(pedidosJson['quantidade']),

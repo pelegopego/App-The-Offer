@@ -35,4 +35,8 @@ class Pedido {
     return somaValor;
   }
 
+  int somaQuantidadePedido() {
+    return this.listaItensPedido.length;
+  }
+
 }
