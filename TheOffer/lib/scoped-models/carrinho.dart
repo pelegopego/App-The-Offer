@@ -99,18 +99,26 @@ mixin CarrinhoModel on Model {
   }
 
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isLoading = true;
-    _listaItensPedido.clear();
-    notifyListeners();
+    Map<dynamic, dynamic> responseBody;
+    print("REMOVENDO ITEM DO CARRINHO");
+        objetoItemPedido = {
+          "pedido": pedidoId.toString(), "produto": produtoId.toString()
+        };
     http
-        .delete(Settings.SERVER_URL /*+
-            'api/v1/orders/${prefs.getString('orderNumber')}/line_items/$lineItemId?order_token=${prefs.getString('orderToken')}'*/)
+        .post(
+            Configuracoes.BASE_URL + 'pedido/removerProdutoCarrinho/',
+            body: objetoItemPedido)
         .then((response) {
-      localizarCarrinho(pedidoId, usuarioId);
-    _isLoading = false;
+      print("REMOVENDO PRODUTO DO CARRINHO _______");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      localizarCarrinho(null, usuarioId);
+      return responseBody['message'];  
     });
   }
+
+
+    
 
   void criarCarrinho(int usuarioId, int produtoId, int quantidade) async {
     Map<String, String> headers = await getHeaders();
