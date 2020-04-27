@@ -325,12 +325,12 @@ class _CarrinhoState extends State<Carrinho> {
             } else {
               return GestureDetector(
                 onTap: () {
-                  if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante >= index) {
+                  if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidade - model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante + model.pedido.listaItensPedido[lineItemIndex].quantidade >= index) {
                   model.adicionarProduto(
                     usuarioId: 1,//user
                     produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
                     quantidade: index,
-                    somar: false
+                    somar: 0
                   );
                   }
                 },

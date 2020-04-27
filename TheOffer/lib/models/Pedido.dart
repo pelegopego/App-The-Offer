@@ -29,7 +29,7 @@ class Pedido {
     ItemPedido itemPedido;
     somaValor = 0;
     for(itemPedido in this.listaItensPedido) { 
-        somaValor = somaValor + itemPedido.produto.valorNumerico; 
+        somaValor = somaValor + (itemPedido.produto.valorNumerico * itemPedido.quantidade); 
     } 
     return somaValor;
   }

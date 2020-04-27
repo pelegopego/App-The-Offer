@@ -38,7 +38,7 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                            usuarioId: 1,//user 
                            produtoId: widget.produto.id, 
                            quantidade: 1,
-                           somar: true);
+                           somar: 1);
                   if (!model.isLoading) {
                     Scaffold.of(context).showSnackBar(completeSnackbar);
                   }

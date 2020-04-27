@@ -537,7 +537,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                             usuarioId: 1/*user*/,
                             produtoId: produtoSelecionado.id,
                             quantidade: quantidade,                            
-                            somar: false);
+                            somar: 0);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                           MaterialPageRoute route =
@@ -580,7 +580,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                             usuarioId: 1/*user*/, 
                             produtoId: produtoSelecionado.id,
                             quantidade: quantidade,
-                            somar: false);
+                            somar: 0);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
@@ -610,7 +610,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                                 usuarioId: 1/*user*/,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
-                                somar: false);
+                                somar: 0);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }

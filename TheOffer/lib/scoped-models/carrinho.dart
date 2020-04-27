@@ -88,7 +88,7 @@ mixin CarrinhoModel on Model {
     notifyListeners();
   }
 
-  void adicionarProduto({int usuarioId, int produtoId, int quantidade, bool somar}) async {
+  void adicionarProduto({int usuarioId, int produtoId, int quantidade, int somar}) async {
     print("QUANTIDADE ADICIONADA AO CARRINHO $quantidade");
     _listaItensPedido.clear();
     _isLoading = true;
@@ -136,7 +136,7 @@ mixin CarrinhoModel on Model {
     });
   }
 
-  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, bool somar) async {
+  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, int somar) async {
     Map<dynamic, dynamic> responseBody;
     print("ADICIONANDO ITEM AO CARRINHO");
         objetoItemPedido = {
