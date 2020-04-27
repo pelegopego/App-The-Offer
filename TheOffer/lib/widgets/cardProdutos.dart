@@ -7,37 +7,38 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
 
-class AddToCart extends StatefulWidget {
+class AddToCarrinho extends StatefulWidget {
   List<Produto> todaysDealProducts;
   int index;
   Produto produto;
-  AddToCart(this.produto, this.index, this.todaysDealProducts);
+  AddToCarrinho(this.produto, this.index, this.todaysDealProducts);
   @override
   State<StatefulWidget> createState() {
-    return _AddToCartState();
+    return _AddToCarrinhoState();
   }
 }
 
-class _AddToCartState extends State<AddToCart> {
+class _AddToCarrinhoState extends State<AddToCarrinho> {
   int selectedIndex;
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return FlatButton (
-        onPressed: widget.produto.quantidade > 0
+        onPressed: widget.produto.quantidadeRestante > 0
             ? () async {
                 print('selectedProductIndex');
                 print(widget.index);
                 setState(() {
                   selectedIndex = widget.index;
                 });
-                if (widget.produto.quantidade > 0) {
+                if (widget.produto.quantidadeRestante > 0) {
                   Scaffold.of(context).showSnackBar(processSnackbar);
                   model.adicionarProduto(
                            usuarioId: 1,//user 
                            produtoId: widget.produto.id, 
-                           quantidade: 1);
+                           quantidade: 1,
+                           somar: true);
                   if (!model.isLoading) {
                     Scaffold.of(context).showSnackBar(completeSnackbar);
                   }
@@ -59,9 +60,9 @@ class _AddToCartState extends State<AddToCart> {
 
 Widget buttonContent(int index, Produto produto) {
   return Text(
-    produto.quantidade > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
+    produto.quantidadeRestante > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
     style: TextStyle(
-        color: Colors.principalTheOffer,
+        color: produto.quantidadeRestante > 0 ? Colors.principalTheOffer : Colors.grey,
         fontSize: 14,
         fontWeight: FontWeight.w500),
   );
@@ -134,7 +135,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                     height: 1.0,
                     color: Colors.principalTheOffer,
                   ),
-                  AddToCart(produtoDetalhado, index, listaProdutos),
+                  AddToCarrinho(produtoDetalhado, index, listaProdutos),
                 ],
               ),
             )));

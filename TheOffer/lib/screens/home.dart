@@ -10,7 +10,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/shopping_cart_button.dart';
+import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -77,7 +77,7 @@ class _Hometelastate extends State<HomeScreen> {
                 style: TextStyle(fontFamily: 'HolyFat', fontSize: 50, color:  Colors.principalTheOffer),
               )),
           actions: <Widget>[
-            shoppingCartIconButton(),
+            shoppingCarrinhoIconButton(),
           ],
           bottom: PreferredSize(
             preferredSize: Size(_deviceSize.width, 70),
@@ -251,6 +251,7 @@ class _Hometelastate extends State<HomeScreen> {
              valor                 : produtoJson['valor'],
              valorNumerico         : double.parse(produtoJson['valorNumerico']),
              quantidade            : int.parse(produtoJson['quantidade']),
+             quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
              dataInicial           : produtoJson['dataInicial'],
              dataFinal             : produtoJson['dataFinal'],
              dataCadastro          : produtoJson['dataCadastro'],

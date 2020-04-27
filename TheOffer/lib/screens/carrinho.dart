@@ -7,14 +7,14 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
 
-class Cart extends StatefulWidget {
+class Carrinho extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _CartState();
+    return _CarrinhoState();
   }
 }
 
-class _CartState extends State<Cart> {
+class _CarrinhoState extends State<Carrinho> {
   List<int> quantities = [];
   bool stateChanged = false;
   static const _ITEM_HEIGHT = 40;
@@ -91,11 +91,11 @@ class _CartState extends State<Cart> {
   Widget itemTotalContainer(MainModel model) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[cartData()],
+      children: <Widget>[carrinhoData()],
     );
   }
 
-  Widget cartData() {
+  Widget carrinhoData() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
            return Text(
@@ -127,12 +127,7 @@ class _CartState extends State<Cart> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
                   color: Colors.principalTheOffer,
-                  child: Text(/*
-                    model.pedido == null
-                        ? */'ATUALIZAR STATUS'/*
-                        : model.pedido.itemTotal == '0.0'
-                            ? 'PROCURAR ITENS'
-                            : 'FINALIZAR'*/,
+                  child: Text( 'FINALIZAR PEDIDO',
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.secundariaTheOffer),
@@ -309,7 +304,7 @@ class _CartState extends State<Cart> {
                     ),
                   ),
                 ));
-          }, childCount: model.pedido.somaQuantidadePedido()),
+          }, childCount: model.pedido.listaItensPedido.length),
         );
       },
     );
@@ -330,11 +325,14 @@ class _CartState extends State<Cart> {
             } else {
               return GestureDetector(
                 onTap: () {
+                  if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante >= index) {
                   model.adicionarProduto(
                     usuarioId: 1,//user
                     produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
-                    quantidade: index - model.pedido.listaItensPedido[lineItemIndex].quantidade,
+                    quantidade: index,
+                    somar: false
                   );
+                  }
                 },
                 child: Container(
                     width: 40,

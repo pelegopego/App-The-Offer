@@ -13,8 +13,9 @@ import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:theoffer/widgets/snackbar.dart';
 
-mixin CartModel on Model {
+mixin CarrinhoModel on Model {
   bool hi = false;
 
   List<ItemPedido> _listaItensPedido = [];
@@ -69,6 +70,7 @@ mixin CartModel on Model {
         valor                 : produtoJson['valor'],
         valorNumerico         : double.parse(produtoJson['valorNumerico']),
         quantidade            : int.parse(produtoJson['quantidade']),
+        quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
         dataInicial           : produtoJson['dataInicial'],
         dataFinal             : produtoJson['dataFinal'],
         dataCadastro          : produtoJson['dataCadastro'],
@@ -86,20 +88,13 @@ mixin CartModel on Model {
     notifyListeners();
   }
 
-  void adicionarProduto({int usuarioId, int produtoId, int quantidade}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("quantidade $quantidade");
-
+  void adicionarProduto({int usuarioId, int produtoId, int quantidade, bool somar}) async {
+    print("QUANTIDADE ADICIONADA AO CARRINHO $quantidade");
     _listaItensPedido.clear();
     _isLoading = true;
     notifyListeners();
-    final String orderToken = prefs.getString('orderToken');
-
-    if (orderToken != null) {
-      adicionarItemCarrinho(usuarioId, produtoId, quantidade);
-    } else {
-      criarCarrinho(usuarioId, produtoId, quantidade);
-    }
+    adicionarItemCarrinho(usuarioId, produtoId, quantidade, somar);
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -113,6 +108,7 @@ mixin CartModel on Model {
             'api/v1/orders/${prefs.getString('orderNumber')}/line_items/$lineItemId?order_token=${prefs.getString('orderToken')}'*/)
         .then((response) {
       localizarCarrinho(pedidoId, usuarioId);
+    _isLoading = false;
     });
   }
 
@@ -140,10 +136,11 @@ mixin CartModel on Model {
     });
   }
 
-  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade) async {
+  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, bool somar) async {
+    Map<dynamic, dynamic> responseBody;
     print("ADICIONANDO ITEM AO CARRINHO");
         objetoItemPedido = {
-          "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString()
+          "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString(), "somar": somar.toString()
         };
     http
         .post(
@@ -152,7 +149,9 @@ mixin CartModel on Model {
         .then((response) {
       print("ADICIONANDO PRODUTO AO CARRINHO _______");
       print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
       localizarCarrinho(null, usuarioId);
+      return responseBody['message'];  
     });
   }
 
@@ -193,7 +192,8 @@ mixin CartModel on Model {
               imagem                : imagemJson,
               valor                 : pedidosJson['valor'],
               valorNumerico         : double.parse(pedidosJson['valorNumerico']),
-              quantidade            : int.parse(pedidosJson['quantidade']),
+              quantidade            : int.parse(pedidosJson['quantidade']), 
+              quantidadeRestante    : int.parse(pedidosJson['quantidadeRestante']),
               dataInicial           : pedidosJson['dataInicial'],
               dataFinal             : pedidosJson['dataFinal'],
               dataCadastro          : pedidosJson['DataCadastro'],

@@ -12,7 +12,7 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/shopping_cart_button.dart';
+import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -66,7 +66,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           centerTitle: false,
           title: Text('Favoritos'),
           actions: <Widget>[
-            shoppingCartIconButton(),
+            shoppingCarrinhoIconButton(),
           ],
           bottom: _isLoading
               ? PreferredSize(

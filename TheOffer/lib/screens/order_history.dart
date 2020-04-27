@@ -9,7 +9,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/shopping_cart_button.dart';
+import 'package:theoffer/widgets/botaoCarrinho.dart';
 
 class OrderList extends StatefulWidget {
   @override
@@ -90,7 +90,7 @@ class _OrderList extends State<OrderList> {
       appBar: AppBar(
         centerTitle: false,
         title: Text('Histórico de pedidos'),
-        actions: <Widget>[shoppingCartIconButton()],
+        actions: <Widget>[shoppingCarrinhoIconButton()],
       ),
       body: Padding(
           padding: const EdgeInsets.only(top: 3.0),

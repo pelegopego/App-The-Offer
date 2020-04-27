@@ -6,6 +6,7 @@ class Produto {
     final String valor;
     final double valorNumerico;
     final int quantidade;
+    final int quantidadeRestante;
   final String dataInicial;
   final String dataFinal;
   final String dataCadastro;
@@ -21,6 +22,7 @@ class Produto {
     this.valor,
     this.valorNumerico,
     this.quantidade,
+    this.quantidadeRestante,
     this.dataInicial,
     this.dataFinal,
     this.dataCadastro,

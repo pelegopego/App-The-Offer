@@ -11,9 +11,9 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
-import 'package:theoffer/widgets/shopping_cart_button.dart';
+import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/snackbar.dart';
-import 'package:theoffer/screens/cart.dart';
+import 'package:theoffer/screens/carrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
@@ -87,7 +87,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   Navigator.of(context).push(route);
                 },
               ),
-              shoppingCartIconButton()
+              shoppingCarrinhoIconButton()
             ],
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(50),
@@ -111,7 +111,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             controller: _tabController,
             children: <Widget>[highlightsTab()],
           ),
-          floatingActionButton: addToCartFAB());
+          floatingActionButton: addToCarrinhoFAB());
     });
   }
 
@@ -449,7 +449,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               SizedBox(
                 height: 12.0,
               ),
-              addToCartFlatButton(),
+              addToCarrinhoFlatButton(),
               SizedBox(
                 height: 12.0,
               ),
@@ -526,21 +526,22 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.quantidade > 0 ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
-                style: TextStyle(color: Colors.principalTheOffer),
+                produtoSelecionado.quantidadeRestante > 0 ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
+                style: TextStyle(color: produtoSelecionado.quantidadeRestante > 0 ? Colors.principalTheOffer : Colors.grey),
               ),
-              onPressed: produtoSelecionado.quantidade > 0
+              onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
                       Scaffold.of(context).showSnackBar(processSnackbar);
-                      if (produtoSelecionado.quantidade > 0) {
+                      if (produtoSelecionado.quantidadeRestante > 0) {
                         model.adicionarProduto(
                             usuarioId: 1/*user*/,
                             produtoId: produtoSelecionado.id,
-                            quantidade: quantidade);
+                            quantidade: quantidade,                            
+                            somar: false);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                           MaterialPageRoute route =
-                              MaterialPageRoute(builder: (context) => Cart());
+                              MaterialPageRoute(builder: (context) => Carrinho());
 
                           Navigator.push(context, route);
                         }
@@ -554,7 +555,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
     );
   }
 
-  Widget addToCartFlatButton() {
+  Widget addToCarrinhoFlatButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Padding(
@@ -565,20 +566,21 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.quantidade > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
+                produtoSelecionado.quantidadeRestante > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
                 style: TextStyle(
-                    color: produtoSelecionado.quantidade > 0
+                    color: produtoSelecionado.quantidadeRestante > 0
                         ? Colors.principalTheOffer
-                        : Colors.principalTheOffer),
+                        : Colors.grey),
               ),
-              onPressed: produtoSelecionado.quantidade > 0
+              onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
                       Scaffold.of(context).showSnackBar(processSnackbar);
-                      if (produtoSelecionado.quantidade > 0) {
+                      if (produtoSelecionado.quantidadeRestante > 0) {
                         model.adicionarProduto(
                             usuarioId: 1/*user*/, 
                             produtoId: produtoSelecionado.id,
-                            quantidade: quantidade);
+                            quantidade: quantidade,
+                            somar: false);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
@@ -592,7 +594,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
     );
   }
 
-  Widget addToCartFAB() {
+  Widget addToCarrinhoFAB() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return _tabController.index == 0
@@ -601,23 +603,22 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   Icons.shopping_cart,
                   color: Colors.secundariaTheOffer,
                 ),
-                onPressed: produtoSelecionado.quantidade > 0 
+                onPressed: produtoSelecionado.quantidadeRestante > 0 
                     ? () {
                         Scaffold.of(context).showSnackBar(processSnackbar);
-                        produtoSelecionado.quantidade > 0
-                            ? model.adicionarProduto(
+                            model.adicionarProduto(
                                 usuarioId: 1/*user*/,
                                 produtoId: produtoSelecionado.id,
-                                quantidade: quantidade)
-                            : null;
+                                quantidade: quantidade,
+                                somar: false);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
                       }
                     : () {},
-                backgroundColor: produtoSelecionado.quantidade > 0
+                backgroundColor: produtoSelecionado.quantidadeRestante > 0
                     ? Colors.principalTheOffer
-                    : Colors.principalTheOffer,
+                    : Colors.grey,
               )
             : FloatingActionButton(
                 child: Icon(

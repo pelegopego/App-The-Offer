@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/cart.dart';
+import 'package:theoffer/screens/carrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-Widget shoppingCartIconButton() {
+Widget shoppingCarrinhoIconButton() {
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
     return new Padding(
@@ -15,7 +15,7 @@ Widget shoppingCartIconButton() {
         child: new GestureDetector(
           onTap: () {
             MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => Cart());
+                MaterialPageRoute(builder: (context) => Carrinho());
 
             Navigator.push(context, route);
           },
