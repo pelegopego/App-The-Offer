@@ -56,8 +56,8 @@ mixin CarrinhoModel on Model {
     notifyListeners();
     // setLoading(true);
     print(
-        "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produtos/$id'}");
-    http.Response response = await http.get(Configuracoes.BASE_URL + 'produtos/$id/');
+        "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produto/$id'}");
+    http.Response response = await http.get(Configuracoes.BASE_URL + 'produto/$id/');
     responseBody = json.decode(response.body);
     responseBody['produtos'].forEach((produtoJson) {
     imagemJson = produtoJson['imagem'].replaceAll('\/', '/');

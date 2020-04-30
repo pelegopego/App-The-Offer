@@ -185,7 +185,7 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
 }
 
   getCategorias() async {
-    http.get(Configuracoes.BASE_URL + '/categorias').then((response) {
+    http.get(Configuracoes.BASE_URL + 'categorias/').then((response) {
     String imagemJson = ''; 
     setState(() {
       _carregandoCategoria = true;

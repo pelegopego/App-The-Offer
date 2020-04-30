@@ -19,6 +19,7 @@ class TelaProdutos extends StatefulWidget {
   final int idCategoria;
   TelaProdutos({this.idCategoria});
   @override
+  
   State<StatefulWidget> createState() {
     return _TelaProdutos();
   }
@@ -239,7 +240,7 @@ class _TelaProdutos extends State<TelaProdutos> {
       _produtosLoading = true;
       listaProdutos = [];
     });
-    http.get(Configuracoes.BASE_URL + 'produtos/').then((response) {
+    http.get(Configuracoes.BASE_URL + 'produtos/${widget.idCategoria}').then((response) {
       responseBody = json.decode(response.body);
       responseBody['produtos'].forEach((produtoJson) {
       imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
