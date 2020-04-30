@@ -30,7 +30,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     getFavoritesCount();
   }
 
-  getFavoritesCount() async {
+  getFavoritesCount() async {/*
     favCount = 0;
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> responseBody = Map();
@@ -46,7 +46,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           favCount++;
         });
       });
-    });
+    });*/
   }
 
   String userName = '';

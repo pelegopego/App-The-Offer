@@ -580,7 +580,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                             usuarioId: 1/*user*/, 
                             produtoId: produtoSelecionado.id,
                             quantidade: quantidade,
-                            somar: 0);
+                            somar: 1);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
@@ -610,7 +610,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                                 usuarioId: 1/*user*/,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
-                                somar: 0);
+                                somar: 1);
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
