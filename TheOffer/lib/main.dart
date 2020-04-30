@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/home.dart';
+import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -36,15 +36,15 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'TheOffer',
-        initialRoute: '/home',
+        initialRoute: '/categorias',
         routes: {
-          '/home' : (context) => HomeScreen()
+          '/categorias' : (context) => TelaCategorias()
         },
         theme: ThemeData(
           primarySwatch: Colors.secundariaTheOffer,
           accentColor: Colors.principalTheOffer,
         ),
-        home: HomeScreen(),
+        home: TelaCategorias(),
       ),
     );
   }

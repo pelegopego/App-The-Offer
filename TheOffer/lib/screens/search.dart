@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/brand.dart';
-import 'package:theoffer/models/category.dart';
+import 'package:theoffer/models/categoria.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -39,7 +39,7 @@ class _ProductSearchState extends State<ProductSearch> {
   final scrollController = ScrollController();
   bool hasMore = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<Category> _listViewData = [];
+  List<Categoria> _listViewData = [];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentItem;
   Map<dynamic, dynamic> responseBody;

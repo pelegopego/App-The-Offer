@@ -15,14 +15,16 @@ import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class HomeScreen extends StatefulWidget {
+class TelaProdutos extends StatefulWidget {
+  final int idCategoria;
+  TelaProdutos({this.idCategoria});
   @override
   State<StatefulWidget> createState() {
-    return _Hometelastate();
+    return _TelaProdutos();
   }
 }
 
-class _Hometelastate extends State<HomeScreen> {
+class _TelaProdutos extends State<TelaProdutos> {
   final MainModel _model = MainModel();
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;

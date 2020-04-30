@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:theoffer/models/category.dart';
+import 'package:theoffer/models/categoria.dart';
 
 class FilterDrawer extends StatefulWidget {
   Function getSortingData;
   Function onSubCatPressed;
 //  List<Widget> subCatList;
-  List<Category> categoryList = [];
+  List<Categoria> listaCategoria = [];
   Function getSubCat;
   Map<int, List<Widget>> subCatList;
   FilterDrawer(
     this.getSortingData,
-    this.categoryList,
+    this.listaCategoria,
     this.subCatList,
     this.getSubCat,
   );
@@ -105,10 +105,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                             widget.getSubCat(index);
                           }
                         },
-                        title: Text(widget.categoryList[index].name),
+                        title: Text(widget.listaCategoria[index].nome),
                         children: widget.subCatList[index]);
                   },
-                  itemCount: widget.categoryList.length,
+                  itemCount: widget.listaCategoria.length,
                 )),
           ),
         ],
