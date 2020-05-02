@@ -24,7 +24,7 @@ Widget shoppingCarrinhoIconButton() {
               new IconButton(
                 iconSize: 30,
                 icon: new Icon(
-                  Icons.shopping_cart,
+                  Icons.shopping_basket,
                   color: Colors.principalTheOffer,
                 ),
                 onPressed: null,

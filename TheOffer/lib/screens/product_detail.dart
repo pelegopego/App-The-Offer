@@ -600,7 +600,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
         return _tabController.index == 0
             ? FloatingActionButton(
                 child: Icon(
-                  Icons.shopping_cart,
+                  Icons.shopping_basket,
                   color: Colors.secundariaTheOffer,
                 ),
                 onPressed: produtoSelecionado.quantidadeRestante > 0 

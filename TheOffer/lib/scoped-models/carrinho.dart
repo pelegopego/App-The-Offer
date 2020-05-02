@@ -59,25 +59,27 @@ mixin CarrinhoModel on Model {
         "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produto/$id'}");
     http.Response response = await http.get(Configuracoes.BASE_URL + 'produto/$id/');
     responseBody = json.decode(response.body);
-    responseBody['produtos'].forEach((produtoJson) {
-    imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
-    imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
-    produtoDetalhado = Produto(
-        id                    : int.parse(produtoJson['id']),
-        titulo                : produtoJson['titulo'],
-        descricao             : produtoJson['descricao'],
-        imagem                : imagemJson,
-        valor                 : produtoJson['valor'],
-        valorNumerico         : double.parse(produtoJson['valorNumerico']),
-        quantidade            : int.parse(produtoJson['quantidade']),
-        quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
-        dataInicial           : produtoJson['dataInicial'],
-        dataFinal             : produtoJson['dataFinal'],
-        dataCadastro          : produtoJson['dataCadastro'],
-        modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
-        modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
-        usuarioId             : int.parse(produtoJson['usuario_id'])
-      );
+    responseBody['empresas'].forEach((empresaJson) {
+      empresaJson['produtos'].forEach((produtoJson) {
+        imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
+        imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+        produtoDetalhado = Produto(
+            id                    : int.parse(produtoJson['id']),
+            titulo                : produtoJson['titulo'],
+            descricao             : produtoJson['descricao'],
+            imagem                : imagemJson,
+            valor                 : produtoJson['valor'],
+            valorNumerico         : double.parse(produtoJson['valorNumerico']),
+            quantidade            : int.parse(produtoJson['quantidade']),
+            quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
+            dataInicial           : produtoJson['dataInicial'],
+            dataFinal             : produtoJson['dataFinal'],
+            dataCadastro          : produtoJson['dataCadastro'],
+            modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
+            modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
+            usuarioId             : int.parse(produtoJson['usuario_id'])
+          );
+          });
       });
 
     MaterialPageRoute route = MaterialPageRoute(

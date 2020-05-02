@@ -1,18 +1,18 @@
 class Produto {
-     final int id;
-    final String titulo;
-    final String descricao;
-    final String imagem;
-    final String valor;
-    final double valorNumerico;
-    final int quantidade;
-    final int quantidadeRestante;
+  final int    id;
+  final String titulo;
+  final String descricao;
+  final String imagem;
+  final String valor;
+  final double valorNumerico;
+  final int    quantidade;
+  final int    quantidadeRestante;
   final String dataInicial;
   final String dataFinal;
   final String dataCadastro;
-       final int modalidadeRecebimento1;
-       final int modalidadeRecebimento2;
-       final int usuarioId;
+  final int    modalidadeRecebimento1;
+  final int    modalidadeRecebimento2;
+  final int    usuarioId;
 
   Produto(
     {this.id,

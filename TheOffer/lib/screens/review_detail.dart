@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/models/product.dart';
 import 'package:theoffer/models/review.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -13,21 +12,20 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReviewDetailScreen extends StatefulWidget {
-  final Product product;
-
+/*
   ReviewDetailScreen(this.product);
-
+*/
   @override
   State<StatefulWidget> createState() {
-    return _ReviewDetailScreenState(product);
+    //return _ReviewDetailScreenState(product);
   }
 }
 
 class _ReviewDetailScreenState extends State<ReviewDetailScreen>
     with SingleTickerProviderStateMixin {
-  Product product;
+  //Product product;
 
-  _ReviewDetailScreenState(this.product);
+  //_ReviewDetailScreenState(this.product);
 
   int _rating;
   final _title = TextEditingController();
@@ -75,7 +73,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    FadeInImage(
+               /*                     FadeInImage(
                                       image: NetworkImage(product.image != null
                                           ? product.image
                                           : ''),
@@ -83,7 +81,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
                                           'images/placeholders/no-product-image.png'),
                                       width: 100,
                                       height: 100,
-                                    ),
+                                    ),*/
                                   ],
                                 )),
                             Expanded(
@@ -92,7 +90,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      product.name,
+                                   '',//   product.name,
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
@@ -240,7 +238,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
             "user_id": user_id,
             // "user_id": int.parse("1255") ,
           };
-      SubmitReview(context, toJson(), product.reviewProductId);
+      //SubmitReview(context, toJson(), product.reviewProductId);
     }
   }
 

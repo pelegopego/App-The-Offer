@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/models/Produto.dart';
+import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -66,6 +67,62 @@ Widget buttonContent(int index, Produto produto) {
         fontSize: 14,
         fontWeight: FontWeight.w500),
   );
+}
+
+
+Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
+    Size _deviceSize, BuildContext context) {
+  return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+    return GestureDetector(
+        child: SizedBox(
+            width: _deviceSize.width * 0.4,
+            child:  Column(
+                children: <Widget>[ 
+                Container(
+                    width: _deviceSize.width,
+                    color: Colors.terciariaTheOffer,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.business,
+                            color: Colors.secundariaTheOffer,
+                          ),
+                          SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(listaProdutoEmpresa[index].fantasia,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.secundariaTheOffer)),
+                        ],
+                      ),
+                    )
+                    ),
+                  Container(height: 290,
+                      child: 
+                        ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listaProdutoEmpresa[index].listaProduto.length,
+                        itemBuilder: (context, index2) {
+                          if (listaProdutoEmpresa[index].listaProduto.length > 0) {
+                            return Container(child: cardProdutos(index2, listaProdutoEmpresa[index].listaProduto, _deviceSize, context));
+                          } else {
+                            return Container();
+                          }
+                        }
+                      ),
+            ),
+                 Divider(
+                height: 5,
+              ),
+              ]
+              )
+                )
+                );
+      });
 }
 
 Widget cardProdutos(int index, List<Produto> listaProdutos,

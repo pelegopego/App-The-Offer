@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
+import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/auth.dart';
 import 'package:theoffer/screens/search.dart';
@@ -32,7 +33,8 @@ class _TelaProdutos extends State<TelaProdutos> {
   bool _isBannerLoading = true;
   bool _produtosLoading = true;
   bool _isAuthenticated = false;
-  List<Produto> listaProdutos = [];
+  List<ProdutoEmpresa> listaProdutoEmpresa = [];
+  List<Produto> _listaProduto = [];
   List<BannerImage> banners = [];
   List<String> bannerImageUrls = [];
   List<String> bannerLinks = [];
@@ -42,7 +44,7 @@ class _TelaProdutos extends State<TelaProdutos> {
   void initState() {
     super.initState();
     // getFavoritesCount();
-    getBanners();
+    //getBanners();
     getProdutos();
     locator<ConnectivityManager>().initConnectivity(context);
   }
@@ -91,19 +93,18 @@ class _TelaProdutos extends State<TelaProdutos> {
         drawer: HomeDrawer(),
         body: Container(
           color: Colors.terciariaTheOffer,
-          child: CustomScrollView(slivers: [
-            SliverList(
+          child: CustomScrollView(slivers: [ 
+            /*SliverList(
               delegate: SliverChildListDelegate([
                 Container(
                     color: Colors.grey.withOpacity(0.1), child: bannerCarousel)
               ]),
-            ),
+            ),*/
             SliverToBoxAdapter(
               child: Divider(
                 height: 1.0,
               ),
             ),
-            
             _produtosLoading
                 ? SliverList(
                     delegate: SliverChildListDelegate([
@@ -117,32 +118,21 @@ class _TelaProdutos extends State<TelaProdutos> {
                   ]))
                 : SliverToBoxAdapter(
                     child: Container(
-                      height: 290,
+                      height: _deviceSize.height * 0.70,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listaProdutos.length,
+                        scrollDirection: Axis.vertical,
+                        itemCount: listaProdutoEmpresa.length,
+                        shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return cardProdutos(
-                              index, listaProdutos, _deviceSize, context);
-                        },
-                      ),
-                    ),
-                  ), SliverToBoxAdapter(
-                    child: Container(
-                      height: 290,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listaProdutos.length,
-                        itemBuilder: (context, index) {
-                          return cardProdutos(
-                              index, listaProdutos, _deviceSize, context);
-                        },
+                          if (listaProdutoEmpresa[index].listaProduto.length > 0) {
+                            return cardProdutosEmpresa(index, listaProdutoEmpresa, _deviceSize, context);
+                          } else {
+                            return Container();
+                          }
+                        }
                       ),
                     ),
                   ),
-            SliverToBoxAdapter(
-              child: Divider(),
-            ),
           ]),
         ),
         bottomNavigationBar:
@@ -238,31 +228,47 @@ class _TelaProdutos extends State<TelaProdutos> {
     String imagemJson = ''; 
     setState(() {
       _produtosLoading = true;
-      listaProdutos = [];
+      listaProdutoEmpresa = [];
     });
     http.get(Configuracoes.BASE_URL + 'produtos/${widget.idCategoria}').then((response) {
       responseBody = json.decode(response.body);
-      responseBody['produtos'].forEach((produtoJson) {
-      imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
-      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+      responseBody['empresas'].forEach((empresaJson) {
           setState(() { 
-            listaProdutos.add(Produto(
-             id                    : int.parse(produtoJson['id']),
-             titulo                : produtoJson['titulo'],
-             descricao             : produtoJson['descricao'],
-             imagem                : imagemJson,
-             valor                 : produtoJson['valor'],
-             valorNumerico         : double.parse(produtoJson['valorNumerico']),
-             quantidade            : int.parse(produtoJson['quantidade']),
-             quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
-             dataInicial           : produtoJson['dataInicial'],
-             dataFinal             : produtoJson['dataFinal'],
-             dataCadastro          : produtoJson['dataCadastro'],
-             modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
-             modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
-             usuarioId             : int.parse(produtoJson['usuario_id'])
-            ));
-          });
+            _listaProduto = [];
+
+            if (empresaJson['produtos'] != null) {
+              empresaJson['produtos'].forEach((produtoJson) {
+              imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
+              imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+                  setState(() { 
+                    _listaProduto.add(Produto(
+                    id                    : int.parse(produtoJson['id']),
+                    titulo                : produtoJson['titulo'],
+                    descricao             : produtoJson['descricao'],
+                    imagem                : imagemJson,
+                    valor                 : produtoJson['valor'],
+                    valorNumerico         : double.parse(produtoJson['valorNumerico']),
+                    quantidade            : int.parse(produtoJson['quantidade']),
+                    quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
+                    dataInicial           : produtoJson['dataInicial'],
+                    dataFinal             : produtoJson['dataFinal'],
+                    dataCadastro          : produtoJson['dataCadastro'],
+                    modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
+                    modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
+                    usuarioId             : int.parse(produtoJson['usuario_id'])
+                    ));
+                  });
+                });
+             }  
+            listaProdutoEmpresa.add(ProdutoEmpresa(
+            empresaId             : int.parse(empresaJson['id']),
+            razaoSocial           : empresaJson['razaosocial'],
+            fantasia              : empresaJson['fantasia'],
+            listaProduto: _listaProduto           
+            ),
+          );
+          }
+          );
         }
       );
       setState(() {

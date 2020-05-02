@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:theoffer/models/favorites.dart';
 import 'package:theoffer/models/option_type.dart';
 import 'package:theoffer/models/option_value.dart';
-import 'package:theoffer/models/product.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -27,7 +26,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   List<Favorite> deletedProducts = [];
   Future<List<Favorite>> futureFavoriteProducts;
   bool _isLoading = false;
-  Product tappedProduct;
   final int perPage = TWENTY;
   int currentPage = ONE;
   int subCatId = ZERO;
@@ -345,12 +343,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         Settings.SERVER_URL + 'api/v1/products/$slug?data_set=large',
         headers: headers);
     responseBody = json.decode(response.body);
-    List<Product> variants = [];
     List<OptionValue> optionValues = [];
     List<OptionType> optionTypes = [];
 
     int reviewProductId = responseBody['data']['attributes']["id"];
-    variants = [];
     if (responseBody['data']['attributes']['has_variants']) {
       return responseBody['data']['included']['variants'].first['data']
           ['attributes']['id'];
