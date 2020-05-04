@@ -341,13 +341,9 @@ class _AuthenticationState extends State<Authentication>
       });
       return;
     }
+    
     _formKeyForLogin.currentState.save();
-    final Map<String, dynamic> authData = {
-      "spree_user": {
-        'email': _formData['email'],
-        'senha': _formData['senha'],
-      }
-    };
+
 
     Map<dynamic, dynamic> oMapLogin = {
       'usuario': _formData['email'],
@@ -368,7 +364,11 @@ class _AuthenticationState extends State<Authentication>
 
       String message = responseBody['message'];        
       if (message.isEmpty) {           
-        message = 'Entrou com sucesso.';
+        message = "Entrou com sucesso.";
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text("Entrou com sucesso"),
+          duration: Duration(seconds: 104),
+        ));
         hasError = false;      
         model.getAddress();
         model.localizarCarrinho(null, 1);
@@ -381,33 +381,14 @@ class _AuthenticationState extends State<Authentication>
           content: Text(message),
           duration: Duration(seconds: 1),
         ));
+      setState(() {
+      _isLoader = false;
+    });  
     }
-
-      final Map<String, dynamic> successInformation = {
-        'success': !hasError,
-        'message': message
-      };
-      /*if (successInformation['success']) {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setInt('id', responseData['id']);
-        prefs.setString('email', responseData['email']);
-        prefs.setString('spreeApiKey', responseData['spree_api_key']);
-        prefs.setString('createdAt', responseData['created_at']);
-        model.getAddress();
-        model.localizarCarrinho(null, 1);
-        model.loggedInUser();
-        Navigator.of(context).pop();
-      } else {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('${successInformation['message']}'),
-          duration: Duration(seconds: 1),
-        ));
-      }*/
       return responseBody['message'];        
     });       
-    setState(() {
-      _isLoader = false;
-    });
+
+    
   }
 
   void _submitForm() async {
