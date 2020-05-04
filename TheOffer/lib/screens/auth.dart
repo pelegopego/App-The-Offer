@@ -188,6 +188,10 @@ class _AuthenticationState extends State<Authentication>
                 SizedBox(
                   height: 30.0,
                 ),
+                _buildNomeTextField(),
+                SizedBox(
+                  height: 30.0,
+                ),
                 _buildEmailTextField(),
                 SizedBox(
                   height: 30.0,
@@ -226,6 +230,25 @@ class _AuthenticationState extends State<Authentication>
         ),
       ),
     );
+  }
+
+  Widget _buildNomeTextField() {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: TextFormField(
+          style: TextStyle(
+            color: Colors.secundariaTheOffer,
+          ),
+          decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelText: 'Nome',
+              contentPadding: EdgeInsets.all(0.0),
+              enabledBorder: _underlineInputBorder),
+          keyboardType: TextInputType.text,
+          onSaved: (String value) {
+            _formData['nome'] = value;
+          },
+        ));
   }
 
   Widget _buildEmailTextField() {
@@ -399,57 +422,57 @@ class _AuthenticationState extends State<Authentication>
       return;
     }
     _formKey.currentState.save();
-    final Map<String, dynamic> authData = {
-      "spree_user": {
-        'email': _formData['email'],
-        'senha': _formData['senha'],
-      }
-    };
-
     Map<dynamic, dynamic> responseBody;
 
-    final http.Response response = await http.post(
-      Settings.SERVER_URL + 'auth/accounts',
-      body: json.encode(authData),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    String message = 'Ocorreu algum erro.';
-    bool hasError = true;
-
-    if (responseData.containsKey('id')) {
-      print('success');
-      message = 'Registrado com sucesso.';
-      hasError = false;
-    } else if (responseData.containsKey('errors')) {
-      message = "Email " + responseData["errors"]["email"][0];
-    }
-
-    final Map<String, dynamic> successInformation = {
-      'success': !hasError,
-      'message': message
+    Map<dynamic, dynamic> oMapCadastrarLogin = {
+      'nome': _formData['nome'],
+      'usuario': _formData['email'],
+      'senha': _formData['senha'],      
+      'telefone': _formData['telefone'],
     };
-    if (successInformation['success']) {
-      Navigator.of(context).pop();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return _alertDialog('Success!',
-                "Conta criada com sucesso! Entre para continuar.", context);
-          });
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('${successInformation['message']}'),
-        duration: Duration(seconds: 1),
-      ));
-    } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('${successInformation['message']}'),
-        duration: Duration(seconds: 1),
-      ));
-    }
-    setState(() {
-      _isLoader = false;
+
+    http
+        .post(Configuracoes.BASE_URL + 'usuario/salvar/', body: oMapCadastrarLogin)
+        .then((response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      String message = 'Ocorreu algum erro.';
+      bool hasError = true;
+
+      message = responseData['message'];
+
+      if (message.isEmpty) {
+        print('success');
+        message = 'Registrado com sucesso.';
+        hasError = false;
+      } else if (responseData.containsKey('errors')) {
+        message = "Email " + responseData["errors"]["email"][0];
+      }
+
+      final Map<String, dynamic> successInformation = {
+        'success': !hasError,
+        'message': message
+      };
+      if (successInformation['success']) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertDialog('Success!',
+                  "Conta criada com sucesso! Entre para continuar.", context);
+            });
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${successInformation['message']}'),
+          duration: Duration(seconds: 1),
+        ));
+      } else {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${successInformation['message']}'),
+          duration: Duration(seconds: 1),
+        ));
+      }
+      setState(() {
+        _isLoader = false;
+      });
     });
   }
 
