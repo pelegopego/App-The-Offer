@@ -10,6 +10,7 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theoffer/widgets/snackbar.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -267,7 +268,7 @@ class _AuthenticationState extends State<Authentication>
           return null;
         },
         onSaved: (String value) {
-          _formData['password'] = value;
+          _formData['senha'] = value;
         },
       ),
     );
@@ -298,6 +299,8 @@ class _AuthenticationState extends State<Authentication>
   }
 
   void _submitLogin(MainModel model) async {
+    Map<dynamic, dynamic> responseBody;
+
     setState(() {
       _isLoader = true;
     });
@@ -311,51 +314,66 @@ class _AuthenticationState extends State<Authentication>
     final Map<String, dynamic> authData = {
       "spree_user": {
         'email': _formData['email'],
-        'password': _formData['password'],
+        'senha': _formData['senha'],
       }
     };
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final http.Response response = await http.post(
-      Settings.SERVER_URL + 'login.json',
-      body: json.encode(authData),
-      headers: {
-        'Content-Type': 'application/json',
-        'guest-order-token': prefs.getString('orderToken')
-      },
-    );
-
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    String message = 'Ocorreu algum erro.';
-    bool hasError = true;
-    if (responseData.containsKey('id')) {
-      message = 'Entrou com sucesso.';
-      hasError = false;
-    } else if (responseData.containsKey('error')) {
-      message = responseData["error"];
-    }
-
-    final Map<String, dynamic> successInformation = {
-      'success': !hasError,
-      'message': message
+    Map<dynamic, dynamic> oMapLogin = {
+      'usuario': _formData['email'],
+      'senha': _formData['senha'],
     };
-    if (successInformation['success']) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setInt('id', responseData['id']);
-      prefs.setString('email', responseData['email']);
-      prefs.setString('spreeApiKey', responseData['spree_api_key']);
-      prefs.setString('createdAt', responseData['created_at']);
-      model.getAddress();
-      model.localizarCarrinho(null, 1);
-      model.loggedInUser();
-      Navigator.of(context).pop();
+
+    http
+        .post(
+            Configuracoes.BASE_URL + 'usuario/logar/',
+            body: oMapLogin)
+        .then((response) {
+      
+      bool hasError = true;          
+    
+      print("logou");
+      print(json.decode(response.body).toString());      
+      responseBody = json.decode(response.body);      
+
+      String message = responseBody['message'];        
+      if (message.isEmpty) {           
+        message = 'Entrou com sucesso.';
+        hasError = false;      
+        model.getAddress();
+        model.localizarCarrinho(null, 1);
+        model.loggedInUser();
+        Navigator.of(context).pop();
+        
+        
     } else {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('${successInformation['message']}'),
-        duration: Duration(seconds: 1),
-      ));
+          content: Text(message),
+          duration: Duration(seconds: 1),
+        ));
     }
+
+      final Map<String, dynamic> successInformation = {
+        'success': !hasError,
+        'message': message
+      };
+      /*if (successInformation['success']) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setInt('id', responseData['id']);
+        prefs.setString('email', responseData['email']);
+        prefs.setString('spreeApiKey', responseData['spree_api_key']);
+        prefs.setString('createdAt', responseData['created_at']);
+        model.getAddress();
+        model.localizarCarrinho(null, 1);
+        model.loggedInUser();
+        Navigator.of(context).pop();
+      } else {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${successInformation['message']}'),
+          duration: Duration(seconds: 1),
+        ));
+      }*/
+      return responseBody['message'];        
+    });       
     setState(() {
       _isLoader = false;
     });
@@ -375,9 +393,11 @@ class _AuthenticationState extends State<Authentication>
     final Map<String, dynamic> authData = {
       "spree_user": {
         'email': _formData['email'],
-        'password': _formData['password'],
+        'senha': _formData['senha'],
       }
     };
+
+     Map<dynamic, dynamic> responseBody;
 
     final http.Response response = await http.post(
       Settings.SERVER_URL + 'auth/accounts',

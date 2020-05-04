@@ -40,3 +40,8 @@ final LoginErroSnackbar = SnackBar(
   content: Text('Entre em sua conta para avaliar.'),
   duration: Duration(seconds: 1),
 );
+final loginSucesso = SnackBar(
+  content: Text('Login realizado com sucesso!'),
+  duration: Duration(seconds: 1),
+);
+
