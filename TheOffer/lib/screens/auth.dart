@@ -28,8 +28,8 @@ class _AuthenticationState extends State<Authentication>
   final GlobalKey<FormState> _formKeyForLogin = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _passwordTextController = TextEditingController();
-  final UnderlineInputBorder _underlineInputBorder =
-      UnderlineInputBorder(borderSide: BorderSide(color: Colors.secundariaTheOffer));
+  final UnderlineInputBorder _underlineInputBorder = UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.secundariaTheOffer));
 
   bool _isLoader = false;
   TabController _tabController;
@@ -81,18 +81,23 @@ class _AuthenticationState extends State<Authentication>
                   padding: EdgeInsets.all(12.0),
                   child: Text(
                     "ENTRAR",
-                    style: TextStyle(fontSize: 13, color: Colors.principalTheOffer),
+                    style: TextStyle(
+                        fontSize: 13, color: Colors.principalTheOffer),
                   ),
                 ),
                 Text(
                   "CRIAR CONTA",
-                  style: TextStyle(fontSize: 13, color: Colors.principalTheOffer),
+                  style:
+                      TextStyle(fontSize: 13, color: Colors.principalTheOffer),
                 )
               ],
             ),
             title: Text(
               'TheOffer',
-              style: TextStyle(fontFamily: 'HolyFat', fontSize: 50, color: Colors.principalTheOffer),
+              style: TextStyle(
+                  fontFamily: 'HolyFat',
+                  fontSize: 50,
+                  color: Colors.principalTheOffer),
             ),
           ),
           body: TabBarView(
@@ -111,60 +116,61 @@ class _AuthenticationState extends State<Authentication>
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return SingleChildScrollView(
-        child:  Container(
-            width: targetWidth,
-            child: Form( 
-              key: _formKeyForLogin,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  _buildEmailTextField(),
-                  SizedBox(
-                    height: 45.0,
-                  ),
-                  _buildPasswordTextField(false),
-                  SizedBox(
-                    height: 35.0,
-                  ),
-                  _isLoader
-                      ? CircularProgressIndicator(backgroundColor: Colors.secundariaTheOffer)
-                      : Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(15),
-                          child: FlatButton(
-                            textColor: Colors.principalTheOffer,
-                            color: Colors.secundariaTheOffer,
-                            child: Text(
-                              'ENTRAR',
-                              style: TextStyle(fontSize: 12.0),
-                            ),
-                            onPressed: () => _submitLogin(model),
-                          )),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ForgetPassword();
-                      }));
-                    },
-                    child: Text(
-                      'Esqueceu sua senha?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
+        child: Container(
+          width: targetWidth,
+          child: Form(
+            key: _formKeyForLogin,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 30.0,
+                ),
+                _buildEmailTextField(),
+                SizedBox(
+                  height: 45.0,
+                ),
+                _buildPasswordTextField(false),
+                SizedBox(
+                  height: 35.0,
+                ),
+                _isLoader
+                    ? CircularProgressIndicator(
+                        backgroundColor: Colors.secundariaTheOffer)
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.all(15),
+                        child: FlatButton(
+                          textColor: Colors.principalTheOffer,
                           color: Colors.secundariaTheOffer,
-                          fontSize: 14.0),
-                    ),
-                  )
-                ],
-              ),
+                          child: Text(
+                            'ENTRAR',
+                            style: TextStyle(fontSize: 12.0),
+                          ),
+                          onPressed: () => _realizarLogin(model),
+                        )),
+                SizedBox(
+                  height: 20.0,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ForgetPassword();
+                    }));
+                  },
+                  child: Text(
+                    'Esqueceu sua senha?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.secundariaTheOffer,
+                        fontSize: 14.0),
+                  ),
+                )
+              ],
             ),
           ),
+        ),
       );
     });
   }
@@ -199,7 +205,8 @@ class _AuthenticationState extends State<Authentication>
                   height: 30.0,
                 ),
                 _isLoader
-                    ? CircularProgressIndicator(backgroundColor: Colors.secundariaTheOffer)
+                    ? CircularProgressIndicator(
+                        backgroundColor: Colors.secundariaTheOffer)
                     : Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(15),
@@ -208,7 +215,7 @@ class _AuthenticationState extends State<Authentication>
                           color: Colors.secundariaTheOffer,
                           child: Text('CRIAR CONTA',
                               style: TextStyle(fontSize: 12.0)),
-                          onPressed: () => _submitForm(),
+                          onPressed: () => _abrirCadastroUsuario(),
                         )),
                 SizedBox(
                   height: 20.0,
@@ -224,9 +231,9 @@ class _AuthenticationState extends State<Authentication>
   Widget _buildEmailTextField() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(    
+        child: TextFormField(
           style: TextStyle(
-              color: Colors.secundariaTheOffer,
+            color: Colors.secundariaTheOffer,
           ),
           decoration: InputDecoration(
               labelStyle: TextStyle(color: Colors.secundariaTheOffer),
@@ -252,17 +259,15 @@ class _AuthenticationState extends State<Authentication>
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
       child: TextFormField(
-          style: TextStyle(
-              color: Colors.secundariaTheOffer,
-          ),
+        style: TextStyle(
+          color: Colors.secundariaTheOffer,
+        ),
         decoration: InputDecoration(
-            labelText: isLimitCharacter
-                ? 'Senha (Mínimo de 6 dígitos)'
-                : 'Senha',
+            labelText:
+                isLimitCharacter ? 'Senha (Mínimo de 6 dígitos)' : 'Senha',
             labelStyle: TextStyle(color: Colors.secundariaTheOffer),
             contentPadding: EdgeInsets.all(0.0),
-            enabledBorder: _underlineInputBorder
-            ),
+            enabledBorder: _underlineInputBorder),
         obscureText: true,
         controller: _passwordTextController,
         validator: (String value) {
@@ -280,34 +285,34 @@ class _AuthenticationState extends State<Authentication>
 
   Widget _buildPasswordConfirmTextField() {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-          child: TextFormField(
-            style: TextStyle(
-                color: Colors.secundariaTheOffer,
-            ),
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Confirmar senha',
-              enabledBorder: _underlineInputBorder,
-              contentPadding: EdgeInsets.all(0.0),
-            ),
-            obscureText: true,
-            validator: (String value) {
-              if (_passwordTextController.text != value) {
-                return 'As senhas estão diferentes.';
-              }
-              return null;
-            },
-          ),
-        );
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: TextFormField(
+        style: TextStyle(
+          color: Colors.secundariaTheOffer,
+        ),
+        decoration: InputDecoration(
+          labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+          labelText: 'Confirmar senha',
+          enabledBorder: _underlineInputBorder,
+          contentPadding: EdgeInsets.all(0.0),
+        ),
+        obscureText: true,
+        validator: (String value) {
+          if (_passwordTextController.text != value) {
+            return 'As senhas estão diferentes.';
+          }
+          return null;
+        },
+      ),
+    );
   }
 
   Widget _buildTelefoneTextField() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(    
+        child: TextFormField(
           style: TextStyle(
-              color: Colors.secundariaTheOffer,
+            color: Colors.secundariaTheOffer,
           ),
           decoration: InputDecoration(
               labelStyle: TextStyle(color: Colors.secundariaTheOffer),
@@ -329,7 +334,7 @@ class _AuthenticationState extends State<Authentication>
         ));
   }
 
-  void _submitLogin(MainModel model) async {
+  void _realizarLogin(MainModel model) async {
     Map<dynamic, dynamic> responseBody;
 
     setState(() {
@@ -341,9 +346,8 @@ class _AuthenticationState extends State<Authentication>
       });
       return;
     }
-    
-    _formKeyForLogin.currentState.save();
 
+    _formKeyForLogin.currentState.save();
 
     Map<dynamic, dynamic> oMapLogin = {
       'usuario': _formData['email'],
@@ -351,47 +355,40 @@ class _AuthenticationState extends State<Authentication>
     };
 
     http
-        .post(
-            Configuracoes.BASE_URL + 'usuario/logar/',
-            body: oMapLogin)
+        .post(Configuracoes.BASE_URL + 'usuario/logar/', body: oMapLogin)
         .then((response) {
-      
-      bool hasError = true;          
-    
-      print("logou");
-      print(json.decode(response.body).toString());      
-      responseBody = json.decode(response.body);      
+      bool hasError = true;
 
-      String message = responseBody['message'];        
-      if (message.isEmpty) {           
+      print("logou");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+
+      String message = responseBody['message'];
+      if (message.isEmpty) {
         message = "Entrou com sucesso.";
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
           duration: Duration(seconds: 104),
         ));
-        hasError = false;      
+        hasError = false;
         model.getAddress();
         model.localizarCarrinho(null, 1);
         model.loggedInUser();
         Navigator.of(context).pop();
-        
-        
-    } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      } else {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(message),
           duration: Duration(seconds: 1),
         ));
-      setState(() {
-      _isLoader = false;
-    });  
-    }
-      return responseBody['message'];        
-    });       
-
-    
+        setState(() {
+          _isLoader = false;
+        });
+      }
+      return responseBody['message'];
+    });
   }
 
-  void _submitForm() async {
+  void _abrirCadastroUsuario() async {
     setState(() {
       _isLoader = true;
     });
@@ -409,7 +406,7 @@ class _AuthenticationState extends State<Authentication>
       }
     };
 
-     Map<dynamic, dynamic> responseBody;
+    Map<dynamic, dynamic> responseBody;
 
     final http.Response response = await http.post(
       Settings.SERVER_URL + 'auth/accounts',
@@ -464,7 +461,8 @@ class _AuthenticationState extends State<Authentication>
         FlatButton(
           child: Text('Later',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.secundariaTheOffer.shade300)),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.secundariaTheOffer.shade300)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -472,7 +470,8 @@ class _AuthenticationState extends State<Authentication>
         FlatButton(
           child: Text('Entrar',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.secundariaTheOffer.shade300)),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.secundariaTheOffer.shade300)),
           onPressed: () {
             Navigator.pop(context);
             MaterialPageRoute route =
