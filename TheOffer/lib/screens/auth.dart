@@ -184,15 +184,19 @@ class _AuthenticationState extends State<Authentication>
                 ),
                 _buildEmailTextField(),
                 SizedBox(
-                  height: 45.0,
+                  height: 30.0,
                 ),
                 _buildPasswordTextField(true),
                 SizedBox(
-                  height: 45.0,
+                  height: 30.0,
                 ),
                 _buildPasswordConfirmTextField(),
                 SizedBox(
-                  height: 45.0,
+                  height: 30.0,
+                ),
+                _buildTelefoneTextField(),
+                SizedBox(
+                  height: 30.0,
                 ),
                 _isLoader
                     ? CircularProgressIndicator(backgroundColor: Colors.secundariaTheOffer)
@@ -296,6 +300,33 @@ class _AuthenticationState extends State<Authentication>
             },
           ),
         );
+  }
+
+  Widget _buildTelefoneTextField() {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: TextFormField(    
+          style: TextStyle(
+              color: Colors.secundariaTheOffer,
+          ),
+          decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelText: 'Telefone',
+              contentPadding: EdgeInsets.all(0.0),
+              enabledBorder: _underlineInputBorder),
+          keyboardType: TextInputType.phone,
+          /*validator: (String value) {
+            if (value.isEmpty ||
+                !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                    .hasMatch(value)) {
+              return 'Informe um email válido';
+            }
+            return null;
+          },*/
+          onSaved: (String value) {
+            _formData['telefone'] = value;
+          },
+        ));
   }
 
   void _submitLogin(MainModel model) async {
