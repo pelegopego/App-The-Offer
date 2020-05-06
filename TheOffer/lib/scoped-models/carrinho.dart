@@ -119,33 +119,6 @@ mixin CarrinhoModel on Model {
     });
   }
 
-
-    
-
-  void criarCarrinho(int usuarioId, int produtoId, int quantidade) async {
-    Map<String, String> headers = await getHeaders();
-    Map<dynamic, dynamic> responseBody;
-    Map<dynamic, dynamic> orderParams = Map();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    orderParams = {
-      'order': {
-        'line_items': {
-          '0': {'variant_id': 1, 'quantity': quantidade}
-        }
-      }
-    };
-    http
-        .post(Settings.SERVER_URL + 'api/v1/orders',
-            headers: headers, body: json.encode(orderParams))
-        .then((response) {
-      responseBody = json.decode(response.body);
-      prefs.setString('orderToken', responseBody['token']);
-      prefs.setString('orderNumber', responseBody['number']);
-      localizarCarrinho(null, usuarioId);
-    });
-  }
-
   void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, int somar) async {
     Map<dynamic, dynamic> responseBody;
     print("ADICIONANDO ITEM AO CARRINHO");
@@ -174,14 +147,6 @@ mixin CarrinhoModel on Model {
     Produto produto;
     ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-/*
-    if (orderToken != null && spreeApiKey == null) {
-      url =
-          'api/v1/orders/${prefs.getString('orderNumber')}?order_token=${prefs.getString('orderToken')}';
-    } else if (spreeApiKey != null) {
-      url = 'api/v1/orders/current';
-    }
-*/
     try {
       _listaItensPedido.clear();
       objetoItemPedido = {
@@ -240,95 +205,7 @@ mixin CarrinhoModel on Model {
       return false;
     }
   }
-/*
-  Future<bool> changeState() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
-    Map<dynamic, dynamic> responseBody;
 
-    _isLoading = true;
-    notifyListeners();
-
-    http.Response response = await http.put(
-        Settings.SERVER_URL +
-            'api/v1/checkouts/${prefs.getString('orderNumber')}/next.json?order_token=${prefs.getString('orderToken')}',
-        headers: headers);
-
-    responseBody = json.decode(response.body);
-    print("ORDER STATE CHANGED -------> ${json.decode(response.body)}");
-    print(
-        "ORDER STATE PAYMENTS ARRAY ------> ${json.decode(response.body)['payments']}");
-    _pedido = Pedido(
-        id: responseBody[''],
-        itemTotal: responseBody['item_total'],
-        adjustments: responseBody['adjustments'],
-        adjustmentTotal: responseBody['adjustment_total'],
-        displayAdjustmentTotal: responseBody['display_adjustment_total'],
-        displaySubTotal: responseBody['display_item_total'],
-        displayTotal: responseBody['display_total'],
-        lineItems: _lineItems,
-        shipTotal: responseBody['display_ship_total'],
-        totalQuantity: responseBody['total_quantity'],
-        state: responseBody['state']);
-    prefs.setString('numberOfItems', _lineItems.length.toString());
-    await fetchCurrentOrder();
-    _isLoading = false;
-    notifyListeners();
-    return true;
-  }
-
-  Future<bool> completeOrder(int paymentMethodId) async {
-    print("COMPLETE ORDER $paymentMethodId");
-    _isLoading = true;
-    notifyListeners();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
-    print("ITEMTOTAL--------> ${order.itemTotal}");
-
-    print("DISPLAYTOTAL--------> ${order.displayTotal}");
-    Map<String, dynamic> paymentPayload = {
-      'payment': {
-        'payment_method_id': paymentMethodId,
-        'amount': order.total,
-      }
-    };
-    http.Response response = await http.post(
-        Settings.SERVER_URL +
-            'api/v1/orders/${prefs.getString('orderNumber')}/payments?order_token=${prefs.getString('orderToken')}',
-        body: json.encode(paymentPayload),
-        headers: headers);
-    print(json.decode(response.body));
-    _isLoading = false;
-    notifyListeners();
-    return true;
-  }
-
-  getPaymentMethods() async {
-    _paymentMethods = [];
-    _isLoading = true;
-    notifyListeners();
-    Map<dynamic, dynamic> responseBody;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
-    http.Response response = await http.get(
-        Settings.SERVER_URL +
-            'api/v1/orders/${prefs.getString('orderNumber')}/payments/new?order_token=${prefs.getString('orderToken')}',
-        headers: headers);
-    responseBody = json.decode(response.body);
-    print("GET PAYMENT METHODS RESPONSE -------> $responseBody");
-    responseBody['payment_methods'].forEach((paymentMethodObj) {
-      if (paymentMethodObj['name'] == 'Payubiz' ||
-          paymentMethodObj['name'] == 'COD') {
-        _paymentMethods.add(PaymentMethod(
-            id: paymentMethodObj['id'], name: paymentMethodObj['name']));
-        notifyListeners();
-      }
-    });
-    _isLoading = false;
-    notifyListeners();
-    return true;
-  }
-*/
   clearData() async {
     print("CLEAR DATA");
     final SharedPreferences prefs = await SharedPreferences.getInstance();

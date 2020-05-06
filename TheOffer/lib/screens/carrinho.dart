@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/address.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:theoffer/screens/auth.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -108,7 +111,7 @@ class _CarrinhoState extends State<Carrinho> {
     });
   }
 
-  Widget proceedToCheckoutButton() {
+  Widget botaoFinalizarPedido() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Padding(
@@ -134,33 +137,31 @@ class _CarrinhoState extends State<Carrinho> {
                   ),
                   onPressed: () async {
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
+                    Map<dynamic, dynamic> objetoItemPedido = Map();
+                    Map<String, dynamic> responseBody;
                     if (model.pedido != null) {
                       if (model.isAuthenticated) {
                         if (model.pedido.status == 1) {
-                          print('NO CARRINHO');
-                          //bool _stateischanged = await model.changeState();
-                          bool _stateischanged = false;
-                          if (_stateischanged) {
-                            if (model.pedido.status == 6) {
-                              print(
-                                  'SAIU PARA ENTREGA');
-                              //_stateischanged = await model.changeState();
-                              _stateischanged = true;
-                            }
-                          }
-                          setState(() {
-                            stateChanged = _stateischanged;
-                          });
-                          if (stateChanged) {
-                            // print('STATE IS CHANGED, FETCH CURRENT ORDER');
-                            // model.fetchCurrentOrder();
-                     /*       MaterialPageRoute addressRoute =
-                                MaterialPageRoute(
-                                    builder: (context) => AddressPage());
-                            Navigator.push(context, addressRoute);*/
-                          } else {
-                            print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
-                          }
+                              print("ADICIONANDO ITEM AO CARRINHO");
+                              objetoItemPedido = {
+                                "usuario": 1.toString()//user, "produto": produtoId.toString(), "quantidade": quantidade.toString(), "somar": somar.toString()
+                              };
+                              http
+                                  .post(
+                                      Configuracoes.BASE_URL + 'pedido/finalizarCarrinho/',
+                                      body: objetoItemPedido)
+                                  .then((response) {
+                                print("FINALIZANDO CARRINHO");
+                                print(json.decode(response.body).toString());
+                                responseBody = json.decode(response.body);
+
+                                /* tela de pagamento 
+                                MaterialPageRoute addressRoute =
+                                    MaterialPageRoute(
+                                        builder: (context) => AddressPage());
+                                Navigator.push(context, addressRoute);*/
+                              });
+
                         } else {
                           stateChanged = await model.localizarCarrinho(model.pedido.id, model.pedido.usuarioId);
                           if (stateChanged) {
@@ -184,6 +185,7 @@ class _CarrinhoState extends State<Carrinho> {
                       Navigator.popUntil(context,
                           ModalRoute.withName(Navigator.defaultRouteName));
                     }
+
                   },
                 ),
         ),
