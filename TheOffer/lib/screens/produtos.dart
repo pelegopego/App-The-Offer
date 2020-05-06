@@ -225,12 +225,17 @@ class _TelaProdutos extends State<TelaProdutos> {
   }
 
   getProdutos() async {    
+    Map<dynamic, dynamic> objetoItemPedido = Map();
     String imagemJson = ''; 
     setState(() {
       _produtosLoading = true;
       listaProdutoEmpresa = [];
     });
-    http.get(Configuracoes.BASE_URL + 'produtos/${widget.idCategoria}').then((response) {
+
+    objetoItemPedido = {
+          "categoria": widget.idCategoria.toString(), "cidade": CidadeSelecionada.id.toString()
+        };
+    http.post(Configuracoes.BASE_URL + 'produtos', body: objetoItemPedido).then((response) {
       responseBody = json.decode(response.body);
       responseBody['empresas'].forEach((empresaJson) {
           setState(() { 

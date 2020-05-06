@@ -7,6 +7,10 @@ class Autenticacao {
   static int CodigoUsuario = 0;  
 }
 
+class CidadeSelecionada {  
+  static int id = 0;  
+}
+
 final double FREE_SHIPPING_AMOUNT = 699;
 final String CURRENCY_SYMBOL = '₹';
 

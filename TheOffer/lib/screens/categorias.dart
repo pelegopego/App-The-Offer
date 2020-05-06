@@ -15,6 +15,8 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/categoria.dart';
 
 class TelaCategorias extends StatefulWidget {
+  final int idCidade;
+  TelaCategorias({this.idCidade});
   @override
   State<StatefulWidget> createState() {
     return _TelaCategorias();
