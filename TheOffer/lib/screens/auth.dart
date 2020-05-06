@@ -20,7 +20,7 @@ class Authentication extends StatefulWidget {
 
 class _AuthenticationState extends State<Authentication>
     with SingleTickerProviderStateMixin {
-  final Map<String, dynamic> _formData = {'email': null, 'password': null};
+  final Map<String, dynamic> _formData = {'usuario': null, 'senha': null};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyForLogin = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -257,20 +257,18 @@ class _AuthenticationState extends State<Authentication>
           ),
           decoration: InputDecoration(
               labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Email',
+              labelText: 'Usuario',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: _underlineInputBorder),
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
           validator: (String value) {
-            if (value.isEmpty ||
-                !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                    .hasMatch(value)) {
-              return 'Informe um email válido';
+            if (value.isEmpty) {
+              return 'Informe um usuário válido';
             }
             return null;
           },
           onSaved: (String value) {
-            _formData['email'] = value;
+            _formData['usuario'] = value;
           },
         ));
   }
@@ -370,7 +368,7 @@ class _AuthenticationState extends State<Authentication>
     _formKeyForLogin.currentState.save();
 
     Map<dynamic, dynamic> oMapLogin = {
-      'usuario': _formData['email'],
+      'usuario': _formData['usuario'],
       'senha': _formData['senha'],
     };
 
@@ -425,7 +423,7 @@ class _AuthenticationState extends State<Authentication>
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
       'nome': _formData['nome'],
-      'usuario': _formData['email'],
+      'usuario': _formData['usuario'],
       'senha': _formData['senha'],      
       'telefone': _formData['telefone'],
     };
@@ -444,7 +442,7 @@ class _AuthenticationState extends State<Authentication>
         message = 'Registrado com sucesso.';
         hasError = false;
       } else if (responseData.containsKey('errors')) {
-        message = "Email " + responseData["errors"]["email"][0];
+        message = "Usuario " + responseData["errors"]["usuario"][0];
       }
 
       final Map<String, dynamic> successInformation = {
