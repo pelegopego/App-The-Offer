@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _model.loggedInUser();
-    _model.localizarCarrinho(null, 1);//user
+    _model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
     super.initState();
   }
 

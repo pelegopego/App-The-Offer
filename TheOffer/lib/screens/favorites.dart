@@ -265,7 +265,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                     'Removendo dos favoritos, aguarde.',
                                   ),
                                   duration: Duration(seconds: 1),
-                                ));
+                                ));/*
                                 http
                                     .delete(
                                         Settings.SERVER_URL +
@@ -291,7 +291,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                       duration: Duration(seconds: 1),
                                     ));
                                   }
-                                });
+                                });*/
                               },
                             ),
                           ],
@@ -338,7 +338,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Future<int> getProductDetail(String slug) async {
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> responseBody = Map();
-
+/*
     http.Response response = await http.get(
         Settings.SERVER_URL + 'api/v1/products/$slug?data_set=large',
         headers: headers);
@@ -352,7 +352,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           ['attributes']['id'];
     } else {
       return responseBody['data']['included']['id'];
-    }
+    }*/
   }
 
   Future<List<Favorite>> getPaginatedFavorites() async {
@@ -361,7 +361,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     });
 
     Map<String, String> headers = await getHeaders();
-    Map<String, dynamic> responseBody = Map();
+    Map<String, dynamic> responseBody = Map();/*
     http.Response response = await http.get(
         Settings.SERVER_URL +
             'spree/user_favorite_products.json?page=$currentPage&per_page=$perPage&data_set=small',
@@ -381,7 +381,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     setState(() {
       hasMore = true;
       _isLoading = false;
-    });
+    });*/
 
     return favoriteProducts;
   }

@@ -30,7 +30,7 @@ class _EmailEditState extends State<EmailEdit> {
     String userId = prefs.getInt('id').toString();
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> userResponse;
-    String url = Settings.SERVER_URL + "api/v1/users/${userId}";
+    /*String url = Settings.SERVER_URL + "api/v1/users/${userId}";
     http.Response response = await http.get(url, headers: headers);
 
     userResponse = json.decode(response.body);
@@ -39,7 +39,7 @@ class _EmailEditState extends State<EmailEdit> {
       _email = userResponse['email'];
       _fetchingEmail = false;
     });
-    _textFieldController.text = _email;
+    _textFieldController.text = _email;*/
   }
 
   @override
@@ -138,7 +138,7 @@ class _EmailEditState extends State<EmailEdit> {
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> payload = Map();
     payload = {'email': _email, 'user_id': user_id};
-    String url = Settings.SERVER_URL + "api/v1/users/${user_id}";
+    /*String url = Settings.SERVER_URL + "api/v1/users/${user_id}";
     http.Response response =
         await http.put(url, headers: headers, body: json.encode(payload));
 
@@ -154,10 +154,10 @@ class _EmailEditState extends State<EmailEdit> {
         content: Text('Email ${error}'),
         duration: Duration(seconds: 1),
       ));
-    }
+    }*/
   }
 
-  logoutUser(BuildContext context, MainModel model) async {
+  logoutUser(BuildContext context, MainModel model) async {/*
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> headers = await getHeaders();
     http
@@ -165,9 +165,9 @@ class _EmailEditState extends State<EmailEdit> {
         .then((response) {
       prefs.clear();
       model.loggedInUser();
-      model.localizarCarrinho(null, 1);//user
+      model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
     });
     Navigator.popUntil(
-        context, ModalRoute.withName(Navigator.defaultRouteName));
+        context, ModalRoute.withName(Navigator.defaultRouteName));*/
   }
 }

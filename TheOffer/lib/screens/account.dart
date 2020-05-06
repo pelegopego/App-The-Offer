@@ -204,14 +204,14 @@ class _AccountState extends State<Account> {
                   style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () {
-                  logoutUser(context, model);
+                 // logoutUser(context, model);
                 },
               )
             ],
           );
         });
   }
-
+/*
   logoutUser(BuildContext context, MainModel model) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String user_id = prefs.getInt('id').toString();
@@ -223,12 +223,12 @@ class _AccountState extends State<Account> {
       prefs.clear();
       model.clearData();
       model.loggedInUser();
-      model.localizarCarrinho(null, 1);//*user
+      model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
     });
     Navigator.popUntil(
         context, ModalRoute.withName(Navigator.defaultRouteName));
   }
-
+*/
   void navigate_option(String screen, BuildContext context, MainModel model) {
     switch (screen) {
       case "order_history":

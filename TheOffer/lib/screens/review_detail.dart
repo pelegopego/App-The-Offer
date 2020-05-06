@@ -286,7 +286,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
   }
 
   Future<dynamic> SubmitReview(
-      BuildContext c, Map<String, dynamic> map, int id) async {
+      BuildContext c, Map<String, dynamic> map, int id) async {/*
     Map<String, dynamic> m = {"review": map};
 
     RECORD_URL = Settings.SERVER_URL + "products/$id/reviews";
@@ -315,7 +315,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
       });
 
       return response;
-    });
+    });*/
   }
 }
 

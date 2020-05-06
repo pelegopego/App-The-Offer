@@ -285,7 +285,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                                 },
                               ),
                             ));
-                          } else {
+                          } else {/*
                             _scaffoldKey.currentState.showSnackBar(SnackBar(
                               content: Text(
                                 'Adicionando aos favoritos aguarde.',
@@ -309,9 +309,9 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                                 content: Text('Produto adicionado aos favoritos!'),
                                 duration: Duration(seconds: 1),
                               ));
-                            });
+                            });*/
                           }
-                        } else {
+                        } else {/*
                           _scaffoldKey.currentState.showSnackBar(SnackBar(
                             content: Text(
                               'Removendo produto dos favoritos, aguarde.',
@@ -340,7 +340,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                                 duration: Duration(seconds: 1),
                               ));
                             }
-                          });
+                          });*/
                         }
                       },
                     ),
@@ -761,8 +761,8 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               FocusScope.of(context).requestFocus(new FocusNode());
               _formKey.currentState.save();
               if (pincode != '') {
-                bool available =
-                    await model.shipmentAvailability(pincode: pincode);
+                bool available = true;
+//                    await model.shipmentAvailability(pincode: pincode);
                 if (available) {
                   Scaffold.of(context).showSnackBar(codAvailable);
                 } else {

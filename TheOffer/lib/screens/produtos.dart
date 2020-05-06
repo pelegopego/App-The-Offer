@@ -308,7 +308,7 @@ class _TelaProdutos extends State<TelaProdutos> {
     });
   }
 
-  getBanners() async {
+  getBanners() async {/*
     http
         .get(Settings.SERVER_URL +
             'api/v1/taxonomies?q[name_cont]=Landing_Banner&set=nested')
@@ -325,6 +325,6 @@ class _TelaProdutos extends State<TelaProdutos> {
       setState(() {
         _isBannerLoading = false;
       });
-    });
+    });*/
   }
 }

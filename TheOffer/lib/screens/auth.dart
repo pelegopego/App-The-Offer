@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/forget_password.dart';
@@ -9,8 +8,6 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:theoffer/widgets/snackbar.dart';
 
 class Authentication extends StatefulWidget {
   final int index;

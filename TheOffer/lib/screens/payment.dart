@@ -5,7 +5,6 @@ import 'package:theoffer/screens/order_response.dart';
 import 'package:theoffer/screens/payubiz.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/utils/params.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/widgets/order_details_card.dart';
 import 'package:theoffer/widgets/snackbar.dart';

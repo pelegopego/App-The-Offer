@@ -291,15 +291,15 @@ class _HomeDrawer extends State<HomeDrawer> {
       'ng-api': 'true',
       'Auth-Token': api_key,
       'uid': user_id
-    };
+    };/*
     http
         .get(Settings.SERVER_URL + 'logout.json', headers: headers)
         .then((response) {
       prefs.clear();
       model.clearData();
       model.loggedInUser();
-      model.localizarCarrinho(null, 1);//user
-    });
+      model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
+    });*/
   }
 
   @override

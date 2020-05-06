@@ -39,7 +39,7 @@ class _Payubiztelastate extends State<PayubizScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {/*
     flutterWebviewPlugin.onUrlChanged.listen((String url) {
       print("CHANGED URL $url");
       if (url.split('?')[0] == Settings.WEB_URL + 'checkout/order-success') {
@@ -78,6 +78,6 @@ class _Payubiztelastate extends State<PayubizScreen> {
               ),
             ),
           )),
-    );
+    );*/
   }
 }

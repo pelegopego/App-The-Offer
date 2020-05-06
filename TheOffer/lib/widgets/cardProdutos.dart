@@ -7,6 +7,7 @@ import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
+import 'package:theoffer/utils/constants.dart';
 
 class AddToCarrinho extends StatefulWidget {
   List<Produto> todaysDealProducts;
@@ -36,7 +37,7 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 if (widget.produto.quantidadeRestante > 0) {
                   Scaffold.of(context).showSnackBar(processSnackbar);
                   model.adicionarProduto(
-                           usuarioId: 1,//user 
+                           usuarioId: Autenticacao.CodigoUsuario, 
                            produtoId: widget.produto.id, 
                            quantidade: 1,
                            somar: 1);

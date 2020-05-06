@@ -90,7 +90,6 @@ class _ProductSearchState extends State<ProductSearch> {
         pesquisarProduto();
       }
     });
-    getBrandsList();
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -257,7 +256,7 @@ class _ProductSearchState extends State<ProductSearch> {
     });
   }
 
-  Future<List<Produto>> pesquisarProduto() async {
+  Future<List<Produto>> pesquisarProduto() async {/*
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> responseBody = Map();
     print('SENDING REQUEST $slug');
@@ -305,7 +304,7 @@ class _ProductSearchState extends State<ProductSearch> {
 
     print(hasMore);
     print(listaProdutosPesquisa.length);
-
+*/
     return listaProdutosPesquisa;
   }
 
@@ -392,20 +391,6 @@ class _ProductSearchState extends State<ProductSearch> {
         ],
       ),
     );
-  }
-
-  getBrandsList() {
-    http
-        .get(Settings.SERVER_URL +
-            'api/v1/taxonomies?q[name_cont]=Brands&set=nested')
-        .then((response) {
-      responseBody = json.decode(response.body);
-      responseBody['taxonomies'][0]['root']['taxons'].forEach((brandObj) {
-        setState(() {
-          brands.add(Brand(name: brandObj['name'], id: brandObj['id']));
-        });
-      });
-    });
   }
 
   void changedDropDownItem(String selectedCity) {

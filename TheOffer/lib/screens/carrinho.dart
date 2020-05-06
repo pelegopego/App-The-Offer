@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/address.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/screens/auth.dart';
@@ -67,7 +66,7 @@ class _CarrinhoState extends State<Carrinho> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: itemTotalContainer(model),
                     ),
-                    proceedToCheckoutButton(),
+                    botaoFinalizarPedido(),
                   ]))));
     });
   }
@@ -142,10 +141,9 @@ class _CarrinhoState extends State<Carrinho> {
                     if (model.pedido != null) {
                       if (model.isAuthenticated) {
                         if (model.pedido.status == 1) {
-                              print("ADICIONANDO ITEM AO CARRINHO");
+                              print("finalizandocarrinho");
                               objetoItemPedido = {
-                                "usuario": 1.toString()//user, "produto": produtoId.toString(), "quantidade": quantidade.toString(), "somar": somar.toString()
-                              };
+                                "usuario": Autenticacao.CodigoUsuario.toString()                              };
                               http
                                   .post(
                                       Configuracoes.BASE_URL + 'pedido/finalizarCarrinho/',
@@ -276,7 +274,7 @@ class _CarrinhoState extends State<Carrinho> {
                                         icon: Icon(Icons.close),
                                         onPressed: () {
                                           model.removerProdutoCarrinho(model.pedido.listaItensPedido[index].pedidoId,
-                                              1,//user
+                                             Autenticacao.CodigoUsuario,
                                               model.pedido.listaItensPedido[index].produtoId);
                                         },
                                       ),
@@ -329,7 +327,7 @@ class _CarrinhoState extends State<Carrinho> {
                 onTap: () {
                   if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidade - model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante + model.pedido.listaItensPedido[lineItemIndex].quantidade >= index) {
                   model.adicionarProduto(
-                    usuarioId: 1,//user
+                    usuarioId: Autenticacao.CodigoUsuario,
                     produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
                     quantidade: index,
                     somar: 0

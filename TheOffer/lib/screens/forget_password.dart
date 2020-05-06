@@ -136,7 +136,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
         'email': _formData['email'],
       }
     };
-
+/*
     final http.Response response = await http.post(
       Settings.SERVER_URL + 'auth/passwords',
       body: json.encode(authData),
@@ -176,7 +176,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
     }
     setState(() {
       _isLoader = false;
-    });
+    });*/
   }
 
   Widget _alertDialog(String boxTitle, String message, BuildContext context) {

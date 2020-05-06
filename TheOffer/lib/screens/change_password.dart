@@ -123,7 +123,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     });
   }
 
-  setNewPassword(context, model) async {
+  setNewPassword(context, model) async {/*
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -157,7 +157,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         content: Text("Erro ao alterar a senha"),
         duration: Duration(seconds: 1),
       ));
-    }
+    }*/
   }
 
   void _showSuccessDialog(context) {

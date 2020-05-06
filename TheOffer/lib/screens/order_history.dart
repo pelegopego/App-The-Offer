@@ -48,7 +48,7 @@ class _OrderList extends State<OrderList> {
     setState(() {
       hasMore = false;
     });
-
+/*
     Map<String, String> headers = await getHeaders();
     final response = (await http.get(
             Settings.SERVER_URL +
@@ -73,7 +73,7 @@ class _OrderList extends State<OrderList> {
     });
     setState(() {
       hasMore = true;
-    });
+    });*/
     return listaPedidos;
   }
 

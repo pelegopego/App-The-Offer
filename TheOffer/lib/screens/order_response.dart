@@ -11,7 +11,6 @@ import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:theoffer/utils/params.dart';
 import 'package:theoffer/screens/payubiz.dart';
 
 class OrderResponse extends StatefulWidget {
@@ -51,7 +50,7 @@ class _OrderResponseState extends State<OrderResponse> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     print("PEDIDO NÚMERO ${widget.orderNumber}");
     if (widget.orderNumber != null) {
-      Map<String, String> headers = await getHeaders();
+      Map<String, String> headers = await getHeaders();/*
       await http
           .get(Settings.SERVER_URL + '/api/v1/orders/${widget.orderNumber}',
               headers: headers)
@@ -61,7 +60,7 @@ class _OrderResponseState extends State<OrderResponse> {
         setState(() {
           responseBody = json.decode(response.body);
         });
-      });
+      });*/
     } else {
       print("DETAIL ORDER ------- ${widget.detailOrder}");
       setState(() {
@@ -403,7 +402,7 @@ class _OrderResponseState extends State<OrderResponse> {
     }
   }
 
-  retryPayment(responseBody) async {
+  retryPayment(responseBody) async {/*
     setState(() {
       _isLoading = true;
     });
@@ -418,6 +417,6 @@ class _OrderResponseState extends State<OrderResponse> {
               url,
               orderNumber: orderNumber,
             ));
-    Navigator.push(context, payment);
+    Navigator.push(context, payment);*/
   }
 }

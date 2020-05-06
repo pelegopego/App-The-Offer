@@ -41,12 +41,12 @@ mixin UserModel on Model {
   getAddress() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> headers = await getHeaders();
-    Map<String, dynamic> responseBody = Map();
+    Map<String, dynamic> responseBody = Map();/*
     http.Response response = await http.get(
         Settings.SERVER_URL + 'api/v1/users/${prefs.getInt('id')}',
         headers: headers);
     responseBody = json.decode(response.body);
-/*    if (responseBody['ship_address'] != null) {
+    if (responseBody['ship_address'] != null) {
       _shipAddress = Address(
         id: responseBody['ship_address']['id'],
         firstName: responseBody['ship_address']['firstname'],

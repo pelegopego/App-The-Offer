@@ -43,7 +43,6 @@ class _UpdateAddressState extends State<UpdateAddress> {
   static List<Map<String, dynamic>> states = [];
   @override
   void initState() {
-    getStates();
     // getUserInfo();
     super.initState();
     if (widget.shipAddress != null) {
@@ -344,25 +343,6 @@ class _UpdateAddressState extends State<UpdateAddress> {
     );
   }
 
-  getStates() async {
-    Map<String, dynamic> statesResponse;
-    http.Response response =
-        await http.get(Settings.SERVER_URL + 'api/v1/countries/105/states');
-
-    statesResponse = json.decode(response.body);
-    statesResponse['states'].forEach((state) {
-      print(state);
-      setState(() {
-        states.add(state);
-      });
-    });
-    if (widget.shipAddress == null) {
-      setState(() {
-        selectedState = 'State';
-      });
-    }
-  }
-
   void containerForSheet<Map>({BuildContext context, Widget child}) {
     showCupertinoModalPopup<Map>(
       context: context,
@@ -430,20 +410,20 @@ class _UpdateAddressState extends State<UpdateAddress> {
       "user": {"email": prefs.getString('email'), "ship_address": address}
     };
 
-    if (!widget.order && widget.shipAddress == null) {
+    if (!widget.order && widget.shipAddress == null) {/*
       url = "address/create_address";
       http.Response response = await http.post(Settings.SERVER_URL + url,
           headers: headers, body: json.encode(profileAddressData));
       updateResponse = json.decode(response.body);
       if (updateResponse['status'] == 'Address added Successfully!') {
-        await model.localizarCarrinho(null, 1);//user
+        await model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
         await model.getAddress();
         // Navigator.pop(context);
         setState(() {
           _isLoading = false;
         });
         _showSuccessDialog(context);
-      }
+      }*/
     } else {
       if (widget.order) {
         if (widget.shipAddress != null) {
@@ -462,29 +442,29 @@ class _UpdateAddressState extends State<UpdateAddress> {
         }
       }
 
-      if (widget.order) {
+      if (widget.order) {/*
         http.Response response = await http.put(Settings.SERVER_URL + url,
             headers: headers, body: json.encode(data));
         orderUpdateResponse = json.decode(response.body);
         updateResponse = json.decode(response.body);
         if (updateResponse.containsKey('id')) {
-          await model.localizarCarrinho(null, 1);//user
-        }
-      }
+          await model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
+        }*/
+      }/*
       http.Response response = await http.post(
           Settings.SERVER_URL + profileAddressUrl,
           headers: headers,
           body: json.encode(profileAddressData));
       updateResponse = json.decode(response.body);
       if (updateResponse['status'] == 'Address updated Successfully!') {
-        await model.localizarCarrinho(null, 1);//user
+        await model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
         await model.getAddress();
         // Navigator.pop(context);
         setState(() {
           _isLoading = false;
         });
         _showSuccessDialog(context);
-      }
+      }*/
     }
   }
 
