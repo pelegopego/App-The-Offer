@@ -139,11 +139,12 @@ class _CarrinhoState extends State<Carrinho> {
                     Map<dynamic, dynamic> objetoItemPedido = Map();
                     Map<String, dynamic> responseBody;
                     if (model.pedido != null) {
-                      if (model.isAuthenticated) {
+                      if (Autenticacao.CodigoUsuario > 0 ) {
                         if (model.pedido.status == 1) {
                               print("finalizandocarrinho");
                               objetoItemPedido = {
-                                "usuario": Autenticacao.CodigoUsuario.toString()                              };
+                                "usuario": Autenticacao.CodigoUsuario.toString()
+                              };
                               http
                                   .post(
                                       Configuracoes.BASE_URL + 'pedido/finalizarCarrinho/',
@@ -325,13 +326,19 @@ class _CarrinhoState extends State<Carrinho> {
             } else {
               return GestureDetector(
                 onTap: () {
-                  if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidade - model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante + model.pedido.listaItensPedido[lineItemIndex].quantidade >= index) {
-                  model.adicionarProduto(
-                    usuarioId: Autenticacao.CodigoUsuario,
-                    produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
-                    quantidade: index,
-                    somar: 0
-                  );
+                  if (Autenticacao.CodigoUsuario > 0) {
+                    if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidade - model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante + model.pedido.listaItensPedido[lineItemIndex].quantidade >= index) {
+                    model.adicionarProduto(
+                      usuarioId: Autenticacao.CodigoUsuario,
+                      produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
+                      quantidade: index,
+                      somar: 0
+                    );
+                    }
+                  } else {
+                      MaterialPageRoute authRoute = MaterialPageRoute(
+                          builder: (context) => Authentication(0));
+                      Navigator.push(context, authRoute);
                   }
                 },
                 child: Container(

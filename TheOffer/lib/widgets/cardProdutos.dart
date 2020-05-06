@@ -8,6 +8,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
 import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/screens/auth.dart';
 
 class AddToCarrinho extends StatefulWidget {
   List<Produto> todaysDealProducts;
@@ -34,15 +35,21 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 setState(() {
                   selectedIndex = widget.index;
                 });
-                if (widget.produto.quantidadeRestante > 0) {
-                  Scaffold.of(context).showSnackBar(processSnackbar);
-                  model.adicionarProduto(
-                           usuarioId: Autenticacao.CodigoUsuario, 
-                           produtoId: widget.produto.id, 
-                           quantidade: 1,
-                           somar: 1);
-                  if (!model.isLoading) {
-                    Scaffold.of(context).showSnackBar(completeSnackbar);
+                if (widget.produto.quantidadeRestante > 0) {                  
+                  if (Autenticacao.CodigoUsuario > 0) {
+                    Scaffold.of(context).showSnackBar(processSnackbar);
+                      model.adicionarProduto(
+                              usuarioId: Autenticacao.CodigoUsuario, 
+                              produtoId: widget.produto.id, 
+                              quantidade: 1,
+                              somar: 1);
+                          if (!model.isLoading) {
+                            Scaffold.of(context).showSnackBar(completeSnackbar);
+                      }
+                  } else {
+                      MaterialPageRoute authRoute = MaterialPageRoute(
+                          builder: (context) => Authentication(0));
+                      Navigator.push(context, authRoute);
                   }
                 }
               }

@@ -533,11 +533,18 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   ? () {
                       Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidadeRestante > 0) {
-                        model.adicionarProduto(
-                            usuarioId: Autenticacao.CodigoUsuario,
-                            produtoId: produtoSelecionado.id,
-                            quantidade: quantidade,                            
-                            somar: 0);
+                        
+                        if (Autenticacao.CodigoUsuario > 0) {
+                          model.adicionarProduto(
+                              usuarioId: Autenticacao.CodigoUsuario,
+                              produtoId: produtoSelecionado.id,
+                              quantidade: quantidade,                            
+                              somar: 0);
+                        } else {
+                            MaterialPageRoute authRoute = MaterialPageRoute(
+                                builder: (context) => Authentication(0));
+                            Navigator.push(context, authRoute);
+                        }
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                           MaterialPageRoute route =
@@ -574,17 +581,23 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
               ),
               onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
-                      Scaffold.of(context).showSnackBar(processSnackbar);
-                      if (produtoSelecionado.quantidadeRestante > 0) {
-                        model.adicionarProduto(
-                            usuarioId: Autenticacao.CodigoUsuario,
-                            produtoId: produtoSelecionado.id,
-                            quantidade: quantidade,
-                            somar: 1);
-                        if (!model.isLoading) {
-                          Scaffold.of(context).showSnackBar(completeSnackbar);
+                       if (Autenticacao.CodigoUsuario > 0) {
+                         Scaffold.of(context).showSnackBar(processSnackbar);
+                          if (produtoSelecionado.quantidadeRestante > 0) {
+                            model.adicionarProduto(
+                                usuarioId: Autenticacao.CodigoUsuario,
+                                produtoId: produtoSelecionado.id,
+                                quantidade: quantidade,
+                                somar: 1);
+                            if (!model.isLoading) {
+                              Scaffold.of(context).showSnackBar(completeSnackbar);
+                            }
+                          }   
+                        } else {
+                            MaterialPageRoute authRoute = MaterialPageRoute(
+                                builder: (context) => Authentication(0));
+                            Navigator.push(context, authRoute);
                         }
-                      }
                     }
                   : () {},
             ),
@@ -604,13 +617,19 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                   color: Colors.secundariaTheOffer,
                 ),
                 onPressed: produtoSelecionado.quantidadeRestante > 0 
-                    ? () {
-                        Scaffold.of(context).showSnackBar(processSnackbar);
+                    ? () {                        
+                       if (Autenticacao.CodigoUsuario > 0) {
+                          Scaffold.of(context).showSnackBar(processSnackbar);
                             model.adicionarProduto(
                                 usuarioId: Autenticacao.CodigoUsuario,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
                                 somar: 1);
+                        } else {
+                            MaterialPageRoute authRoute = MaterialPageRoute(
+                                builder: (context) => Authentication(0));
+                            Navigator.push(context, authRoute);
+                        }
                         if (!model.isLoading) {
                           Scaffold.of(context).showSnackBar(completeSnackbar);
                         }

@@ -6,14 +6,13 @@ import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/models/Produto.dart';
-//import 'package:theoffer/models/address.dart';
+import 'package:theoffer/screens/auth.dart';
 import 'package:theoffer/screens/product_detail.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:theoffer/widgets/snackbar.dart';
 
 mixin CarrinhoModel on Model {
   bool hi = false;
@@ -97,7 +96,7 @@ mixin CarrinhoModel on Model {
     notifyListeners();
     adicionarItemCarrinho(usuarioId, produtoId, quantidade, somar);
     _isLoading = false;
-    notifyListeners();
+    notifyListeners(); 
   }
 
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
