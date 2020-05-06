@@ -12,6 +12,10 @@ class Settings {
   static const String SERVER_URL = 'https://app.ofypets.com/';
 }
 
+class Autenticacao {  
+  static int CodigoUsuario = 0;  
+}
+
 final double FREE_SHIPPING_AMOUNT = 699;
 final String CURRENCY_SYMBOL = '₹';
 

@@ -385,7 +385,9 @@ class _AuthenticationState extends State<Authentication>
       print("logou");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
-
+      responseBody['usuario'].forEach((usuarioJson) {
+        Autenticacao.CodigoUsuario =  int.parse(usuarioJson['id']);
+      });
       String message = responseBody['message'];
       if (message.isEmpty) {
         message = "Entrou com sucesso.";

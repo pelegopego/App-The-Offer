@@ -534,7 +534,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidadeRestante > 0) {
                         model.adicionarProduto(
-                            usuarioId: 1/*user*/,
+                            usuarioId: Autenticacao.CodigoUsuario,
                             produtoId: produtoSelecionado.id,
                             quantidade: quantidade,                            
                             somar: 0);
@@ -577,7 +577,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                       Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidadeRestante > 0) {
                         model.adicionarProduto(
-                            usuarioId: 1/*user*/, 
+                            usuarioId: Autenticacao.CodigoUsuario,
                             produtoId: produtoSelecionado.id,
                             quantidade: quantidade,
                             somar: 1);
@@ -607,7 +607,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
                     ? () {
                         Scaffold.of(context).showSnackBar(processSnackbar);
                             model.adicionarProduto(
-                                usuarioId: 1/*user*/,
+                                usuarioId: Autenticacao.CodigoUsuario,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
                                 somar: 1);
