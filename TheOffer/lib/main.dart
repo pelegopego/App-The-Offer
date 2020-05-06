@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/categorias.dart';
+import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -36,15 +36,15 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'TheOffer',
-        initialRoute: '/categorias',
+        initialRoute: '/cidades',
         routes: {
-          '/categorias' : (context) => TelaCategorias()
+          '/cidades' : (context) => TelaCidade()
         },
         theme: ThemeData(
           primarySwatch: Colors.secundariaTheOffer,
           accentColor: Colors.principalTheOffer,
         ),
-        home: TelaCategorias(),
+        home: TelaCidade(),
       ),
     );
   }
