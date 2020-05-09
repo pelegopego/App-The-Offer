@@ -81,32 +81,51 @@ class _CarrinhoState extends State<Carrinho> {
   Widget body() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        return CustomScrollView(
-          slivers: <Widget>[
-            items(),
-          ],
-        );
-      },
+        if (model.pedido != null)  {
+            return CustomScrollView(
+              slivers: <Widget>[
+                items(),
+              ],
+            );
+        } else {
+          return Container( child: 
+            Text('Não foram selecionados itens para o carrinho',
+              style:  TextStyle(
+                      fontSize: 16.5, 
+                      color: Colors.principalTheOffer,
+                      fontWeight: FontWeight.bold),
+            )
+          );
+        }
+      }
     );
   }
 
   Widget itemTotalContainer(MainModel model) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[carrinhoData()],
-    );
+      if (model.pedido != null) { 
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[carrinhoData()],
+        );
+      } else {
+        return Container();
+      }
   }
 
   Widget carrinhoData() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-           return Text(
+      if (model.pedido != null) { 
+        return Text(
               'Valor total do carrinho (${model.pedido.somaValorTotalPedido()}): ',
               style:  TextStyle(
                       fontSize: 16.5,
                       color: Colors.principalTheOffer,
                       fontWeight: FontWeight.bold),
             );
+      } else {
+        return Container();
+      }
     });
   }
 
