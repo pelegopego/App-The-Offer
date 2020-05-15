@@ -79,7 +79,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                             fontWeight: FontWeight.bold),
                         value: _currentItem,
                         icon: Icon(
-                          Icons.arrow_drop_down,
+                          Icons.keyboard_arrow_down,
                           color: Colors.principalTheOffer,
                         ),
                         items: _dropDownMenuItems,

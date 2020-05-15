@@ -8,6 +8,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
+import 'package:theoffer/screens/finalizarPedido.dart';
 
 class Carrinho extends StatefulWidget {
   @override
@@ -92,7 +93,7 @@ class _CarrinhoState extends State<Carrinho> {
             Text('Não foram selecionados itens para o carrinho',
               style:  TextStyle(
                       fontSize: 16.5, 
-                      color: Colors.principalTheOffer,
+                      color: Colors.secundariaTheOffer,
                       fontWeight: FontWeight.bold),
             )
           );
@@ -172,27 +173,12 @@ class _CarrinhoState extends State<Carrinho> {
                                 print("FINALIZANDO CARRINHO");
                                 print(json.decode(response.body).toString());
                                 responseBody = json.decode(response.body);
-
-                                /* tela de pagamento 
-                                MaterialPageRoute addressRoute =
+                                
+                                MaterialPageRoute finalizarPedidoRoute =
                                     MaterialPageRoute(
-                                        builder: (context) => AddressPage());
-                                Navigator.push(context, addressRoute);*/
+                                        builder: (context) => TelaFinalizarPedido());
+                                Navigator.push(context, finalizarPedidoRoute);
                               });
-
-                        } else {
-                          stateChanged = await model.localizarCarrinho(model.pedido.id, model.pedido.usuarioId);
-                          if (stateChanged) {
-                            // print('STATE IS CHANGED, FETCH CURRENT ORDER');
-                            // model.fetchCurrentOrder();
-                            /*
-                            MaterialPageRoute addressRoute =
-                                MaterialPageRoute(
-                                    builder: (context) => AddressPage());
-                            Navigator.push(context, addressRoute);*/
-                          } else {
-                            print("OCORREU UM ERRO AO BUSCAR O PEDIDO");
-                          }
                         }
                       } else {
                         MaterialPageRoute authRoute = MaterialPageRoute(
@@ -259,8 +245,6 @@ class _CarrinhoState extends State<Carrinho> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    // Expanded(
-                                    // child:
                                     Container(
                                       padding: EdgeInsets.only(top: 10),
                                       width: 150,
@@ -283,9 +267,6 @@ class _CarrinhoState extends State<Carrinho> {
                                         ]),
                                       ),
                                     ),
-                                    // ),
-                                    // Expanded(
-                                    // child:
                                     Container(
                                       padding: EdgeInsets.only(top: 0),
                                       child: IconButton(
@@ -299,7 +280,6 @@ class _CarrinhoState extends State<Carrinho> {
                                         },
                                       ),
                                     ),
-                                    // )
                                   ],
                                 ),
                               ),

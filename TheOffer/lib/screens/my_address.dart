@@ -53,7 +53,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
             title: Text('Endereços'),
             centerTitle: false,
             leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
                   Navigator.pop(context);
                 }),

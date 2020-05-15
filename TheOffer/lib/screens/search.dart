@@ -112,7 +112,7 @@ class _ProductSearchState extends State<ProductSearch> {
             backgroundColor: Colors.principalTheOffer,
             leading: IconButton(
                 icon: Icon(
-                  Icons.arrow_back,
+                  Icons.arrow_back_ios,
                   color: Colors.black,
                 ),
                 onPressed: () {
@@ -343,7 +343,7 @@ class _ProductSearchState extends State<ProductSearch> {
                         ),
                         value: null,
                         icon: Icon(
-                          Icons.arrow_drop_down,
+                          Icons.keyboard_arrow_down,
                           color: Colors.principalTheOffer,
                         ),
                         items: _dropDownMenuItems,

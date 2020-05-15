@@ -70,7 +70,7 @@ class _AddressPageState extends State<AddressPage> {
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(Icons.arrow_back_ios),
                   onPressed: () {
                     Navigator.pop(context);
                   }),

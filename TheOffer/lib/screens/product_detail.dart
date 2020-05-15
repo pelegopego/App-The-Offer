@@ -73,7 +73,7 @@ class _ProductDetailtelastate extends State<ProductDetailScreen>
           backgroundColor: Colors.terciariaTheOffer,
           appBar: AppBar(
             leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.principalTheOffer),
+                icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
