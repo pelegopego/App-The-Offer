@@ -237,6 +237,103 @@ mixin CarrinhoModel on Model {
     }
   }
 
+  Future<bool> localizarPedido(int pedidoId, int usuarioId, int status) async {
+    print("LOCALIZANDO CARRINHO");
+     _isLoading = true;
+    notifyListeners();
+    String imagemJson = ''; 
+    Map<dynamic, dynamic> responseBody;
+    Produto produto;
+    Endereco endereco;
+    Bairro bairro;
+    Cidade cidade;
+    ItemPedido itemPedido;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      _listaItensPedido.clear();
+      objetoItemPedido = {
+        "usuario": usuarioId.toString(), "pedido": pedidoId.toString(), "status": status.toString()
+      };
+      http.Response response =
+          await http.post(Configuracoes.BASE_URL + 'pedido/localizar', 
+          body: objetoItemPedido);
+          
+      responseBody = json.decode(response.body);
+      responseBody['pedidos'].forEach((pedidosJson) {
+      imagemJson = pedidosJson['imagem'].replaceAll('\/', '/');
+      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
+             produto = Produto(
+              id                    : int.parse(pedidosJson['produto_id']),
+              titulo                : pedidosJson['titulo'],
+              descricao             : pedidosJson['descricao'],
+              imagem                : imagemJson,
+              valor                 : pedidosJson['valor'],
+              valorNumerico         : double.parse(pedidosJson['valorNumerico']),
+              quantidade            : int.parse(pedidosJson['quantidade']), 
+              quantidadeRestante    : int.parse(pedidosJson['quantidadeRestante']),
+              dataInicial           : pedidosJson['dataInicial'],
+              dataFinal             : pedidosJson['dataFinal'],
+              dataCadastro          : pedidosJson['DataCadastro'],
+              modalidadeRecebimento1: int.parse(pedidosJson['modalidadeRecebimento1']),
+              modalidadeRecebimento2: int.parse(pedidosJson['modalidadeRecebimento2']),
+              usuarioId             : int.parse(pedidosJson['usuario_id'])
+              );
+          
+            itemPedido = ItemPedido(
+                pedidoId  : int.parse(pedidosJson['pedido_id']),
+                produtoId : int.parse(pedidosJson['produto_id']),
+                quantidade: int.parse(pedidosJson['quantidade_item']),
+                produto: produto);
+            _listaItensPedido.add(itemPedido);
+        notifyListeners();
+       });   
+
+      if (responseBody['pedidos'][0]['endereco_id'] != null) { 
+          bairro  = Bairro(
+            id  : int.parse(responseBody['pedidos'][0]['bairro_id']),
+            nome: responseBody['pedidos'][0]['nomeBairro']
+          );      
+          
+          cidade  = Cidade(
+            id  : int.parse(responseBody['pedidos'][0]['cidade_id']),
+            nome: responseBody['pedidos'][0]['nomeCidade']
+          );
+
+          endereco = Endereco(
+              id             : int.parse(responseBody['pedidos'][0]['endereco_id']),
+              nome           : responseBody['pedidos'][0]['nomeEndereco'],
+              cidade         : cidade,
+              bairro         : bairro,
+              rua            : responseBody['pedidos'][0]['rua'],
+              numero         : int.parse(responseBody['pedidos'][0]['numero']),
+              complemento    : responseBody['pedidos'][0]['complemento'], 
+              referencia     : responseBody['pedidos'][0]['referencia'],
+              dataCadastro   : DateTime.parse(responseBody['pedidos'][0]['dataCadastroEndereco']),
+              dataConfirmacao: DateTime.parse(responseBody['pedidos'][0]['dataConfirmacaoEndereco'])
+          );
+      }
+      _pedido = Pedido(
+          id              : int.parse(responseBody['pedidos'][0]['pedido_id']),
+          usuarioId       : int.parse(responseBody['pedidos'][0]['usuario_id']),
+          dataInclusao    : responseBody['pedidos'][0]['dataInclusao'],
+          dataConfirmacao : responseBody['pedidos'][0]['dataConfirmacao'],
+          status          : int.parse(responseBody['pedidos'][0]['status']),
+          endereco        : endereco,
+          listaItensPedido: _listaItensPedido);
+
+      _isLoading = false;
+      prefs.setString('numeroItens', _listaItensPedido.length.toString());
+      prefs.setString('orderToken', responseBody['token']);
+      prefs.setString('orderNumber', responseBody['number']);
+      notifyListeners();
+    return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
   clearData() async {
     print("CLEAR DATA");
     final SharedPreferences prefs = await SharedPreferences.getInstance();

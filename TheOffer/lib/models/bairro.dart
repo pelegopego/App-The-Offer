@@ -1,6 +1,6 @@
 class Bairro {
-  final int id;
-  final String nome;
+   int id;
+   String nome;
 
   Bairro({this.id, 
           this.nome});

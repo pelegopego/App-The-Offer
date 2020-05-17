@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -8,6 +9,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/endereco.dart';
 import 'package:theoffer/models/cidade.dart';
+import 'package:theoffer/scoped-models/carrinho.dart';
 import 'package:theoffer/models/bairro.dart';
 
 class ListagemEndereco extends StatefulWidget {
@@ -86,8 +88,27 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
         return SliverList(
           delegate:
               SliverChildBuilderDelegate((BuildContext context, int index) {
-            return GestureDetector(
-                onTap: () {},
+            return GestureDetector(              
+              onTap: () {
+                alterarEnderecoPedido(model.pedido.id, Autenticacao.CodigoUsuario, listaEnderecos[index].id);
+                model.pedido.endereco.id              = listaEnderecos[index].id;
+                model.pedido.endereco.nome            = listaEnderecos[index].nome;
+                model.pedido.endereco.usuarioId       = listaEnderecos[index].usuarioId;
+                model.pedido.endereco.cidade.id       = listaEnderecos[index].cidade.id;
+                model.pedido.endereco.cidade.nome     = listaEnderecos[index].cidade.nome;
+                model.pedido.endereco.bairro.id       = listaEnderecos[index].id;
+                model.pedido.endereco.bairro.nome     = listaEnderecos[index].nome;
+                model.pedido.endereco.rua             = listaEnderecos[index].rua;
+                model.pedido.endereco.numero          = listaEnderecos[index].numero;
+                model.pedido.endereco.complemento     = listaEnderecos[index].complemento;
+                model.pedido.endereco.referencia      = listaEnderecos[index].referencia;
+                model.pedido.endereco.dataCadastro    = listaEnderecos[index].dataCadastro;
+                model.pedido.endereco.dataConfirmacao = listaEnderecos[index].dataConfirmacao;
+                MaterialPageRoute route =
+                      MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
+
+                Navigator.push(context, route);
+              },
                 child: _enderecosLoading
             ? Container()
             : index != listaEnderecos.length 
@@ -100,10 +121,10 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                         child: Card(
                       child: Container(
                         height: 90,
-                        color: Colors.secundariaTheOffer,
+                        color: listaEnderecos[index].id == model.pedido.endereco.id 
+                               ?Colors.principalTheOffer
+                               :Colors.secundariaTheOffer,
                         child: GestureDetector(
-                          onTap: () {
-                          },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -125,7 +146,9 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                             text: TextSpan(
                                                 text: listaEnderecos[index].nome,
                                                 style: TextStyle(
-                                                    color: Colors.principalTheOffer,
+                                                    color: listaEnderecos[index].id == model.pedido.endereco.id 
+                                                           ?Colors.secundariaTheOffer
+                                                           :Colors.principalTheOffer,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.bold),
                                               ),
@@ -140,7 +163,9 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                                 alignment: Alignment.centerRight,
                                                 child: IconButton(
                                                   iconSize: 24,
-                                                  color: Colors.principalTheOffer,
+                                                  color: listaEnderecos[index].id == model.pedido.endereco.id 
+                                                         ?Colors.secundariaTheOffer
+                                                         :Colors.principalTheOffer,
                                                   icon: Icon(Icons.edit),
                                                   onPressed: () {
                                                       MaterialPageRoute route =
@@ -165,7 +190,9 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                               text: TextSpan(
                                                   text: listaEnderecos[index].rua  + ', ' + listaEnderecos[index].numero.toString(),
                                                   style: TextStyle(
-                                                      color: Colors.principalTheOffer,
+                                                      color: listaEnderecos[index].id == model.pedido.endereco.id 
+                                                             ?Colors.secundariaTheOffer
+                                                             :Colors.principalTheOffer,
                                                       fontSize: 15.0
                                                   ),
                                               )
@@ -183,7 +210,9 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                             text: TextSpan(
                                                 text: listaEnderecos[index].cidade.nome + ', Bairro ' + listaEnderecos[index].bairro.nome,
                                                 style: TextStyle(
-                                                    color: Colors.principalTheOffer,
+                                                    color: listaEnderecos[index].id == model.pedido.endereco.id 
+                                                           ?Colors.secundariaTheOffer
+                                                           :Colors.principalTheOffer,
                                                     fontSize: 15.0, 
                                                     fontWeight: FontWeight.bold),
                                               ),
@@ -281,4 +310,44 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
     });
   }
 
+
+  void alterarEnderecoPedido(int pedidoId, int usuarioId, int enderecoId) async {
+    Map<dynamic, dynamic> objetoPedido = Map();
+    Map<dynamic, dynamic> responseBody;
+    print("ALTERANDO ENDERECO");
+        objetoPedido = {
+          "pedido": pedidoId.toString(), "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
+        };
+    http
+        .post(
+            Configuracoes.BASE_URL + 'pedido/alterarEndereco/',
+            body: objetoPedido)
+        .then((response) {
+      print("ALTERANDO ENDERECO");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      return responseBody['message'];  
+    });
+  }
+
+/*
+  void removerEndereco(int pedidoId, int usuarioId, int produtoId) async {
+    Map<dynamic, dynamic> responseBody;
+    print("REMOVENDO Endereco");
+        objetoEndereco = {
+          "pedido": pedidoId.toString(), "produto": produtoId.toString()
+        };
+    http
+        .post(
+            Configuracoes.BASE_URL + 'pedido/removerProdutoCarrinho/',
+            body: objetoItemPedido)
+        .then((response) {
+      print("REMOVENDO PRODUTO DO CARRINHO _______");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      localizarCarrinho(null, usuarioId);
+      return responseBody['message'];  
+    });
+  }
+*/
 }

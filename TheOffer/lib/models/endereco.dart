@@ -2,17 +2,17 @@ import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/models/bairro.dart';
 
 class Endereco {
-  final int id;
-  final String nome;
-  final int usuarioId;
-  final Cidade cidade;
-  final Bairro bairro;
-  final String rua;
-  final int numero;
-  final String complemento;
-  final String referencia;
-  final DateTime dataCadastro;
-  final DateTime dataConfirmacao;
+   int id;
+   String nome;
+   int usuarioId;
+   Cidade cidade;
+   Bairro bairro;
+   String rua;
+   int numero;
+   String complemento;
+   String referencia;
+   DateTime dataCadastro;
+   DateTime dataConfirmacao;
  
   Endereco(
       {this.id,

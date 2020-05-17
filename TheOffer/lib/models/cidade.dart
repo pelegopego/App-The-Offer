@@ -1,6 +1,6 @@
 class Cidade {
-  final int id;
-  final String nome;
+   int id;
+   String nome;
 
   Cidade({this.id, this.nome});
 }

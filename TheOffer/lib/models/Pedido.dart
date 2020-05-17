@@ -7,7 +7,7 @@ class Pedido {
   final String dataInclusao;
   final String dataConfirmacao;
   final int status;
-  final Endereco endereco;
+   Endereco endereco;
   final List<ItemPedido> listaItensPedido;
   
   Pedido(
