@@ -8,6 +8,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/endereco.dart';
 import 'package:theoffer/models/cidade.dart';
+import 'package:theoffer/models/bairro.dart';
 
 class ListagemEndereco extends StatefulWidget {
   @override
@@ -180,7 +181,7 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                         alignment: Alignment.topLeft,
                                         child: RichText(
                                             text: TextSpan(
-                                                text: listaEnderecos[index].cidade.nome + ', Bairro ' + listaEnderecos[index].bairro,
+                                                text: listaEnderecos[index].cidade.nome + ', Bairro ' + listaEnderecos[index].bairro.nome,
                                                 style: TextStyle(
                                                     color: Colors.principalTheOffer,
                                                     fontSize: 15.0, 
@@ -234,6 +235,7 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
   getEnderecos() async {    
     List<Endereco> _listaEnderecos = [];
     Cidade cidade;
+    Bairro bairro;
     Map<dynamic, dynamic> responseBody;
     Map<dynamic, dynamic> objetoEndereco = Map();
 
@@ -253,11 +255,14 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                 cidade = Cidade(id:   int.parse(enderecoJson['cidade_id']),
                                 nome: enderecoJson['nomeCidade']);
 
+                bairro = Bairro(id:   int.parse(enderecoJson['bairro_id']),
+                                nome: enderecoJson['nomeBairro']);
+
                 _listaEnderecos.add(Endereco(
                   id:              int.parse(enderecoJson['id']),
-                  nome:            enderecoJson['complemento'],//temporario criar campo nome
+                  nome:            enderecoJson['nome'],
                   cidade:          cidade,
-                  bairro:          enderecoJson['bairro'],
+                  bairro:          bairro,
                   rua:             enderecoJson['rua'],
                   numero:          int.parse(enderecoJson['numero']),
                   complemento:     enderecoJson['complemento'],

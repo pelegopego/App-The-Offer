@@ -1,12 +1,5 @@
 import 'package:theoffer/models/itemPedido.dart';
-//import 'package:theoffer/models/address.dart';
-/*
-ID
-USUARIO_ID
-DATAINCLUSAO
-DATACONFIRMACAO
-STATUS
-*/
+import 'package:theoffer/models/endereco.dart';
 
 class Pedido {
   final int id;
@@ -14,6 +7,7 @@ class Pedido {
   final String dataInclusao;
   final String dataConfirmacao;
   final int status;
+  final Endereco endereco;
   final List<ItemPedido> listaItensPedido;
   
   Pedido(
@@ -22,6 +16,7 @@ class Pedido {
       this.dataInclusao,
       this.dataConfirmacao,
       this.status,
+      this.endereco,
       this.listaItensPedido});
 
   double somaValorTotalPedido() {

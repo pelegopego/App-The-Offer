@@ -1,11 +1,12 @@
 import 'package:theoffer/models/cidade.dart';
+import 'package:theoffer/models/bairro.dart';
 
 class Endereco {
   final int id;
   final String nome;
   final int usuarioId;
   final Cidade cidade;
-  final String bairro;
+  final Bairro bairro;
   final String rua;
   final int numero;
   final String complemento;

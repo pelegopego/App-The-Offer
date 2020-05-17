@@ -99,7 +99,8 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                       )
                     )
                   ),
-                  SliverToBoxAdapter(
+                  model.pedido.endereco != null
+                  ? SliverToBoxAdapter(
                     child: Card(
                   child: Container(
                     height: 90,
@@ -127,7 +128,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                       width: 250,
                                       child: RichText(
                                         text: TextSpan(
-                                            text: 'Casa',
+                                            text: model.pedido.endereco.nome,
                                             style: TextStyle(
                                                 color: Colors.secundariaTheOffer,
                                                 fontSize: 20,
@@ -167,7 +168,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                       alignment: Alignment.topLeft,
                                       child: RichText(
                                           text: TextSpan(
-                                              text: 'Rua Paulo Alberto Chitto, 109',
+                                              text: model.pedido.endereco.rua + ', ' + model.pedido.endereco.numero.toString(),
                                               style: TextStyle(
                                                   color: Colors.secundariaTheOffer,
                                                   fontSize: 15.0
@@ -185,7 +186,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                     alignment: Alignment.topLeft,
                                     child: RichText(
                                         text: TextSpan(
-                                            text: 'São Miguel do Oeste, Bairro São Luiz',
+                                            text: model.pedido.endereco.cidade.nome + ', Bairro ' + model.pedido.endereco.bairro.nome,
                                             style: TextStyle(
                                                 color: Colors.secundariaTheOffer,
                                                 fontSize: 15.0, 
@@ -206,7 +207,10 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                     ),
                   ),
                 )
-                  ),
+              )
+              : SliverToBoxAdapter(
+                    child: Container()
+                ),
                   SliverToBoxAdapter(
                     child: Padding(padding: EdgeInsets.only(top: 0),
                       child: model.pedido == null

@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:theoffer/models/endereco.dart';
+import 'package:theoffer/models/cidade.dart';
+import 'package:theoffer/models/bairro.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/payment_methods.dart';
@@ -144,6 +147,9 @@ mixin CarrinhoModel on Model {
     String imagemJson = ''; 
     Map<dynamic, dynamic> responseBody;
     Produto produto;
+    Endereco endereco;
+    Bairro bairro;
+    Cidade cidade;
     ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
@@ -184,12 +190,38 @@ mixin CarrinhoModel on Model {
             _listaItensPedido.add(itemPedido);
         notifyListeners();
        });   
+
+      if (responseBody['pedidos'][0]['endereco_id'] != null) { 
+          bairro  = Bairro(
+            id  : int.parse(responseBody['pedidos'][0]['bairro_id']),
+            nome: responseBody['pedidos'][0]['nomeBairro']
+          );      
+          
+          cidade  = Cidade(
+            id  : int.parse(responseBody['pedidos'][0]['cidade_id']),
+            nome: responseBody['pedidos'][0]['nomeCidade']
+          );
+
+          endereco = Endereco(
+              id             : int.parse(responseBody['pedidos'][0]['endereco_id']),
+              nome           : responseBody['pedidos'][0]['nomeEndereco'],
+              cidade         : cidade,
+              bairro         : bairro,
+              rua            : responseBody['pedidos'][0]['rua'],
+              numero         : int.parse(responseBody['pedidos'][0]['numero']),
+              complemento    : responseBody['pedidos'][0]['complemento'], 
+              referencia     : responseBody['pedidos'][0]['referencia'],
+              dataCadastro   : DateTime.parse(responseBody['pedidos'][0]['dataCadastroEndereco']),
+              dataConfirmacao: DateTime.parse(responseBody['pedidos'][0]['dataConfirmacaoEndereco'])
+          );
+      }
       _pedido = Pedido(
           id              : int.parse(responseBody['pedidos'][0]['pedido_id']),
           usuarioId       : int.parse(responseBody['pedidos'][0]['usuario_id']),
           dataInclusao    : responseBody['pedidos'][0]['dataInclusao'],
           dataConfirmacao : responseBody['pedidos'][0]['dataConfirmacao'],
           status          : int.parse(responseBody['pedidos'][0]['status']),
+          endereco        : endereco,
           listaItensPedido: _listaItensPedido);
 
       _isLoading = false;
