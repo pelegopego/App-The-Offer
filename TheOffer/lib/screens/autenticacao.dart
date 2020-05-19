@@ -191,6 +191,10 @@ class _AuthenticationState extends State<Authentication>
                 SizedBox(
                   height: 30.0,
                 ),
+                _buildSobreNomeTextField(),
+                SizedBox(
+                  height: 30.0,
+                ),
                 _buildEmailTextField(),
                 SizedBox(
                   height: 30.0,
@@ -250,6 +254,25 @@ class _AuthenticationState extends State<Authentication>
         ));
   }
 
+  Widget _buildSobreNomeTextField() {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: TextFormField(
+          style: TextStyle(
+            color: Colors.secundariaTheOffer,
+          ),
+          decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelText: 'Sobrenome',
+              contentPadding: EdgeInsets.all(0.0),
+              enabledBorder: _underlineInputBorder),
+          keyboardType: TextInputType.text,
+          onSaved: (String value) {
+            _formData['sobrenome'] = value;
+          },
+        ));
+  }
+
   Widget _buildEmailTextField() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -259,21 +282,21 @@ class _AuthenticationState extends State<Authentication>
           ),
           decoration: InputDecoration(
               labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Usuario',
+              labelText: 'Email',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: _underlineInputBorder),
           keyboardType: TextInputType.text,
           validator: (String value) {
             if (value.isEmpty) {
-              return 'Informe um usuário válido';
+              return 'Informe email valido';
             }
             return null;
           },
           onSaved: (String value) {
-            _formData['usuario'] = value;
+            _formData['email'] = value;
           },
         ));
-  }
+  }  
 
   Widget _buildPasswordTextField([bool isLimitCharacter = false]) {
     return Padding(
@@ -444,9 +467,10 @@ class _AuthenticationState extends State<Authentication>
     Map<dynamic, dynamic> responseBody;
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
-      'nome': _formData['nome'],
-      'usuario': _formData['usuario'],
-      'senha': _formData['senha'],      
+      'nome': _formData['nome'] + ' ' +  _formData['sobrenome'],
+      'usuario': _formData['nome'],
+      'email': _formData['email'],
+      'senha': md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
       'telefone': _formData['telefone'],
     };
 
