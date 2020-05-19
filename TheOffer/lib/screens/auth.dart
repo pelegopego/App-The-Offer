@@ -8,6 +8,8 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -289,7 +291,7 @@ class _AuthenticationState extends State<Authentication>
         obscureText: true,
         controller: _passwordTextController,
         validator: (String value) {
-          if (value.isEmpty || value.length < 6) {
+          if (value.isEmpty || value.length < 5) {
             return 'A senha precisa possuir pelo menos 6 dígitos.';
           }
           return null;
@@ -369,9 +371,9 @@ class _AuthenticationState extends State<Authentication>
 
     Map<dynamic, dynamic> oMapLogin = {
       'usuario': _formData['usuario'],
-      'senha': _formData['senha'],
+      'senha':  md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
     };
-
+        
     http
         .post(Configuracoes.BASE_URL + 'usuario/logar/', body: oMapLogin)
         .then((response) {
