@@ -18,16 +18,16 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class TelaProdutoDetalhado extends StatefulWidget {
   final Produto produto;
-  ProductDetailScreen(this.produto);
+  TelaProdutoDetalhado(this.produto);
   @override
   State<StatefulWidget> createState() {
-    return _ProductDetailtelastate();
+    return _TelaProdutoDetalhado();
   }
 }
 
-class _ProductDetailtelastate extends State<ProductDetailScreen>
+class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     with SingleTickerProviderStateMixin {
   bool _isFavorite = false;
   bool discount = true;
