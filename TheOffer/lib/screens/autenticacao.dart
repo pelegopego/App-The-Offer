@@ -146,7 +146,8 @@ class _AuthenticationState extends State<Authentication>
                             style: TextStyle(fontSize: 12.0),
                           ),
                           onPressed: () => _realizarLogin(model),
-                        )),
+                        )
+                      ),
                 SizedBox(
                   height: 20.0,
                 ),

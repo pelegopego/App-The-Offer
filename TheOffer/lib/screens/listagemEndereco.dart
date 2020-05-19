@@ -9,7 +9,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/endereco.dart';
 import 'package:theoffer/models/cidade.dart';
-import 'package:theoffer/scoped-models/carrinho.dart';
+import 'package:theoffer/screens/cadastroEndereco.dart';
 import 'package:theoffer/models/bairro.dart';
 
 class ListagemEndereco extends StatefulWidget {
@@ -247,7 +247,7 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                icon: Icon(Icons.add),
                                onPressed: () {
                                     MaterialPageRoute route =
-                                      MaterialPageRoute(builder: (context) => ListagemEndereco());
+                                      MaterialPageRoute(builder: (context) => TelaCadastroEndereco(null));
  
                                     Navigator.push(context, route);
                                },
