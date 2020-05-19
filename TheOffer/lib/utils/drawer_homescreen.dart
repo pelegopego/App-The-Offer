@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/account.dart';
-import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/favorites.dart';
 import 'package:theoffer/screens/order_history.dart';
 import 'package:theoffer/screens/retun_policy.dart';

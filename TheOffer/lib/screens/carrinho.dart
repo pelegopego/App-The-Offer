@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';

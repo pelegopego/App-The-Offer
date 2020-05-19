@@ -9,7 +9,7 @@ import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/product_detail.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';

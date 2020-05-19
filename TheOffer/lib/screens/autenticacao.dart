@@ -374,20 +374,22 @@ class _AuthenticationState extends State<Authentication>
       'senha':  md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
     };
         
+    bool hasError = true;
     http
         .post(Configuracoes.BASE_URL + 'usuario/logar/', body: oMapLogin)
         .then((response) {
-      bool hasError = true;
-
-      print("logou");
-      print(json.decode(response.body).toString());
+      
+      String message = 'Ocorreu algum erro.';
+      //print("logou");
+      //print(json.decode(response.body).toString());      
       responseBody = json.decode(response.body);
-      responseBody['usuario'].forEach((usuarioJson) {
-        Autenticacao.CodigoUsuario =  int.parse(usuarioJson['id']);
-      });
-      String message = responseBody['message'];
+      message = responseBody['message'];
       if (message.isEmpty) {
         message = "Entrou com sucesso.";
+        
+        responseBody['usuario'].forEach((usuarioJson) {
+          Autenticacao.CodigoUsuario =  int.parse(usuarioJson['id']);
+        });        
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
           duration: Duration(seconds: 104),
@@ -397,14 +399,32 @@ class _AuthenticationState extends State<Authentication>
         model.localizarCarrinho(null, 1);
         model.loggedInUser();
         Navigator.of(context).pop();
-      } else {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-          duration: Duration(seconds: 1),
-        ));
+      } else {        
         setState(() {
           _isLoader = false;
         });
+      }
+      final Map<String, dynamic> successInformation = {
+        'success': !hasError,
+        'message': message
+      };
+      if (successInformation['success']) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertDialog('Success!',
+                  "Conta criada com sucesso! Entre para continuar.", context);
+            });
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${successInformation['message']}'),
+          duration: Duration(seconds: 1),
+        ));
+      } else {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${successInformation['message']}'),
+          duration: Duration(seconds: 1),
+        ));
       }
       return responseBody['message'];
     });

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/search.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';

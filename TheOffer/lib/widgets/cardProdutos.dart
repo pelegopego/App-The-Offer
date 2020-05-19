@@ -8,7 +8,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/utils/ImageHelper.dart';
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/screens/auth.dart';
+import 'package:theoffer/screens/autenticacao.dart';
 
 class AddToCarrinho extends StatefulWidget {
   List<Produto> todaysDealProducts;
