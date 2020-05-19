@@ -10,7 +10,7 @@ import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/screens/autenticacao.dart';
-import 'package:theoffer/screens/product_detail.dart';
+import 'package:theoffer/screens/produtoDetalhado.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -85,7 +85,7 @@ mixin CarrinhoModel on Model {
       });
 
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => ProductDetailScreen(produtoDetalhado));
+        builder: (context) => TelaProdutoDetalhado(produtoDetalhado));
     if (isSimilarListing) Navigator.pop(context);
     Navigator.push(context, route);
     _isLoading = false;
