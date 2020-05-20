@@ -394,7 +394,7 @@ class _AuthenticationState extends State<Authentication>
     _formKeyForLogin.currentState.save();
 
     Map<dynamic, dynamic> oMapLogin = {
-      'usuario': _formData['usuario'],
+      'usuario': _formData['email'],
       'senha':  md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
     };
         
@@ -404,8 +404,7 @@ class _AuthenticationState extends State<Authentication>
         .then((response) {
       
       String message = 'Ocorreu algum erro.';
-      //print("logou");
-      //print(json.decode(response.body).toString());      
+           
       responseBody = json.decode(response.body);
       message = responseBody['message'];
       if (message.isEmpty) {
@@ -413,6 +412,7 @@ class _AuthenticationState extends State<Authentication>
         
         responseBody['usuario'].forEach((usuarioJson) {
           Autenticacao.CodigoUsuario =  int.parse(usuarioJson['id']);
+          Autenticacao.NomeUsuario = usuarioJson['nome'];
         });        
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
@@ -433,13 +433,7 @@ class _AuthenticationState extends State<Authentication>
         'message': message
       };
       if (successInformation['success']) {
-        Navigator.of(context).pop();
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return _alertDialog('Success!',
-                  "Conta criada com sucesso! Entre para continuar.", context);
-            });
+        Navigator.of(context).pop();        
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text('${successInformation['message']}'),
           duration: Duration(seconds: 1),
