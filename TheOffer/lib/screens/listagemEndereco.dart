@@ -58,7 +58,11 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                       child: Container(),
                       preferredSize: Size.fromHeight(10),
                     )),
-          body: !_enderecosLoading || listaEnderecos != null ? body() : Container(),
+          body: !_enderecosLoading || listaEnderecos != null 
+                ? Container(
+                    child: body()
+                  ) 
+                : Container(),
           );
     });
   }
@@ -73,11 +77,21 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
   Widget body() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              items(),
-            ],
-          );
+        return CustomScrollView(
+            shrinkWrap: true,
+          slivers: <Widget>[
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.865, 
+                    child:  CustomScrollView(
+                        slivers: <Widget>[
+                          items(),
+                        ],
+                    )
+                  )
+            )
+          ]
+        );
       }
     );
   }
@@ -114,11 +128,11 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
             : index != listaEnderecos.length 
                 ? Container (
                     color: Colors.terciariaTheOffer,
-                    child: CustomScrollView(
-                        shrinkWrap: true,
-                      slivers: [ 
-                      SliverToBoxAdapter(
-                        child: Card(
+                    child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Card(
                       child: Container(
                         height: 90,
                         color: listaEnderecos[index].id == model.pedido.endereco.id 
@@ -231,8 +245,8 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                         ),
                       ),
                     )
-                  ),
-                  ])
+                  ]
+                  )
                 )
               : Container(
                       width: 60,
