@@ -45,7 +45,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
               centerTitle: false,
               leading: IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
-                onPressed: () => Navigator.pop(context)
+                onPressed: () => Navigator.of(context).pop(),
               ),
               title: Text('Endereços', style: TextStyle(color: Colors.principalTheOffer),),
               bottom: _enderecosLoading
@@ -113,7 +113,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                           children: <Widget>[
                             Card(
                       child: Container(
-                        height: 90,
+                        height: 115,
                         color: listaEnderecos[index].favorito 
                                ?Colors.principalTheOffer
                                :Colors.secundariaTheOffer,
@@ -210,11 +210,38 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 10,
+                                          width: 100,
                                         ),
                                       ]
                                     )
                                   ),
+                                  listaEnderecos[index].favorito 
+                                    ? Padding(
+                                      padding: EdgeInsets.only(top: 10, right: 20),
+                                      child: Container(
+                                        alignment: Alignment.bottomCenter,
+                                        width: 80,
+                                        color: Colors.secundariaTheOffer,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 5),
+                                              alignment: Alignment.center,
+                                              child: RichText(
+                                                  text: TextSpan(
+                                                      text: 'FAVORITO',
+                                                      style: TextStyle(
+                                                          color: Colors.principalTheOffer,
+                                                          fontSize: 15.0, 
+                                                          fontWeight: FontWeight.bold),
+                                                    ),
+                                                ),
+                                            ),
+                                          ]
+                                        )
+                                      )
+                                    )
+                                  : Container(),
                                 ],
                               )),
                             ],
