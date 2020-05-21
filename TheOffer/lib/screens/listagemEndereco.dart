@@ -61,7 +61,27 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                 ? Container(
                     child: body()
                   ) 
-                : Container(),
+                : !_enderecosLoading
+                  ? Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.secundariaTheOffer,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        iconSize: 24,
+                        color: Colors.principalTheOffer,
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                              MaterialPageRoute route =
+                                MaterialPageRoute(builder: (context) => TelaCadastroEndereco());
+
+                              Navigator.push(context, route);
+                        },
+                      ),
+                    ) 
+                  : Container(),
           );
     });
   }
@@ -260,16 +280,16 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(
-                               iconSize: 24,
-                               color: Colors.principalTheOffer,
-                               icon: Icon(Icons.add),
-                               onPressed: () {
-                                    MaterialPageRoute route =
-                                      MaterialPageRoute(builder: (context) => TelaCadastroEndereco());
- 
-                                    Navigator.push(context, route);
-                               },
-                             ),
+                        iconSize: 24,
+                        color: Colors.principalTheOffer,
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                            MaterialPageRoute route =
+                              MaterialPageRoute(builder: (context) => TelaCadastroEndereco());
+
+                            Navigator.push(context, route);
+                        },
+                      ),
                     )
           );
           }, childCount: listaEnderecos.length +1),
@@ -334,9 +354,9 @@ class _ListagemEndereco extends State<ListagemEndereco> {
         }
       );
       listaEnderecos = _listaEnderecos;
-      setState(() {
-        _enderecosLoading = false;
-      });
+    });
+    setState(() {
+      _enderecosLoading = false;
     });
   }
 

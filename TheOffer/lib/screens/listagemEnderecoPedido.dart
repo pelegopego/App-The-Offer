@@ -62,7 +62,27 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
                 ? Container(
                     child: body()
                   ) 
-                : Container(),
+                : !_enderecosLoading
+                  ? Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.secundariaTheOffer,
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        iconSize: 24,
+                        color: Colors.principalTheOffer,
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                              MaterialPageRoute route =
+                                MaterialPageRoute(builder: (context) => TelaCadastroEnderecoPedido());
+
+                              Navigator.push(context, route);
+                        },
+                      ),
+                    ) 
+                  : Container(),
           );
     });
   }
