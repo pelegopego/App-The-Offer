@@ -162,7 +162,7 @@ class _AccountState extends State<Account> {
   Widget logOutButton() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (model.isAuthenticated) {
+        if (Autenticacao.CodigoUsuario > 0) {
           return ListTile(
             title: Text(
               'Sair',

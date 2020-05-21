@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -8,17 +9,17 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/endereco.dart';
 import 'package:theoffer/models/cidade.dart';
-import 'package:theoffer/screens/cadastroEndereco.dart';
+import 'package:theoffer/screens/cadastroEnderecoPedido.dart';
 import 'package:theoffer/models/bairro.dart';
 
-class ListagemEndereco extends StatefulWidget {
+class ListagemEnderecoPedido extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ListagemEndereco();
+    return _ListagemEnderecoPedido();
   }
 }
 
-class _ListagemEndereco extends State<ListagemEndereco> {
+class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
   bool _enderecosLoading = true;
   List<Endereco> listaEnderecos = [];
   @override
@@ -65,7 +66,14 @@ class _ListagemEndereco extends State<ListagemEndereco> {
           );
     });
   }
-
+/*
+  Widget botaoDeletar(int index) {
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return Text(model.pedido.listaItensPedido[index].produto.quantidade.toString());
+    });
+  }
+*/
   Widget body() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
@@ -96,9 +104,22 @@ class _ListagemEndereco extends State<ListagemEndereco> {
               SliverChildBuilderDelegate((BuildContext context, int index) {
             return GestureDetector(              
               onTap: () {
-                alterarEnderecoFavorito(Autenticacao.CodigoUsuario, listaEnderecos[index].id);
+                alterarEnderecoPedido(model.pedido.id, Autenticacao.CodigoUsuario, listaEnderecos[index].id);
+                model.pedido.endereco.id              = listaEnderecos[index].id;
+                model.pedido.endereco.nome            = listaEnderecos[index].nome;
+                model.pedido.endereco.usuarioId       = listaEnderecos[index].usuarioId;
+                model.pedido.endereco.cidade.id       = listaEnderecos[index].cidade.id;
+                model.pedido.endereco.cidade.nome     = listaEnderecos[index].cidade.nome;
+                model.pedido.endereco.bairro.id       = listaEnderecos[index].id;
+                model.pedido.endereco.bairro.nome     = listaEnderecos[index].nome;
+                model.pedido.endereco.rua             = listaEnderecos[index].rua;
+                model.pedido.endereco.numero          = listaEnderecos[index].numero;
+                model.pedido.endereco.complemento     = listaEnderecos[index].complemento;
+                model.pedido.endereco.referencia      = listaEnderecos[index].referencia;
+                model.pedido.endereco.dataCadastro    = listaEnderecos[index].dataCadastro;
+                model.pedido.endereco.dataConfirmacao = listaEnderecos[index].dataConfirmacao;
                 MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) => ListagemEndereco());
+                      MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
 
                 Navigator.push(context, route);
               },
@@ -114,7 +135,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                             Card(
                       child: Container(
                         height: 90,
-                        color: listaEnderecos[index].favorito 
+                        color: listaEnderecos[index].id == model.pedido.endereco.id 
                                ?Colors.principalTheOffer
                                :Colors.secundariaTheOffer,
                         child: GestureDetector(
@@ -139,7 +160,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                             text: TextSpan(
                                                 text: listaEnderecos[index].nome,
                                                 style: TextStyle(
-                                                    color: listaEnderecos[index].favorito 
+                                                    color: listaEnderecos[index].id == model.pedido.endereco.id 
                                                            ?Colors.secundariaTheOffer
                                                            :Colors.principalTheOffer,
                                                     fontSize: 20,
@@ -156,7 +177,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                                 alignment: Alignment.centerRight,
                                                 child: IconButton(
                                                   iconSize: 24,
-                                                  color: listaEnderecos[index].favorito
+                                                  color: listaEnderecos[index].id == model.pedido.endereco.id 
                                                          ?Colors.secundariaTheOffer
                                                          :Colors.principalTheOffer,
                                                   icon: Icon(Icons.close),
@@ -181,7 +202,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                               text: TextSpan(
                                                   text: listaEnderecos[index].rua  + ', ' + listaEnderecos[index].numero.toString(),
                                                   style: TextStyle(
-                                                      color: listaEnderecos[index].favorito 
+                                                      color: listaEnderecos[index].id == model.pedido.endereco.id 
                                                              ?Colors.secundariaTheOffer
                                                              :Colors.principalTheOffer,
                                                       fontSize: 15.0
@@ -201,7 +222,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                             text: TextSpan(
                                                 text: listaEnderecos[index].cidade.nome + ', Bairro ' + listaEnderecos[index].bairro.nome,
                                                 style: TextStyle(
-                                                    color: listaEnderecos[index].favorito
+                                                    color: listaEnderecos[index].id == model.pedido.endereco.id 
                                                            ?Colors.secundariaTheOffer
                                                            :Colors.principalTheOffer,
                                                     fontSize: 15.0, 
@@ -238,7 +259,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                icon: Icon(Icons.add),
                                onPressed: () {
                                     MaterialPageRoute route =
-                                      MaterialPageRoute(builder: (context) => TelaCadastroEndereco());
+                                      MaterialPageRoute(builder: (context) => TelaCadastroEnderecoPedido());
  
                                     Navigator.push(context, route);
                                },
@@ -314,18 +335,23 @@ class _ListagemEndereco extends State<ListagemEndereco> {
   }
 
 
-  void alterarEnderecoFavorito(int usuarioId, int enderecoId) async {
-    Map<dynamic, dynamic> objetoEndereco = Map();
+  void alterarEnderecoPedido(int pedidoId, int usuarioId, int enderecoId) async {
+    Map<dynamic, dynamic> objetoPedido = Map();
     Map<dynamic, dynamic> responseBody;
-    print("ALTERANDO ENDERECO FAVORITO");
-        objetoEndereco = {
-          "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
+    print("ALTERANDO ENDERECO");
+        objetoPedido = {
+          "pedido": pedidoId.toString(), "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
         };
-    http.post(Configuracoes.BASE_URL + 'enderecos/alterarEnderecoFavorito', body: objetoEndereco).then((response) {
-      print("ALTERANDO ENDERECO FAVORITO");
+    http
+        .post(
+            Configuracoes.BASE_URL + 'pedido/alterarEnderecoPedido/',
+            body: objetoPedido)
+        .then((response) {
+      print("ALTERANDO ENDERECO");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
       return responseBody['message'];  
     });
   }
+
 }

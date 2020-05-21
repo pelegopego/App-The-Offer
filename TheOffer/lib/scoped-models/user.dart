@@ -9,33 +9,12 @@ import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/scoped-models/main.dart';
 
 mixin UserModel on Model {
-  bool _isAuthenticated = false;
   MainModel model;
   //Address _shipAddress;
-
-  bool get isAuthenticated {
-    return _isAuthenticated;
-  }
-/*
-  Address get shipAddress {
-    return _shipAddress;
-  }*/
 
   void set shipAddress(addr) {
    // _shipAddress = addr;
     notifyListeners();
-  }
-
-  loggedInUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String token = prefs.getString('spreeApiKey');
-    if (token != null) {
-      _isAuthenticated = true;
-      notifyListeners();
-    } else {
-      _isAuthenticated = false;
-      notifyListeners();
-    }
   }
 
   getAddress() async {

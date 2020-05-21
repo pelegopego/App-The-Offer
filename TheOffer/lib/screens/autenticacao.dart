@@ -421,7 +421,6 @@ class _AuthenticationState extends State<Authentication>
         hasError = false;
         model.getAddress();
         model.localizarCarrinho(null, 1);
-        model.loggedInUser();
         Navigator.of(context).pop();
       } else {        
         setState(() {

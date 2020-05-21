@@ -126,7 +126,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               width: 335,
               child: GestureDetector(
                 onTap: () {
-                  /*if (model.isAuthenticated) {
+                  /*if (Autenticacao.CodigoUsuario > 0) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
                             ReviewDetailScreen(produtoSelecionado)));
@@ -645,7 +645,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   color: Colors.blue,
                 ),
                 onPressed: () {/*
-                  if (model.isAuthenticated) {
+                  if (Autenticacao.CodigoUsuario > 0) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
                             ReviewDetailScreen(produtoSelecionado)));

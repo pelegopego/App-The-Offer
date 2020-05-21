@@ -25,7 +25,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _model.loggedInUser();
     _model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
     super.initState();
   }

@@ -11,6 +11,7 @@ class Endereco {
    int numero;
    String complemento;
    String referencia;
+   bool favorito;
    DateTime dataCadastro;
    DateTime dataConfirmacao;
  
@@ -25,6 +26,7 @@ class Endereco {
        this.complemento,
        this.referencia,
        this.dataCadastro,
+       this.favorito,
        this.dataConfirmacao}
   );
 }

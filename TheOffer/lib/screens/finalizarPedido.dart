@@ -3,7 +3,7 @@ import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
 import 'package:theoffer/screens/payubiz.dart';
-import 'package:theoffer/screens/listagemEndereco.dart';
+import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -149,7 +149,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                               icon: Icon(Icons.edit),
                                               onPressed: () {
                                                   MaterialPageRoute route =
-                                                      MaterialPageRoute(builder: (context) => ListagemEndereco());
+                                                      MaterialPageRoute(builder: (context) => ListagemEnderecoPedido());
 
                                                   Navigator.push(context, route);
                                               },

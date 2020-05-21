@@ -6,16 +6,16 @@ import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:theoffer/screens/listagemEndereco.dart';
+import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 
-class TelaCadastroEndereco extends StatefulWidget {
-  TelaCadastroEndereco();
+class TelaCadastroEnderecoPedido extends StatefulWidget {
+  TelaCadastroEnderecoPedido();
   @override
   State<StatefulWidget> createState() {
-    return _TelaCadastroEndereco();
+    return _TelaCadastroEnderecoPedido();
   }
 }
-class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
+class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
   List<DropdownMenuItem<int>> listaBairros = [];
   bool _salvando = false;
   final Map<String, dynamic> _camposForm = {'nome': null, 'rua': null, 'numero': null, 'complemento': null, 'referencia': null};
@@ -125,7 +125,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         onPressed: () {
           salvarEndereco();
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (context) => ListagemEndereco());
+              MaterialPageRoute(builder: (context) => ListagemEnderecoPedido());
 
           Navigator.push(context, route);
         },

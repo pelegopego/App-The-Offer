@@ -8,6 +8,7 @@ import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/favorites.dart';
 import 'package:theoffer/screens/order_history.dart';
 import 'package:theoffer/screens/retun_policy.dart';
+import 'package:theoffer/screens/listagemEndereco.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,7 @@ class _HomeDrawer extends State<HomeDrawer> {
   Widget logOutButton() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (model.isAuthenticated) {
+        if (Autenticacao.CodigoUsuario > 0) {
           return ListTile(
             leading: Icon(
               Icons.call_made,
@@ -111,10 +112,38 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (model.isAuthenticated) {
+          if (Autenticacao.CodigoUsuario > 0) {
             MaterialPageRoute orderList =
                 MaterialPageRoute(builder: (context) => FavoritesScreen());
             Navigator.push(context, orderList);
+          } else {
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => Authentication(0));
+
+            Navigator.push(context, route);
+          }
+        },
+      );
+    });
+  }
+
+  Widget meusEndereco() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.map,
+          color: Colors.secundariaTheOffer,
+        ),
+        title: Text(
+          'Meus endereços',
+          style: TextStyle(color: Colors.secundariaTheOffer),
+        ),
+        onTap: () {
+          if (Autenticacao.CodigoUsuario > 0) {
+            MaterialPageRoute account =
+                MaterialPageRoute(builder: (context) => ListagemEndereco());
+            Navigator.push(context, account);
           } else {
             MaterialPageRoute route =
                 MaterialPageRoute(builder: (context) => Authentication(0));
@@ -139,7 +168,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (model.isAuthenticated) {
+          if (Autenticacao.CodigoUsuario > 0) {
             MaterialPageRoute account =
                 MaterialPageRoute(builder: (context) => Account());
             Navigator.push(context, account);
@@ -167,7 +196,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (model.isAuthenticated) {
+          if (Autenticacao.CodigoUsuario > 0) {
             MaterialPageRoute orderList =
                 MaterialPageRoute(builder: (context) => OrderList());
             Navigator.push(context, orderList);
@@ -186,7 +215,18 @@ class _HomeDrawer extends State<HomeDrawer> {
     getUserName();
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (!model.isAuthenticated) {
+        if (Autenticacao.CodigoUsuario > 0)  {
+          return Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text('Oi, ${formatarNome()}!',
+                    style: TextStyle(
+                        color: Colors.principalTheOffer, fontWeight: FontWeight.w500))
+              ],
+            ),
+          );
+        } else {
           return Expanded(
               child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -220,25 +260,14 @@ class _HomeDrawer extends State<HomeDrawer> {
               )
             ],
           ));
-        } else {
-          return Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Text('Oi, ${formatName()}!',
-                    style: TextStyle(
-                        color: Colors.principalTheOffer, fontWeight: FontWeight.w500))
-              ],
-            ),
-          );
         }
       },
     );
   }
 
-  formatName() {
-    if (userName != null) {
-      return userName[0].toUpperCase() + userName.substring(1).split('@')[0];
+  formatarNome() {
+    if (Autenticacao.NomeUsuario != null) {
+      return  Autenticacao.NomeUsuario[0].toUpperCase() + Autenticacao.NomeUsuario.substring(1).split('@')[0];
     }
   }
 
@@ -342,6 +371,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           ),
           favoritesLineTile(),
           accountListTile(),
+          meusEndereco(),
           Divider(color: Colors.secundariaTheOffer),
           ListTile(
             title: Text(

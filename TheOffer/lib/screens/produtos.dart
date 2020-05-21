@@ -32,7 +32,6 @@ class _TelaProdutos extends State<TelaProdutos> {
   Map<dynamic, dynamic> responseBody;
   bool _isBannerLoading = true;
   bool _produtosLoading = true;
-  bool _isAuthenticated = false;
   List<ProdutoEmpresa> listaProdutoEmpresa = [];
   List<Produto> _listaProduto = [];
   List<BannerImage> banners = [];
