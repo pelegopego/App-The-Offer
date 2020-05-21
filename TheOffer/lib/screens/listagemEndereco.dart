@@ -134,7 +134,7 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                           children: <Widget>[
                             Card(
                       child: Container(
-                        height: 114,
+                        height: 90,
                         color: listaEnderecos[index].id == model.pedido.endereco.id 
                                ?Colors.principalTheOffer
                                :Colors.secundariaTheOffer,
@@ -180,12 +180,10 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                                   color: listaEnderecos[index].id == model.pedido.endereco.id 
                                                          ?Colors.secundariaTheOffer
                                                          :Colors.principalTheOffer,
-                                                  icon: Icon(Icons.edit),
+                                                  icon: Icon(Icons.close),
                                                   onPressed: () {
-                                                      MaterialPageRoute route =
-                                                          MaterialPageRoute(builder: (context) => ListagemEndereco());
-
-                                                      Navigator.push(context, route);
+                                                    deletarEndereco(Autenticacao.CodigoUsuario,
+                                                        listaEnderecos[index].id);
                                                   },
                                                 ),
                                               ),
@@ -235,28 +233,6 @@ class _ListagemEnderecoState extends State<ListagemEndereco> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                      Expanded(
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Container(
-                                                alignment: Alignment.centerRight,
-                                                child: IconButton(
-                                                  iconSize: 24,
-                                                  color: listaEnderecos[index].id == model.pedido.endereco.id 
-                                                         ?Colors.secundariaTheOffer
-                                                         :Colors.principalTheOffer,
-                                                  icon: Icon(Icons.delete),
-                                                  onPressed: () {
-                                                    deletarEndereco(Autenticacao.CodigoUsuario,
-                                                        listaEnderecos[index].id);
-                                                  },
-                                                ),
-                                              ),
-                                            ]
-                                          )
-                                        ), 
                                       ]
                                     )
                                   ),
