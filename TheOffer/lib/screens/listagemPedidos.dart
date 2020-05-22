@@ -12,6 +12,7 @@ import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/models/bairro.dart';
+import 'package:theoffer/screens/detalharPedido.dart';
 
 class ListagemPedidos extends StatefulWidget {
   @override
@@ -98,12 +99,11 @@ class _ListagemPedidos extends State<ListagemPedidos> {
           delegate:
               SliverChildBuilderDelegate((BuildContext context, int index) {
             return GestureDetector(              
-              onTap: () {/*
-                alterarEnderecoFavorito(Autenticacao.CodigoUsuario, listaEnderecos[index].id);
+              onTap: () {
                 MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) => ListagemEndereco());
+                      MaterialPageRoute(builder: (context) => DetalharPedido(listaPedidos[index]));
 
-                Navigator.push(context, route);*/
+                Navigator.push(context, route);
               },
                 child: _pedidosLoading
             ? Container()
@@ -138,7 +138,6 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                           child: RichText(
                                             text: TextSpan(
                                                 text: 'Pedido ' + listaPedidos[index].id.toString(),
-                                                //' - Data ' + listaPedidos[index].dataInclusao.toString(),
                                                 style: TextStyle(
                                                     color: Colors.principalTheOffer,
                                                     fontSize: 17),
@@ -166,6 +165,10 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                   color: Colors.principalTheOffer,
                                                   icon: Icon(Icons.arrow_forward_ios),
                                                   onPressed: () {
+                                                    MaterialPageRoute route =
+                                                          MaterialPageRoute(builder: (context) => DetalharPedido(listaPedidos[index]));
+
+                                                    Navigator.push(context, route);
                                                   },
                                                 ),
                                               ),

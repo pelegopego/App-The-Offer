@@ -116,11 +116,13 @@ class _ListagemEndereco extends State<ListagemEndereco> {
               SliverChildBuilderDelegate((BuildContext context, int index) {
             return GestureDetector(              
               onTap: () {
+                print('object');
                 alterarEnderecoFavorito(Autenticacao.CodigoUsuario, listaEnderecos[index].id);
                 MaterialPageRoute route =
                       MaterialPageRoute(builder: (context) => ListagemEndereco());
 
                 Navigator.push(context, route);
+                print('objects');
               },
                 child: _enderecosLoading
             ? Container()
@@ -363,16 +365,12 @@ class _ListagemEndereco extends State<ListagemEndereco> {
 
   void alterarEnderecoFavorito(int usuarioId, int enderecoId) async {
     Map<dynamic, dynamic> objetoEndereco = Map();
-    Map<dynamic, dynamic> responseBody;
     print("ALTERANDO ENDERECO FAVORITO");
         objetoEndereco = {
           "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
         };
     http.post(Configuracoes.BASE_URL + 'enderecos/alterarEnderecoFavorito', body: objetoEndereco).then((response) {
-      print("ALTERANDO ENDERECO FAVORITO");
       print(json.decode(response.body).toString());
-      responseBody = json.decode(response.body);
-      return responseBody['message'];  
     });
   }
 }
