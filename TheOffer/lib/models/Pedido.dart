@@ -2,13 +2,13 @@ import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/endereco.dart';
 
 class Pedido {
-  final int id;
-  final int usuarioId;
-  final String dataInclusao;
-  final String dataConfirmacao;
-  final int status;
+   int id;
+   int usuarioId;
+   String dataInclusao;
+   String dataConfirmacao;
+   int status;
    Endereco endereco;
-  final List<ItemPedido> listaItensPedido;
+   List<ItemPedido> listaItensPedido;
   
   Pedido(
       {this.id,

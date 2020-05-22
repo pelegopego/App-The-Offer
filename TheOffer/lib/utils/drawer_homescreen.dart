@@ -9,6 +9,7 @@ import 'package:theoffer/screens/favorites.dart';
 import 'package:theoffer/screens/order_history.dart';
 import 'package:theoffer/screens/retun_policy.dart';
 import 'package:theoffer/screens/listagemEndereco.dart';
+import 'package:theoffer/screens/listagemPedidos.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -143,6 +144,34 @@ class _HomeDrawer extends State<HomeDrawer> {
           if (Autenticacao.CodigoUsuario > 0) {
             MaterialPageRoute account =
                 MaterialPageRoute(builder: (context) => ListagemEndereco());
+            Navigator.push(context, account);
+          } else {
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => Authentication(0));
+
+            Navigator.push(context, route);
+          }
+        },
+      );
+    });
+  }
+
+  Widget meusPedidos() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.library_books,
+          color: Colors.secundariaTheOffer,
+        ),
+        title: Text(
+          'Meus pedidos',
+          style: TextStyle(color: Colors.secundariaTheOffer),
+        ),
+        onTap: () {
+          if (Autenticacao.CodigoUsuario > 0) {
+            MaterialPageRoute account =
+                MaterialPageRoute(builder: (context) => ListagemPedidos());
             Navigator.push(context, account);
           } else {
             MaterialPageRoute route =
@@ -371,6 +400,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           ),
           favoritesLineTile(),
           accountListTile(),
+          meusPedidos(),
           meusEndereco(),
           Divider(color: Colors.secundariaTheOffer),
           ListTile(
