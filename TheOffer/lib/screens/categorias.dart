@@ -57,13 +57,11 @@ class _TelaCategorias extends State<TelaCategorias> {
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold( 
         appBar: AppBar(
-          title: Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'TheOffer',
-                textAlign: TextAlign.start,
-                style: TextStyle(fontFamily: 'HolyFat', fontSize: 50, color:  Colors.principalTheOffer),
-              )),
+          title: Image.asset(
+                    'images/logos/appBar.png',
+                    fit: BoxFit.fill,
+                    height: 55,
+            ),
         iconTheme: new IconThemeData(color: Colors.principalTheOffer)
         ),
         drawer: HomeDrawer(),

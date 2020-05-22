@@ -369,21 +369,23 @@ class _HomeDrawer extends State<HomeDrawer> {
         children: <Widget>[
           DrawerHeader(
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                'TheOffer',
-                style: TextStyle(
-                    fontFamily: 'HolyFat', fontSize: 65, color: Colors.principalTheOffer),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, 
+                children: [
+                  Image.asset(
+                        'images/logos/appBar.png',
+                        fit: BoxFit.fill,
+                        height: 90,
+                  ),
+                  Text(
+                    'PRE-ALPHA',
+                    style:
+                        TextStyle(color: Colors.principalTheOffer, fontWeight: FontWeight.w300),
+                  ),
+                  signInLineTile()
+                ]
               ),
-              Text(
-                '1.0.0',
-                style:
-                    TextStyle(color: Colors.principalTheOffer, fontWeight: FontWeight.w300),
-              ),
-              signInLineTile()
-            ]),
-            decoration: BoxDecoration(color: Colors.secundariaTheOffer),
-          ),
+              decoration: BoxDecoration(color: Colors.secundariaTheOffer),
+            ),
           ListTile(
             onTap: () {
               Navigator.popUntil(
@@ -397,9 +399,9 @@ class _HomeDrawer extends State<HomeDrawer> {
               'Página inicial',
               style: TextStyle(color: Colors.secundariaTheOffer),
             ),
-          ),
+          ),/*
           favoritesLineTile(),
-          accountListTile(),
+          accountListTile(),*/
           meusPedidos(),
           meusEndereco(),
           Divider(color: Colors.secundariaTheOffer),

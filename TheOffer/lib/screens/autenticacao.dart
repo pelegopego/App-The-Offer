@@ -91,12 +91,10 @@ class _AuthenticationState extends State<Authentication>
                 )
               ],
             ),
-            title: Text(
-              'TheOffer',
-              style: TextStyle(
-                  fontFamily: 'HolyFat',
-                  fontSize: 50,
-                  color: Colors.principalTheOffer),
+            title: Image.asset(
+                    'images/logos/appBar.png',
+                    fit: BoxFit.fill,
+                    height: 60,
             ),
           ),
           body: TabBarView(
