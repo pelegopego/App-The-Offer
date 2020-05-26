@@ -71,26 +71,25 @@ class _TelaProdutos extends State<TelaProdutos> {
     );
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold( 
+      return Scaffold(
         appBar: AppBar(
-          title: Image.asset(
-                    'images/logos/appBar.png',
-                    fit: BoxFit.fill,
-                    height: 55,
+            title: Image.asset(
+              'images/logos/appBar.png',
+              fit: BoxFit.fill,
+              height: 55,
             ),
-          actions: <Widget>[
-            shoppingCarrinhoIconButton(),
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size(_deviceSize.width, 70),
-            child: searchBar(),
-          ),
-        iconTheme: new IconThemeData(color: Colors.principalTheOffer)
-        ),
+            actions: <Widget>[
+              shoppingCarrinhoIconButton(),
+            ],
+            bottom: PreferredSize(
+              preferredSize: Size(_deviceSize.width, 70),
+              child: searchBar(),
+            ),
+            iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
         drawer: HomeDrawer(),
         body: Container(
           color: Colors.terciariaTheOffer,
-          child: CustomScrollView(slivers: [ 
+          child: CustomScrollView(slivers: [
             /*SliverList(
               delegate: SliverChildListDelegate([
                 Container(
@@ -117,56 +116,59 @@ class _TelaProdutos extends State<TelaProdutos> {
                     child: Container(
                       height: _deviceSize.height * 0.70,
                       child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: listaProdutoEmpresa.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (listaProdutoEmpresa[index].listaProduto.length > 0) {
-                            return cardProdutosEmpresa(index, listaProdutoEmpresa, _deviceSize, context);
-                          } else {
-                            return Container();
-                          }
-                        }
-                      ),
+                          scrollDirection: Axis.vertical,
+                          itemCount: listaProdutoEmpresa.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            if (listaProdutoEmpresa[index].listaProduto.length >
+                                0) {
+                              return cardProdutosEmpresa(index,
+                                  listaProdutoEmpresa, _deviceSize, context);
+                            } else {
+                              return Container();
+                            }
+                          }),
                     ),
                   ),
           ]),
         ),
-        bottomNavigationBar:
-            bottomNavigationBar(),
+        bottomNavigationBar: bottomNavigationBar(),
       );
     });
   }
 
   Widget bottomNavigationBar() {
-    return BottomNavigationBar(
-      backgroundColor: Colors.secundariaTheOffer,
-      onTap: (index) {
-        MaterialPageRoute route =
-            MaterialPageRoute(builder: (context) => Authentication(index));
+    if (Autenticacao.CodigoUsuario == 0) {
+      return BottomNavigationBar(
+        backgroundColor: Colors.secundariaTheOffer,
+        onTap: (index) {
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: (context) => Authentication(index));
 
-        Navigator.push(context, route);
-      },
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
-          title: Text('ENTRAR',
-              style: TextStyle(
-                    color: Colors.principalTheOffer,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600))),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-              color: Colors.principalTheOffer,
-            ),
-            title: Text('CRIAR CONTA',
-                style: TextStyle(
-                    color: Colors.principalTheOffer,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600))),
-      ],
-    );
+          Navigator.push(context, route);
+        },
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
+              title: Text('ENTRAR',
+                  style: TextStyle(
+                      color: Colors.principalTheOffer,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600))),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
+                color: Colors.principalTheOffer,
+              ),
+              title: Text('CRIAR CONTA',
+                  style: TextStyle(
+                      color: Colors.principalTheOffer,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600))),
+        ],
+      );
+    }
+    ;
   }
 
   Widget bannerCards(int index) {
@@ -221,58 +223,62 @@ class _TelaProdutos extends State<TelaProdutos> {
     }
   }
 
-  getProdutos() async {    
+  getProdutos() async {
     Map<dynamic, dynamic> objetoItemPedido = Map();
-    String imagemJson = ''; 
+    String imagemJson = '';
     setState(() {
       _produtosLoading = true;
       listaProdutoEmpresa = [];
     });
 
     objetoItemPedido = {
-          "categoria": widget.idCategoria.toString(), "cidade": CidadeSelecionada.id.toString()
-        };
-    http.post(Configuracoes.BASE_URL + 'produtos', body: objetoItemPedido).then((response) {
+      "categoria": widget.idCategoria.toString(),
+      "cidade": CidadeSelecionada.id.toString()
+    };
+    http
+        .post(Configuracoes.BASE_URL + 'produtos', body: objetoItemPedido)
+        .then((response) {
       responseBody = json.decode(response.body);
       responseBody['empresas'].forEach((empresaJson) {
-          setState(() { 
-            _listaProduto = [];
+        setState(() {
+          _listaProduto = [];
 
-            if (empresaJson['produtos'] != null) {
-              empresaJson['produtos'].forEach((produtoJson) {
+          if (empresaJson['produtos'] != null) {
+            empresaJson['produtos'].forEach((produtoJson) {
               imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
-              imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
-                  setState(() { 
-                    _listaProduto.add(Produto(
-                    id                    : int.parse(produtoJson['id']),
-                    titulo                : produtoJson['titulo'],
-                    descricao             : produtoJson['descricao'],
-                    imagem                : imagemJson,
-                    valor                 : produtoJson['valor'],
-                    valorNumerico         : double.parse(produtoJson['valorNumerico']),
-                    quantidade            : int.parse(produtoJson['quantidade']),
-                    quantidadeRestante    : int.parse(produtoJson['quantidadeRestante']),
-                    dataInicial           : produtoJson['dataInicial'],
-                    dataFinal             : produtoJson['dataFinal'],
-                    dataCadastro          : produtoJson['dataCadastro'],
-                    modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
-                    modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
-                    usuarioId             : int.parse(produtoJson['usuario_id'])
-                    ));
-                  });
-                });
-             }  
-            listaProdutoEmpresa.add(ProdutoEmpresa(
-            empresaId             : int.parse(empresaJson['id']),
-            razaoSocial           : empresaJson['razaosocial'],
-            fantasia              : empresaJson['fantasia'],
-            listaProduto: _listaProduto           
-            ),
-          );
+              imagemJson = imagemJson.substring(
+                  imagemJson.indexOf('base64,') + 7, imagemJson.length);
+              setState(() {
+                _listaProduto.add(Produto(
+                    id: int.parse(produtoJson['id']),
+                    titulo: produtoJson['titulo'],
+                    descricao: produtoJson['descricao'],
+                    imagem: imagemJson,
+                    valor: produtoJson['valor'],
+                    valorNumerico: double.parse(produtoJson['valorNumerico']),
+                    quantidade: int.parse(produtoJson['quantidade']),
+                    quantidadeRestante:
+                        int.parse(produtoJson['quantidadeRestante']),
+                    dataInicial: produtoJson['dataInicial'],
+                    dataFinal: produtoJson['dataFinal'],
+                    dataCadastro: produtoJson['dataCadastro'],
+                    modalidadeRecebimento1:
+                        int.parse(produtoJson['modalidadeRecebimento1']),
+                    modalidadeRecebimento2:
+                        int.parse(produtoJson['modalidadeRecebimento2']),
+                    usuarioId: int.parse(produtoJson['usuario_id'])));
+              });
+            });
           }
+          listaProdutoEmpresa.add(
+            ProdutoEmpresa(
+                empresaId: int.parse(empresaJson['id']),
+                razaoSocial: empresaJson['razaosocial'],
+                fantasia: empresaJson['fantasia'],
+                listaProduto: _listaProduto),
           );
-        }
-      );
+        });
+      });
       setState(() {
         _produtosLoading = false;
       });
@@ -301,7 +307,9 @@ class _TelaProdutos extends State<TelaProdutos> {
                 leading: Icon(Icons.search, color: Colors.secundariaTheOffer),
                 title: Text(
                   'Encontrar produtos...',
-                  style: TextStyle(fontWeight: FontWeight.w300, color: Colors.secundariaTheOffer),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      color: Colors.secundariaTheOffer),
                 ),
               ),
             ),
@@ -310,7 +318,8 @@ class _TelaProdutos extends State<TelaProdutos> {
     });
   }
 
-  getBanners() async {/*
+  getBanners() async {
+    /*
     http
         .get(Settings.SERVER_URL +
             'api/v1/taxonomies?q[name_cont]=Landing_Banner&set=nested')
