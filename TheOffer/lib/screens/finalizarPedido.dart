@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'package:theoffer/screens/payubiz.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:theoffer/screens/listagemEnderecoPedido.dart';
+import 'package:theoffer/screens/autenticacao.dart';
+import 'package:theoffer/screens/produtos.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/widgets/snackbar.dart';
-import 'package:theoffer/screens/update_address.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,19 +44,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
-/*
-  checkShipmentAvailability() async {
-    bool _isShippableResponse = await _model.shipmentAvailability(
-        pincode: ScopedModel.of<MainModel>(context, rebuildOnChange: false)
-            .pedido
-            .shipAddress
-            .pincode);
-    setState(() {
-      _isShippable = _isShippableResponse;
-    });
-  }*/
-
-// In the State of a stateful widget:
+  
   @override
   Widget build(BuildContext context) {
     _deviceSize = MediaQuery.of(context).size;
@@ -385,84 +374,39 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                       color: Colors.principalTheOffer),
                 ),
                 onPressed: () async {
-                  if (_character == 'COD') {
-                    if (_isShippable &&
-                        model.pedido.somaValorTotalPedido() >=
-                            FREE_SHIPPING_AMOUNT) {
-                      bool isComplete = false;
-                      model.paymentMethods.forEach((paymentMethodObj) async {
-                        if (paymentMethodObj.name == 'COD') {
-                          setState(() {
-                            selectedPaymentId = paymentMethodObj.id;
-                          });
+                    print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
+                    Map<dynamic, dynamic> objetoItemPedido = Map();
+                    Map<String, dynamic> responseBody;
+                    if (model.pedido != null) {
+                      if (Autenticacao.CodigoUsuario > 0 ) {
+                        if (model.pedido.status == 1) {
+                              objetoItemPedido = {
+                                "usuario": Autenticacao.CodigoUsuario.toString(), "pedido": model.pedido.id.toString()
+                              };
+                              http.post(
+                                      Configuracoes.BASE_URL + 'pedido/pagarPedido/',
+                                      body: objetoItemPedido)
+                                  .then((response) {
+                                print("PAGANDO PEDIDO");
+                                print(json.decode(response.body).toString());
+                                responseBody = json.decode(response.body);
+                                
+                                MaterialPageRoute produtosRoute =
+                                    MaterialPageRoute(
+                                        builder: (context) => TelaProdutos(idCategoria: 0));
+                                Navigator.push(context, produtosRoute);
+                              });
                         }
-                      });/*
-                      isComplete = await model.completeOrder(selectedPaymentId);
-                      if (isComplete) {
-                        bool isChanged = false;
-
-                        if (model.pedido.state == ) {
-                          isChanged = await model.changeState();
-                        }
-                        if (isChanged) {
-                          pushSuccessPage();
-                        }
-                      }*/
+                      } else {
+                        MaterialPageRoute authRoute = MaterialPageRoute(
+                            builder: (context) => Authentication(0));
+                        Navigator.push(context, authRoute);
+                      }
                     } else {
-                      if (model.pedido.somaValorTotalPedido() <
-                          FREE_SHIPPING_AMOUNT) {
-                        _scaffoldKey.currentState.showSnackBar(insufficientAmt);
-                      } else if (!_isShippable) {
-                        final invalidPincode = SnackBar(
-                          content: Text('COD not available for this Pincode'),
-                          duration: Duration(seconds: 3),
-                          action: SnackBarAction(
-                            label: 'CHANGE',
-                            onPressed: () {/*
-                              MaterialPageRoute route = MaterialPageRoute(
-                                  builder: (context) => UpdateAddress(
-                                      model.pedido.endereco, true));
-                              Navigator.pushReplacement(context, route);*/
-                            },
-                          ),
-                        );
-                        _scaffoldKey.currentState.showSnackBar(invalidPincode);
-                      }
+                      Navigator.popUntil(context,
+                          ModalRoute.withName(Navigator.defaultRouteName));
                     }
-                  } else if (_character == 'Payubiz') {
-                    setState(() {
-                      _proceedPressed = true;
-                    });
-                    print('PAGSEGURO');
-                    bool isComplete = false;
-                    // isComplete = await model.completeOrder(paymentMethods.first.id);
-                    model.paymentMethods.forEach((paymentMethodObj) async {
-                      print(paymentMethodObj.name);
-                      if (paymentMethodObj.name == 'Payubiz') {
-                        setState(() {
-                          selectedPaymentId = paymentMethodObj.id;
-                        });
-                      }
-                    });
-                    /*isComplete = await model.finalizarPedido(selectedPaymentId);
-                    if (isComplete) {
-                      print("CONFIRMA");
-                      bool isChanged = false;
 
-                      if (model.order.state == 'payment') {
-                        print("ESTADO DO PAGAMENTO MUDOU");
-                        isChanged = await model.changeState();
-                      }
-                      if (isChanged) {
-                        // pushSuccessPage();
-                        String url = await getParams();
-                        print(url);
-                        MaterialPageRoute payment = MaterialPageRoute(
-                            builder: (context) => PayubizScreen(url));
-                        Navigator.push(context, payment);
-                      }
-                    }*/
-                  }
                 },
               ),
       );

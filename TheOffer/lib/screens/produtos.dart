@@ -71,6 +71,7 @@ class _TelaProdutos extends State<TelaProdutos> {
     );
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+          
       return Scaffold(
         appBar: AppBar(
             title: Image.asset(
