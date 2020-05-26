@@ -114,7 +114,9 @@ class _TelaProdutos extends State<TelaProdutos> {
                   ]))
                 : SliverToBoxAdapter(
                     child: Container(
-                      height: _deviceSize.height * 0.70,
+                      height: Autenticacao.CodigoUsuario == 0
+                        ? _deviceSize.height * 0.70
+                        : _deviceSize.height * 0.77,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: listaProdutoEmpresa.length,
@@ -168,7 +170,6 @@ class _TelaProdutos extends State<TelaProdutos> {
         ],
       );
     }
-    ;
   }
 
   Widget bannerCards(int index) {
