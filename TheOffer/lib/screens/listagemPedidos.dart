@@ -284,7 +284,6 @@ class _ListagemPedidos extends State<ListagemPedidos> {
   getPedidos() async {     
     print("LOCALIZANDO PEDIDOS");
     Map<dynamic, dynamic> objetoPedido = Map();
-    String imagemJson = ''; 
     Map<dynamic, dynamic> responseBody;
     Produto produto;
     Endereco endereco;
@@ -355,14 +354,12 @@ class _ListagemPedidos extends State<ListagemPedidos> {
           setState(() {
             for(final pedidoAux in listaPedidos){
               if (pedidoAux.id == int.parse(pedidosJson['pedido_id'])) {
-                imagemJson = pedidosJson['imagem'].replaceAll('\/', '/');
                 if (pedidosJson['produto_id'] != null) {
-                  imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
                   produto = Produto(
                     id                    : int.parse(pedidosJson['produto_id']),
                     titulo                : pedidosJson['titulo'],
                     descricao             : pedidosJson['descricao'],
-                    imagem                : imagemJson,
+                    imagem                : pedidosJson['imagem'],
                     valor                 : pedidosJson['valor'],
                     valorNumerico         : double.parse(pedidosJson['valorNumerico']),
                     quantidade            : int.parse(pedidosJson['quantidade']), 

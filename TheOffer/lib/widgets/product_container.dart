@@ -3,7 +3,6 @@ import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:theoffer/utils/ImageHelper.dart';
 
 Widget productContainer(BuildContext myContext, Produto produtoSelecionado, int index) {
   return ScopedModelDescendant<MainModel>(
@@ -27,7 +26,7 @@ Widget productContainer(BuildContext myContext, Produto produtoSelecionado, int 
                         width: 150,
                         color: Colors.principalTheOffer,
                         child: FadeInImage(
-                          image: MemoryImage(dataFromBase64String(produtoSelecionado.imagem)),
+                          image: NetworkImage(produtoSelecionado.imagem),
                           placeholder: AssetImage(
                               'images/placeholders/no-product-image.png'),
                         ),

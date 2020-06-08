@@ -9,7 +9,6 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/utils/imageHelper.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/categoria.dart';
@@ -166,7 +165,7 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
             Container(
                 alignment: Alignment.bottomRight,
                  child: FadeInImage(
-                    image: MemoryImage(dataFromBase64String(listaCategoria[index].imagem)),
+                    image: NetworkImage(listaCategoria[index].imagem),
                     placeholder: AssetImage(
                         'images/placeholders/no-product-image.png'),
                     ),
@@ -186,20 +185,17 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
 
   getCategorias() async {
     http.get(Configuracoes.BASE_URL + 'categorias/').then((response) {
-    String imagemJson = ''; 
     setState(() {
       _carregandoCategoria = true;
       listaProdutos = [];
     });
       responseBody = json.decode(response.body);
       responseBody['categorias'].forEach((categoriaJson) {
-      imagemJson = categoriaJson['imagem'].replaceAll('\/', '/');
-      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
           setState(() { 
             listaCategoria.add(Categoria(
               id    : int.parse(categoriaJson['id']),
               nome  : categoriaJson['nome'],
-              imagem: imagemJson
+              imagem: categoriaJson['imagem']
             ));
           });
         }

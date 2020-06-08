@@ -227,7 +227,6 @@ class _TelaProdutos extends State<TelaProdutos> {
 
   getProdutos() async {
     Map<dynamic, dynamic> objetoItemPedido = Map();
-    String imagemJson = '';
     setState(() {
       _produtosLoading = true;
       listaProdutoEmpresa = [];
@@ -247,15 +246,12 @@ class _TelaProdutos extends State<TelaProdutos> {
 
           if (empresaJson['produtos'] != null) {
             empresaJson['produtos'].forEach((produtoJson) {
-              imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
-              imagemJson = imagemJson.substring(
-                  imagemJson.indexOf('base64,') + 7, imagemJson.length);
               setState(() {
                 _listaProduto.add(Produto(
                     id: int.parse(produtoJson['id']),
                     titulo: produtoJson['titulo'],
                     descricao: produtoJson['descricao'],
-                    imagem: imagemJson,
+                    imagem: produtoJson['imagem'],
                     valor: produtoJson['valor'],
                     valorNumerico: double.parse(produtoJson['valorNumerico']),
                     quantidade: int.parse(produtoJson['quantidade']),

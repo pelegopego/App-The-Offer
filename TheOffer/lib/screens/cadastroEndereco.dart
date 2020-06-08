@@ -169,7 +169,6 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
                   isExpanded: true,
                   items: listaBairros,
                   style: TextStyle(color: Colors.principalTheOffer),
-                  focusColor: Colors.principalTheOffer,
                   onChanged: (value) => mudouBairro(value),   
                ),
              )       

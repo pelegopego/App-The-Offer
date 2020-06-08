@@ -40,7 +40,6 @@ class _TelaCidade extends State<TelaCidade> {
               items: listaCidades,
               style: 
               TextStyle(color: Colors.secundariaTheOffer),
-              focusColor: Colors.principalTheOffer,
               onChanged: (value) => mudouCidade(value),   
               ),
               )     

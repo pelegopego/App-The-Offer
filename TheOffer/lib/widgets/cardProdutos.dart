@@ -6,7 +6,6 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/widgets/snackbar.dart';
-import 'package:theoffer/utils/ImageHelper.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 
@@ -153,7 +152,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                 children: <Widget>[
                   Container(
                     child: FadeInImage(
-                      image: MemoryImage(dataFromBase64String(produtoDetalhado.imagem)),
+                      image: NetworkImage(produtoDetalhado.imagem),
                       placeholder: AssetImage(
                           'images/placeholders/no-product-image.png'),
                       height: 140,

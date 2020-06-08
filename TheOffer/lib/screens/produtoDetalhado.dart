@@ -16,7 +16,6 @@ import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/screens/carrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:theoffer/utils/ImageHelper.dart';
 
 class TelaProdutoDetalhado extends StatefulWidget {
   final Produto produto;
@@ -247,7 +246,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             height: 320,
                             width: 390,
                             child: FadeInImage(
-                              image: MemoryImage(dataFromBase64String(produtoSelecionado.imagem)),
+                              image: NetworkImage(produtoSelecionado.imagem),
                               placeholder: AssetImage(
                                   'images/placeholders/no-product-image.png'),
                             ),

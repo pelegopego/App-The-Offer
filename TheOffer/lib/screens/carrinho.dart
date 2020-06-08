@@ -7,7 +7,6 @@ import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:theoffer/utils/ImageHelper.dart';
 import 'package:theoffer/screens/finalizarPedido.dart';
 
 class Carrinho extends StatefulWidget {
@@ -225,7 +224,7 @@ class _CarrinhoState extends State<Carrinho> {
                                 width: 180,
                                 color: Colors.secundariaTheOffer,
                                 child: FadeInImage(
-                                 image: MemoryImage(dataFromBase64String(model.pedido.listaItensPedido[index].produto.imagem)),
+                                 image: NetworkImage(model.pedido.listaItensPedido[index].produto.imagem),
                                   placeholder: AssetImage(
                                       'images/placeholders/no-product-image.png'),
                                 ),

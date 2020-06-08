@@ -50,7 +50,6 @@ mixin CarrinhoModel on Model {
 
   void getProdutoDetalhe(int id, BuildContext context,
       [bool isSimilarListing = false]) async {
-    String imagemJson = ''; 
     Map<String, String> headers = await getHeaders();
     Map<String, dynamic> responseBody;
     Produto produtoDetalhado = Produto();
@@ -63,13 +62,11 @@ mixin CarrinhoModel on Model {
     responseBody = json.decode(response.body);
     responseBody['empresas'].forEach((empresaJson) {
       empresaJson['produtos'].forEach((produtoJson) {
-        imagemJson = produtoJson['imagem'].replaceAll('\/', '/');
-        imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
         produtoDetalhado = Produto(
             id                    : int.parse(produtoJson['id']),
             titulo                : produtoJson['titulo'],
             descricao             : produtoJson['descricao'],
-            imagem                : imagemJson,
+            imagem                : produtoJson['imagem'],
             valor                 : produtoJson['valor'],
             valorNumerico         : double.parse(produtoJson['valorNumerico']),
             quantidade            : int.parse(produtoJson['quantidade']),
@@ -144,7 +141,6 @@ mixin CarrinhoModel on Model {
     print("LOCALIZANDO CARRINHO");
      _isLoading = true;
     notifyListeners();
-    String imagemJson = ''; 
     Map<dynamic, dynamic> responseBody;
     Produto produto;
     Endereco endereco;
@@ -163,13 +159,11 @@ mixin CarrinhoModel on Model {
           
       responseBody = json.decode(response.body);
       responseBody['pedidos'].forEach((pedidosJson) {
-      imagemJson = pedidosJson['imagem'].replaceAll('\/', '/');
-      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
              produto = Produto(
               id                    : int.parse(pedidosJson['produto_id']),
               titulo                : pedidosJson['titulo'],
               descricao             : pedidosJson['descricao'],
-              imagem                : imagemJson,
+              imagem                : pedidosJson['imagem'],
               valor                 : pedidosJson['valor'],
               valorNumerico         : double.parse(pedidosJson['valorNumerico']),
               quantidade            : int.parse(pedidosJson['quantidade']), 
@@ -241,7 +235,6 @@ mixin CarrinhoModel on Model {
     print("LOCALIZANDO CARRINHO");
      _isLoading = true;
     notifyListeners();
-    String imagemJson = ''; 
     Map<dynamic, dynamic> responseBody;
     Produto produto;
     Endereco endereco;
@@ -260,13 +253,11 @@ mixin CarrinhoModel on Model {
           
       responseBody = json.decode(response.body);
       responseBody['pedidos'].forEach((pedidosJson) {
-      imagemJson = pedidosJson['imagem'].replaceAll('\/', '/');
-      imagemJson = imagemJson.substring(imagemJson.indexOf('base64,') + 7, imagemJson.length);
              produto = Produto(
               id                    : int.parse(pedidosJson['produto_id']),
               titulo                : pedidosJson['titulo'],
               descricao             : pedidosJson['descricao'],
-              imagem                : imagemJson,
+              imagem                : pedidosJson['imagem'],
               valor                 : pedidosJson['valor'],
               valorNumerico         : double.parse(pedidosJson['valorNumerico']),
               quantidade            : int.parse(pedidosJson['quantidade']), 
