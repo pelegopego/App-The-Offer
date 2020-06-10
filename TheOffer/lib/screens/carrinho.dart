@@ -159,7 +159,7 @@ class _CarrinhoState extends State<Carrinho> {
                     Map<String, dynamic> responseBody;
                     if (model.pedido != null) {
                       if (Autenticacao.CodigoUsuario > 0 ) {
-                        if (model.pedido.status == 1) {
+                        //if (model.pedido.status == 1) {
                               print("finalizandocarrinho");
                               objetoItemPedido = {
                                 "usuario": Autenticacao.CodigoUsuario.toString()
@@ -172,13 +172,13 @@ class _CarrinhoState extends State<Carrinho> {
                                 print("FINALIZANDO CARRINHO");
                                 print(json.decode(response.body).toString());
                                 responseBody = json.decode(response.body);
-                                
-                                MaterialPageRoute finalizarPedidoRoute =
-                                    MaterialPageRoute(
-                                        builder: (context) => TelaFinalizarPedido());
-                                Navigator.push(context, finalizarPedidoRoute);
+                                model.localizarPedido(model.pedido.id, Autenticacao.CodigoUsuario, 2);
+                                  MaterialPageRoute finalizarPedidoRoute =
+                                      MaterialPageRoute(
+                                          builder: (context) => TelaFinalizarPedido());
+                                  Navigator.push(context, finalizarPedidoRoute);
                               });
-                        }
+                        //}
                       } else {
                         MaterialPageRoute authRoute = MaterialPageRoute(
                             builder: (context) => Authentication(0));

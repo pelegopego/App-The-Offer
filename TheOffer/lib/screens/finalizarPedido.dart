@@ -237,7 +237,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                 onTap: () {},
                 child: Card(
                   child: Container(
-                    height: 40,
+                    height: 58,
                     color: Colors.secundariaTheOffer,
                     child: GestureDetector(
                       onTap: () {},
@@ -379,7 +379,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                     Map<String, dynamic> responseBody;
                     if (model.pedido != null) {
                       if (Autenticacao.CodigoUsuario > 0 ) {
-                        if (model.pedido.status == 1) {
+                        if (model.pedido.status == 2) {
                               objetoItemPedido = {
                                 "usuario": Autenticacao.CodigoUsuario.toString(), "pedido": model.pedido.id.toString()
                               };

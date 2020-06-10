@@ -99,6 +99,17 @@ mixin CarrinhoModel on Model {
     notifyListeners(); 
   }
 
+  void comprarProduto({int usuarioId, int produtoId, int quantidade})  {
+    _isLoading = true;
+    pedido.id = null;
+    notifyListeners();
+    print("QUANTIDADE COMPRADA $quantidade");
+    _listaItensPedido.clear();
+    adquirirProduto(usuarioId, produtoId, quantidade);
+    _isLoading = false;
+    notifyListeners(); 
+  }
+
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
     Map<dynamic, dynamic> responseBody;
     print("REMOVENDO ITEM DO CARRINHO");
@@ -136,6 +147,26 @@ mixin CarrinhoModel on Model {
       return responseBody['message'];  
     });
   }
+
+  void adquirirProduto(int usuarioId, int produtoId, int quantidade) async {
+    Map<dynamic, dynamic> responseBody;
+    print("ADQUIRINDO PRODUTO");
+        objetoItemPedido = {
+          "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString()
+        };
+    http
+        .post(
+            Configuracoes.BASE_URL + 'pedido/comprarproduto/',
+            body: objetoItemPedido)
+        .then((response) {
+      print("ADQUIRINDO PRODUTO _______");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      localizarPedido(int.parse(responseBody['id']), Autenticacao.CodigoUsuario, 2);  
+    });
+    _isLoading = false;
+  }
+
 
   Future<bool> localizarCarrinho(int pedidoId, int usuarioId) async {
     print("LOCALIZANDO CARRINHO");

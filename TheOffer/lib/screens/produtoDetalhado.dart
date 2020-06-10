@@ -13,7 +13,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/snackbar.dart';
-import 'package:theoffer/screens/carrinho.dart';
+import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -110,7 +110,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             controller: _tabController,
             children: <Widget>[highlightsTab()],
           ),
-          floatingActionButton: addToCarrinhoFAB());
+          floatingActionButton: adicionarCarrinhoFloatButton());
     });
   }
 
@@ -448,11 +448,11 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               SizedBox(
                 height: 12.0,
               ),
-              addToCarrinhoFlatButton(),
+              adicionarCarrinhoButton(),
               SizedBox(
                 height: 12.0,
               ),
-              buyNowFlatButton(),
+              comprarAgoraButton(),
               Divider(color: Colors.principalTheOffer),
               SizedBox(
                 height: 2,
@@ -514,7 +514,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     });
   }
 
-  Widget buyNowFlatButton() {
+  Widget comprarAgoraButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Padding(
@@ -534,22 +534,23 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       if (produtoSelecionado.quantidadeRestante > 0) {
                         
                         if (Autenticacao.CodigoUsuario > 0) {
-                          model.adicionarProduto(
+                          model.comprarProduto(
                               usuarioId: Autenticacao.CodigoUsuario,
                               produtoId: produtoSelecionado.id,
-                              quantidade: quantidade,                            
-                              somar: 0);
+                              quantidade: quantidade);
                         } else {
                             MaterialPageRoute authRoute = MaterialPageRoute(
                                 builder: (context) => Authentication(0));
                             Navigator.push(context, authRoute);
                         }
-                        if (!model.isLoading) {
-                          Scaffold.of(context).showSnackBar(completeSnackbar);
-                          MaterialPageRoute route =
-                              MaterialPageRoute(builder: (context) => Carrinho());
+                        if (model.pedido != null) {
+                          if (!model.isLoading) {
+                            Scaffold.of(context).showSnackBar(completeSnackbar);
+                            MaterialPageRoute route =
+                                MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
 
-                          Navigator.push(context, route);
+                            Navigator.push(context, route);
+                          }
                         }
                       }
                     }
@@ -561,7 +562,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     );
   }
 
-  Widget addToCarrinhoFlatButton() {
+  Widget adicionarCarrinhoButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Padding(
@@ -606,7 +607,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     );
   }
 
-  Widget addToCarrinhoFAB() {
+  Widget adicionarCarrinhoFloatButton() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return _tabController.index == 0
