@@ -27,7 +27,7 @@ dependencies:
   shared_preferences: ^0.5.2+1
   url_launcher: ^5.1.0
   connectivity: ^0.4.4
-  flushbar: 1.9.1
+  flushbar: 1.10.2 
   get_it: ^1.0.3+2
   back_button_interceptor: ^4.1.1
 
