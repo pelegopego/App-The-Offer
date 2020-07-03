@@ -12,6 +12,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class TelaFinalizarPedido extends StatefulWidget {
   @override
@@ -377,6 +378,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
                     Map<String, dynamic> responseBody;
+                    Map<String, String> headers = await getHeaders();
                     if (model.pedido != null) {
                       if (Autenticacao.CodigoUsuario > 0 ) {
                         if (model.pedido.status == 2) {
@@ -385,6 +387,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                               };
                               http.post(
                                       Configuracoes.BASE_URL + 'pedido/pagarPedido/',
+                                      headers: headers,
                                       body: objetoItemPedido)
                                   .then((response) {
                                 print("PAGANDO PEDIDO");

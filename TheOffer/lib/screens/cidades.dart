@@ -5,7 +5,7 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:theoffer/models/cidade.dart';
+import 'package:theoffer/utils/headers.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/constants.dart';
 
@@ -76,7 +76,9 @@ class _TelaCidade extends State<TelaCidade> {
                 
   getCidades() async {
   Map<dynamic, dynamic> responseBody;
-    http.get(Configuracoes.BASE_URL + 'cidades/').then((response) {
+    Map<String, String> headers = await getHeaders();
+    http.get(Configuracoes.BASE_URL + 'cidades/', headers: headers)
+    .then((response) {
     setState(() {
       listaCidades = [];
     });

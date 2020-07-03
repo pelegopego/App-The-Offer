@@ -14,6 +14,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
+import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TelaProdutos extends StatefulWidget {
@@ -227,6 +228,7 @@ class _TelaProdutos extends State<TelaProdutos> {
 
   getProdutos() async {
     Map<dynamic, dynamic> objetoItemPedido = Map();
+    Map<String, String> headers = await getHeaders();
     setState(() {
       _produtosLoading = true;
       listaProdutoEmpresa = [];
@@ -237,7 +239,7 @@ class _TelaProdutos extends State<TelaProdutos> {
       "cidade": CidadeSelecionada.id.toString()
     };
     http
-        .post(Configuracoes.BASE_URL + 'produtos', body: objetoItemPedido)
+        .post(Configuracoes.BASE_URL + 'produtos', headers: headers, body: objetoItemPedido)
         .then((response) {
       responseBody = json.decode(response.body);
       responseBody['empresas'].forEach((empresaJson) {

@@ -11,6 +11,7 @@ import 'package:theoffer/models/endereco.dart';
 import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/screens/cadastroEnderecoPedido.dart';
 import 'package:theoffer/models/bairro.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class ListagemEnderecoPedido extends StatefulWidget {
   @override
@@ -293,12 +294,13 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
   }
   
   void deletarEndereco(int usuarioId, int enderecoId) async {
+    Map<String, String> headers = await getHeaders();
     Map<dynamic, dynamic> objetoEndereco = Map();
     print("DELETANDO ENDERECO");
         objetoEndereco = {
           "usuario": usuarioId.toString(), "endereco": enderecoId.toString()
         };
-    http.post(Configuracoes.BASE_URL + 'enderecos/deletar', body: objetoEndereco).then((response) {
+    http.post(Configuracoes.BASE_URL + 'enderecos/deletar', headers: headers, body: objetoEndereco).then((response) {
       print("REMOVENDO PRODUTO DO CARRINHO _______");
       getEnderecos();
     });
@@ -310,6 +312,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     Bairro bairro;
     Map<dynamic, dynamic> responseBody;
     Map<dynamic, dynamic> objetoEndereco = Map();
+    Map<String, String> headers = await getHeaders();
 
     setState(() {
       _enderecosLoading = true;
@@ -320,7 +323,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     objetoEndereco = {
           "usuario": Autenticacao.CodigoUsuario.toString(), "cidade": CidadeSelecionada.id.toString()
         };
-    http.post(Configuracoes.BASE_URL + 'enderecos', body: objetoEndereco).then((response) {
+    http.post(Configuracoes.BASE_URL + 'enderecos', headers: headers, body: objetoEndereco).then((response) {
       responseBody = json.decode(response.body);
       responseBody['enderecos'].forEach((enderecoJson) {
           setState(() { 
@@ -358,6 +361,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
   void alterarEnderecoPedido(int pedidoId, int usuarioId, int enderecoId) async {
     Map<dynamic, dynamic> objetoPedido = Map();
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
     print("ALTERANDO ENDERECO");
         objetoPedido = {
           "pedido": pedidoId.toString(), "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
@@ -365,6 +369,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     http
         .post(
             Configuracoes.BASE_URL + 'pedido/alterarEnderecoPedido/',
+            headers: headers,
             body: objetoPedido)
         .then((response) {
       print("ALTERANDO ENDERECO");

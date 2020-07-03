@@ -7,6 +7,7 @@ class Configuracoes {
 class Autenticacao {  
   static int CodigoUsuario = 0;  
   static String NomeUsuario = '';  
+  static String Token = '';  
 }
 
 class CidadeSelecionada {  

@@ -8,6 +8,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/screens/finalizarPedido.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class Carrinho extends StatefulWidget {
   @override
@@ -154,6 +155,7 @@ class _CarrinhoState extends State<Carrinho> {
                         color: Colors.secundariaTheOffer),
                   ),
                   onPressed: () async {
+                    Map<String, String> headers = await getHeaders();
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
                     Map<String, dynamic> responseBody;
@@ -167,6 +169,7 @@ class _CarrinhoState extends State<Carrinho> {
                               http
                                   .post(
                                       Configuracoes.BASE_URL + 'pedido/finalizarCarrinho/',
+                                      headers: headers,
                                       body: objetoItemPedido)
                                   .then((response) {
                                 print("FINALIZANDO CARRINHO");

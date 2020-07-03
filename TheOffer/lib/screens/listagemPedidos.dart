@@ -13,6 +13,7 @@ import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/models/bairro.dart';
 import 'package:theoffer/screens/detalharPedido.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class ListagemPedidos extends StatefulWidget {
   @override
@@ -292,6 +293,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     Bairro bairro;
     Cidade cidade;
     ItemPedido itemPedido;
+    Map<String, String> headers = await getHeaders();
     try {
     setState(() {
       _pedidosLoading = true;
@@ -301,7 +303,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
       objetoPedido = {
         "usuario": Autenticacao.CodigoUsuario.toString()
       };
-      http.post(Configuracoes.BASE_URL + 'pedido/localizar', body: objetoPedido).then((response){
+      http.post(Configuracoes.BASE_URL + 'pedido/localizar', headers: headers, body: objetoPedido).then((response){
         responseBody = json.decode(response.body);
         responseBody['pedidos'].forEach((pedidosJson) {
           if (pedidosJson['endereco_id'] != null) { 
@@ -395,11 +397,12 @@ class _ListagemPedidos extends State<ListagemPedidos> {
   void alterarEnderecoFavorito(int usuarioId, int enderecoId) async {
     Map<dynamic, dynamic> objetoEndereco = Map();
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
     print("ALTERANDO ENDERECO FAVORITO");
         objetoEndereco = {
           "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
         };
-    http.post(Configuracoes.BASE_URL + 'enderecos/alterarEnderecoFavorito', body: objetoEndereco).then((response) {
+    http.post(Configuracoes.BASE_URL + 'enderecos/alterarEnderecoFavorito', headers: headers, body: objetoEndereco).then((response) {
       print("ALTERANDO ENDERECO FAVORITO");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);

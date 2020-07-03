@@ -58,7 +58,7 @@ mixin CarrinhoModel on Model {
     // setLoading(true);
     print(
         "DETALHAMENTO DE PRODUTO ------> ${Configuracoes.BASE_URL + 'produto/$id'}");
-    http.Response response = await http.get(Configuracoes.BASE_URL + 'produto/$id/');
+    http.Response response = await http.get(Configuracoes.BASE_URL + 'produto/$id/', headers: headers);
     responseBody = json.decode(response.body);
     responseBody['empresas'].forEach((empresaJson) {
       empresaJson['produtos'].forEach((produtoJson) {
@@ -112,6 +112,7 @@ mixin CarrinhoModel on Model {
 
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
     print("REMOVENDO ITEM DO CARRINHO");
         objetoItemPedido = {
           "pedido": pedidoId.toString(), "produto": produtoId.toString()
@@ -119,6 +120,7 @@ mixin CarrinhoModel on Model {
     http
         .post(
             Configuracoes.BASE_URL + 'pedido/removerProdutoCarrinho/',
+            headers: headers,
             body: objetoItemPedido)
         .then((response) {
       print("REMOVENDO PRODUTO DO CARRINHO _______");
@@ -131,6 +133,7 @@ mixin CarrinhoModel on Model {
 
   void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, int somar) async {
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
     print("ADICIONANDO ITEM AO CARRINHO");
         objetoItemPedido = {
           "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString(), "somar": somar.toString()
@@ -138,6 +141,7 @@ mixin CarrinhoModel on Model {
     http
         .post(
             Configuracoes.BASE_URL + 'pedido/adicionarProdutoCarrinho/',
+            headers: headers,
             body: objetoItemPedido)
         .then((response) {
       print("ADICIONANDO PRODUTO AO CARRINHO _______");
@@ -150,6 +154,7 @@ mixin CarrinhoModel on Model {
 
   void adquirirProduto(int usuarioId, int produtoId, int quantidade) async {
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
     print("ADQUIRINDO PRODUTO");
         objetoItemPedido = {
           "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString()
@@ -157,6 +162,7 @@ mixin CarrinhoModel on Model {
     http
         .post(
             Configuracoes.BASE_URL + 'pedido/comprarproduto/',
+            headers: headers,
             body: objetoItemPedido)
         .then((response) {
       print("ADQUIRINDO PRODUTO _______");
@@ -179,13 +185,14 @@ mixin CarrinhoModel on Model {
     Cidade cidade;
     ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, String> headers = await getHeaders();
     try {
       _listaItensPedido.clear();
       objetoItemPedido = {
         "usuario": usuarioId.toString(), "pedido": pedidoId.toString(), "status": 1.toString()
       };
       http.Response response =
-          await http.post(Configuracoes.BASE_URL + 'pedido/localizar', 
+          await http.post(Configuracoes.BASE_URL + 'pedido/localizar', headers: headers,
           body: objetoItemPedido);
           
       responseBody = json.decode(response.body);
@@ -273,13 +280,14 @@ mixin CarrinhoModel on Model {
     Cidade cidade;
     ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, String> headers = await getHeaders();
     try {
       _listaItensPedido.clear();
       objetoItemPedido = {
         "usuario": usuarioId.toString(), "pedido": pedidoId.toString(), "status": status.toString()
       };
       http.Response response =
-          await http.post(Configuracoes.BASE_URL + 'pedido/localizar', 
+          await http.post(Configuracoes.BASE_URL + 'pedido/localizar', headers: headers,
           body: objetoItemPedido);
           
       responseBody = json.decode(response.body);

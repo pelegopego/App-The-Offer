@@ -7,6 +7,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/screens/listagemEnderecoPedido.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class TelaCadastroEnderecoPedido extends StatefulWidget {
   TelaCadastroEnderecoPedido();
@@ -134,6 +135,8 @@ class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
   }
 
   void salvarEndereco() async {
+    Map<String, String> headers = await getHeaders();
+
     _formKeyEndereco.currentState.save();
     Map<dynamic, dynamic> objetoEndereco = {
       'nome'       : _camposForm['nome'], 
@@ -146,7 +149,7 @@ class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
       'usuario'    : Autenticacao.CodigoUsuario.toString()
     };
         
-    http.post(Configuracoes.BASE_URL + 'enderecos/salvar', body: objetoEndereco).
+    http.post(Configuracoes.BASE_URL + 'enderecos/salvar', headers: headers, body: objetoEndereco).
     then((response) {
       print("SALVOU ENDEREÇO: " + _camposForm['nome']);
     });
@@ -179,12 +182,13 @@ class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
   }
 
   getBairros() async {
-  Map<dynamic, dynamic> responseBody;
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
 
     Map<dynamic, dynamic> objetoCidade = {
       'cidade': CidadeSelecionada.id.toString()
     };
-    http.post(Configuracoes.BASE_URL + 'bairros', body: objetoCidade).then((response) {
+    http.post(Configuracoes.BASE_URL + 'bairros', headers: headers, body: objetoCidade).then((response) {
     setState(() {
       listaBairros = [];
     });

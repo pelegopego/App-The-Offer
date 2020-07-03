@@ -10,6 +10,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -378,6 +379,7 @@ class _AuthenticationState extends State<Authentication>
 
   void _realizarLogin(MainModel model) async {
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
 
     setState(() {
       _isLoader = true;
@@ -398,7 +400,7 @@ class _AuthenticationState extends State<Authentication>
         
     bool hasError = true;
     http
-        .post(Configuracoes.BASE_URL + 'usuario/logar/', body: oMapLogin)
+        .post(Configuracoes.BASE_URL + 'usuario/logar/', headers: headers, body: oMapLogin)
         .then((response) {
       
       String message = 'Ocorreu algum erro.';
@@ -410,7 +412,8 @@ class _AuthenticationState extends State<Authentication>
         
         responseBody['usuario'].forEach((usuarioJson) {
           Autenticacao.CodigoUsuario =  int.parse(usuarioJson['id']);
-          Autenticacao.NomeUsuario = usuarioJson['nome'];
+          Autenticacao.NomeUsuario  = usuarioJson['nome'];
+          Autenticacao.Token        = usuarioJson['token'];
         });        
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
@@ -457,6 +460,7 @@ class _AuthenticationState extends State<Authentication>
     }
     _formKey.currentState.save();
     Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = await getHeaders();
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
       'nome': _formData['nome'] + ' ' +  _formData['sobrenome'],
@@ -467,7 +471,7 @@ class _AuthenticationState extends State<Authentication>
     };
 
     http
-        .post(Configuracoes.BASE_URL + 'usuario/salvar/', body: oMapCadastrarLogin)
+        .post(Configuracoes.BASE_URL + 'usuario/salvar/', headers: headers, body: oMapCadastrarLogin)
         .then((response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       String message = 'Ocorreu algum erro.';

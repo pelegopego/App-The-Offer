@@ -12,6 +12,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/categoria.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class TelaCategorias extends StatefulWidget {
   final int idCidade;
@@ -184,7 +185,9 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
 }
 
   getCategorias() async {
-    http.get(Configuracoes.BASE_URL + 'categorias/').then((response) {
+    Map<String, String> headers = await getHeaders();
+
+    http.get(Configuracoes.BASE_URL + 'categorias/', headers: headers).then((response) {
     setState(() {
       _carregandoCategoria = true;
       listaProdutos = [];
