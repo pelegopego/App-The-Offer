@@ -50,7 +50,7 @@ mixin CarrinhoModel on Model {
 
   void getProdutoDetalhe(int id, BuildContext context,
       [bool isSimilarListing = false]) async {
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> responseBody;
     Produto produtoDetalhado = Produto();
     _isLoading = true;
@@ -112,7 +112,7 @@ mixin CarrinhoModel on Model {
 
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     print("REMOVENDO ITEM DO CARRINHO");
         objetoItemPedido = {
           "pedido": pedidoId.toString(), "produto": produtoId.toString()
@@ -133,7 +133,7 @@ mixin CarrinhoModel on Model {
 
   void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, int somar) async {
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     print("ADICIONANDO ITEM AO CARRINHO");
         objetoItemPedido = {
           "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString(), "somar": somar.toString()
@@ -154,7 +154,7 @@ mixin CarrinhoModel on Model {
 
   void adquirirProduto(int usuarioId, int produtoId, int quantidade) async {
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     print("ADQUIRINDO PRODUTO");
         objetoItemPedido = {
           "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString()
@@ -185,7 +185,7 @@ mixin CarrinhoModel on Model {
     Cidade cidade;
     ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     try {
       _listaItensPedido.clear();
       objetoItemPedido = {
@@ -280,7 +280,7 @@ mixin CarrinhoModel on Model {
     Cidade cidade;
     ItemPedido itemPedido;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     try {
       _listaItensPedido.clear();
       objetoItemPedido = {

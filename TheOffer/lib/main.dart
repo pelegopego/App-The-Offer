@@ -4,6 +4,8 @@ import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   setupLocator();
@@ -26,6 +28,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
+    
+    Map<dynamic, dynamic> responseBody;
+    //Adquire o token se não existe
+    if (Autenticacao.Token == "") {
+      http.get(Configuracoes.BASE_URL + 'usuario/gerarToken').then((response) {
+        responseBody = json.decode(response.body);
+        Autenticacao.Token = responseBody['token'];
+      });
+    }
     super.initState();
   }
 

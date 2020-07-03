@@ -34,7 +34,7 @@ class _HomeDrawer extends State<HomeDrawer> {
 
   getFavoritesCount() async {/*
     favCount = 0;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> responseBody = Map();
     http
         .get(

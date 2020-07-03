@@ -267,7 +267,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         String authToken = prefs.getString('spreeApiKey');
-                        Map<String, String> headers = await getHeaders();
+                        Map<String, String> headers = getHeaders();
 
                         if (!_isFavorite) {
                           if (authToken == null) {

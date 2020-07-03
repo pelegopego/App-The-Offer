@@ -294,7 +294,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
   }
   
   void deletarEndereco(int usuarioId, int enderecoId) async {
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<dynamic, dynamic> objetoEndereco = Map();
     print("DELETANDO ENDERECO");
         objetoEndereco = {
@@ -312,7 +312,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     Bairro bairro;
     Map<dynamic, dynamic> responseBody;
     Map<dynamic, dynamic> objetoEndereco = Map();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
 
     setState(() {
       _enderecosLoading = true;
@@ -361,7 +361,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
   void alterarEnderecoPedido(int pedidoId, int usuarioId, int enderecoId) async {
     Map<dynamic, dynamic> objetoPedido = Map();
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     print("ALTERANDO ENDERECO");
         objetoPedido = {
           "pedido": pedidoId.toString(), "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()

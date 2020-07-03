@@ -135,7 +135,7 @@ class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
   }
 
   void salvarEndereco() async {
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
 
     _formKeyEndereco.currentState.save();
     Map<dynamic, dynamic> objetoEndereco = {
@@ -183,7 +183,7 @@ class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
 
   getBairros() async {
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
 
     Map<dynamic, dynamic> objetoCidade = {
       'cidade': CidadeSelecionada.id.toString()

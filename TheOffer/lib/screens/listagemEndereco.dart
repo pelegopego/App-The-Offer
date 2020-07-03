@@ -303,7 +303,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
   
   void deletarEndereco(int usuarioId, int enderecoId) async {
     Map<dynamic, dynamic> objetoEndereco = Map();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     print("DELETANDO ENDERECO");
         objetoEndereco = {
           "usuario": usuarioId.toString(), "endereco": enderecoId.toString()
@@ -318,7 +318,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
     List<Endereco> _listaEnderecos = [];
     Cidade cidade;
     Bairro bairro;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<dynamic, dynamic> responseBody;
     Map<dynamic, dynamic> objetoEndereco = Map();
 
@@ -367,7 +367,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
 
 
   void alterarEnderecoFavorito(int usuarioId, int enderecoId) async {
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<dynamic, dynamic> objetoEndereco = Map();
     print("ALTERANDO ENDERECO FAVORITO");
         objetoEndereco = {

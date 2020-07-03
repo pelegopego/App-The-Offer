@@ -293,7 +293,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     Bairro bairro;
     Cidade cidade;
     ItemPedido itemPedido;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     try {
     setState(() {
       _pedidosLoading = true;
@@ -397,7 +397,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
   void alterarEnderecoFavorito(int usuarioId, int enderecoId) async {
     Map<dynamic, dynamic> objetoEndereco = Map();
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     print("ALTERANDO ENDERECO FAVORITO");
         objetoEndereco = {
           "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()

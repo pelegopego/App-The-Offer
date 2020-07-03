@@ -378,7 +378,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
                     Map<String, dynamic> responseBody;
-                    Map<String, String> headers = await getHeaders();
+                    Map<String, String> headers = getHeaders();
                     if (model.pedido != null) {
                       if (Autenticacao.CodigoUsuario > 0 ) {
                         if (model.pedido.status == 2) {

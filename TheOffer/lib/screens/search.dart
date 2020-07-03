@@ -257,7 +257,7 @@ class _ProductSearchState extends State<ProductSearch> {
   }
 
   Future<List<Produto>> pesquisarProduto() async {/*
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> responseBody = Map();
     print('SENDING REQUEST $slug');
     setState(() {

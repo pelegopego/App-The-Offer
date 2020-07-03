@@ -28,7 +28,7 @@ class _EmailEditState extends State<EmailEdit> {
   get_user() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getInt('id').toString();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> userResponse;
     /*String url = Settings.SERVER_URL + "api/v1/users/${userId}";
     http.Response response = await http.get(url, headers: headers);
@@ -135,7 +135,7 @@ class _EmailEditState extends State<EmailEdit> {
     _formKey.currentState.save();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String user_id = prefs.getInt('id').toString();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> payload = Map();
     payload = {'email': _email, 'user_id': user_id};
     /*String url = Settings.SERVER_URL + "api/v1/users/${user_id}";
@@ -159,7 +159,7 @@ class _EmailEditState extends State<EmailEdit> {
 
   logoutUser(BuildContext context, MainModel model) async {/*
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     http
         .get(Settings.SERVER_URL + 'logout.json', headers: headers)
         .then((response) {

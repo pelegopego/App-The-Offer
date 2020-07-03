@@ -185,7 +185,7 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
 }
 
   getCategorias() async {
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
 
     http.get(Configuracoes.BASE_URL + 'categorias/', headers: headers).then((response) {
     setState(() {

@@ -49,7 +49,7 @@ class _OrderList extends State<OrderList> {
       hasMore = false;
     });
 /*
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     final response = (await http.get(
             Settings.SERVER_URL +
                 '/api/v1/orders/mine?desc&page=$currentPage&per_page=$perPage',

@@ -155,7 +155,7 @@ class _CarrinhoState extends State<Carrinho> {
                         color: Colors.secundariaTheOffer),
                   ),
                   onPressed: () async {
-                    Map<String, String> headers = await getHeaders();
+                    Map<String, String> headers = getHeaders();
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
                     Map<String, dynamic> responseBody;

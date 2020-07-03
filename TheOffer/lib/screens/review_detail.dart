@@ -291,7 +291,7 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
 
     RECORD_URL = Settings.SERVER_URL + "products/$id/reviews";
     print(Settings.SERVER_URL + "products/$id/reviews");
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     String j = json.encode(m);
     return await http
         .post(RECORD_URL, headers: headers, body: j)

@@ -216,7 +216,7 @@ class _AccountState extends State<Account> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String user_id = prefs.getInt('id').toString();
     String api_key = prefs.getString('spreeApiKey');
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     http
         .get(Settings.SERVER_URL + 'logout.json', headers: headers)
         .then((response) {

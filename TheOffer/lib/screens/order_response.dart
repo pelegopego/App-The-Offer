@@ -50,7 +50,7 @@ class _OrderResponseState extends State<OrderResponse> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     print("PEDIDO NÚMERO ${widget.orderNumber}");
     if (widget.orderNumber != null) {
-      Map<String, String> headers = await getHeaders();/*
+      Map<String, String> headers = getHeaders();/*
       await http
           .get(Settings.SERVER_URL + '/api/v1/orders/${widget.orderNumber}',
               headers: headers)

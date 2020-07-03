@@ -259,7 +259,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               icon: Icon(Icons.clear),
                               onPressed: () async {
                                 Map<String, String> headers =
-                                    await getHeaders();
+                                    getHeaders();
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
                                     'Removendo dos favoritos, aguarde.',
@@ -336,7 +336,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   Future<int> getProductDetail(String slug) async {
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> responseBody = Map();
 /*
     http.Response response = await http.get(
@@ -360,7 +360,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       hasMore = false;
     });
 
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     Map<String, dynamic> responseBody = Map();/*
     http.Response response = await http.get(
         Settings.SERVER_URL +

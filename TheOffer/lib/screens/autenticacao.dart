@@ -379,7 +379,7 @@ class _AuthenticationState extends State<Authentication>
 
   void _realizarLogin(MainModel model) async {
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
 
     setState(() {
       _isLoader = true;
@@ -460,7 +460,7 @@ class _AuthenticationState extends State<Authentication>
     }
     _formKey.currentState.save();
     Map<dynamic, dynamic> responseBody;
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
       'nome': _formData['nome'] + ' ' +  _formData['sobrenome'],

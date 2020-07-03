@@ -228,7 +228,7 @@ class _TelaProdutos extends State<TelaProdutos> {
 
   getProdutos() async {
     Map<dynamic, dynamic> objetoItemPedido = Map();
-    Map<String, String> headers = await getHeaders();
+    Map<String, String> headers = getHeaders();
     setState(() {
       _produtosLoading = true;
       listaProdutoEmpresa = [];
