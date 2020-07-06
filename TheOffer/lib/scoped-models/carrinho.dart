@@ -99,7 +99,6 @@ mixin CarrinhoModel on Model {
 
   void comprarProduto({int usuarioId, int produtoId, int quantidade})  {
     _isLoading = true;
-    pedido.id = null;
     notifyListeners();
     print("QUANTIDADE COMPRADA $quantidade");
     _listaItensPedido.clear();
@@ -153,7 +152,7 @@ mixin CarrinhoModel on Model {
   void adquirirProduto(int usuarioId, int produtoId, int quantidade) async {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
-    print("ADQUIRINDO PRODUTO");
+    print("COMPRANDO PRODUTO");
         objetoItemPedido = {
           "usuario": usuarioId.toString(), "produto": produtoId.toString(), "quantidade": quantidade.toString()
         };
@@ -163,7 +162,7 @@ mixin CarrinhoModel on Model {
             headers: headers,
             body: objetoItemPedido)
         .then((response) {
-      print("ADQUIRINDO PRODUTO _______");
+      print("PRODUTO COMPRADO _______");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
       localizarPedido(int.parse(responseBody['id']), Autenticacao.codigoUsuario, 2);  
