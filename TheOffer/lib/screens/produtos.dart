@@ -169,7 +169,7 @@ class _TelaProdutos extends State<TelaProdutos> {
         ],
       );
     } else {
-      return Container();
+      return Padding(padding: EdgeInsets.all(0));
     }
   }
 

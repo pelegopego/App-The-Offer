@@ -418,7 +418,6 @@ class _AuthenticationState extends State<Authentication>
         ));
         hasError = false;
         model.localizarCarrinho(null, 1);
-        Navigator.of(context).pop();
       } else {        
         setState(() {
           _isLoader = false;
