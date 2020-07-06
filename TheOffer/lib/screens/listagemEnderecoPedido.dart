@@ -32,7 +32,6 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -125,7 +124,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
               SliverChildBuilderDelegate((BuildContext context, int index) {
             return GestureDetector(              
               onTap: () {
-                alterarEnderecoPedido(model.pedido.id, Autenticacao.CodigoUsuario, listaEnderecos[index].id);
+                alterarEnderecoPedido(model.pedido.id, Autenticacao.codigoUsuario, listaEnderecos[index].id);
                 model.pedido.endereco.id              = listaEnderecos[index].id;
                 model.pedido.endereco.nome            = listaEnderecos[index].nome;
                 model.pedido.endereco.usuarioId       = listaEnderecos[index].usuarioId;
@@ -203,7 +202,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
                                                          :Colors.principalTheOffer,
                                                   icon: Icon(Icons.close),
                                                   onPressed: () {
-                                                    deletarEndereco(Autenticacao.CodigoUsuario,
+                                                    deletarEndereco(Autenticacao.codigoUsuario,
                                                         listaEnderecos[index].id);
                                                   },
                                                 ),
@@ -321,7 +320,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     });
 
     objetoEndereco = {
-          "usuario": Autenticacao.CodigoUsuario.toString(), "cidade": CidadeSelecionada.id.toString()
+          "usuario": Autenticacao.codigoUsuario.toString(), "cidade": CidadeSelecionada.id.toString()
         };
     http.post(Configuracoes.BASE_URL + 'enderecos', headers: headers, body: objetoEndereco).then((response) {
       responseBody = json.decode(response.body);
@@ -364,7 +363,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     Map<String, String> headers = getHeaders();
     print("ALTERANDO ENDERECO");
         objetoPedido = {
-          "pedido": pedidoId.toString(), "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
+          "pedido": pedidoId.toString(), "usuario": Autenticacao.codigoUsuario.toString(), "endereco": enderecoId.toString()
         };
     http
         .post(

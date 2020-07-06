@@ -98,7 +98,6 @@ class ConnectivityPage extends StatefulWidget {
 class _ConnectivityPageState extends State<ConnectivityPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
   }

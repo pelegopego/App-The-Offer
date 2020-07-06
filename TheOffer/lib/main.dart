@@ -13,7 +13,6 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  final MainModel _model = MainModel();
   // This widget is the root of your application.
 
   @override
@@ -27,14 +26,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
+    _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
     
     Map<dynamic, dynamic> responseBody;
     //Adquire o token se não existe
-    if (Autenticacao.Token == "") {
+    if (Autenticacao.token == "") {
       http.get(Configuracoes.BASE_URL + 'usuario/gerarToken').then((response) {
         responseBody = json.decode(response.body);
-        Autenticacao.Token = responseBody['token'];
+        Autenticacao.token = responseBody['token'];
       });
     }
     super.initState();

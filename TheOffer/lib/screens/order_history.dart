@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/screens/order_response.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
 
@@ -21,10 +16,6 @@ class OrderList extends StatefulWidget {
 class _OrderList extends State<OrderList> {
   List<dynamic> orderListResponse = List();
   var formatter = new DateFormat('dd-MMM-yyyy hh:mm a');
-  final int perPage = TWENTY;
-  int currentPage = ONE;
-  int subCatId = ZERO;
-  static const int PAGE_SIZE = 20;
   List<Pedido> listaPedidos = [];
   Map<dynamic, dynamic> responseBody;
   final scrollController = ScrollController();
@@ -79,7 +70,6 @@ class _OrderList extends State<OrderList> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }

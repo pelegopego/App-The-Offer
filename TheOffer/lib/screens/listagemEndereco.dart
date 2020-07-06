@@ -31,7 +31,6 @@ class _ListagemEndereco extends State<ListagemEndereco> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -118,7 +117,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
             return GestureDetector(              
               onTap: () {
                 print('object');
-                alterarEnderecoFavorito(Autenticacao.CodigoUsuario, listaEnderecos[index].id);
+                alterarEnderecoFavorito(Autenticacao.codigoUsuario, listaEnderecos[index].id);
                 MaterialPageRoute route =
                       MaterialPageRoute(builder: (context) => ListagemEndereco());
 
@@ -184,7 +183,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                                                          :Colors.principalTheOffer,
                                                   icon: Icon(Icons.close),
                                                   onPressed: () {
-                                                    deletarEndereco(Autenticacao.CodigoUsuario,
+                                                    deletarEndereco(Autenticacao.codigoUsuario,
                                                         listaEnderecos[index].id);
                                                   },
                                                 ),
@@ -329,7 +328,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
     });
 
     objetoEndereco = {
-          "usuario": Autenticacao.CodigoUsuario.toString(), "cidade": CidadeSelecionada.id.toString()
+          "usuario": Autenticacao.codigoUsuario.toString(), "cidade": CidadeSelecionada.id.toString()
         };
     http.post(Configuracoes.BASE_URL + 'enderecos', headers: headers, body: objetoEndereco).then((response) {
       responseBody = json.decode(response.body);
@@ -371,7 +370,7 @@ class _ListagemEndereco extends State<ListagemEndereco> {
     Map<dynamic, dynamic> objetoEndereco = Map();
     print("ALTERANDO ENDERECO FAVORITO");
         objetoEndereco = {
-          "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
+          "usuario": Autenticacao.codigoUsuario.toString(), "endereco": enderecoId.toString()
         };
     http.post(Configuracoes.BASE_URL + 'enderecos/alterarEnderecoFavorito', headers: headers, body: objetoEndereco).then((response) {
       print(json.decode(response.body).toString());

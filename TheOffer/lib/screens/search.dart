@@ -1,14 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/models/brand.dart';
-import 'package:theoffer/models/categoria.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/product_container.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -27,19 +21,13 @@ class _ProductSearchState extends State<ProductSearch> {
   TextEditingController _controller = TextEditingController();
   // List<SearchProduct> searchProducts = [];
   List<Produto> listaProdutosPesquisa = [];
-  bool _isLoading = false;
   Produto produtoSelecionado = Produto();
-  final int perPage = TWENTY;
-  int currentPage = ONE;
-  int subCatId = ZERO;
   bool isSearched = false;
   Size _deviceSize;
   int totalCount = 0;
-  static const int PAGE_SIZE = 20;
   final scrollController = ScrollController();
   bool hasMore = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<Categoria> _listViewData = [];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentItem;
   Map<dynamic, dynamic> responseBody;
@@ -68,7 +56,6 @@ class _ProductSearchState extends State<ProductSearch> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     sortBy = '';
     _dropDownMenuItems = getDropDownMenuItems();
@@ -79,7 +66,6 @@ class _ProductSearchState extends State<ProductSearch> {
         slug = widget.slug;
         isSearched = true;
         listaProdutosPesquisa = [];
-        currentPage = 1;
       });
       pesquisarProduto();
     }
@@ -95,7 +81,6 @@ class _ProductSearchState extends State<ProductSearch> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -130,7 +115,6 @@ class _ProductSearchState extends State<ProductSearch> {
                 onSubmitted: (value) {
                   isSearched = true;
                   listaProdutosPesquisa = [];
-                  currentPage = 1;
                   pesquisarProduto();
                   // print("ENTER PRESSED ------> $value");
                 },
@@ -365,11 +349,9 @@ class _ProductSearchState extends State<ProductSearch> {
                           Navigator.pop(context);
                           produtosPorMarca = [];
                           setState(() {
-                            _isLoading = true;
                             slug = brands[index].name;
                             isSearched = true;
                             listaProdutosPesquisa = [];
-                            currentPage = 1;
                             pesquisarProduto();
                           });
                         },
@@ -416,7 +398,6 @@ class _ProductSearchState extends State<ProductSearch> {
       }
       isSearched = true;
       listaProdutosPesquisa = [];
-      currentPage = 1;
       this.sortBy = sortingWith;
       pesquisarProduto();
     });

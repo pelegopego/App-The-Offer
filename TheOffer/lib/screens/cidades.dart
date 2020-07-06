@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';

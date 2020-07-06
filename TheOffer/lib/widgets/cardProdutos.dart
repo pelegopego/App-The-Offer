@@ -10,9 +10,9 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 
 class AddToCarrinho extends StatefulWidget {
-  List<Produto> todaysDealProducts;
-  int index;
-  Produto produto;
+  final List<Produto> todaysDealProducts;
+  final int index;
+  final Produto produto;
   AddToCarrinho(this.produto, this.index, this.todaysDealProducts);
   @override
   State<StatefulWidget> createState() {
@@ -35,10 +35,10 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                   selectedIndex = widget.index;
                 });
                 if (widget.produto.quantidadeRestante > 0) {                  
-                  if (Autenticacao.CodigoUsuario > 0) {
+                  if (Autenticacao.codigoUsuario > 0) {
                     Scaffold.of(context).showSnackBar(processSnackbar);
                       model.adicionarProduto(
-                              usuarioId: Autenticacao.CodigoUsuario, 
+                              usuarioId: Autenticacao.codigoUsuario, 
                               produtoId: widget.produto.id, 
                               quantidade: 1,
                               somar: 1);

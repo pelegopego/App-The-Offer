@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:theoffer/models/categoria.dart';
 
 class FilterDrawer extends StatefulWidget {
-  Function getSortingData;
-  Function onSubCatPressed;
+  final Function getSortingData;
+  final Function onSubCatPressed;
 //  List<Widget> subCatList;
-  List<Categoria> listaCategoria = [];
-  Function getSubCat;
-  Map<int, List<Widget>> subCatList;
+  final List<Categoria> listaCategoria;
+  final Function getSubCat;
+  final Map<int, List<Widget>> subCatList;
   FilterDrawer(
     this.getSortingData,
+    this.onSubCatPressed,
     this.listaCategoria,
     this.subCatList,
     this.getSubCat,
@@ -44,7 +45,6 @@ class _FilterDrawerState extends State<FilterDrawer> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _dropDownMenuItems = getDropDownMenuItems();
     _currentItem = _dropDownMenuItems[0].value;

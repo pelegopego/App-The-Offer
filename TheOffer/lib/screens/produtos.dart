@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
@@ -28,7 +27,6 @@ class TelaProdutos extends StatefulWidget {
 }
 
 class _TelaProdutos extends State<TelaProdutos> {
-  final MainModel _model = MainModel();
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
   bool _isBannerLoading = true;
@@ -51,7 +49,6 @@ class _TelaProdutos extends State<TelaProdutos> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -64,12 +61,12 @@ class _TelaProdutos extends State<TelaProdutos> {
     for (int i = 0; i < banners.length; i++) {
       actions.add(bannerCards(i));
     }
-
+/*
     Widget bannerCarousel = CarouselSlider(
       items: _isBannerLoading ? [bannerCards(0)] : actions,
       autoPlay: true,
       enlargeCenterPage: true,
-    );
+    );*/
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
           
@@ -116,7 +113,7 @@ class _TelaProdutos extends State<TelaProdutos> {
                   ]))
                 : SliverToBoxAdapter(
                     child: Container(
-                      height: Autenticacao.CodigoUsuario == 0
+                      height: Autenticacao.codigoUsuario == 0
                         ? _deviceSize.height * 0.70
                         : _deviceSize.height * 0.77,
                       child: ListView.builder(
@@ -142,7 +139,7 @@ class _TelaProdutos extends State<TelaProdutos> {
   }
 
   Widget bottomNavigationBar() {
-    if (Autenticacao.CodigoUsuario == 0) {
+    if (Autenticacao.codigoUsuario == 0) {
       return BottomNavigationBar(
         backgroundColor: Colors.secundariaTheOffer,
         onTap: (index) {
@@ -171,6 +168,8 @@ class _TelaProdutos extends State<TelaProdutos> {
                       fontWeight: FontWeight.w600))),
         ],
       );
+    } else {
+      return Container();
     }
   }
 

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Oferta {
   int id;
   String imagem;

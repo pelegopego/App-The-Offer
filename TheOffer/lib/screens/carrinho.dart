@@ -20,7 +20,6 @@ class Carrinho extends StatefulWidget {
 class _CarrinhoState extends State<Carrinho> {
   List<int> quantities = [];
   bool stateChanged = false;
-  static const _ITEM_HEIGHT = 40;
   @override
   void initState() {
     super.initState();
@@ -30,7 +29,6 @@ class _CarrinhoState extends State<Carrinho> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -158,13 +156,13 @@ class _CarrinhoState extends State<Carrinho> {
                     Map<String, String> headers = getHeaders();
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
-                    Map<String, dynamic> responseBody;
+                    //Map<String, dynamic> responseBody;
                     if (model.pedido != null) {
-                      if (Autenticacao.CodigoUsuario > 0 ) {
+                      if (Autenticacao.codigoUsuario > 0 ) {
                         //if (model.pedido.status == 1) {
                               print("finalizandocarrinho");
                               objetoItemPedido = {
-                                "usuario": Autenticacao.CodigoUsuario.toString()
+                                "usuario": Autenticacao.codigoUsuario.toString()
                               };
                               http
                                   .post(
@@ -174,8 +172,8 @@ class _CarrinhoState extends State<Carrinho> {
                                   .then((response) {
                                 print("FINALIZANDO CARRINHO");
                                 print(json.decode(response.body).toString());
-                                responseBody = json.decode(response.body);
-                                model.localizarPedido(model.pedido.id, Autenticacao.CodigoUsuario, 2);
+                                //responseBody = json.decode(response.body);
+                                model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
                                   MaterialPageRoute finalizarPedidoRoute =
                                       MaterialPageRoute(
                                           builder: (context) => TelaFinalizarPedido());
@@ -277,7 +275,7 @@ class _CarrinhoState extends State<Carrinho> {
                                         icon: Icon(Icons.close),
                                         onPressed: () {
                                           model.removerProdutoCarrinho(model.pedido.listaItensPedido[index].pedidoId,
-                                             Autenticacao.CodigoUsuario,
+                                             Autenticacao.codigoUsuario,
                                               model.pedido.listaItensPedido[index].produtoId);
                                         },
                                       ),
@@ -327,10 +325,10 @@ class _CarrinhoState extends State<Carrinho> {
             } else {
               return GestureDetector(
                 onTap: () {
-                  if (Autenticacao.CodigoUsuario > 0) {
+                  if (Autenticacao.codigoUsuario > 0) {
                     if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidade - model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante + model.pedido.listaItensPedido[lineItemIndex].quantidade >= index) {
                     model.adicionarProduto(
-                      usuarioId: Autenticacao.CodigoUsuario,
+                      usuarioId: Autenticacao.codigoUsuario,
                       produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
                       quantidade: index,
                       somar: 0

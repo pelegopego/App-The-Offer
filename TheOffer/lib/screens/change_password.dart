@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangePassword extends StatefulWidget {
   @override
@@ -14,7 +10,6 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _newPassword = '';
   final TextEditingController _newPasswordTextFieldController =
       TextEditingController();
   final TextEditingController _confirmTextFieldController =
@@ -72,6 +67,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         if (value.length < 6) {
           return 'A senha deve possuir pelo menos 6 dígitos';
         }
+        return '';
       },
       obscureText: true,
       controller: _newPasswordTextFieldController,
@@ -80,7 +76,6 @@ class _ChangePasswordState extends State<ChangePassword> {
       ),
       onSaved: (String value) {
         setState(() {
-          _newPassword = value;
         });
       },
     );
@@ -96,6 +91,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             _confirmTextFieldController.text) {
           return 'As senhas não conferem';
         }
+        return '';
       },
       obscureText: true,
       controller: _confirmTextFieldController,
@@ -122,7 +118,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 });
     });
   }
-
+/*bug */
   setNewPassword(context, model) async {/*
     if (!_formKey.currentState.validate()) {
       return;
@@ -159,7 +155,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       ));
     }*/
   }
-
+/*
   void _showSuccessDialog(context) {
     showDialog(
         context: context,
@@ -180,5 +176,5 @@ class _ChangePasswordState extends State<ChangePassword> {
             ],
           );
         });
-  }
+  }*/
 }

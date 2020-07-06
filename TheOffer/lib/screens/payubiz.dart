@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'package:theoffer/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PayubizScreen extends StatefulWidget {
-  String url;
-  String orderNumber;
+  final String url;
+  final String orderNumber;
   PayubizScreen(this.url, {this.orderNumber});
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +38,9 @@ class _Payubiztelastate extends State<PayubizScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {/*
+  Widget build(BuildContext context) {
+    return Container();
+    /*
     flutterWebviewPlugin.onUrlChanged.listen((String url) {
       print("CHANGED URL $url");
       if (url.split('?')[0] == Settings.WEB_URL + 'checkout/order-success') {

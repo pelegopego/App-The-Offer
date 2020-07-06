@@ -5,8 +5,6 @@ class Review {
   final String title;
   final String review;
   final bool approved;
-  final String created_at;
-  final String updated_at;
 
   Review(
       {this.id,
@@ -14,7 +12,5 @@ class Review {
       this.rating,
       this.title,
       this.review,
-      this.approved,
-      this.created_at,
-      this.updated_at});
+      this.approved});
 }

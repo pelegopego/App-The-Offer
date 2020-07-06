@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:theoffer/models/payment_methods.dart';
+//import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
 import 'dart:convert';
@@ -25,11 +25,11 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   Size _deviceSize;
   bool _proceedPressed = false;
   bool _isLoading = false;
-  static List<PaymentMethod> paymentMethods = List();
+  //static List<PaymentMethod> paymentMethods = List();
   String _character = '';
   int selectedPaymentId;
-  bool _isShippable = false;
-  final MainModel _model = MainModel();
+  //bool _isShippable = false;
+  //final MainModel _model = MainModel();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -41,7 +41,6 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -377,13 +376,12 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                 onPressed: () async {
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
-                    Map<String, dynamic> responseBody;
                     Map<String, String> headers = getHeaders();
                     if (model.pedido != null) {
-                      if (Autenticacao.CodigoUsuario > 0 ) {
+                      if (Autenticacao.codigoUsuario > 0 ) {
                         if (model.pedido.status == 2) {
                               objetoItemPedido = {
-                                "usuario": Autenticacao.CodigoUsuario.toString(), "pedido": model.pedido.id.toString()
+                                "usuario": Autenticacao.codigoUsuario.toString(), "pedido": model.pedido.id.toString()
                               };
                               http.post(
                                       Configuracoes.BASE_URL + 'pedido/pagarPedido/',
@@ -391,9 +389,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                       body: objetoItemPedido)
                                   .then((response) {
                                 print("PAGANDO PEDIDO");
-                                print(json.decode(response.body).toString());
-                                responseBody = json.decode(response.body);
-                                
+                                print(json.decode(response.body).toString());                                
                                 MaterialPageRoute produtosRoute =
                                     MaterialPageRoute(
                                         builder: (context) => TelaProdutos(idCategoria: 0));

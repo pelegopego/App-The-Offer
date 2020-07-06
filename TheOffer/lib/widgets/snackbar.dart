@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/screens/update_address.dart';
 
 final processSnackbar = SnackBar(
   content: Text('Adicionando produto ao carrinho...'),
@@ -21,7 +19,7 @@ final codNotAvailable = SnackBar(
 
 final insufficientAmt = SnackBar(
   content: Text(
-      'Preço por item $CURRENCY_SYMBOL ${FREE_SHIPPING_AMOUNT.toString()} for COD'),
+      'Preço por item for COD'),
   duration: Duration(seconds: 3),
 );
 final codEmpty = SnackBar(
@@ -32,11 +30,11 @@ final promoEmpty = SnackBar(
   content: Text('Informe um código promocional!'),
   duration: Duration(seconds: 1),
 );
-final ErrorSnackbar = SnackBar(
+final errorSnackbar = SnackBar(
   content: Text('Informe o título da avaliação'),
   duration: Duration(seconds: 1),
 );
-final LoginErroSnackbar = SnackBar(
+final loginErroSnackbar = SnackBar(
   content: Text('Entre em sua conta para avaliar.'),
   duration: Duration(seconds: 1),
 );

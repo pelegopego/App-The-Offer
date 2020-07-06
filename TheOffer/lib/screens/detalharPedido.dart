@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/models/pedido.dart';
@@ -9,7 +8,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DetalharPedido extends StatefulWidget {
-  Pedido pedido;
+  final Pedido pedido;
 
   DetalharPedido(this.pedido);
   @override
@@ -30,7 +29,6 @@ class _DetalharPedido extends State<DetalharPedido> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }

@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/change_email.dart';
-import 'package:theoffer/screens/change_password.dart';
-//import 'package:theoffer/screens/my_address.dart';
-import 'package:theoffer/screens/order_history.dart';
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
-//import 'package:theoffer/models/address.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/screens/retun_policy.dart';
 
@@ -78,7 +71,6 @@ class _AccountState extends State<Account> {
               style: _textStyle,
             ),
             onTap: () {
-              navigate_option("order_history", context, model);
             },
           ),
           ListTile(
@@ -87,7 +79,6 @@ class _AccountState extends State<Account> {
               style: _textStyle,
             ),
             onTap: () {
-              navigate_option("change_address", context, model);
             },
           ),
           ListTile(
@@ -96,7 +87,6 @@ class _AccountState extends State<Account> {
               style: _textStyle,
             ),
             onTap: () {
-              navigate_option("email_edit", context, model);
             },
           ),
           ListTile(
@@ -105,7 +95,6 @@ class _AccountState extends State<Account> {
               style: _textStyle,
             ),
             onTap: () {
-              navigate_option("change_password", context, model);
             },
           ),
           Container(
@@ -162,7 +151,7 @@ class _AccountState extends State<Account> {
   Widget logOutButton() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (Autenticacao.CodigoUsuario > 0) {
+        if (Autenticacao.codigoUsuario > 0) {
           return ListTile(
             title: Text(
               'Sair',
@@ -210,55 +199,6 @@ class _AccountState extends State<Account> {
             ],
           );
         });
-  }
-/*
-  logoutUser(BuildContext context, MainModel model) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user_id = prefs.getInt('id').toString();
-    String api_key = prefs.getString('spreeApiKey');
-    Map<String, String> headers = getHeaders();
-    http
-        .get(Settings.SERVER_URL + 'logout.json', headers: headers)
-        .then((response) {
-      prefs.clear();
-      model.clearData();
-      model.loggedInUser();
-      model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
-    });
-    Navigator.popUntil(
-        context, ModalRoute.withName(Navigator.defaultRouteName));
-  }
-*/
-  void navigate_option(String screen, BuildContext context, MainModel model) {
-    switch (screen) {
-      case "order_history":
-        {
-          MaterialPageRoute orderList =
-              MaterialPageRoute(builder: (context) => OrderList());
-          Navigator.push(context, orderList);
-        }
-        break;
-      case "email_edit":
-        {
-          MaterialPageRoute orderList =
-              MaterialPageRoute(builder: (context) => EmailEdit());
-          Navigator.push(context, orderList);
-        }
-        break;
-      case "change_password":
-        {
-          MaterialPageRoute orderList =
-              MaterialPageRoute(builder: (context) => ChangePassword());
-          Navigator.push(context, orderList);
-        }
-        break;
-      case "change_address":
-        {/*
-          MaterialPageRoute orderList =
-              MaterialPageRoute(builder: (context) => MyAddressPage());
-          Navigator.push(context, orderList);
-        */}
-    }
   }
 
   _sendMail(String email) async {

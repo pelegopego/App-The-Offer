@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
@@ -8,7 +7,6 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:theoffer/utils/headers.dart';
 
@@ -44,7 +42,6 @@ class _AuthenticationState extends State<Authentication>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -411,16 +408,15 @@ class _AuthenticationState extends State<Authentication>
         message = "Entrou com sucesso.";
         
         responseBody['usuario'].forEach((usuarioJson) {
-          Autenticacao.CodigoUsuario =  int.parse(usuarioJson['id']);
-          Autenticacao.NomeUsuario  = usuarioJson['nome'];
-          Autenticacao.Token        = usuarioJson['token'];
+          Autenticacao.codigoUsuario =  int.parse(usuarioJson['id']);
+          Autenticacao.nomeUsuario  = usuarioJson['nome'];
+          Autenticacao.token        = usuarioJson['token'];
         });        
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
           duration: Duration(seconds: 104),
         ));
         hasError = false;
-        model.getAddress();
         model.localizarCarrinho(null, 1);
         Navigator.of(context).pop();
       } else {        
@@ -459,7 +455,6 @@ class _AuthenticationState extends State<Authentication>
       return;
     }
     _formKey.currentState.save();
-    Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {

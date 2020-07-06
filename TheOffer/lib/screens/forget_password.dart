@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -26,14 +22,12 @@ class _ForgetPasswordState extends State<ForgetPassword>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Size _deviceSize = MediaQuery.of(context).size;
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     return MaterialApp(
@@ -131,11 +125,6 @@ class _ForgetPasswordState extends State<ForgetPassword>
       return;
     }
     _formKey.currentState.save();
-    final Map<String, dynamic> authData = {
-      "spree_user": {
-        'email': _formData['email'],
-      }
-    };
 /*
     final http.Response response = await http.post(
       Settings.SERVER_URL + 'auth/passwords',
@@ -178,7 +167,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
       _isLoader = false;
     });*/
   }
-
+/*
   Widget _alertDialog(String boxTitle, String message, BuildContext context) {
     return AlertDialog(
       title: Text(boxTitle),
@@ -194,5 +183,5 @@ class _ForgetPasswordState extends State<ForgetPassword>
         )
       ],
     );
-  }
+  }*/
 }

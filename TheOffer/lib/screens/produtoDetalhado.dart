@@ -1,14 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/search.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
@@ -57,7 +54,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -267,7 +263,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         String authToken = prefs.getString('spreeApiKey');
-                        Map<String, String> headers = getHeaders();
 
                         if (!_isFavorite) {
                           if (authToken == null) {
@@ -533,9 +528,9 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidadeRestante > 0) {
                         
-                        if (Autenticacao.CodigoUsuario > 0) {
+                        if (Autenticacao.codigoUsuario > 0) {
                           model.comprarProduto(
-                              usuarioId: Autenticacao.CodigoUsuario,
+                              usuarioId: Autenticacao.codigoUsuario,
                               produtoId: produtoSelecionado.id,
                               quantidade: quantidade);
                         } else {
@@ -581,11 +576,11 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               ),
               onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
-                       if (Autenticacao.CodigoUsuario > 0) {
+                       if (Autenticacao.codigoUsuario > 0) {
                          Scaffold.of(context).showSnackBar(processSnackbar);
                           if (produtoSelecionado.quantidadeRestante > 0) {
                             model.adicionarProduto(
-                                usuarioId: Autenticacao.CodigoUsuario,
+                                usuarioId: Autenticacao.codigoUsuario,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
                                 somar: 1);
@@ -618,10 +613,10 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 ),
                 onPressed: produtoSelecionado.quantidadeRestante > 0 
                     ? () {                        
-                       if (Autenticacao.CodigoUsuario > 0) {
+                       if (Autenticacao.codigoUsuario > 0) {
                           Scaffold.of(context).showSnackBar(processSnackbar);
                             model.adicionarProduto(
-                                usuarioId: Autenticacao.CodigoUsuario,
+                                usuarioId: Autenticacao.codigoUsuario,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
                                 somar: 1);

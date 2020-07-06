@@ -34,7 +34,6 @@ class _ListagemPedidos extends State<ListagemPedidos> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -292,7 +291,6 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     bool pedidoAdicionado;
     Bairro bairro;
     Cidade cidade;
-    ItemPedido itemPedido;
     Map<String, String> headers = getHeaders();
     try {
     setState(() {
@@ -301,7 +299,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     });
 
       objetoPedido = {
-        "usuario": Autenticacao.CodigoUsuario.toString()
+        "usuario": Autenticacao.codigoUsuario.toString()
       };
       http.post(Configuracoes.BASE_URL + 'pedido/localizar', headers: headers, body: objetoPedido).then((response){
         responseBody = json.decode(response.body);
@@ -400,7 +398,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     Map<String, String> headers = getHeaders();
     print("ALTERANDO ENDERECO FAVORITO");
         objetoEndereco = {
-          "usuario": Autenticacao.CodigoUsuario.toString(), "endereco": enderecoId.toString()
+          "usuario": Autenticacao.codigoUsuario.toString(), "endereco": enderecoId.toString()
         };
     http.post(Configuracoes.BASE_URL + 'enderecos/alterarEnderecoFavorito', headers: headers, body: objetoEndereco).then((response) {
       print("ALTERANDO ENDERECO FAVORITO");

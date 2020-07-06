@@ -1,15 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/models/favorites.dart';
-import 'package:theoffer/models/option_type.dart';
-import 'package:theoffer/models/option_value.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
-import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -26,10 +19,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   List<Favorite> deletedProducts = [];
   Future<List<Favorite>> futureFavoriteProducts;
   bool _isLoading = false;
-  final int perPage = TWENTY;
-  int currentPage = ONE;
-  int subCatId = ZERO;
-  static const int PAGE_SIZE = 20;
   final scrollController = ScrollController();
 
   bool hasMore = false;
@@ -37,18 +26,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   void initState() {
     super.initState();
     locator<ConnectivityManager>().initConnectivity(context);
-    getPaginatedFavorites();
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
-        getPaginatedFavorites();
       }
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -258,8 +244,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               color: Colors.grey,
                               icon: Icon(Icons.clear),
                               onPressed: () async {
-                                Map<String, String> headers =
-                                    getHeaders();
+                                //Map<String, String> headers = getHeaders();
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
                                     'Removendo dos favoritos, aguarde.',
@@ -335,54 +320,4 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     deletedProducts.add(favorite);
   }
 
-  Future<int> getProductDetail(String slug) async {
-    Map<String, String> headers = getHeaders();
-    Map<String, dynamic> responseBody = Map();
-/*
-    http.Response response = await http.get(
-        Settings.SERVER_URL + 'api/v1/products/$slug?data_set=large',
-        headers: headers);
-    responseBody = json.decode(response.body);
-    List<OptionValue> optionValues = [];
-    List<OptionType> optionTypes = [];
-
-    int reviewProductId = responseBody['data']['attributes']["id"];
-    if (responseBody['data']['attributes']['has_variants']) {
-      return responseBody['data']['included']['variants'].first['data']
-          ['attributes']['id'];
-    } else {
-      return responseBody['data']['included']['id'];
-    }*/
-  }
-
-  Future<List<Favorite>> getPaginatedFavorites() async {
-    setState(() {
-      hasMore = false;
-    });
-
-    Map<String, String> headers = getHeaders();
-    Map<String, dynamic> responseBody = Map();/*
-    http.Response response = await http.get(
-        Settings.SERVER_URL +
-            'spree/user_favorite_products.json?page=$currentPage&per_page=$perPage&data_set=small',
-        headers: headers);
-    currentPage++;
-    responseBody = json.decode(response.body);
-    print(responseBody['data']);
-    responseBody['data'].forEach((favoriteObj) {
-      favoriteProducts.add(Favorite(
-          id: favoriteObj['id'],
-          name: favoriteObj['attributes']['name'],
-          image: favoriteObj['attributes']['product_url'],
-          price: favoriteObj['attributes']['price'],
-          currencySymbol: favoriteObj['attributes']['currency_symbol'],
-          slug: favoriteObj['attributes']['slug']));
-    });
-    setState(() {
-      hasMore = true;
-      _isLoading = false;
-    });*/
-
-    return favoriteProducts;
-  }
 }

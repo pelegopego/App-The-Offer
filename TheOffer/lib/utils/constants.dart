@@ -4,21 +4,14 @@ class Configuracoes {
 }
 
 class Autenticacao {  
-  static int CodigoUsuario = 0;  
-  static String NomeUsuario = '';  
-  static String Token = '';  
+  static int codigoUsuario = 0;  
+  static String nomeUsuario = '';  
+  static String token = '';  
 }
 
 class CidadeSelecionada {  
   static int id = 0;  
 }
-
-final double FREE_SHIPPING_AMOUNT = 699;
-final String CURRENCY_SYMBOL = '₹';
-
-final int ONE = 1;
-final int ZERO = 0;
-final int TWENTY = 20;
 
 final String politicaPrivacidade = 'Ao fazer este pedido, você concorda com os termos de uso e privacidade do theoffer.com.br';
 

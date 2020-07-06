@@ -1,13 +1,8 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
+/*import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/models/review.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +12,7 @@ class ReviewDetailScreen extends StatefulWidget {
 */
   @override
   State<StatefulWidget> createState() {
+    return
     //return _ReviewDetailScreenState(product);
   }
 }
@@ -342,3 +338,4 @@ void ShowResponseDialog(BuildContext context, String msg) {
             ),
           ));
 }
+*/

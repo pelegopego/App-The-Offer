@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/models/address.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,7 +58,6 @@ class _UpdateAddressState extends State<UpdateAddress> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -159,6 +154,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'First Name is required';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -177,6 +174,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'Last Name is required';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -197,6 +196,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'Address is required';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -214,6 +215,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'Locality/Town is required';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -231,6 +234,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'City is required';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -311,6 +316,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
           return 'Please enter numeric value only';
         } else if (value.trim().length != 10) {
           return 'Mobile No. should be 10 digits only!';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -332,6 +339,8 @@ class _UpdateAddressState extends State<UpdateAddress> {
           return 'Please enter numeric value only';
         } else if (value.trim().length != 6) {
           return 'Pincode should be 6 digits only!';
+        } else {
+          return '';
         }
       },
       decoration: inputDecoration(label),
@@ -366,8 +375,6 @@ class _UpdateAddressState extends State<UpdateAddress> {
   }
 
   submitAddress(MainModel model) async {
-    Map<dynamic, dynamic> updateResponse;
-    Map<dynamic, dynamic> orderUpdateResponse;
 
     if (!_formKey.currentState.validate()) {
       return;
@@ -403,11 +410,6 @@ class _UpdateAddressState extends State<UpdateAddress> {
       "state_name": selectedState,
       "state_id": _stateId,
       "country_id": '105'
-    };
-
-    String profileAddressUrl = "address/update_address";
-    Map<String, dynamic> profileAddressData = {
-      "user": {"email": prefs.getString('email'), "ship_address": address}
     };
 
     if (!widget.order && widget.shipAddress == null) {/*
@@ -483,7 +485,7 @@ class _UpdateAddressState extends State<UpdateAddress> {
       );
     });
   }
-
+/*
   void _showSuccessDialog(context) {
     showDialog(
         context: context,
@@ -509,7 +511,7 @@ class _UpdateAddressState extends State<UpdateAddress> {
           });
         });
   }
-
+*/
   InputDecoration inputDecoration(String labelText) {
     return InputDecoration(
         labelText: labelText,

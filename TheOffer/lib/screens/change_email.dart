@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:theoffer/utils/headers.dart';
 
 class EmailEdit extends StatefulWidget {
   @override
@@ -14,32 +9,13 @@ class EmailEdit extends StatefulWidget {
 
 class _EmailEditState extends State<EmailEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _email = 'email@theoffer.com';
   final TextEditingController _textFieldController = TextEditingController();
   bool _fetchingEmail = true;
   bool _savingEmail = false;
 
   @override
   void initState() {
-    get_user();
     super.initState();
-  }
-
-  get_user() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = prefs.getInt('id').toString();
-    Map<String, String> headers = getHeaders();
-    Map<String, dynamic> userResponse;
-    /*String url = Settings.SERVER_URL + "api/v1/users/${userId}";
-    http.Response response = await http.get(url, headers: headers);
-
-    userResponse = json.decode(response.body);
-
-    this.setState(() {
-      _email = userResponse['email'];
-      _fetchingEmail = false;
-    });
-    _textFieldController.text = _email;*/
   }
 
   @override
@@ -92,6 +68,7 @@ class _EmailEditState extends State<EmailEdit> {
                 .hasMatch(value)) {
           return 'Informe um email válido';
         }
+        return '';
       },
       controller: _textFieldController,
       decoration: InputDecoration(
@@ -99,7 +76,6 @@ class _EmailEditState extends State<EmailEdit> {
       ),
       onSaved: (String value) {
         setState(() {
-          _email = value;
         });
       },
     );
@@ -128,33 +104,10 @@ class _EmailEditState extends State<EmailEdit> {
     setState(() {
       _savingEmail = true;
     });
-    Map<dynamic, dynamic> updateResponse;
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user_id = prefs.getInt('id').toString();
-    Map<String, String> headers = getHeaders();
-    Map<String, dynamic> payload = Map();
-    payload = {'email': _email, 'user_id': user_id};
-    /*String url = Settings.SERVER_URL + "api/v1/users/${user_id}";
-    http.Response response =
-        await http.put(url, headers: headers, body: json.encode(payload));
-
-    updateResponse = json.decode(response.body);
-    setState(() {
-      _savingEmail = false;
-    });
-    if (response.statusCode == 200) {
-      logoutUser(context, model);
-    } else {
-      String error = updateResponse['errors']['email'][0];
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Email ${error}'),
-        duration: Duration(seconds: 1),
-      ));
-    }*/
   }
 
   logoutUser(BuildContext context, MainModel model) async {/*

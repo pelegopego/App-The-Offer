@@ -1,22 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:theoffer/screens/payubiz.dart';
 
 class OrderResponse extends StatefulWidget {
   final String orderNumber;
-  Map<dynamic, dynamic> detailOrder;
-  bool success;
+  final Map<dynamic, dynamic> detailOrder;
+  final bool success;
   OrderResponse({this.orderNumber, this.detailOrder, this.success});
   @override
   State<StatefulWidget> createState() {
@@ -40,17 +33,16 @@ class _OrderResponseState extends State<OrderResponse> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
 
   getOrderDetails() async {
     print("---------BUSCANDO REQUISIÇÃO DE PEDIDO-------");
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     print("PEDIDO NÚMERO ${widget.orderNumber}");
     if (widget.orderNumber != null) {
-      Map<String, String> headers = getHeaders();/*
+      /*Map<String, String> headers = getHeaders();
+      
       await http
           .get(Settings.SERVER_URL + '/api/v1/orders/${widget.orderNumber}',
               headers: headers)
@@ -383,9 +375,6 @@ class _OrderResponseState extends State<OrderResponse> {
   }
 
   getPaymentStatus(responseBody) {
-    String payMethod = responseBody["payments"] != null
-        ? responseBody["payments"][0]["payment_method"]["name"]
-        : '';
     String payState = responseBody["payment_state"];
     if (payState == 'balance_due') {
       return Expanded(

@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/account.dart';
 import 'package:theoffer/screens/autenticacao.dart';
@@ -14,8 +11,6 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'headers.dart';
 
 class HomeDrawer extends StatefulWidget {
   @override
@@ -55,7 +50,7 @@ class _HomeDrawer extends State<HomeDrawer> {
   Widget logOutButton() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (Autenticacao.CodigoUsuario > 0) {
+        if (Autenticacao.codigoUsuario > 0) {
           return ListTile(
             leading: Icon(
               Icons.call_made,
@@ -94,7 +89,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                     Icon(Icons.brightness_1, size: 30.0, color: Colors.secundariaTheOffer),
                     Center(
                       child: Text(
-                        '${favCount}',
+                        '$favCount',
                         style: TextStyle(
                           color: Colors.principalTheOffer,
                         ),
@@ -113,7 +108,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (Autenticacao.CodigoUsuario > 0) {
+          if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute orderList =
                 MaterialPageRoute(builder: (context) => FavoritesScreen());
             Navigator.push(context, orderList);
@@ -141,7 +136,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (Autenticacao.CodigoUsuario > 0) {
+          if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute account =
                 MaterialPageRoute(builder: (context) => ListagemEndereco());
             Navigator.push(context, account);
@@ -169,7 +164,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (Autenticacao.CodigoUsuario > 0) {
+          if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute account =
                 MaterialPageRoute(builder: (context) => ListagemPedidos());
             Navigator.push(context, account);
@@ -197,7 +192,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (Autenticacao.CodigoUsuario > 0) {
+          if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute account =
                 MaterialPageRoute(builder: (context) => Account());
             Navigator.push(context, account);
@@ -225,7 +220,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
-          if (Autenticacao.CodigoUsuario > 0) {
+          if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute orderList =
                 MaterialPageRoute(builder: (context) => OrderList());
             Navigator.push(context, orderList);
@@ -244,7 +239,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     getUserName();
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (Autenticacao.CodigoUsuario > 0)  {
+        if (Autenticacao.codigoUsuario > 0)  {
           return Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -295,8 +290,8 @@ class _HomeDrawer extends State<HomeDrawer> {
   }
 
   formatarNome() {
-    if (Autenticacao.NomeUsuario != null) {
-      return  Autenticacao.NomeUsuario[0].toUpperCase() + Autenticacao.NomeUsuario.substring(1).split('@')[0];
+    if (Autenticacao.nomeUsuario != null) {
+      return  Autenticacao.nomeUsuario[0].toUpperCase() + Autenticacao.nomeUsuario.substring(1).split('@')[0];
     }
   }
 
@@ -340,23 +335,14 @@ class _HomeDrawer extends State<HomeDrawer> {
   }
 
   logoutUser(MainModel model) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user_id = prefs.getInt('id').toString();
-    String api_key = prefs.getString('spreeApiKey');
-    Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'token-type': 'Bearer',
-      'ng-api': 'true',
-      'Auth-Token': api_key,
-      'uid': user_id
-    };/*
+    /*
     http
         .get(Settings.SERVER_URL + 'logout.json', headers: headers)
         .then((response) {
       prefs.clear();
       model.clearData();
       model.loggedInUser();
-      model.localizarCarrinho(null, Autenticacao.CodigoUsuario);
+      model.localizarCarrinho(null, Autenticacao.codigoUsuario);
     });*/
   }
 

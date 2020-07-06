@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/endereco.dart';
@@ -9,7 +8,6 @@ import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/produtoDetalhado.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/headers.dart';
@@ -168,7 +166,7 @@ mixin CarrinhoModel on Model {
       print("ADQUIRINDO PRODUTO _______");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
-      localizarPedido(int.parse(responseBody['id']), Autenticacao.CodigoUsuario, 2);  
+      localizarPedido(int.parse(responseBody['id']), Autenticacao.codigoUsuario, 2);  
     });
     _isLoading = false;
   }

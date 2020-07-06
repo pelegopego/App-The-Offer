@@ -31,7 +31,6 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
@@ -146,7 +145,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
       'referencia' : _camposForm['referencia'],
       'bairro'     : bairroSelecionado.toString(),
       'favorito'   : favorito.toString(),
-      'usuario'    : Autenticacao.CodigoUsuario.toString()
+      'usuario'    : Autenticacao.codigoUsuario.toString()
     };
         
     http.post(Configuracoes.BASE_URL + 'enderecos/salvar', headers: headers, body: objetoEndereco).

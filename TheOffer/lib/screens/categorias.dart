@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/produtos.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -24,7 +23,6 @@ class TelaCategorias extends StatefulWidget {
 }
 
 class _TelaCategorias extends State<TelaCategorias> {
-  final MainModel _model = MainModel();
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
   bool _carregandoCategoria = true;
@@ -44,7 +42,6 @@ class _TelaCategorias extends State<TelaCategorias> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
