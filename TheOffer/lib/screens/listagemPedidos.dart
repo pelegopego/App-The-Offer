@@ -392,7 +392,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
   }
 
 
-  void alterarEnderecoFavorito(int usuarioId, int enderecoId) async {
+  void alterarEnderecoFavorito(int usuarioId, int enderecoId) {
     Map<dynamic, dynamic> objetoEndereco = Map();
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();

@@ -87,7 +87,7 @@ mixin CarrinhoModel on Model {
     notifyListeners();
   }
 
-  void adicionarProduto({int usuarioId, int produtoId, int quantidade, int somar}) async {
+  void adicionarProduto({int usuarioId, int produtoId, int quantidade, int somar}) {
     print("QUANTIDADE ADICIONADA AO CARRINHO $quantidade");
     _listaItensPedido.clear();
     _isLoading = true;
@@ -107,7 +107,7 @@ mixin CarrinhoModel on Model {
     notifyListeners(); 
   }
 
-  void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) async {
+  void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
     print("REMOVENDO ITEM DO CARRINHO");
@@ -128,7 +128,7 @@ mixin CarrinhoModel on Model {
     });
   }
 
-  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, int somar) async {
+  void adicionarItemCarrinho(int usuarioId, int produtoId, int quantidade, int somar) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
     print("ADICIONANDO ITEM AO CARRINHO");
@@ -149,7 +149,7 @@ mixin CarrinhoModel on Model {
     });
   }
 
-  void adquirirProduto(int usuarioId, int produtoId, int quantidade) async {
+  void adquirirProduto(int usuarioId, int produtoId, int quantidade) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
     print("COMPRANDO PRODUTO");

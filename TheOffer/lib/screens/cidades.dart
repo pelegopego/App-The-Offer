@@ -73,7 +73,7 @@ class _TelaCidade extends State<TelaCidade> {
   }
 
                 
-  getCidades() async {
+  getCidades() {
   Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
     http.get(Configuracoes.BASE_URL + 'cidades/', headers: headers)

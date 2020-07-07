@@ -133,7 +133,7 @@ class _TelaCadastroEnderecoPedido extends State<TelaCadastroEnderecoPedido> {
     );
   }
 
-  void salvarEndereco() async {
+  void salvarEndereco() {
     Map<String, String> headers = getHeaders();
 
     _formKeyEndereco.currentState.save();

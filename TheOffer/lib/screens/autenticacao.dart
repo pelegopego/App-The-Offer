@@ -374,7 +374,7 @@ class _AuthenticationState extends State<Authentication>
         ));
   }
 
-  void _realizarLogin(MainModel model) async {
+  void _realizarLogin(MainModel model) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
 
@@ -443,7 +443,7 @@ class _AuthenticationState extends State<Authentication>
     });
   }
 
-  void _abrirCadastroUsuario() async {
+  void _abrirCadastroUsuario() {
     setState(() {
       _isLoader = true;
     });
