@@ -272,6 +272,7 @@ class _TelaProdutos extends State<TelaProdutos> {
           listaProdutoEmpresa.add(
             ProdutoEmpresa(
                 empresaId: int.parse(empresaJson['id']),
+                imagem: empresaJson['imagem'],
                 razaoSocial: empresaJson['razaosocial'],
                 fantasia: empresaJson['fantasia'],
                 listaProduto: _listaProduto),

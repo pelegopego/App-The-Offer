@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/ProdutoEmpresa.dart';
+import 'package:theoffer/screens/empresaDetalhada.dart';
+import 'package:theoffer/models/EmpresaDetalhada.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -82,6 +84,12 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
     return GestureDetector(
+        onTap: () {
+          MaterialPageRoute route = MaterialPageRoute(
+              builder: (context) => TelaEmpresaDetalhada(idEmpresa: listaProdutoEmpresa[index].empresaId));
+          Navigator.push(context, route);
+
+        },
         child: SizedBox(
             width: _deviceSize.width * 0.4,
             child:  Column(
@@ -103,7 +111,8 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
                           Text(listaProdutoEmpresa[index].fantasia,
                               style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.secundariaTheOffer)),
+                                  color: Colors.secundariaTheOffer)
+                              ),
                         ],
                       ),
                     )
@@ -116,6 +125,68 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
                         itemBuilder: (context, index2) {
                           if (listaProdutoEmpresa[index].listaProduto.length > 0) {
                             return Container(child: cardProdutos(index2, listaProdutoEmpresa[index].listaProduto, _deviceSize, context));
+                          } else {
+                            return Container();
+                          }
+                        }
+                      ),
+            ),
+                 Divider(
+                height: 5,
+              ),
+              ]
+              )
+                )
+                );
+      });
+}
+
+
+Widget cardProdutosCategoria(int index, List<CategoriaDetalhada> listaProdutoCategoria,
+    Size _deviceSize, BuildContext context) {
+  return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+    return GestureDetector(
+        onTap: () {
+          MaterialPageRoute route = MaterialPageRoute(
+              builder: (context) => TelaEmpresaDetalhada(idEmpresa: listaProdutoCategoria[index].id));
+          Navigator.push(context, route);
+        },
+        child: SizedBox(
+            width: _deviceSize.width * 0.4,
+            child:  Column(
+                children: <Widget>[ 
+                Container(
+                    width: _deviceSize.width,
+                    color: Colors.terciariaTheOffer,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.business,
+                            color: Colors.secundariaTheOffer,
+                          ),
+                          SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(listaProdutoCategoria[index].nome,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.secundariaTheOffer)
+                              ),
+                        ],
+                      ),
+                    )
+                    ),
+                  Container(height: 290,
+                      child: 
+                        ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listaProdutoCategoria[index].listaProduto.length,
+                        itemBuilder: (context, index2) {
+                          if (listaProdutoCategoria[index].listaProduto.length > 0) {
+                            return Container(child: cardProdutos(index2, listaProdutoCategoria[index].listaProduto, _deviceSize, context));
                           } else {
                             return Container();
                           }

@@ -4,11 +4,13 @@ class ProdutoEmpresa {
   final int    empresaId;
   final String razaoSocial;
   final String fantasia;
+  final String imagem;
   final List<Produto> listaProduto;
 
   ProdutoEmpresa(
     {this.empresaId,
     this.razaoSocial,
     this.fantasia,
+    this.imagem,
     this.listaProduto});
 }
