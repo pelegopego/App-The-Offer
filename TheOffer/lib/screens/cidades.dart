@@ -81,14 +81,15 @@ class _TelaCidade extends State<TelaCidade> {
     setState(() {
       listaCidades = [];
     });
-      responseBody = json.decode(response.body);
-      responseBody['cidades'].forEach((categoriaJson) {
+      if (headers['authorization'] != '') {
+        responseBody = json.decode(response.body);
+        responseBody['cidades'].forEach((categoriaJson) {
           setState(() { 
-          listaCidades.add(new DropdownMenuItem(
-              child: new Text(categoriaJson['nome']), value: int.parse(categoriaJson['id'])));
+              listaCidades.add(new DropdownMenuItem(
+                  child: new Text(categoriaJson['nome']), value: int.parse(categoriaJson['id'])));
           });
-        }
-      );
+        });
+      }
     });
   }
 
