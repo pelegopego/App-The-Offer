@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/models/EmpresaDetalhada.dart';
@@ -29,7 +28,6 @@ class TelaEmpresaDetalhada extends StatefulWidget {
 class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
-  bool _isBannerLoading = true;
   bool _empresasLoading = true;
   EmpresaDetalhada empresaDetalhada;
   List<BannerImage> banners = [];
@@ -104,7 +102,11 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                     ),
                 ),
                 _empresasLoading
-                ? Container()
+                ? SliverToBoxAdapter(
+                    child: Divider(
+                      height: 0,
+                    ),
+                  )
                 : SliverToBoxAdapter(
                     child: Divider(
                       height: 10,
@@ -112,7 +114,11 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                   ),
                 
                 _empresasLoading
-                ? Container()
+                ? SliverToBoxAdapter(
+                    child: Divider(
+                      height: 0,
+                    ),
+                  )
                 : SliverToBoxAdapter(
                 child: Container(
                   alignment: Alignment.center,    
@@ -126,7 +132,11 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                 ),
                 ),
                 _empresasLoading
-                ? Container()
+               ? SliverToBoxAdapter(
+                    child: Divider(
+                      height: 0,
+                    ),
+                  )
                 : SliverToBoxAdapter(
                     child: Container(
                       height: Autenticacao.codigoUsuario == 0
