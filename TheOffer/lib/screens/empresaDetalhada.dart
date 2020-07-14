@@ -243,16 +243,16 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
         if (empresaJson['categorias'] != null) {
           _listaCategoriaDetalhada = [];
           
-              _listaCategoriaDetalhada.add(CategoriaDetalhada(
-                  id: 0,
-                  nome: '',
-                  imagem: '',
-                  listaProduto: null
-                  ));
+          _listaCategoriaDetalhada.add(CategoriaDetalhada(
+              id: 0,
+              nome: '',
+              imagem: '',
+              listaProduto: null
+              ));
 
           empresaJson['categorias'].forEach((categoriasJson) {
+              _listaProduto = [];
               if (categoriasJson['produtos'] != null) {
-                _listaProduto = [];
                 categoriasJson['produtos'].forEach((produtosJson) {
                   setState(() {
                     _listaProduto.add(Produto(
@@ -272,15 +272,15 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                         usuarioId             : int.parse(produtosJson['usuario_id'])));
                   });
                 });
+              setState(() {
+                _listaCategoriaDetalhada.add(CategoriaDetalhada(
+                    id: int.parse(categoriasJson['id']),
+                    nome: categoriasJson['nome'],
+                    imagem: categoriasJson['imagem'],
+                    listaProduto: _listaProduto
+                    ));
+              });
             }
-            setState(() {
-              _listaCategoriaDetalhada.add(CategoriaDetalhada(
-                  id: int.parse(categoriasJson['id']),
-                  nome: categoriasJson['nome'],
-                  imagem: categoriasJson['imagem'],
-                  listaProduto: _listaProduto
-                  ));
-            });
           });
         }
         empresaDetalhada = EmpresaDetalhada(id            : int.parse(empresaJson['id']), 
