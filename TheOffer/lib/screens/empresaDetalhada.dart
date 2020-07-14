@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
@@ -54,7 +55,6 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
 
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          
       return Scaffold(
         appBar: AppBar(
             title: Image.asset(
@@ -82,74 +82,98 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                     )
                   ]))
                 : SliverToBoxAdapter(
-                    child: 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Row(
-                          children: <Widget>[Padding(
-                              padding: const EdgeInsets.only(left: 40.0),
-                              child: Text(
-                                '${empresaDetalhada.fantasia}',
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.secundariaTheOffer,
-                                    fontFamily: fontFamily),
-                              ),
-                            ),
-                          ],
-                        ),
-                    ),
-                ),
-                _empresasLoading
-                ? SliverToBoxAdapter(
-                    child: Divider(
-                      height: 0,
-                    ),
-                  )
-                : SliverToBoxAdapter(
-                    child: Divider(
-                      height: 10,
-                    ),
-                  ),
-                
-                _empresasLoading
-                ? SliverToBoxAdapter(
-                    child: Divider(
-                      height: 0,
-                    ),
-                  )
-                : SliverToBoxAdapter(
-                child: Container(
-                  alignment: Alignment.center,    
-                  height: 320,
-                  width: 390,
-                  child: FadeInImage(
-                    image: NetworkImage(empresaDetalhada.imagem),
-                    placeholder: AssetImage(
-                        'images/placeholders/no-product-image.png'),  
-                  ),
-                ),
-                ),
-                _empresasLoading
-               ? SliverToBoxAdapter(
-                    child: Divider(
-                      height: 0,
-                    ),
-                  )
-                : SliverToBoxAdapter(
                     child: Container(
                       height: Autenticacao.codigoUsuario == 0
-                        ? _deviceSize.height * 0.70
-                        : _deviceSize.height * 0.77,
+                        ? _deviceSize.height * 0.80
+                        : _deviceSize.height * 0.87,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: empresaDetalhada.listaCategoria.length,
                           shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            if (empresaDetalhada.listaCategoria[index].listaProduto.length >
-                                0) {
-                              return cardProdutosCategoria(index, empresaDetalhada.listaCategoria, _deviceSize, context);
+                          itemBuilder: (context, index) {                            
+                            if (empresaDetalhada.listaCategoria.length > 0) {
+                              if (index == 0) {
+                                  return Column(mainAxisAlignment: MainAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: <Widget>[
+                                              Card(shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12)),
+                                            elevation: 1,
+                                            margin: EdgeInsets.all(8.0),
+                                            child: Container(
+                                              color: Colors.secundariaTheOffer,
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Stack(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        padding: EdgeInsets.all(15),
+                                                        height: 170,
+                                                        width: 180,
+                                                        color: Colors.secundariaTheOffer,
+                                                        child: FadeInImage(
+                                                        image: NetworkImage(empresaDetalhada.imagem),
+                                                          placeholder: AssetImage('images/placeholders/no-product-image.png'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Expanded(
+                                                        child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Container(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment.spaceBetween,
+                                                            children: <Widget>[
+                                                              Container(
+                                                                padding: EdgeInsets.only(top: 10),
+                                                                width: 150,
+                                                                child: RichText(
+                                                                  text: TextSpan(children: [
+                                                                    TextSpan(
+                                                                      text:
+                                                                          '${empresaDetalhada.fantasia} ',
+                                                                      style: TextStyle(
+                                                                          color: Colors.principalTheOffer,
+                                                                          fontSize: 15.0,
+                                                                          fontWeight: FontWeight.bold),
+                                                                    ),
+                                                                  ]),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 10),
+                                                        Container(
+                                                          alignment: Alignment.topLeft,
+                                                          child: Text(
+                                                            empresaDetalhada.telefone.toString(),
+                                                            textAlign: TextAlign.left,
+                                                            style: TextStyle(
+                                                                color: Colors.principalTheOffer,
+                                                                fontSize: 18),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ),
+                                                ],
+                                              )
+                                          )
+                                        ),
+                                  ]
+                                );
+                              } else {
+                                return cardProdutosCategoria(index, empresaDetalhada.listaCategoria, _deviceSize, context);
+                              }
                             } else {
                               return Container();
                             }
@@ -158,6 +182,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                   ),
           ]),
         ),
+        bottomNavigationBar: bottomNavigationBar(),
       );
     });
   }
@@ -217,6 +242,14 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
       responseBody['empresas'].forEach((empresaJson) {
         if (empresaJson['categorias'] != null) {
           _listaCategoriaDetalhada = [];
+          
+              _listaCategoriaDetalhada.add(CategoriaDetalhada(
+                  id: 0,
+                  nome: '',
+                  imagem: '',
+                  listaProduto: null
+                  ));
+
           empresaJson['categorias'].forEach((categoriasJson) {
               if (categoriasJson['produtos'] != null) {
                 _listaProduto = [];
@@ -250,10 +283,11 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
             });
           });
         }
-         empresaDetalhada = EmpresaDetalhada(id           : int.parse(empresaJson['id']), 
-                                             imagem       : empresaJson['imagem'],
+        empresaDetalhada = EmpresaDetalhada(id            : int.parse(empresaJson['id']), 
+                                            imagem        : empresaJson['imagem'],
                                             razaoSocial   : empresaJson['razaosocial'], 
                                             fantasia      : empresaJson['fantasia'], 
+                                            telefone      : num.parse(empresaJson['telefone']), 
                                             listaCategoria: _listaCategoriaDetalhada);
       });
       setState(() {

@@ -147,11 +147,6 @@ Widget cardProdutosCategoria(int index, List<CategoriaDetalhada> listaProdutoCat
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
     return GestureDetector(
-        onTap: () {
-          MaterialPageRoute route = MaterialPageRoute(
-              builder: (context) => TelaEmpresaDetalhada(idEmpresa: listaProdutoCategoria[index].id));
-          Navigator.push(context, route);
-        },
         child: SizedBox(
             width: _deviceSize.width * 0.4,
             child:  Column(
@@ -164,7 +159,7 @@ Widget cardProdutosCategoria(int index, List<CategoriaDetalhada> listaProdutoCat
                       child: Row(
                         children: <Widget>[
                           Icon(
-                            Icons.business,
+                            Icons.bookmark_border,
                             color: Colors.secundariaTheOffer,
                           ),
                           SizedBox(

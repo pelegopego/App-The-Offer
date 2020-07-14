@@ -18,6 +18,7 @@ class EmpresaDetalhada {
    String razaoSocial;
    String fantasia;
    String imagem;
+   num    telefone;
    List<CategoriaDetalhada> listaCategoria;
 
   EmpresaDetalhada(
@@ -25,5 +26,6 @@ class EmpresaDetalhada {
     this.razaoSocial,
     this.fantasia,
     this.imagem,
+    this.telefone,
     this.listaCategoria});
 }
