@@ -65,7 +65,6 @@ class _TelaPagamento extends State<TelaPagamento> {
             title: Text('Pagamento',
             style: TextStyle(color: Colors.principalTheOffer)
             ),
-            
             bottom: widget.isLoading || _isLoading
                 ? PreferredSize(
                     child: LinearProgressIndicator(),
@@ -87,7 +86,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                       ? Container()
                       : Container(
                           color: Colors.secundariaTheOffer,
-                          margin: EdgeInsets.all(5),
+                          margin: EdgeInsets.only(top: 5, right: 5, left: 5, bottom: 5),
                           child: Column(
                             children: <Widget>[
                               linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
@@ -112,7 +111,8 @@ class _TelaPagamento extends State<TelaPagamento> {
                     child: Visibility (
                       visible: pagamentoEntregaVisivel,
                       child: Container(
-                             margin: EdgeInsets.only(right: 25, left: 25),
+                             margin: EdgeInsets.only(right: 29, left: 29),
+                             height: 112,
                              color: Colors.secundariaTheOffer,
                              child: Column(
                               children: <Widget>[
@@ -157,7 +157,19 @@ class _TelaPagamento extends State<TelaPagamento> {
                   SliverToBoxAdapter(
                     child: Visibility (
                       visible: pagamentoBalcaoVisivel,
-                      child: Text('')
+                      child: Container(
+                             height: 112,
+                             margin: EdgeInsets.only(right: 29, left: 29),
+                             color: Colors.secundariaTheOffer,
+                             child: Align(
+                              alignment: Alignment.center,
+                              child: Text('O pagamento será efetuado na retirada.',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.principalTheOffer),
+                                    ), 
+                            ),
+                      )
                     )
                   ),
                 ]
@@ -184,25 +196,26 @@ class _TelaPagamento extends State<TelaPagamento> {
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
         color: Colors.terciariaTheOffer,
-        margin: EdgeInsets.only(bottom: 5, left: 30),
+        margin: EdgeInsets.only(left: 30),
         child: widget.isLoading
             ? Center(
                 child: CircularProgressIndicator(
                   backgroundColor: pagamentoEntregaVisivel
-                                   ? Colors.principalTheOffer
-                                   : Colors.secundariaTheOffer,
+                                   ? Colors.secundariaTheOffer
+                                   : Colors.principalTheOffer,
                 ),
               )
-            : RaisedButton(
+            : FlatButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 color: pagamentoEntregaVisivel
-                       ? Colors.principalTheOffer
-                       : Colors.secundariaTheOffer,
+                                   ? Colors.secundariaTheOffer
+                                   : Colors.principalTheOffer,
                 child: Text('PAGAR NA ENTREGA',
                   style: TextStyle(
                       fontSize: 15,
                       color: pagamentoEntregaVisivel
-                             ? Colors.secundariaTheOffer
-                             : Colors.principalTheOffer),
+                             ? Colors.principalTheOffer
+                             : Colors.secundariaTheOffer),
                 ),
                 onPressed: () {
                   setState(() {
@@ -220,7 +233,7 @@ class _TelaPagamento extends State<TelaPagamento> {
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
         color: Colors.terciariaTheOffer,
-        margin: EdgeInsets.only(bottom: 5, right: 30),
+        margin: EdgeInsets.only(right: 30),
         child: widget.isLoading
             ? Center(
                 child: CircularProgressIndicator(
@@ -229,16 +242,17 @@ class _TelaPagamento extends State<TelaPagamento> {
                                    : Colors.secundariaTheOffer,
                 ),
               )
-            : RaisedButton(
+            : FlatButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 color: pagamentoBalcaoVisivel
-                       ? Colors.principalTheOffer
-                       : Colors.secundariaTheOffer,
+                       ? Colors.secundariaTheOffer
+                       : Colors.principalTheOffer,
                 child: Text('RETIRAR NO LOCAL',
                   style: TextStyle(
                       fontSize: 15,
                       color: pagamentoBalcaoVisivel
-                             ? Colors.secundariaTheOffer
-                             : Colors.principalTheOffer),
+                             ? Colors.principalTheOffer
+                             : Colors.secundariaTheOffer),
                 ),
                 onPressed: () {
                   setState(() {
