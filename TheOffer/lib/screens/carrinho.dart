@@ -65,7 +65,7 @@ class _CarrinhoState extends State<Carrinho> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: itemTotalContainer(model),
                     ),
-                    botaoFinalizarPedido(),
+                    botaoGerarPedido(),
                   ]))));
     });
   }
@@ -128,7 +128,7 @@ class _CarrinhoState extends State<Carrinho> {
     });
   }
 
-  Widget botaoFinalizarPedido() {
+  Widget botaoGerarPedido() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Padding(
@@ -147,7 +147,7 @@ class _CarrinhoState extends State<Carrinho> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
                   color: Colors.principalTheOffer,
-                  child: Text( 'FINALIZAR PEDIDO',
+                  child: Text( 'GERAR PEDIDO',
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.secundariaTheOffer),
@@ -170,7 +170,7 @@ class _CarrinhoState extends State<Carrinho> {
                                       headers: headers,
                                       body: objetoItemPedido)
                                   .then((response) {
-                                print("FINALIZANDO CARRINHO");
+                                print("GERANDO CARRINHO");
                                 print(json.decode(response.body).toString());
                                 //responseBody = json.decode(response.body);
                                 model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);

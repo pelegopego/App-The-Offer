@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'package:theoffer/screens/pagamento.dart';
+import 'package:theoffer/screens/listagemEnderecoPedido.dart';
+import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/models/Pedido.dart';
+import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:theoffer/models/Pedido.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:theoffer/screens/produtos.dart';
 
-class DetalharPedido extends StatefulWidget {
+class TelaPagamento extends StatefulWidget {
   final Pedido pedido;
 
-  DetalharPedido(this.pedido);
+  TelaPagamento(this.pedido);
   @override
   State<StatefulWidget> createState() {
-    return _DetalharPedido();
+    return _TelaPagamento();
   }
 }
 
-class _DetalharPedido extends State<DetalharPedido> {
+class _TelaPagamento extends State<TelaPagamento> {
   Size _deviceSize;
+  bool _proceedPressed = false;
+  bool _isLoading = false;
+  //static List<PaymentMethod> paymentMethods = List();
+  String _character = '';
+  int selectedPaymentId;
+  //bool _isShippable = false;
+  //final Mainwidget _widget = Mainwidget();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -33,34 +47,43 @@ class _DetalharPedido extends State<DetalharPedido> {
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
+        builder: (BuildContext context, Widget child, MainModel widget) {
       return 
-      Scaffold(
+      WillPopScope(
+        onWillPop: _canGoBack,
+        child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
               leading: IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-            title: Text('Pedido',
+            title: Text('Pagamento',
             style: TextStyle(color: Colors.principalTheOffer)
             ),
-            bottom: 
-                PreferredSize(
+            bottom: widget.isLoading || _isLoading
+                ? PreferredSize(
+                    child: LinearProgressIndicator(),
+                    preferredSize: Size.fromHeight(10),
+                  )
+                : PreferredSize(
                     child: Container(),
                     preferredSize: Size.fromHeight(10),
                   )
         ),
-        body: Container (
+        body: _isLoading
+            ? Container()
+            : Container (
                 color: Colors.terciariaTheOffer,
                 child: CustomScrollView(slivers: [ 
                   SliverToBoxAdapter(
                     child: Container(
-                      height: _deviceSize.height * 0.50,
+                      height: _deviceSize.height * 0.45,
                       child:  CustomScrollView(
                           slivers: <Widget>[
                             itensPedido(),
@@ -72,10 +95,11 @@ class _DetalharPedido extends State<DetalharPedido> {
                   ? SliverToBoxAdapter(
                     child: Card(
                   child: Container(
-                    height: 60,
+                    height: 90,
                     color: Colors.principalTheOffer,
                     child: GestureDetector(
                       onTap: () {
+                        
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,6 +128,28 @@ class _DetalharPedido extends State<DetalharPedido> {
                                           ),
                                       ),
                                     ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            child: IconButton(
+                                              iconSize: 24,
+                                              color: Colors.secundariaTheOffer,
+                                              icon: Icon(Icons.edit),
+                                              onPressed: () {
+                                                  MaterialPageRoute route =
+                                                      MaterialPageRoute(builder: (context) => ListagemEnderecoPedido());
+
+                                                  Navigator.push(context, route);
+                                              },
+                                            ),
+                                          ),
+                                        ]
+                                      )
+                                    ), 
                                   ],
                                 ),
                               ),
@@ -177,14 +223,16 @@ class _DetalharPedido extends State<DetalharPedido> {
                   ),
                 ])
             ),
-        bottomNavigationBar: paymentButton(context),
-      );
+        bottomNavigationBar: !_isLoading ? paymentButton(context) : Container(),
+      ),
+      )
+      ;
     });
   }
 
   Widget itensPedido() {
     return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget child, MainModel model) {
+      builder: (BuildContext context, Widget child, MainModel widget) {
         return SliverList(
           delegate:
               SliverChildBuilderDelegate((BuildContext context, int index) {
@@ -192,7 +240,7 @@ class _DetalharPedido extends State<DetalharPedido> {
                 onTap: () {},
                 child: Card(
                   child: Container(
-                    height: 40,
+                    height: 58,
                     color: Colors.secundariaTheOffer,
                     child: GestureDetector(
                       onTap: () {},
@@ -295,25 +343,67 @@ class _DetalharPedido extends State<DetalharPedido> {
     );
   }
 
+   Future<bool> _canGoBack() {
+     print("Voltar");
+    if (_proceedPressed) {
+      return Future<bool>.value(false);
+    } else {
+      return Future<bool>.value(true);
+    }
+  }
+
   Widget paymentButton(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
+        builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
         color: Colors.terciariaTheOffer,
         padding: EdgeInsets.all(5),
-        child: FlatButton(
+        child: widget.isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.secundariaTheOffer,
+                ),
+              )
+            : FlatButton(
                 color: Colors.secundariaTheOffer,
-                child: Text('PAGAMENTO',
+                child: Text('FINALIZAR PEDIDO',
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.principalTheOffer),
                 ),
-                onPressed: () {
-                  /* detalhar pagamento */
-                  MaterialPageRoute route =
-                        MaterialPageRoute(builder: (context) => TelaPagamento(widget.pedido));
-
-                  Navigator.push(context, route);
+                onPressed: () async {
+                  
+                    print("ESTADO DO PEDIDO ___________ ${widget.pedido.status}");
+                    Map<dynamic, dynamic> objetoItemPedido = Map();
+                    Map<String, String> headers = getHeaders();
+                    if (widget.pedido != null) {
+                      if (Autenticacao.codigoUsuario > 0 ) {
+                        if (widget.pedido.status == 2) {
+                              objetoItemPedido = {
+                                "usuario": Autenticacao.codigoUsuario.toString(), "pedido": widget.pedido.id.toString()
+                              };
+                              http.post(
+                                      Configuracoes.BASE_URL + 'pedido/pagarPedido/',
+                                      headers: headers,
+                                      body: objetoItemPedido)
+                                  .then((response) {
+                                print("PAGANDO PEDIDO");
+                                print(json.decode(response.body).toString());                                
+                                MaterialPageRoute produtosRoute =
+                                    MaterialPageRoute(
+                                        builder: (context) => TelaProdutos(idCategoria: 0));
+                                Navigator.push(context, produtosRoute);
+                              });
+                        }
+                      } else {
+                        MaterialPageRoute authRoute = MaterialPageRoute(
+                            builder: (context) => Authentication(0));
+                        Navigator.push(context, authRoute);
+                      }
+                    } else {
+                      Navigator.popUntil(context,
+                          ModalRoute.withName(Navigator.defaultRouteName));
+                    }
                 },
               ),
       );

@@ -7,7 +7,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/endereco.dart';
-import 'package:theoffer/models/pedido.dart';
+import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/cidade.dart';

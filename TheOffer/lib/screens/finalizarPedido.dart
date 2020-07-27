@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 import 'package:theoffer/screens/autenticacao.dart';
-import 'package:theoffer/screens/produtos.dart';
+import 'package:theoffer/screens/pagamento.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -374,13 +371,14 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                       color: Colors.principalTheOffer),
                 ),
                 onPressed: () async {
+                  
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
                     Map<String, String> headers = getHeaders();
                     if (model.pedido != null) {
                       if (Autenticacao.codigoUsuario > 0 ) {
                         if (model.pedido.status == 2) {
-                              objetoItemPedido = {
+                              /*objetoItemPedido = {
                                 "usuario": Autenticacao.codigoUsuario.toString(), "pedido": model.pedido.id.toString()
                               };
                               http.post(
@@ -390,11 +388,12 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                   .then((response) {
                                 print("PAGANDO PEDIDO");
                                 print(json.decode(response.body).toString());                                
-                                MaterialPageRoute produtosRoute =
+                                */
+                                MaterialPageRoute pagamentoRoute =
                                     MaterialPageRoute(
-                                        builder: (context) => TelaProdutos(idCategoria: 0));
-                                Navigator.push(context, produtosRoute);
-                              });
+                                        builder: (context) => TelaPagamento(model.pedido));
+                                Navigator.push(context, pagamentoRoute);
+                              /*});*/
                         }
                       } else {
                         MaterialPageRoute authRoute = MaterialPageRoute(
@@ -405,7 +404,6 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                       Navigator.popUntil(context,
                           ModalRoute.withName(Navigator.defaultRouteName));
                     }
-
                 },
               ),
       );
