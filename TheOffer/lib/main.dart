@@ -53,6 +53,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.secundariaTheOffer,
           accentColor: Colors.principalTheOffer,
+          unselectedWidgetColor: Colors.principalTheOffer
         ),
         home: TelaCidade(),
       ),

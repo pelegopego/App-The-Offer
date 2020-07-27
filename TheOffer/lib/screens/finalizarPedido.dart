@@ -371,29 +371,13 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                       color: Colors.principalTheOffer),
                 ),
                 onPressed: () async {
-                  
-                    print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
-                    Map<dynamic, dynamic> objetoItemPedido = Map();
-                    Map<String, String> headers = getHeaders();
                     if (model.pedido != null) {
                       if (Autenticacao.codigoUsuario > 0 ) {
                         if (model.pedido.status == 2) {
-                              /*objetoItemPedido = {
-                                "usuario": Autenticacao.codigoUsuario.toString(), "pedido": model.pedido.id.toString()
-                              };
-                              http.post(
-                                      Configuracoes.BASE_URL + 'pedido/pagarPedido/',
-                                      headers: headers,
-                                      body: objetoItemPedido)
-                                  .then((response) {
-                                print("PAGANDO PEDIDO");
-                                print(json.decode(response.body).toString());                                
-                                */
-                                MaterialPageRoute pagamentoRoute =
-                                    MaterialPageRoute(
-                                        builder: (context) => TelaPagamento(model.pedido));
-                                Navigator.push(context, pagamentoRoute);
-                              /*});*/
+                            MaterialPageRoute pagamentoRoute =
+                                MaterialPageRoute(
+                                    builder: (context) => TelaPagamento(model.pedido));
+                            Navigator.push(context, pagamentoRoute);
                         }
                       } else {
                         MaterialPageRoute authRoute = MaterialPageRoute(
