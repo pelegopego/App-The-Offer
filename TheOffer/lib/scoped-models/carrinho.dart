@@ -72,8 +72,6 @@ mixin CarrinhoModel on Model {
             dataInicial           : produtoJson['dataInicial'],
             dataFinal             : produtoJson['dataFinal'],
             dataCadastro          : produtoJson['dataCadastro'],
-            modalidadeRecebimento1: int.parse(produtoJson['modalidadeRecebimento1']),
-            modalidadeRecebimento2: int.parse(produtoJson['modalidadeRecebimento2']),
             usuarioId             : int.parse(produtoJson['usuario_id'])
           );
           });
@@ -206,8 +204,6 @@ mixin CarrinhoModel on Model {
               dataInicial           : pedidosJson['dataInicial'],
               dataFinal             : pedidosJson['dataFinal'],
               dataCadastro          : pedidosJson['DataCadastro'],
-              modalidadeRecebimento1: int.parse(pedidosJson['modalidadeRecebimento1']),
-              modalidadeRecebimento2: int.parse(pedidosJson['modalidadeRecebimento2']),
               usuarioId             : int.parse(pedidosJson['usuario_id'])
               );
           
@@ -247,6 +243,7 @@ mixin CarrinhoModel on Model {
       _pedido = Pedido(
           id              : int.parse(responseBody['pedidos'][0]['pedido_id']),
           usuarioId       : int.parse(responseBody['pedidos'][0]['usuario_id']),
+          empresa         : int.parse(responseBody['pedidos'][0]['produto_empresa']),
           dataInclusao    : responseBody['pedidos'][0]['dataInclusao'],
           dataConfirmacao : responseBody['pedidos'][0]['dataConfirmacao'],
           status          : int.parse(responseBody['pedidos'][0]['status']),
@@ -255,8 +252,6 @@ mixin CarrinhoModel on Model {
 
       _isLoading = false;
       prefs.setString('numeroItens', _listaItensPedido.length.toString());
-      prefs.setString('orderToken', responseBody['token']);
-      prefs.setString('orderNumber', responseBody['number']);
       notifyListeners();
     return true;
     } catch (error) {
@@ -301,8 +296,6 @@ mixin CarrinhoModel on Model {
               dataInicial           : pedidosJson['dataInicial'],
               dataFinal             : pedidosJson['dataFinal'],
               dataCadastro          : pedidosJson['DataCadastro'],
-              modalidadeRecebimento1: int.parse(pedidosJson['modalidadeRecebimento1']),
-              modalidadeRecebimento2: int.parse(pedidosJson['modalidadeRecebimento2']),
               usuarioId             : int.parse(pedidosJson['usuario_id'])
               );
           
@@ -342,6 +335,7 @@ mixin CarrinhoModel on Model {
       _pedido = Pedido(
           id              : int.parse(responseBody['pedidos'][0]['pedido_id']),
           usuarioId       : int.parse(responseBody['pedidos'][0]['usuario_id']),
+          empresa         : int.parse(responseBody['pedidos'][0]['produto_empresa']),
           dataInclusao    : responseBody['pedidos'][0]['dataInclusao'],
           dataConfirmacao : responseBody['pedidos'][0]['dataConfirmacao'],
           status          : int.parse(responseBody['pedidos'][0]['status']),

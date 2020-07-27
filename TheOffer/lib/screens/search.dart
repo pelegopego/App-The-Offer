@@ -276,8 +276,6 @@ class _ProductSearchState extends State<ProductSearch> {
         dataInicial           : searchObj['data']['attributes']['dataInicial'],
         dataFinal             : searchObj['data']['attributes']['dataFinal'],
         dataCadastro          : searchObj['data']['attributes']['dataCadastro'],
-        modalidadeRecebimento1: int.parse(searchObj['data']['attributes']['modalidadeRecebimento1']),
-        modalidadeRecebimento2: int.parse(searchObj['data']['attributes']['modalidadeRecebimento2']),
         usuarioId             : int.parse(searchObj['data']['attributes']['usuario_id'])));
       });
     totalCount = responseBody['pagination']['total_count'];

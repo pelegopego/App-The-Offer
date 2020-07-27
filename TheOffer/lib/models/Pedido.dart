@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/endereco.dart';
 
@@ -8,6 +9,7 @@ class Pedido {
    String dataConfirmacao;
    int status;
    Endereco endereco;
+   int empresa;
    List<ItemPedido> listaItensPedido;
   
   Pedido(
@@ -17,6 +19,7 @@ class Pedido {
       this.dataConfirmacao,
       this.status,
       this.endereco,
+      this.empresa,
       this.listaItensPedido});
 
   double somaValorTotalPedido() {

@@ -261,10 +261,6 @@ class _TelaProdutos extends State<TelaProdutos> {
                     dataInicial: produtoJson['dataInicial'],
                     dataFinal: produtoJson['dataFinal'],
                     dataCadastro: produtoJson['dataCadastro'],
-                    modalidadeRecebimento1:
-                        int.parse(produtoJson['modalidadeRecebimento1']),
-                    modalidadeRecebimento2:
-                        int.parse(produtoJson['modalidadeRecebimento2']),
                     usuarioId: int.parse(produtoJson['usuario_id'])));
               });
             });

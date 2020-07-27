@@ -367,8 +367,6 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                     dataInicial           : pedidosJson['dataInicial'],
                     dataFinal             : pedidosJson['dataFinal'],
                     dataCadastro          : pedidosJson['DataCadastro'],
-                    modalidadeRecebimento1: int.parse(pedidosJson['modalidadeRecebimento1']),
-                    modalidadeRecebimento2: int.parse(pedidosJson['modalidadeRecebimento2']),
                     usuarioId             : int.parse(pedidosJson['usuario_id'])
                   );
                   pedidoAux.listaItensPedido.add(ItemPedido(

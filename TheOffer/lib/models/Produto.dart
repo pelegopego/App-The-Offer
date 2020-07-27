@@ -10,8 +10,6 @@ class Produto {
   final String dataInicial;
   final String dataFinal;
   final String dataCadastro;
-  final int    modalidadeRecebimento1;
-  final int    modalidadeRecebimento2;
   final int    usuarioId;
 
   Produto(
@@ -26,7 +24,5 @@ class Produto {
     this.dataInicial,
     this.dataFinal,
     this.dataCadastro,
-    this.modalidadeRecebimento1,
-    this.modalidadeRecebimento2,
     this.usuarioId});
 }

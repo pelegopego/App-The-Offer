@@ -29,9 +29,11 @@ enum FormaPagamentoRecebimento { dinheiro, cartao }
 
 class _TelaPagamento extends State<TelaPagamento> {
   bool _proceedPressed = false;
+  Map<dynamic, dynamic> responseBody;
   bool _isLoading = false;
   bool pagamentoEntregaVisivel = false;
   bool pagamentoBalcaoVisivel = false;
+  double frete = 0;
   FormaPagamentoRecebimento formaPagamentoRecebimentoSelecionada = FormaPagamentoRecebimento.dinheiro;
   int selectedPaymentId;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -39,6 +41,7 @@ class _TelaPagamento extends State<TelaPagamento> {
   @override
   void initState() {
     super.initState();
+    getFretes();
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -90,7 +93,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                           child: Column(
                             children: <Widget>[
                               linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
-                              linhaTotal('Entrega:', '1'),
+                              linhaTotal('Frete:', frete.toString()),
                               linhaTotal('Taxas:', '1'),  
                               linhaTotal('Total do pedido:', widget.pedido.somaValorTotalPedido().toString())
                             ],
@@ -227,7 +230,36 @@ class _TelaPagamento extends State<TelaPagamento> {
       );
     });
   }
-
+  
+  getFretes() async {
+    frete = 0;
+    Map<dynamic, dynamic> objetoFrete = Map();
+    Map<String, String> headers = getHeaders();
+    setState(() {
+      _isLoading = true;
+    });
+    objetoFrete = {
+      "empresa": widget.pedido.empresa.toString(), "bairro": widget.pedido.endereco.bairro.id.toString()
+    };
+    http.post(
+            Configuracoes.BASE_URL + 'frete/',
+            headers: headers,
+            body: objetoFrete)
+        .then((response) {
+      print("BUSCANDO VALOR DE FRETE");
+      print(json.decode(response.body).toString());   
+      responseBody = json.decode(response.body);
+      setState(() {
+        _isLoading = false;
+        frete = double.parse(responseBody['fretes'][0]['valor']);       
+      });
+    });
+    setState(() {
+      _isLoading = false;
+    });
+  }
+  
+                              
   Widget pagamentoBalcao(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {

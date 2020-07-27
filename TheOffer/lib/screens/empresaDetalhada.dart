@@ -267,8 +267,6 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                         dataInicial           : produtosJson['dataInicial'],
                         dataFinal             : produtosJson['dataFinal'],
                         dataCadastro          : produtosJson['dataCadastro'],
-                        modalidadeRecebimento1: int.parse(produtosJson['modalidadeRecebimento1']),
-                        modalidadeRecebimento2: int.parse(produtosJson['modalidadeRecebimento2']),
                         usuarioId             : int.parse(produtosJson['usuario_id'])));
                   });
                 });
