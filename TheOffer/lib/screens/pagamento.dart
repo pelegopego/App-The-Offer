@@ -105,7 +105,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                             children: [
                               pagamentoEntrega(context),
-                              pagamentoBalcao(context)
+                              retirarLocal(context)
                             ]
                         )
                   ),
@@ -260,7 +260,7 @@ class _TelaPagamento extends State<TelaPagamento> {
   }
   
                               
-  Widget pagamentoBalcao(BuildContext context) {
+  Widget retirarLocal(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
@@ -318,18 +318,23 @@ class _TelaPagamento extends State<TelaPagamento> {
                 ),
                 onPressed: () async {
                     print("ESTADO DO PEDIDO ___________ ${widget.pedido.status}");
-                    Map<dynamic, dynamic> objetoItemPedido = Map();
+                    Map<dynamic, dynamic> objetoPedido = Map();
                     Map<String, String> headers = getHeaders();
                     if (widget.pedido != null) {
                       if (Autenticacao.codigoUsuario > 0 ) {
                         if (widget.pedido.status == 2) {
-                              objetoItemPedido = {
-                                "usuario": Autenticacao.codigoUsuario.toString(), "pedido": widget.pedido.id.toString()
+                              objetoPedido = {
+                                "usuario": Autenticacao.codigoUsuario.toString(), 
+                                "pedido": widget.pedido.id.toString(),
+                                "modalidadeRecebimento": pagamentoEntregaVisivel
+                                                         ? '1'
+                                                         : '2',
+                                "formaPagamento":        (formaPagamentoRecebimentoSelecionada.index + 1).toString()      
                               };
                               http.post(
                                       Configuracoes.BASE_URL + 'pedido/pagarPedido/',
                                       headers: headers,
-                                      body: objetoItemPedido)
+                                      body: objetoPedido)
                                   .then((response) {
                                 print("PAGANDO PEDIDO");
                                 print(json.decode(response.body).toString());                                
