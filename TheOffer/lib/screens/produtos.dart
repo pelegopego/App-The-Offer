@@ -5,7 +5,7 @@ import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
-import 'package:theoffer/screens/search.dart';
+import 'package:theoffer/screens/pesquisaProduto.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
@@ -195,10 +195,7 @@ class _TelaProdutos extends State<TelaProdutos> {
       return GestureDetector(
           onTap: () {
             MaterialPageRoute route = MaterialPageRoute(
-                builder: (context) => ProductSearch(
-                      // slug: bannerLinks[index],
-                      slug: banners[index].imageSlug,
-                    ));
+                builder: (context) => TelaPesquisaProduto());
             Navigator.of(context).push(route);
           },
           child: Container(
@@ -287,7 +284,7 @@ class _TelaProdutos extends State<TelaProdutos> {
       return GestureDetector(
           onTap: () {
             MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => ProductSearch());
+                MaterialPageRoute(builder: (context) => TelaPesquisaProduto());
             Navigator.of(context).push(route);
           },
           child: Column(children: [

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
-import 'package:theoffer/screens/search.dart';
+import 'package:theoffer/screens/pesquisaProduto.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -78,7 +78,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 icon: Icon(Icons.search, color: Colors.principalTheOffer),
                 onPressed: () {
                   MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) => ProductSearch());
+                      MaterialPageRoute(builder: (context) => TelaPesquisaProduto(descricao: 'a'));
                   Navigator.of(context).push(route);
                 },
               ),

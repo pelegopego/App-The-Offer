@@ -62,10 +62,18 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
               fit: BoxFit.fill,
               height: 55,
             ),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.principalTheOffer,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
             actions: <Widget>[
               shoppingCarrinhoIconButton(),
             ],
-            iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
+        ),
         drawer: HomeDrawer(),
         body: Container(
           color: Colors.terciariaTheOffer,
