@@ -209,8 +209,13 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                           child: Column(
                             children: <Widget>[
                               linhaTotal('Mercadorias:', model.pedido.somaValorTotalPedido().toString()),
-                              linhaTotal('Entrega:',  frete.toString()),
-                              linhaTotal('Total do pedido:', (model.pedido.somaValorTotalPedido() + frete).toString())
+                              frete == null
+                              ?linhaTotal('Entrega:',  '0')
+                              :linhaTotal('Entrega:',  frete.toString()),
+
+                              frete == null
+                              ?linhaTotal('Total do pedido:', '0')
+                              :linhaTotal('Total do pedido:', (model.pedido.somaValorTotalPedido() + frete).toString())
                             ],
                         ),
                       ),

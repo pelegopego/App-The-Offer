@@ -7,7 +7,6 @@ import 'package:theoffer/models/EmpresaDetalhada.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 
@@ -38,15 +37,17 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 });
                 if (widget.produto.quantidadeRestante > 0) {                  
                   if (Autenticacao.codigoUsuario > 0) {
-                    Scaffold.of(context).showSnackBar(processSnackbar);
                       model.adicionarProduto(
                               usuarioId: Autenticacao.codigoUsuario, 
                               produtoId: widget.produto.id, 
                               quantidade: 1,
                               somar: 1);
-                          if (!model.isLoading) {
-                            Scaffold.of(context).showSnackBar(completeSnackbar);
-                      }
+                    final snackBar = 
+                      SnackBar(
+                        content: Text('Produto adicionado ao carrinho'),
+                        duration: Duration(seconds: 5)
+                      );
+                    Scaffold.of(context).showSnackBar(snackBar);
                   } else {
                       MaterialPageRoute authRoute = MaterialPageRoute(
                           builder: (context) => Authentication(0));

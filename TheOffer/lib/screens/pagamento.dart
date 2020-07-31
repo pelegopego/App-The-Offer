@@ -94,8 +94,13 @@ class _TelaPagamento extends State<TelaPagamento> {
                           child: Column(
                             children: <Widget>[
                               linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
-                              linhaTotal('Frete:', frete.toString()),
-                              linhaTotal('Total do pedido:', (widget.pedido.somaValorTotalPedido() + frete).toString())
+                              frete == null
+                              ?linhaTotal('Entrega:',  '0')
+                              :linhaTotal('Entrega:',  frete.toString()),
+
+                              frete == null
+                              ?linhaTotal('Total do pedido:', '0')
+                              :linhaTotal('Total do pedido:', (widget.pedido.somaValorTotalPedido() + frete).toString())
                             ],
                         ),
                       ),
@@ -319,42 +324,57 @@ class _TelaPagamento extends State<TelaPagamento> {
                       color: Colors.secundariaTheOffer),
                 ),
                 onPressed: () async {
-                    print("ESTADO DO PEDIDO ___________ ${widget.pedido.status}");
-                    Map<dynamic, dynamic> objetoPedido = Map();
-                    Map<String, String> headers = getHeaders();
-                    if (widget.pedido != null) {
-                      if (Autenticacao.codigoUsuario > 0 ) {
-                        if (widget.pedido.status == 2) {
-                              objetoPedido = {
-                                "usuario": Autenticacao.codigoUsuario.toString(), 
-                                "pedido": widget.pedido.id.toString(),
-                                "modalidadeRecebimento": pagamentoEntregaVisivel
-                                                         ? '1'
-                                                         : '2',
-                                "formaPagamento":        (formaPagamentoRecebimentoSelecionada.index + 1).toString()      
-                              };
-                              http.post(
-                                      Configuracoes.BASE_URL + 'pedido/pagarPedido/',
-                                      headers: headers,
-                                      body: objetoPedido)
-                                  .then((response) {
-                                print("PAGANDO PEDIDO");
-                                print(json.decode(response.body).toString());                                
-                                MaterialPageRoute produtosRoute =
-                                    MaterialPageRoute(
-                                        builder: (context) => TelaProdutos(idCategoria: 0));
-                                Navigator.push(context, produtosRoute);
-                              });
+                    
+                  if (!pagamentoEntregaVisivel && !pagamentoBalcaoVisivel) {
+                    _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(
+                        content: Text("Favor escolher uma modalidade de entrega"),
+                        duration: Duration(seconds: 5),
+                    ));  
+                    } else {
+                      print("ESTADO DO PEDIDO ___________ ${widget.pedido.status}");
+                      Map<dynamic, dynamic> objetoPedido = Map();
+                      Map<String, String> headers = getHeaders();
+                      if (widget.pedido != null) {
+                        if (Autenticacao.codigoUsuario > 0 ) {
+                          if (widget.pedido.status == 2) {
+                                objetoPedido = {
+                                  "usuario": Autenticacao.codigoUsuario.toString(), 
+                                  "pedido": widget.pedido.id.toString(),
+                                  "modalidadeRecebimento": pagamentoEntregaVisivel
+                                                          ? '1'
+                                                          : '2',
+                                  "formaPagamento":        (formaPagamentoRecebimentoSelecionada.index + 1).toString()      
+                                };
+                                http.post(
+                                        Configuracoes.BASE_URL + 'pedido/pagarPedido/',
+                                        headers: headers,
+                                        body: objetoPedido)
+                                    .then((response) {
+                                  print("PAGANDO PEDIDO");
+                                  print(json.decode(response.body).toString());       
+                                  final snackBar = 
+                                    SnackBar(
+                                      content: Text('Pedido efetuado com sucessoo.'),
+                                      duration: Duration(seconds: 5)
+                                    );
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  MaterialPageRoute produtosRoute =
+                                      MaterialPageRoute(
+                                          builder: (context) => TelaProdutos(idCategoria: 0));
+                                  Navigator.push(context, produtosRoute);
+                                });
+                          }
+                        } else {
+                          MaterialPageRoute authRoute = MaterialPageRoute(
+                              builder: (context) => Authentication(0));
+                          Navigator.push(context, authRoute);
                         }
                       } else {
-                        MaterialPageRoute authRoute = MaterialPageRoute(
-                            builder: (context) => Authentication(0));
-                        Navigator.push(context, authRoute);
+                        Navigator.popUntil(context,
+                            ModalRoute.withName(Navigator.defaultRouteName));
                       }
-                    } else {
-                      Navigator.popUntil(context,
-                          ModalRoute.withName(Navigator.defaultRouteName));
-                    }
+                  }
                 },
               ),
       );
