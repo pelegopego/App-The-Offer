@@ -9,6 +9,8 @@ class Pedido {
    int status;
    Endereco endereco;
    int empresa;
+   int modalidadeEntrega;
+   int formaPagamento;
    List<ItemPedido> listaItensPedido;
   
   Pedido(
@@ -19,6 +21,8 @@ class Pedido {
       this.status,
       this.endereco,
       this.empresa,
+      this.modalidadeEntrega,
+      this.formaPagamento,
       this.listaItensPedido});
 
   double somaValorTotalPedido() {

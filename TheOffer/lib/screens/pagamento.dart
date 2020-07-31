@@ -32,7 +32,7 @@ class _TelaPagamento extends State<TelaPagamento> {
   bool _isLoading = false;
   bool pagamentoEntregaVisivel = false;
   bool pagamentoBalcaoVisivel = false;
-  double frete = 0;
+  double frete;
   FormaPagamentoRecebimento formaPagamentoRecebimentoSelecionada = FormaPagamentoRecebimento.dinheiro;
   int selectedPaymentId;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -40,7 +40,9 @@ class _TelaPagamento extends State<TelaPagamento> {
   @override
   void initState() {
     super.initState();
-    getFretes();
+    if (frete == null) {
+      getFretes();
+    }
     locator<ConnectivityManager>().initConnectivity(context);
   }
 

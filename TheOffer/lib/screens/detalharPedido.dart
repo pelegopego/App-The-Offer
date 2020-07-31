@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'package:theoffer/screens/pagamento.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/models/Pedido.dart';
@@ -23,16 +22,17 @@ class DetalharPedido extends StatefulWidget {
 }
 
 class _DetalharPedido extends State<DetalharPedido> {
-  double frete = 0;
+  double frete;
   Size _deviceSize;
-  bool _isLoading = true;
   Map<dynamic, dynamic> responseBody;
 
   @override
   void initState() {
     super.initState();
     locator<ConnectivityManager>().initConnectivity(context);
-    getFretes();
+    if (frete == null) {
+      getFretes();
+    }
   }
 
   @override
@@ -81,9 +81,6 @@ class _DetalharPedido extends State<DetalharPedido> {
                   child: Container(
                     height: 60,
                     color: Colors.principalTheOffer,
-                    child: GestureDetector(
-                      onTap: () {
-                      },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -157,7 +154,6 @@ class _DetalharPedido extends State<DetalharPedido> {
                           )),
                         ],
                       ),
-                    ),
                   ),
                 )
               )
@@ -181,9 +177,76 @@ class _DetalharPedido extends State<DetalharPedido> {
                       ),
                     )
                   ),
+                  SliverToBoxAdapter(
+                    child: Card(
+                      child: Container(
+                        height: 40,
+                        color: Colors.secundariaTheOffer,
+                          child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        child: RichText(
+                                            text: TextSpan(
+                                                text: widget.pedido.modalidadeEntrega == 1 
+                                                      ? 'Entrega: delivery'
+                                                      : 'Entrega: retirou no local',
+                                                style: TextStyle(
+                                                    color: Colors.principalTheOffer,
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+                                            )
+                                        ),
+                                      ),
+                                    ]
+                                  )
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                      alignment: Alignment.topLeft,
+                                      child: RichText(
+                                          text: TextSpan(
+                                                text: widget.pedido.modalidadeEntrega == 1
+                                                      ?widget.pedido.formaPagamento == 1 
+                                                        ? 'Pagamento: dinheiro'
+                                                        : 'Pagamento: cartao'
+                                                      : 'Pagou no balcão',
+                                              style: TextStyle(
+                                                  color: Colors.principalTheOffer,
+                                                  fontSize: 15.0),
+                                            ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                    ]
+                                  )
+                                ),
+                              ],
+                            )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ])
             ),
-        bottomNavigationBar: paymentButton(context),
       );
     });
   }
@@ -192,9 +255,6 @@ class _DetalharPedido extends State<DetalharPedido> {
     frete = 0;
     Map<dynamic, dynamic> objetoFrete = Map();
     Map<String, String> headers = getHeaders();
-    setState(() {
-      _isLoading = true;
-    });
     objetoFrete = {
       "empresa": widget.pedido.empresa.toString(), "bairro": widget.pedido.endereco.bairro.id.toString()
     };
@@ -207,12 +267,8 @@ class _DetalharPedido extends State<DetalharPedido> {
       print(json.decode(response.body).toString());   
       responseBody = json.decode(response.body);
       setState(() {
-        _isLoading = false;
         frete = double.parse(responseBody['fretes']['0']['valor']);       
       });
-    });
-    setState(() {
-      _isLoading = false;
     });
   }
 
@@ -335,20 +391,13 @@ class _DetalharPedido extends State<DetalharPedido> {
       return Container(
         color: Colors.terciariaTheOffer,
         padding: EdgeInsets.all(5),
-        child: FlatButton(
+        child: Container(
                 color: Colors.secundariaTheOffer,
                 child: Text('PAGAMENTO',
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.principalTheOffer),
                 ),
-                onPressed: () {
-                  /* detalhar pagamento */
-                  MaterialPageRoute route =
-                        MaterialPageRoute(builder: (context) => TelaPagamento(widget.pedido));
-
-                  Navigator.push(context, route);
-                },
               ),
       );
     });

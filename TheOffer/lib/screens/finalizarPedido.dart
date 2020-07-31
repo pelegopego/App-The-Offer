@@ -27,7 +27,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   bool _proceedPressed = false;
   bool _isLoading = false;
   MainModel model;
-  double frete = 0;
+  double frete;
   String _character = '';
   int selectedPaymentId;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -49,7 +49,9 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          getFretes(model.pedido);
+          if (frete == null) {
+            getFretes(model.pedido);
+          }
       return 
       WillPopScope(
         onWillPop: _canGoBack,

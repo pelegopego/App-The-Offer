@@ -329,13 +329,15 @@ class _ListagemPedidos extends State<ListagemPedidos> {
               );
           }
           pedido = Pedido(
-            id              : int.parse(pedidosJson['pedido_id']),
-            usuarioId       : int.parse(pedidosJson['usuario_id']),
-            empresa         : int.parse(pedidosJson['produto_empresa']),
-            dataInclusao    : pedidosJson['dataInclusao'],
-            dataConfirmacao : pedidosJson['dataConfirmacao'],
-            status          : int.parse(pedidosJson['status']),
-            endereco        : endereco,
+            id                : int.parse(pedidosJson['pedido_id']),
+            usuarioId         : int.parse(pedidosJson['usuario_id']),
+            empresa           : int.parse(pedidosJson['produto_empresa']),
+            modalidadeEntrega : int.parse(pedidosJson['modalidadeEntrega']),
+            formaPagamento    : int.parse(pedidosJson['formaPagamento']),
+            dataInclusao      : pedidosJson['dataInclusao'],
+            dataConfirmacao   : pedidosJson['dataConfirmacao'],
+            status            : int.parse(pedidosJson['status']),
+            endereco          : endereco,
             listaItensPedido: []
           );
           
