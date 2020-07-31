@@ -220,7 +220,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                             children: <Widget>[
                                               Container(
                                                 padding: EdgeInsets.symmetric(horizontal: 5),
-                                                width:  90,
+                                                width:  300,
                                                 color: Colors.principalTheOffer,
                                                 alignment: Alignment.bottomRight,
                                                 child: 
@@ -331,6 +331,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
           pedido = Pedido(
             id              : int.parse(pedidosJson['pedido_id']),
             usuarioId       : int.parse(pedidosJson['usuario_id']),
+            empresa         : int.parse(pedidosJson['produto_empresa']),
             dataInclusao    : pedidosJson['dataInclusao'],
             dataConfirmacao : pedidosJson['dataConfirmacao'],
             status          : int.parse(pedidosJson['status']),

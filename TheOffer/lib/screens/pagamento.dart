@@ -5,11 +5,11 @@ import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theoffer/utils/headers.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:theoffer/screens/produtos.dart';
 
@@ -93,8 +93,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                             children: <Widget>[
                               linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
                               linhaTotal('Frete:', frete.toString()),
-                              linhaTotal('Taxas:', '1'),  
-                              linhaTotal('Total do pedido:', widget.pedido.somaValorTotalPedido().toString())
+                              linhaTotal('Total do pedido:', (widget.pedido.somaValorTotalPedido() + frete).toString())
                             ],
                         ),
                       ),
@@ -257,8 +256,7 @@ class _TelaPagamento extends State<TelaPagamento> {
       _isLoading = false;
     });
   }
-  
-                              
+                                
   Widget retirarLocal(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {

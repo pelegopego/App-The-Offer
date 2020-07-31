@@ -5,8 +5,12 @@ import 'package:theoffer/screens/pagamento.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/models/Pedido.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'dart:convert';
 
 class DetalharPedido extends StatefulWidget {
   final Pedido pedido;
@@ -19,13 +23,16 @@ class DetalharPedido extends StatefulWidget {
 }
 
 class _DetalharPedido extends State<DetalharPedido> {
+  double frete = 0;
   Size _deviceSize;
+  bool _isLoading = true;
+  Map<dynamic, dynamic> responseBody;
 
   @override
   void initState() {
     super.initState();
     locator<ConnectivityManager>().initConnectivity(context);
-    //checkShipmentAvailability();
+    getFretes();
   }
 
   @override
@@ -167,9 +174,8 @@ class _DetalharPedido extends State<DetalharPedido> {
                           child: Column(
                             children: <Widget>[
                               linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
-                              linhaTotal('Entrega:', '1'),
-                              linhaTotal('Taxas:', '1'),  
-                              linhaTotal('Total do pedido:', widget.pedido.somaValorTotalPedido().toString())
+                              linhaTotal('Frete:', frete.toString()),
+                              linhaTotal('Total do pedido:', (widget.pedido.somaValorTotalPedido() + frete).toString())
                             ],
                         ),
                       ),
@@ -179,6 +185,34 @@ class _DetalharPedido extends State<DetalharPedido> {
             ),
         bottomNavigationBar: paymentButton(context),
       );
+    });
+  }
+
+  getFretes() async {
+    frete = 0;
+    Map<dynamic, dynamic> objetoFrete = Map();
+    Map<String, String> headers = getHeaders();
+    setState(() {
+      _isLoading = true;
+    });
+    objetoFrete = {
+      "empresa": widget.pedido.empresa.toString(), "bairro": widget.pedido.endereco.bairro.id.toString()
+    };
+    http.post(
+            Configuracoes.BASE_URL + 'frete/',
+            headers: headers,
+            body: objetoFrete)
+        .then((response) {
+      print("BUSCANDO VALOR DE FRETE");
+      print(json.decode(response.body).toString());   
+      responseBody = json.decode(response.body);
+      setState(() {
+        _isLoading = false;
+        frete = double.parse(responseBody['fretes'][0]['valor']);       
+      });
+    });
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -192,7 +226,7 @@ class _DetalharPedido extends State<DetalharPedido> {
                 onTap: () {},
                 child: Card(
                   child: Container(
-                    height: 40,
+                    height: 58,
                     color: Colors.secundariaTheOffer,
                     child: GestureDetector(
                       onTap: () {},
@@ -212,7 +246,7 @@ class _DetalharPedido extends State<DetalharPedido> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Container(
-                                      width: 200,
+                                      width: 250,
                                       child: RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
