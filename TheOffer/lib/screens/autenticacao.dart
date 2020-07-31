@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/forget_password.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -148,11 +147,11 @@ class _AuthenticationState extends State<Authentication>
                   height: 20.0,
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () {/*
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return ForgetPassword();
-                    }));
+                    }));*/
                   },
                   child: Text(
                     'Esqueceu sua senha?',

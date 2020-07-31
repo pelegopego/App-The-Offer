@@ -5,7 +5,6 @@ import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/screens/empresaDetalhada.dart';
 import 'package:theoffer/models/EmpresaDetalhada.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/autenticacao.dart';
@@ -254,7 +253,6 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        ratingBar(5, 20),
                         Text('10',  
                              style: TextStyle(color: Colors.principalTheOffer)),
                       ],

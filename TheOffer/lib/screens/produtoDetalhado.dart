@@ -7,9 +7,7 @@ import 'package:theoffer/screens/pesquisaProduto.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/rating_bar.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
-import 'package:theoffer/widgets/snackbar.dart';
 import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -361,11 +359,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       ),
                       Row(
                         children: <Widget>[
-                          //ratingBar(produtoSelecionado.avgRating, 20),
-                          ratingBar(5, 20),
                           Container(
                               margin: EdgeInsets.only(right: 10),
-                              //child: Text(produtoSelecionado.reviewsCount,
                               child: Text('145', 
                                           style: TextStyle(color: Colors.principalTheOffer)),
                               ),
@@ -523,7 +518,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               ),
               onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
-                      Scaffold.of(context).showSnackBar(processSnackbar);
                       if (produtoSelecionado.quantidadeRestante > 0) {
                         
                         if (Autenticacao.codigoUsuario > 0) {
@@ -538,7 +532,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         }
                         if (model.pedido != null) {
                           if (!model.isLoading) {
-                            Scaffold.of(context).showSnackBar(completeSnackbar);
                             MaterialPageRoute route =
                                 MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
 
@@ -575,16 +568,12 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
                        if (Autenticacao.codigoUsuario > 0) {
-                         Scaffold.of(context).showSnackBar(processSnackbar);
                           if (produtoSelecionado.quantidadeRestante > 0) {
                             model.adicionarProduto(
                                 usuarioId: Autenticacao.codigoUsuario,
                                 produtoId: produtoSelecionado.id,
                                 quantidade: quantidade,
                                 somar: 1);
-                            if (!model.isLoading) {
-                              Scaffold.of(context).showSnackBar(completeSnackbar);
-                            }
                           }   
                         } else {
                             MaterialPageRoute authRoute = MaterialPageRoute(
@@ -612,7 +601,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 onPressed: produtoSelecionado.quantidadeRestante > 0 
                     ? () {                        
                        if (Autenticacao.codigoUsuario > 0) {
-                          Scaffold.of(context).showSnackBar(processSnackbar);
                             model.adicionarProduto(
                                 usuarioId: Autenticacao.codigoUsuario,
                                 produtoId: produtoSelecionado.id,
@@ -622,9 +610,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             MaterialPageRoute authRoute = MaterialPageRoute(
                                 builder: (context) => Authentication(0));
                             Navigator.push(context, authRoute);
-                        }
-                        if (!model.isLoading) {
-                          Scaffold.of(context).showSnackBar(completeSnackbar);
                         }
                       }
                     : () {},
@@ -770,19 +755,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               ),
             ),
             onPressed: () async {
-              FocusScope.of(context).requestFocus(new FocusNode());
-              _formKey.currentState.save();
-              if (pincode != '') {
-                bool available = true;
-//                    await model.shipmentAvailability(pincode: pincode);
-                if (available) {
-                  Scaffold.of(context).showSnackBar(codAvailable);
-                } else {
-                  Scaffold.of(context).showSnackBar(codNotAvailable);
-                }
-              } else {
-                Scaffold.of(context).showSnackBar(codEmpty);
-              }
             }),
       ],
     );

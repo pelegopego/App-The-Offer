@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:theoffer/models/favorites.dart';
+import 'package:theoffer/models/favorito.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
@@ -7,17 +7,17 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class FavoritesScreen extends StatefulWidget {
+class TelaFavorito extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _FavoritesScreenState();
+    return _TelaFavorito();
   }
 }
 
-class _FavoritesScreenState extends State<FavoritesScreen> {
-  List<Favorite> favoriteProducts = [];
-  List<Favorite> deletedProducts = [];
-  Future<List<Favorite>> futureFavoriteProducts;
+class _TelaFavorito extends State<TelaFavorito> {
+  List<Favorito> favoriteProducts = [];
+  List<Favorito> deletedProducts = [];
+  Future<List<Favorito>> futureFavoriteProducts;
   bool _isLoading = false;
   final scrollController = ScrollController();
 
@@ -170,10 +170,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   Widget favoriteCardPaginated(
-      BuildContext context, Favorite favorite, int index) {
+      BuildContext context, Favorito favorito, int index) {
     bool isDeleted = false;
     deletedProducts.forEach((deletedItem) {
-      if (deletedItem.id == favorite.id) {
+      if (deletedItem.id == favorito.id) {
         isDeleted = true;
       }
     });
@@ -200,7 +200,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 color: Colors.principalTheOffer,
                 child: Image(
                   image: NetworkImage(
-                      favorite.image != null ? favorite.image : ''),
+                      favorito.image != null ? favorito.image : ''),
                 ),
               ),
               Expanded(
@@ -220,17 +220,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                 child: RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                      text: '${favorite.name.split(' ')[0]} ',
+                                      text: '${favorito.name.split(' ')[0]} ',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     TextSpan(
-                                      text: favorite.name.substring(
-                                          favorite.name.split(' ')[0].length +
+                                      text: favorito.name.substring(
+                                          favorito.name.split(' ')[0].length +
                                               1,
-                                          favorite.name.length),
+                                          favorito.name.length),
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.black),
                                     ),
@@ -294,7 +294,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             Container(
                               padding: EdgeInsets.only(right: 10.0),
                               child: Text(
-                                favorite.currencySymbol + favorite.price,
+                                favorito.currencySymbol + favorito.price,
                                 textAlign: TextAlign.left,
                                 style:
                                     TextStyle(fontSize: 15, color: Colors.red),
@@ -314,8 +314,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     }
   }
 
-  void addItemtoDeleteList(Favorite favorite) {
-    deletedProducts.add(favorite);
+  void addItemtoDeleteList(Favorito favorito) {
+    deletedProducts.add(favorito);
   }
 
 }

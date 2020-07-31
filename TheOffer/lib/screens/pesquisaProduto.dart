@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:theoffer/models/brand.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -33,7 +32,6 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
   int produtosEncontrados = 0;
   bool hasMore = false;
   Map<dynamic, dynamic> responseBody;
-  List<Brand> brands = [];
   List<Produto> produtosPorMarca = [];
   bool _isLoading = false;
 

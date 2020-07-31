@@ -1,4 +1,4 @@
-class Favorite {
+class Favorito {
   int productId;
   int id;
   String name;
@@ -6,7 +6,7 @@ class Favorite {
   String price;
   String currencySymbol;
   String slug;
-  Favorite(
+  Favorito(
       {this.currencySymbol,
       this.image,
       this.price,

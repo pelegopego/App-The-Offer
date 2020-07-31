@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/account.dart';
 import 'package:theoffer/screens/autenticacao.dart';
-import 'package:theoffer/screens/favorites.dart';
-import 'package:theoffer/screens/order_history.dart';
-import 'package:theoffer/screens/retun_policy.dart';
 import 'package:theoffer/screens/listagemEndereco.dart';
 import 'package:theoffer/screens/listagemPedidos.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -107,7 +103,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           'Favoritos',
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
-        onTap: () {
+        onTap: () {/*
           if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute orderList =
                 MaterialPageRoute(builder: (context) => FavoritesScreen());
@@ -117,7 +113,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                 MaterialPageRoute(builder: (context) => Authentication(0));
 
             Navigator.push(context, route);
-          }
+          }*/
         },
       );
     });
@@ -168,62 +164,6 @@ class _HomeDrawer extends State<HomeDrawer> {
             MaterialPageRoute account =
                 MaterialPageRoute(builder: (context) => ListagemPedidos());
             Navigator.push(context, account);
-          } else {
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => Authentication(0));
-
-            Navigator.push(context, route);
-          }
-        },
-      );
-    });
-  }
-
-  Widget accountListTile() {
-    return ScopedModelDescendant(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return ListTile(
-        leading: Icon(
-          Icons.person,
-          color: Colors.secundariaTheOffer,
-        ),
-        title: Text(
-          'Minha conta',
-          style: TextStyle(color: Colors.secundariaTheOffer),
-        ),
-        onTap: () {
-          if (Autenticacao.codigoUsuario > 0) {
-            MaterialPageRoute account =
-                MaterialPageRoute(builder: (context) => Account());
-            Navigator.push(context, account);
-          } else {
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => Authentication(0));
-
-            Navigator.push(context, route);
-          }
-        },
-      );
-    });
-  }
-
-  Widget orderHistoryLineTile() {
-    return ScopedModelDescendant(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return ListTile(
-        leading: Icon(
-          Icons.receipt,
-          color: Colors.secundariaTheOffer,
-        ),
-        title: Text(
-          'Histórico de pedidos',
-          style: TextStyle(color: Colors.secundariaTheOffer),
-        ),
-        onTap: () {
-          if (Autenticacao.codigoUsuario > 0) {
-            MaterialPageRoute orderList =
-                MaterialPageRoute(builder: (context) => OrderList());
-            Navigator.push(context, orderList);
           } else {
             MaterialPageRoute route =
                 MaterialPageRoute(builder: (context) => Authentication(0));
@@ -423,23 +363,6 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               title: Text(
                 'supporte@theoffer.com.br',
-              style: TextStyle(color: Colors.secundariaTheOffer),
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ReturnPolicy();
-              }));
-            },
-            child: ListTile(
-              leading: Icon(
-                Icons.assignment,
-                color: Colors.secundariaTheOffer,
-              ),
-              title: Text(
-                'Return Policy',
               style: TextStyle(color: Colors.secundariaTheOffer),
               ),
             ),

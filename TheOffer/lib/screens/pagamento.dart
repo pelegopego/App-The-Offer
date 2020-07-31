@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/order_response.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -8,7 +7,6 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/Pedido.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'dart:convert';
 import 'package:theoffer/screens/produtos.dart';
@@ -379,18 +377,6 @@ class _TelaPagamento extends State<TelaPagamento> {
               ),
       );
     });
-  }
-
-  pushSuccessPage() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String orderNumber = prefs.getString('orderNumber');
-    MaterialPageRoute payment = MaterialPageRoute(
-        builder: (context) => OrderResponse(orderNumber: orderNumber));
-    Navigator.pushAndRemoveUntil(
-      context,
-      payment,
-      ModalRoute.withName('/'),
-    );
   }
   
 Widget linhaTotal(

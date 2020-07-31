@@ -6,7 +6,6 @@ import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/models/bairro.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/Pedido.dart';
-import 'package:theoffer/models/payment_methods.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/screens/produtoDetalhado.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -21,7 +20,6 @@ mixin CarrinhoModel on Model {
   List<ItemPedido> _listaItensPedido = [];
   Pedido _pedido;
   bool _isLoading = false;
-  List<PaymentMethod> _paymentMethods = [];
 
   Map<dynamic, dynamic> objetoItemPedido = Map();
 
@@ -31,10 +29,6 @@ mixin CarrinhoModel on Model {
 
   Pedido get pedido {
     return _pedido;
-  }
-
-  List<PaymentMethod> get paymentMethods {
-    return List.from(_paymentMethods);
   }
 
   bool get isLoading {
