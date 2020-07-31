@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/order_response.dart';
-import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';

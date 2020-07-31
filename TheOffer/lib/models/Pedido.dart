@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/endereco.dart';
 

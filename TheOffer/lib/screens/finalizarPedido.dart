@@ -9,7 +9,6 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:theoffer/utils/headers.dart';
 
 class TelaFinalizarPedido extends StatefulWidget {
   @override
