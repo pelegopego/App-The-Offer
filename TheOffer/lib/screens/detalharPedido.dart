@@ -208,7 +208,7 @@ class _DetalharPedido extends State<DetalharPedido> {
       responseBody = json.decode(response.body);
       setState(() {
         _isLoading = false;
-        frete = double.parse(responseBody['fretes'][0]['valor']);       
+        frete = double.parse(responseBody['fretes']['0']['valor']);       
       });
     });
     setState(() {

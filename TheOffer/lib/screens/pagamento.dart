@@ -247,10 +247,13 @@ class _TelaPagamento extends State<TelaPagamento> {
       print("BUSCANDO VALOR DE FRETE");
       print(json.decode(response.body).toString());   
       responseBody = json.decode(response.body);
+      
+    if (responseBody['fretes']['possuiFrete'] == true) { 
       setState(() {
         _isLoading = false;
-        frete = double.parse(responseBody['fretes'][0]['valor']);       
+        frete = double.parse(responseBody['fretes']['0']['valor']);       
       });
+    }
     });
     setState(() {
       _isLoading = false;

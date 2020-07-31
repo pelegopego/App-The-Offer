@@ -24,9 +24,10 @@ class TelaFinalizarPedido extends StatefulWidget {
 class _FinalizarPedido extends State<TelaFinalizarPedido> {
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
-  double frete = 0;
   bool _proceedPressed = false;
   bool _isLoading = false;
+  MainModel model;
+  double frete = 0;
   String _character = '';
   int selectedPaymentId;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -34,8 +35,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   @override
   void initState() {
     super.initState();
-    locator<ConnectivityManager>().initConnectivity(context);
-    //checkShipmentAvailability();
+    locator<ConnectivityManager>().initConnectivity(context);    
   }
 
   @override
@@ -49,7 +49,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-        getFretes(model.pedido);
+          getFretes(model.pedido);
       return 
       WillPopScope(
         onWillPop: _canGoBack,
@@ -73,7 +73,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                     preferredSize: Size.fromHeight(10),
                   )
         ),
-        body: _isLoading
+        body: _isLoading 
             ? Container()
             : Container (
                 color: Colors.terciariaTheOffer,
@@ -95,9 +95,6 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                     height: 90,
                     color: Colors.principalTheOffer,
                     child: GestureDetector(
-                      onTap: () {
-                        
-                      },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -210,8 +207,8 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                           child: Column(
                             children: <Widget>[
                               linhaTotal('Mercadorias:', model.pedido.somaValorTotalPedido().toString()),
-                              linhaTotal('Entrega:', frete.toString()),
-                              linhaTotal('Total do pedido:', model.pedido.somaValorTotalPedido().toString())
+                              linhaTotal('Entrega:',  frete.toString()),
+                              linhaTotal('Total do pedido:', (model.pedido.somaValorTotalPedido() + frete).toString())
                             ],
                         ),
                       ),
@@ -227,31 +224,26 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   }
 
   getFretes(Pedido pedido) async {
-    frete = 0;
     Map<dynamic, dynamic> objetoFrete = Map();
     Map<String, String> headers = getHeaders();
-    setState(() {
-      _isLoading = true;
-    });
     objetoFrete = {
       "empresa": pedido.empresa.toString(), "bairro": pedido.endereco.bairro.id.toString()
     };
-    http.post(
-            Configuracoes.BASE_URL + 'frete/',
-            headers: headers,
-            body: objetoFrete)
-        .then((response) {
+    
+    http.Response response = await http.post(Configuracoes.BASE_URL + 'frete/', headers: headers, body: objetoFrete);
+    responseBody = json.decode(response.body);
+    if (responseBody['fretes']['possuiFrete'] == true) { 
       print("BUSCANDO VALOR DE FRETE");
       print(json.decode(response.body).toString());   
       responseBody = json.decode(response.body);
       setState(() {
-        _isLoading = false;
-        frete = double.parse(responseBody['fretes'][0]['valor']);       
+        frete = double.parse(responseBody['fretes']['0']['valor']);     
       });
-    });
-    setState(() {
-      _isLoading = false;
-    });
+    } else {
+      setState(() {
+        frete = 0;     
+      });
+    }
   }
 
   Widget itensPedido() {
@@ -436,8 +428,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     );
   }
   
-Widget linhaTotal(
-    String title, String displayAmount) {
+Widget linhaTotal(String title, String displayAmount) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Container(
       padding: EdgeInsets.all(5),
