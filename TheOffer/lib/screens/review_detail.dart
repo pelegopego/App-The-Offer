@@ -69,12 +69,10 @@ class _ReviewDetailScreenState extends State<ReviewDetailScreen>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-               /*                     FadeInImage(
+               /*                     Image(
                                       image: NetworkImage(product.image != null
                                           ? product.image
-                                          : ''),
-                                      placeholder: AssetImage(
-                                          'images/placeholders/no-product-image.png'),
+                                          : '')
                                       width: 100,
                                       height: 100,
                                     ),*/

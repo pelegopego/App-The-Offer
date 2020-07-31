@@ -198,11 +198,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 height: 150,
                 width: 150,
                 color: Colors.principalTheOffer,
-                child: FadeInImage(
+                child: Image(
                   image: NetworkImage(
                       favorite.image != null ? favorite.image : ''),
-                  placeholder:
-                      AssetImage('images/placeholders/no-product-image.png'),
                 ),
               ),
               Expanded(

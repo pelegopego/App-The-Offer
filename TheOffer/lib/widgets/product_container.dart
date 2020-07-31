@@ -25,10 +25,8 @@ Widget productContainer(BuildContext myContext, Produto produtoSelecionado, int 
                         height: 100,
                         width: 150,
                         color: Colors.principalTheOffer,
-                        child: FadeInImage(
+                        child: Image(
                           image: NetworkImage(produtoSelecionado.imagem),
-                          placeholder: AssetImage(
-                              'images/placeholders/no-product-image.png'),
                         ),
                       ),
                     ],

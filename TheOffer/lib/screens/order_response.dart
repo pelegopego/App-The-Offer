@@ -338,13 +338,11 @@ class _OrderResponseState extends State<OrderResponse> {
                   new Container(
                       height: 100,
                       width: 100,
-                      child: new FadeInImage(
+                      child: new Image(
                         image: NetworkImage(
                             item["variant"]["images"][0]["product_url"] != null
                                 ? item["variant"]["images"][0]["product_url"]
                                 : ''),
-                        placeholder: AssetImage(
-                            'images/placeholders/no-product-image.png'),
                       )),
                   Divider()
                 ]),

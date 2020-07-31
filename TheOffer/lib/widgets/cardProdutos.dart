@@ -218,10 +218,8 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
               child: Column(
                 children: <Widget>[
                   Container(
-                    child: FadeInImage(
+                    child: Image(
                       image: NetworkImage(produtoDetalhado.imagem),
-                      placeholder: AssetImage(
-                          'images/placeholders/no-product-image.png'),
                       height: 140,
                       width: 140,
                     ),

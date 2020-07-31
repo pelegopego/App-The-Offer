@@ -224,10 +224,8 @@ class _CarrinhoState extends State<Carrinho> {
                                 height: 170,
                                 width: 180,
                                 color: Colors.secundariaTheOffer,
-                                child: FadeInImage(
+                                child: Image(
                                  image: NetworkImage(model.pedido.listaItensPedido[index].produto.imagem),
-                                  placeholder: AssetImage(
-                                      'images/placeholders/no-product-image.png'),
                                 ),
                               ),
                             ],

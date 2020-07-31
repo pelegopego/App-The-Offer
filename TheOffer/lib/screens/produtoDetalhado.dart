@@ -241,10 +241,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             alignment: Alignment.center,    
                             height: 320,
                             width: 390,
-                            child: FadeInImage(
+                            child: Image(
                               image: NetworkImage(produtoSelecionado.imagem),
-                              placeholder: AssetImage(
-                                  'images/placeholders/no-product-image.png'),
                             ),
                           ),
                         )

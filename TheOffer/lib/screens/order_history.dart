@@ -215,11 +215,8 @@ class _OrderList extends State<OrderList> {
   }
 
   Widget orderVariantImage(imageUrl) {
-    return FadeInImage(
+    return Image(
       image: NetworkImage(imageUrl != null ? imageUrl : ''),
-      placeholder: AssetImage(
-        'images/placeholders/no-product-image.png',
-      ),
       width: 35,
     );
   }

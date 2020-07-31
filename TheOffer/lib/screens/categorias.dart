@@ -162,10 +162,8 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
           child: Stack(children: [
             Container(
                 alignment: Alignment.bottomRight,
-                 child: FadeInImage(
+                 child: Image(
                     image: NetworkImage(listaCategoria[index].imagem),
-                    placeholder: AssetImage(
-                        'images/placeholders/no-product-image.png'),
                     ),
                   ),
             Container(
