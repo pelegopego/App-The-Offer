@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:theoffer/scoped-models/carrinho.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -26,6 +27,7 @@ enum FormaPagamentoRecebimento { dinheiro, cartao }
 
 class _TelaPagamento extends State<TelaPagamento> {
   bool _proceedPressed = false;
+  final CarrinhoModel carrinho = MainModel();
   Map<dynamic, dynamic> responseBody;
   bool _isLoading = false;
   bool pagamentoEntregaVisivel = false;
@@ -253,10 +255,10 @@ class _TelaPagamento extends State<TelaPagamento> {
       print(json.decode(response.body).toString());   
       responseBody = json.decode(response.body);
       
-    if (responseBody['fretes']['possuiFrete'] == true) { 
+    if (responseBody['possuiFrete'] == true) { 
       setState(() {
         _isLoading = false;
-        frete = double.parse(responseBody['fretes']['0']['valor']);       
+        frete = double.parse(responseBody['fretes'][0]['valor']);       
       });
     }
     });

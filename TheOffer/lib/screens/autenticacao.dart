@@ -416,7 +416,7 @@ class _AuthenticationState extends State<Authentication>
           duration: Duration(seconds: 104),
         ));
         hasError = false;
-        model.localizarCarrinho(null, 1);
+        model.localizarCarrinho(null, Autenticacao.codigoUsuario);
       } else {        
         setState(() {
           _isLoader = false;

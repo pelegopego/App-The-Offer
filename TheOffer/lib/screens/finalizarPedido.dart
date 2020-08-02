@@ -237,12 +237,12 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     
     http.Response response = await http.post(Configuracoes.BASE_URL + 'frete/', headers: headers, body: objetoFrete);
     responseBody = json.decode(response.body);
-    if (responseBody['fretes']['possuiFrete'] == true) { 
+    if (responseBody['possuiFrete'] == true) { 
       print("BUSCANDO VALOR DE FRETE");
       print(json.decode(response.body).toString());   
       responseBody = json.decode(response.body);
       setState(() {
-        frete = double.parse(responseBody['fretes']['0']['valor']);     
+        frete = double.parse(responseBody['fretes'][0]['valor']);     
       });
     } else {
       setState(() {
