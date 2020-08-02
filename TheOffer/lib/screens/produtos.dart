@@ -37,6 +37,7 @@ class _TelaProdutos extends State<TelaProdutos> {
   List<String> bannerImageUrls = [];
   List<String> bannerLinks = [];
   int favCount;
+  bool _localizarCarrinho = false;
 
   @override
   void initState() {
@@ -44,6 +45,7 @@ class _TelaProdutos extends State<TelaProdutos> {
     // getFavoritesCount();
     //getBanners();
     getProdutos();
+    _localizarCarrinho = true;
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -69,7 +71,10 @@ class _TelaProdutos extends State<TelaProdutos> {
     );*/
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          
+          if (_localizarCarrinho) {
+            _localizarCarrinho = false;
+            model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+          }
       return Scaffold(
         appBar: AppBar(
             title: Image.asset(
