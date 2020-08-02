@@ -189,13 +189,11 @@ Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
     });
       responseBody = json.decode(response.body);
       responseBody['categorias'].forEach((categoriaJson) {
-          setState(() { 
-            listaCategoria.add(Categoria(
-              id    : int.parse(categoriaJson['id']),
-              nome  : categoriaJson['nome'],
-              imagem: categoriaJson['imagem']
-            ));
-          });
+          listaCategoria.add(Categoria(
+            id    : int.parse(categoriaJson['id']),
+            nome  : categoriaJson['nome'],
+            imagem: categoriaJson['imagem']
+          ));
         }
       );
       setState(() {
