@@ -160,13 +160,7 @@ class _CarrinhoState extends State<Carrinho> {
           width: MediaQuery.of(context).size.width,
           height: 58.0,
           padding: EdgeInsets.all(10),
-          child: model.isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.secundariaTheOffer,
-                  ),
-                )
-              : FlatButton(
+          child: FlatButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2)),
                   color: Colors.principalTheOffer,
