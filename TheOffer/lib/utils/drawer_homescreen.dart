@@ -50,14 +50,13 @@ class _HomeDrawer extends State<HomeDrawer> {
           return ListTile(
             leading: Icon(
               Icons.call_made,
-              color: Colors.grey,
+              color: Colors.secundariaTheOffer,
             ),
             title: Text(
               'Sair',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.secundariaTheOffer),
             ),
             onTap: () {
-              // logoutUser(model);
               _showDialog(context, model);
             },
           );
@@ -274,21 +273,15 @@ class _HomeDrawer extends State<HomeDrawer> {
         });
   }
 
-  logoutUser(MainModel model) async {
-    /*
-    http
-        .get(Settings.SERVER_URL + 'logout.json', headers: headers)
-        .then((response) {
-      prefs.clear();
-      model.clearData();
-      model.loggedInUser();
-      model.localizarCarrinho(null, Autenticacao.codigoUsuario);
-    });*/
+  logoutUser(MainModel model) {
+    model.limparPedido();
+    model.clearData();
+    Autenticacao.codigoUsuario = 0;
+    Autenticacao.nomeUsuario   = '';
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Drawer(
       child: ListView(
         padding: EdgeInsets.all(0.0),

@@ -39,6 +39,10 @@ mixin CarrinhoModel on Model {
     _isLoading = loading;
     notifyListeners();
   }
+  void limparPedido() {
+    _pedido = null;
+    notifyListeners();
+  }
 
   void getProdutoDetalhe(int id, BuildContext context,
       [bool isSimilarListing = false]) async {
