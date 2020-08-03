@@ -6,6 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/constants.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 class TelaCidade extends StatefulWidget {
@@ -48,21 +49,56 @@ class _TelaCidade extends State<TelaCidade> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    getCidades();
-    return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold(
-        body: criaDropDownButton(),
+  void initState() {
+    super.initState();
+    getCidadeStorage();
+  }    
+
+ getCidadeStorage() async {
+    final storage = FlutterSecureStorage();
+    String cidadeSelecionadaAuxiliar;
+    cidadeSelecionadaAuxiliar = await storage.read(key: "CidadeSelecionada");
+    if (cidadeSelecionadaAuxiliar != null) {
+      CidadeSelecionada.id = int.parse(cidadeSelecionadaAuxiliar);
+    }
+ }
+
+
+ mudarRota() async {
+    await Future.delayed(Duration(seconds: 0), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TelaCategorias()),
       );
     });
   }
 
-  mudouCidade(int idCidade) {
-    CidadeSelecionada.id = idCidade;
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCategorias()));
+  @override
+  Widget build(BuildContext context) {
+    if (CidadeSelecionada.id > 0){
+      mudarRota();
+      return Container();
+    } else {
+      getCidades();
+      return ScopedModelDescendant<MainModel>(
+          builder: (BuildContext context, Widget child, MainModel model) {
+        return Scaffold(
+          body: criaDropDownButton(),
+        );
+      });
+    }
   }
 
+  mudouCidade(int idCidade) {
+    CidadeSelecionada.id = idCidade;
+    writeStorageCidade();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCategorias()));
+  }
+  
+  writeStorageCidade() async {
+    final storage = FlutterSecureStorage();
+    await storage.write(key: "CidadeSelecionada", value: CidadeSelecionada.id.toString());
+  }
                 
   getCidades() {
   Map<dynamic, dynamic> responseBody;

@@ -3,10 +3,13 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/listagemEndereco.dart';
 import 'package:theoffer/screens/listagemPedidos.dart';
+import 'package:theoffer/screens/produtos.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class HomeDrawer extends StatefulWidget {
   @override
@@ -273,11 +276,13 @@ class _HomeDrawer extends State<HomeDrawer> {
         });
   }
 
-  logoutUser(MainModel model) {
+  logoutUser(MainModel model) async {
     model.limparPedido();
     model.clearData();
     Autenticacao.codigoUsuario = 0;
     Autenticacao.nomeUsuario   = '';
+    final storage = FlutterSecureStorage();
+    await storage.deleteAll();
   }
 
   @override
@@ -307,8 +312,10 @@ class _HomeDrawer extends State<HomeDrawer> {
             ),
           ListTile(
             onTap: () {
-              Navigator.popUntil(
-                  context, ModalRoute.withName(Navigator.defaultRouteName));
+              MaterialPageRoute produtosRoute =
+                  MaterialPageRoute(
+                      builder: (context) => TelaProdutos(idCategoria: 0));
+              Navigator.push(context, produtosRoute);
             },
             leading: Icon(
               Icons.home,

@@ -1,11 +1,13 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() {
   setupLocator();
@@ -27,9 +29,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
-    
+    getUser();
     Map<dynamic, dynamic> responseBody;
-    //Adquire o token se não existe
     if (Autenticacao.token == "") {
       http.get(Configuracoes.BASE_URL + 'usuario/gerarToken').then((response) {
         responseBody = json.decode(response.body);
@@ -37,6 +38,31 @@ class _MyAppState extends State<MyApp> {
       });
     }
     super.initState();
+  }
+
+  getUser() async {
+    final storage = FlutterSecureStorage();
+    String codigoUsuarioAuxiliar;
+    String nomeUsuarioAuxiliar;
+    String token;
+
+    Map<String, String> allValues = await storage.readAll();
+    if (allValues.length > 0) 
+    {
+      codigoUsuarioAuxiliar     = await storage.read(key: "codigoUsuario");
+      nomeUsuarioAuxiliar       = await storage.read(key: "nomeUsuario");
+      token                     = await storage.read(key: "token");
+
+      if (codigoUsuarioAuxiliar != null) {
+        Autenticacao.codigoUsuario = int.parse(codigoUsuarioAuxiliar);
+      }
+      if (nomeUsuarioAuxiliar != null) {
+        Autenticacao.nomeUsuario = nomeUsuarioAuxiliar;
+      }
+      if (token != null) {
+        Autenticacao.token = token;
+      }
+    }
   }
 
   @override

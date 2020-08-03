@@ -247,17 +247,6 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 12.0, top: 5.0, bottom: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text('10',  
-                             style: TextStyle(color: Colors.principalTheOffer)),
-                      ],
-                    ),
-                  ),
                   Divider(
                     height: 1.0,
                     color: Colors.principalTheOffer,

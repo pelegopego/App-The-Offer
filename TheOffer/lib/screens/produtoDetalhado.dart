@@ -357,15 +357,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                               fontFamily: fontFamily),
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                              margin: EdgeInsets.only(right: 10),
-                              child: Text('145', 
-                                          style: TextStyle(color: Colors.principalTheOffer)),
-                              ),
-                        ],
-                      )
                     ],
                   ),
                 ),

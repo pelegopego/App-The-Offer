@@ -8,6 +8,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:crypto/crypto.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -410,6 +411,7 @@ class _AuthenticationState extends State<Authentication>
           Autenticacao.codigoUsuario =  int.parse(usuarioJson['id']);
           Autenticacao.nomeUsuario  = usuarioJson['nome'];
           Autenticacao.token        = usuarioJson['token'];
+          writeStorage();      
         });        
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
@@ -506,6 +508,14 @@ class _AuthenticationState extends State<Authentication>
         _isLoader = false;
       });
     });
+  }
+
+  writeStorage() async {
+    final storage = FlutterSecureStorage();
+    await storage.deleteAll();
+    await storage.write(key: "codigoUsuario", value: Autenticacao.codigoUsuario.toString());
+    await storage.write(key: "nomeUsuario", value: Autenticacao.nomeUsuario);
+    await storage.write(key: "token", value: Autenticacao.token);
   }
 
   Widget _alertDialog(String boxTitle, String message, BuildContext context) {
