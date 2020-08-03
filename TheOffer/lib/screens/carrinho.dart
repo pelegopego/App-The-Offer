@@ -57,7 +57,7 @@ class _CarrinhoState extends State<Carrinho> {
                     color: Colors.principalTheOffer,
                   ),
                   onPressed: () => {
-                    model.deletarCarrinho(Autenticacao.codigoUsuario),
+                    model.deletarPedido(model.pedido.id, 1),
                     Navigator.of(context).pop(),
                   },
                 ),
@@ -72,7 +72,13 @@ class _CarrinhoState extends State<Carrinho> {
                       preferredSize: Size.fromHeight(10),
                     )
                ),
-          body: !model.isLoading || model.pedido != null ? body() : Container(),
+          body: model.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.secundariaTheOffer,
+                  ),
+                )
+              : body(),
           bottomNavigationBar: BottomAppBar(
               child: Container(
                   color: Colors.secundariaTheOffer,
@@ -173,10 +179,8 @@ class _CarrinhoState extends State<Carrinho> {
                     Map<String, String> headers = getHeaders();
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
-                    //Map<String, dynamic> responseBody;
                     if (model.pedido != null) {
                       if (Autenticacao.codigoUsuario > 0 ) {
-                        //if (model.pedido.status == 1) {
                               print("finalizandocarrinho");
                               objetoItemPedido = {
                                 "usuario": Autenticacao.codigoUsuario.toString()
@@ -189,14 +193,12 @@ class _CarrinhoState extends State<Carrinho> {
                                   .then((response) {
                                 print("GERANDO CARRINHO");
                                 print(json.decode(response.body).toString());
-                                //responseBody = json.decode(response.body);
                                 model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
                                   MaterialPageRoute finalizarPedidoRoute =
                                       MaterialPageRoute(
                                           builder: (context) => TelaFinalizarPedido());
                                   Navigator.push(context, finalizarPedidoRoute);
                               });
-                        //}
                       } else {
                         MaterialPageRoute authRoute = MaterialPageRoute(
                             builder: (context) => Authentication(0));

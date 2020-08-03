@@ -99,24 +99,46 @@ mixin CarrinhoModel on Model {
     notifyListeners(); 
   }
 
-  void deletarCarrinho(int usuarioId) {
+  void alterarStatus(int pedidoId, int status) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
     Map<dynamic, dynamic> objetoCarrinho = Map();
-    print("DELETANDO CARRINHO");
+    print("ALTERANDO STATUS DO PEDIDO {$pedidoId, $status}");
         objetoCarrinho = {
-          "usuario": usuarioId.toString()
+          "pedido": pedidoId.toString(), "status": status.toString()
         };
     http
         .post(
-            Configuracoes.BASE_URL + 'pedido/deletarCarrinho/',
+            Configuracoes.BASE_URL + 'pedido/alterarStatus/',
             headers: headers,
             body: objetoCarrinho)
         .then((response) {
-      print("DELETANDO CARRINHO _______");
+      print("DELETANDO PEDIDO _______");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
-      localizarCarrinho(null, usuarioId);
+      localizarCarrinho(pedidoId, Autenticacao.codigoUsuario);
+      return responseBody['message'];  
+    });
+  }
+
+  void deletarPedido(int pedidoId, int status) {
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+    Map<dynamic, dynamic> objetoCarrinho = Map();
+    print("DELETANDO PEDIDO {$pedidoId, $status}");
+        objetoCarrinho = {
+          "pedido": pedidoId.toString(), "status": status.toString()
+        };
+    http
+        .post(
+            Configuracoes.BASE_URL + 'pedido/deletarPedido/',
+            headers: headers,
+            body: objetoCarrinho)
+        .then((response) {
+      print("DELETANDO PEDIDO _______");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      localizarCarrinho(pedidoId, Autenticacao.codigoUsuario);
       return responseBody['message'];  
     });
   }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/listagemEnderecoPedido.dart';
@@ -9,8 +11,7 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/utils/headers.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:theoffer/screens/produtos.dart';
 
 class TelaFinalizarPedido extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
   bool _proceedPressed = false;
+  MaterialPageRoute produtosRoute;
   bool _isLoading = false;
   MainModel model;
   double frete;
@@ -58,11 +60,31 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
         appBar: AppBar(
               leading: IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => {
+                  model.alterarStatus(model.pedido.id, 1),
+                  Navigator.of(context).pop(),
+                }
               ),
             title: Text('Pedido',
             style: TextStyle(color: Colors.principalTheOffer)
             ),
+            actions: <Widget>[
+                IconButton(
+                iconSize: 30, 
+                icon: new Icon(
+                  Icons.close,
+                  color: Colors.principalTheOffer,
+                ),
+                onPressed: () => {
+                  model.deletarPedido(model.pedido.id, 2),
+                  produtosRoute = 
+                    MaterialPageRoute(
+                       builder: (context) => TelaProdutos(idCategoria: 0)
+                    ),
+                  Navigator.push(context, produtosRoute),
+                },
+              ),
+            ],
             bottom: model.isLoading || _isLoading
                 ? PreferredSize(
                     child: LinearProgressIndicator(),
