@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/categorias.dart';
-import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:http/http.dart' as http;

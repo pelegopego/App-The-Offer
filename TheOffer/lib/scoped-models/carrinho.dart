@@ -99,6 +99,28 @@ mixin CarrinhoModel on Model {
     notifyListeners(); 
   }
 
+  void deletarCarrinho(int usuarioId) {
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+    Map<dynamic, dynamic> objetoCarrinho = Map();
+    print("DELETANDO CARRINHO");
+        objetoCarrinho = {
+          "usuario": usuarioId.toString()
+        };
+    http
+        .post(
+            Configuracoes.BASE_URL + 'pedido/deletarCarrinho/',
+            headers: headers,
+            body: objetoCarrinho)
+        .then((response) {
+      print("DELETANDO CARRINHO _______");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      localizarCarrinho(null, usuarioId);
+      return responseBody['message'];  
+    });
+  }
+
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();

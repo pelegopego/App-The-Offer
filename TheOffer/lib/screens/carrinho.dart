@@ -40,12 +40,28 @@ class _CarrinhoState extends State<Carrinho> {
       return Scaffold(
           backgroundColor: Colors.terciariaTheOffer,
           appBar: AppBar(
-              centerTitle: false,
-              leading: IconButton(
-                icon: Icon(Icons.close, color: Colors.principalTheOffer),
-                onPressed: () => Navigator.of(context).pop(),
+                centerTitle: false,
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+                  onPressed: () => {
+                    Navigator.of(context).pop(),
+                  }
+                ),
+                title: Text('Carrinho', style: TextStyle(color: Colors.principalTheOffer),
               ),
-              title: Text('Carrinho', style: TextStyle(color: Colors.principalTheOffer),),
+              actions: <Widget>[
+                  IconButton(
+                  iconSize: 30, 
+                  icon: new Icon(
+                    Icons.close,
+                    color: Colors.principalTheOffer,
+                  ),
+                  onPressed: () => {
+                    model.deletarCarrinho(Autenticacao.codigoUsuario),
+                    Navigator.of(context).pop(),
+                  },
+                ),
+              ],
               bottom: model.isLoading
                   ? PreferredSize(
                       child: LinearProgressIndicator(),
@@ -54,7 +70,8 @@ class _CarrinhoState extends State<Carrinho> {
                   : PreferredSize(
                       child: Container(),
                       preferredSize: Size.fromHeight(10),
-                    )),
+                    )
+               ),
           body: !model.isLoading || model.pedido != null ? body() : Container(),
           bottomNavigationBar: BottomAppBar(
               child: Container(
@@ -80,7 +97,7 @@ class _CarrinhoState extends State<Carrinho> {
   Widget body() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (model.pedido != null)  {
+        if (model.pedido.listaItensPedido.length > 0)  {
             return CustomScrollView(
               slivers: <Widget>[
                 items(),
