@@ -25,24 +25,24 @@ class _TelaCidade extends State<TelaCidade> {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),  
       child: Column(
         children: <Widget>[
-          SizedBox(height: 200),
+          SizedBox(height: 280),
           Text("Selecione a cidade",
           style: TextStyle(color: Colors.principalTheOffer),
           ),
-           Container(   
+          Container(   
              decoration: BoxDecoration(
              color: Colors.principalTheOffer,
              borderRadius: BorderRadius.circular(5)),   
              child: DropdownButtonHideUnderline(
-            child: DropdownButton<int>(
-              isExpanded: true,
-              items: listaCidades,
-              style: 
-              TextStyle(color: Colors.secundariaTheOffer),
-              onChanged: (value) => mudouCidade(value),   
-              ),
-              )     
-              )
+              child: DropdownButton<int>(
+                isExpanded: true,
+                items: listaCidades,
+                style: 
+                TextStyle(color: Colors.secundariaTheOffer),
+                onChanged: (value) => mudouCidade(value),   
+                ),
+            )     
+          )
         ],
       ),
     );
@@ -54,14 +54,6 @@ class _TelaCidade extends State<TelaCidade> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        appBar: AppBar(
-            title: Image.asset(
-                    'images/logos/appBar.png',
-                    fit: BoxFit.fill,
-                    height: 55,
-            ),
-            iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
-        drawer: HomeDrawer(),
         body: criaDropDownButton(),
       );
     });
