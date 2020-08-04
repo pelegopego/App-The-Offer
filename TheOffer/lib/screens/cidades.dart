@@ -63,7 +63,6 @@ class _TelaCidade extends State<TelaCidade> {
     }
  }
 
-
  mudarRota() async {
     await Future.delayed(Duration(seconds: 0), () {
       Navigator.push(

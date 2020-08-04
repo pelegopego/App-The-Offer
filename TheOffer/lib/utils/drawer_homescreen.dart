@@ -338,7 +338,6 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               decoration: BoxDecoration(color: Colors.secundariaTheOffer),
             ),
-          trocarCidade(),
           ListTile(
             onTap: () {
               MaterialPageRoute produtosRoute =
@@ -355,9 +354,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               style: TextStyle(color: Colors.secundariaTheOffer),
             ),
           ),
-          /*
-          favoritesLineTile(),
-          accountListTile(),*/
+          trocarCidade(),
           meusPedidos(),
           meusEndereco(),
           Divider(color: Colors.secundariaTheOffer),
