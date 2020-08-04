@@ -71,7 +71,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                 icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () => {
                   model.alterarStatus(model.pedido.id, 1),
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Carrinho())),
+                  Navigator.of(context).pop(),
                 }
               ),
             title: Text('Pedido',

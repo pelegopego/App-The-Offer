@@ -126,10 +126,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         onPressed: () {
           salvarEndereco();
           if ((model.pedido != null) && (model.pedido.id > 0) && (model.pedido.endereco == null)) {
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
-
-            Navigator.push(context, route);
+            Navigator.of(context).pop();
           } else {
             MaterialPageRoute route =
                 MaterialPageRoute(builder: (context) => ListagemEndereco());
