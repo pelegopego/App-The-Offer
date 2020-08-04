@@ -117,7 +117,7 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
                       ),
                     )
                     ),
-                  Container(height: 290,
+                  Container(height: 260,
                       child: 
                         ListView.builder(
                         scrollDirection: Axis.horizontal,
