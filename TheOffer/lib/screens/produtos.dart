@@ -5,6 +5,7 @@ import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
+import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/screens/pesquisaProduto.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -85,11 +86,18 @@ class _TelaProdutos extends State<TelaProdutos> {
             actions: <Widget>[
               shoppingCarrinhoIconButton(),
             ],
-            bottom: PreferredSize(
-              preferredSize: Size(_deviceSize.width, 70),
-              child: searchBar(),
-            ),
-            iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
+            bottom: 
+              PreferredSize(
+                preferredSize: Size(_deviceSize.width, 100),
+                child: Column(
+                  children: <Widget> [
+                      searchBar(),
+                      trocarCategoria(),
+                  ],               
+                )  
+              ),
+            iconTheme: new IconThemeData(color: Colors.principalTheOffer)
+          ),
         drawer: HomeDrawer(),
         body: Container(
           color: Colors.terciariaTheOffer,
@@ -300,7 +308,7 @@ class _TelaProdutos extends State<TelaProdutos> {
                   borderRadius: BorderRadius.circular(5)),
               width: _deviceSize.width,
               height: 49,
-              margin: EdgeInsets.all(010),
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10),
               child: ListTile(
                 leading: Icon(Icons.search, color: Colors.secundariaTheOffer),
                 title: Text(
@@ -316,6 +324,28 @@ class _TelaProdutos extends State<TelaProdutos> {
     });
   }
 
+  Widget trocarCategoria() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.refresh,
+          color: Colors.principalTheOffer,
+        ),
+        title: Text(
+          'Trocar categoria',
+          style: TextStyle(
+                   color: Colors.principalTheOffer,
+                   fontSize: 12),
+        ),
+        onTap: () {
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: (context) => TelaCategorias());
+          Navigator.of(context).push(route);
+        },
+      );
+    });
+  }
   getBanners() async {
     /*
     http

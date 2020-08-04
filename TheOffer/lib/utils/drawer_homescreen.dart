@@ -195,7 +195,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           color: Colors.secundariaTheOffer,
         ),
         title: Text(
-          'Trocar de cidade',
+          'Trocar cidade',
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
         onTap: () {
