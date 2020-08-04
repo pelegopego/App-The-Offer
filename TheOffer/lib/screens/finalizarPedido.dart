@@ -5,6 +5,7 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/pagamento.dart';
+import 'package:theoffer/screens/carrinho.dart';
 import 'package:theoffer/screens/cadastroEndereco.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -70,7 +71,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                 icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () => {
                   model.alterarStatus(model.pedido.id, 1),
-                  Navigator.of(context).pop(),
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Carrinho())),
                 }
               ),
             title: Text('Pedido',

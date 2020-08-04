@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/produtos.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/screens/autenticacao.dart';
@@ -44,7 +45,7 @@ class _CarrinhoState extends State<Carrinho> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                   onPressed: () => {
-                    Navigator.of(context).pop(),
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TelaProdutos(idCategoria: 0,))),
                   }
                 ),
                 title: Text('Carrinho', style: TextStyle(color: Colors.principalTheOffer),

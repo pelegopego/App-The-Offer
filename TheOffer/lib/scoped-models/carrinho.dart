@@ -325,7 +325,7 @@ mixin CarrinhoModel on Model {
           await http.post(Configuracoes.BASE_URL + 'pedido/localizar', headers: headers,
           body: objetoItemPedido);
           
-      responseBody = json.decode(response.body);
+      responseBody = json.decode(response. body);
       responseBody['pedidos'].forEach((pedidosJson) {
              produto = Produto(
               id                    : int.parse(pedidosJson['produto_id']),
