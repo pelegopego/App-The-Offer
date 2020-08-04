@@ -22,7 +22,6 @@ class TelaPagamento extends StatefulWidget {
   }
 }
 
-
 enum FormaPagamentoRecebimento { dinheiro, cartao }
 
 class _TelaPagamento extends State<TelaPagamento> {
@@ -33,7 +32,8 @@ class _TelaPagamento extends State<TelaPagamento> {
   bool pagamentoEntregaVisivel = false;
   bool pagamentoBalcaoVisivel = false;
   double frete;
-  FormaPagamentoRecebimento formaPagamentoRecebimentoSelecionada = FormaPagamentoRecebimento.dinheiro;
+  FormaPagamentoRecebimento formaPagamentoRecebimentoSelecionada =
+      FormaPagamentoRecebimento.dinheiro;
   int selectedPaymentId;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -51,147 +51,149 @@ class _TelaPagamento extends State<TelaPagamento> {
     super.dispose();
     locator<ConnectivityManager>().dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
-      return 
-      WillPopScope(
+      return WillPopScope(
         onWillPop: _canGoBack,
         child: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
+          key: _scaffoldKey,
+          appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+                icon:
+                    Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-            title: Text('Pagamento',
-            style: TextStyle(color: Colors.principalTheOffer)
-            ),
-            bottom: widget.isLoading || _isLoading
-                ? PreferredSize(
-                    child: LinearProgressIndicator(),
-                    preferredSize: Size.fromHeight(10),
-                  )
-                : PreferredSize(
-                    child: Container(),
-                    preferredSize: Size.fromHeight(10),
-                  )
-        ),
-        body: _isLoading
-            ? Container()
-            : Container (
-                color: Colors.terciariaTheOffer,
-                child: CustomScrollView(slivers: [ 
-                  SliverToBoxAdapter(
-                    child: Padding(padding: EdgeInsets.only(top: 0),
-                      child: widget.pedido == null
-                      ? Container()
-                      : Container(
-                          color: Colors.secundariaTheOffer,
-                          margin: EdgeInsets.only(top: 5, right: 5, left: 5, bottom: 5),
-                          child: Column(
-                            children: <Widget>[
-                              linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
-                              frete == null
-                              ?linhaTotal('Entrega:',  '0')
-                              :linhaTotal('Entrega:',  frete.toString()),
-
-                              frete == null
-                              ?linhaTotal('Total do pedido:', '0')
-                              :linhaTotal('Total do pedido:', (widget.pedido.somaValorTotalPedido() + frete).toString())
-                            ],
-                        ),
-                      ),
+              title: Text('Pagamento',
+                  style: TextStyle(color: Colors.principalTheOffer)),
+              bottom: widget.isLoading || _isLoading
+                  ? PreferredSize(
+                      child: LinearProgressIndicator(),
+                      preferredSize: Size.fromHeight(10),
                     )
-                  ),
-                  SliverToBoxAdapter(
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                  : PreferredSize(
+                      child: Container(),
+                      preferredSize: Size.fromHeight(10),
+                    )),
+          body: _isLoading
+              ? Container()
+              : Container(
+                  color: Colors.terciariaTheOffer,
+                  child: CustomScrollView(slivers: [
+                    SliverToBoxAdapter(
+                        child: Padding(
+                      padding: EdgeInsets.only(top: 0),
+                      child: widget.pedido == null
+                          ? Container()
+                          : Container(
+                              color: Colors.secundariaTheOffer,
+                              margin: EdgeInsets.only(
+                                  top: 5, right: 5, left: 5, bottom: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  linhaTotal(
+                                      'Mercadorias:',
+                                      widget.pedido
+                                          .somaValorTotalPedido()
+                                          .toString()),
+                                  frete == null
+                                      ? linhaTotal('Entrega:', '0')
+                                      : linhaTotal(
+                                          'Entrega:', frete.toString()),
+                                  frete == null
+                                      ? linhaTotal('Total do pedido:', '0')
+                                      : linhaTotal(
+                                          'Total do pedido:',
+                                          (widget.pedido
+                                                      .somaValorTotalPedido() +
+                                                  frete)
+                                              .toString())
+                                ],
+                              ),
+                            ),
+                    )),
+                    SliverToBoxAdapter(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              pagamentoEntrega(context),
-                              retirarLocal(context)
-                            ]
-                        )
-                  ),
-                  //Pagamento na entrega
-                  SliverToBoxAdapter(
-                    child: Visibility (
-                      visible: pagamentoEntregaVisivel,
-                      child: Container(
-                             margin: EdgeInsets.only(right: 29, left: 29),
-                             height: 112,
-                             color: Colors.secundariaTheOffer,
-                             child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  title: 
-                                    const Text('Dinheiro',
-                                               style: TextStyle(color: Colors.principalTheOffer
-                                            )
-                                          ),
+                          pagamentoEntrega(context),
+                          retirarLocal(context)
+                        ])),
+                    //Pagamento na entrega
+                    SliverToBoxAdapter(
+                        child: Visibility(
+                            visible: pagamentoEntregaVisivel,
+                            child: Container(
+                                margin: EdgeInsets.only(right: 29, left: 29),
+                                height: 112,
+                                color: Colors.secundariaTheOffer,
+                                child: Column(children: <Widget>[
+                                  ListTile(
+                                    title: const Text('Dinheiro',
+                                        style: TextStyle(
+                                            color: Colors.principalTheOffer)),
                                     leading: Radio(
                                       value: FormaPagamentoRecebimento.dinheiro,
-                                      groupValue: formaPagamentoRecebimentoSelecionada,
-                                      onChanged: (FormaPagamentoRecebimento value) {
+                                      groupValue:
+                                          formaPagamentoRecebimentoSelecionada,
+                                      onChanged:
+                                          (FormaPagamentoRecebimento value) {
                                         setState(() {
-                                          formaPagamentoRecebimentoSelecionada = value;
+                                          formaPagamentoRecebimentoSelecionada =
+                                              value;
                                         });
                                       },
                                     ),
-                                ),
-                                ListTile(
-                                  title: 
-                                    const Text('Cartão',
-                                               style: TextStyle(color: Colors.principalTheOffer
-                                            )
-                                          ),
+                                  ),
+                                  ListTile(
+                                    title: const Text('Cartão',
+                                        style: TextStyle(
+                                            color: Colors.principalTheOffer)),
                                     leading: Radio(
                                       value: FormaPagamentoRecebimento.cartao,
-                                      groupValue: formaPagamentoRecebimentoSelecionada,
+                                      groupValue:
+                                          formaPagamentoRecebimentoSelecionada,
                                       activeColor: Colors.principalTheOffer,
-                                      onChanged: (FormaPagamentoRecebimento value) {
+                                      onChanged:
+                                          (FormaPagamentoRecebimento value) {
                                         setState(() {
-                                          formaPagamentoRecebimentoSelecionada = value;
+                                          formaPagamentoRecebimentoSelecionada =
+                                              value;
                                         });
                                       },
                                     ),
+                                  ),
+                                ])))),
+                    //Retirar no local
+                    SliverToBoxAdapter(
+                        child: Visibility(
+                            visible: pagamentoBalcaoVisivel,
+                            child: Container(
+                              height: 112,
+                              margin: EdgeInsets.only(right: 29, left: 29),
+                              color: Colors.secundariaTheOffer,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'O pagamento será efetuado na retirada.',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.principalTheOffer),
                                 ),
-                            ])
-                      )
-                    )
-                  ),
-                  //Retirar no local
-                  SliverToBoxAdapter(
-                    child: Visibility (
-                      visible: pagamentoBalcaoVisivel,
-                      child: Container(
-                             height: 112,
-                             margin: EdgeInsets.only(right: 29, left: 29),
-                             color: Colors.secundariaTheOffer,
-                             child: Align(
-                              alignment: Alignment.center,
-                              child: Text('O pagamento será efetuado na retirada.',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.principalTheOffer),
-                                    ), 
-                            ),
-                      )
-                    )
-                  ),
-                ]
-                )
-            ),
-        bottomNavigationBar: !_isLoading ? paymentButton(context) : Container(),
-      ),
-      )
-      ;
+                              ),
+                            ))),
+                  ])),
+          bottomNavigationBar:
+              !_isLoading ? paymentButton(context) : Container(),
+        ),
+      );
     });
   }
 
-   Future<bool> _canGoBack() {
-     print("Voltar");
+  Future<bool> _canGoBack() {
+    print("Voltar");
     if (_proceedPressed) {
       return Future<bool>.value(false);
     } else {
@@ -209,33 +211,34 @@ class _TelaPagamento extends State<TelaPagamento> {
             ? Center(
                 child: CircularProgressIndicator(
                   backgroundColor: pagamentoEntregaVisivel
-                                   ? Colors.secundariaTheOffer
-                                   : Colors.principalTheOffer,
+                      ? Colors.secundariaTheOffer
+                      : Colors.principalTheOffer,
                 ),
               )
             : FlatButton(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 color: pagamentoEntregaVisivel
-                                   ? Colors.secundariaTheOffer
-                                   : Colors.principalTheOffer,
-                child: Text('PAGAR NA ENTREGA',
+                    ? Colors.secundariaTheOffer
+                    : Colors.principalTheOffer,
+                child: Text(
+                  'PAGAR NA ENTREGA',
                   style: TextStyle(
                       fontSize: 15,
                       color: pagamentoEntregaVisivel
-                             ? Colors.principalTheOffer
-                             : Colors.secundariaTheOffer),
+                          ? Colors.principalTheOffer
+                          : Colors.secundariaTheOffer),
                 ),
                 onPressed: () {
                   setState(() {
                     pagamentoEntregaVisivel = true;
-                    pagamentoBalcaoVisivel  = false;
+                    pagamentoBalcaoVisivel = false;
                   });
                 },
               ),
       );
     });
   }
-  
+
   getFretes() async {
     frete = 0;
     Map<dynamic, dynamic> objetoFrete = Map();
@@ -244,29 +247,29 @@ class _TelaPagamento extends State<TelaPagamento> {
       _isLoading = true;
     });
     objetoFrete = {
-      "empresa": widget.pedido.empresa.toString(), "bairro": widget.pedido.endereco.bairro.id.toString()
+      "empresa": widget.pedido.empresa.toString(),
+      "bairro": widget.pedido.endereco.bairro.id.toString()
     };
-    http.post(
-            Configuracoes.BASE_URL + 'frete/',
-            headers: headers,
-            body: objetoFrete)
+    http
+        .post(Configuracoes.BASE_URL + 'frete/',
+            headers: headers, body: objetoFrete)
         .then((response) {
       print("BUSCANDO VALOR DE FRETE");
-      print(json.decode(response.body).toString());   
+      print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
-      
-    if (responseBody['possuiFrete'] == true) { 
-      setState(() {
-        _isLoading = false;
-        frete = double.parse(responseBody['fretes'][0]['valor']);       
-      });
-    }
+
+      if (responseBody['possuiFrete'] == true) {
+        setState(() {
+          _isLoading = false;
+          frete = double.parse(responseBody['fretes'][0]['valor']);
+        });
+      }
     });
     setState(() {
       _isLoading = false;
     });
   }
-                                
+
   Widget retirarLocal(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
@@ -277,26 +280,27 @@ class _TelaPagamento extends State<TelaPagamento> {
             ? Center(
                 child: CircularProgressIndicator(
                   backgroundColor: pagamentoBalcaoVisivel
-                                   ? Colors.principalTheOffer
-                                   : Colors.secundariaTheOffer,
+                      ? Colors.principalTheOffer
+                      : Colors.secundariaTheOffer,
                 ),
               )
             : FlatButton(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 color: pagamentoBalcaoVisivel
-                       ? Colors.secundariaTheOffer
-                       : Colors.principalTheOffer,
-                child: Text('RETIRAR NO LOCAL',
+                    ? Colors.secundariaTheOffer
+                    : Colors.principalTheOffer,
+                child: Text(
+                  'RETIRAR NO LOCAL',
                   style: TextStyle(
                       fontSize: 15,
                       color: pagamentoBalcaoVisivel
-                             ? Colors.principalTheOffer
-                             : Colors.secundariaTheOffer),
+                          ? Colors.principalTheOffer
+                          : Colors.secundariaTheOffer),
                 ),
                 onPressed: () {
                   setState(() {
                     pagamentoEntregaVisivel = false;
-                    pagamentoBalcaoVisivel  = true;
+                    pagamentoBalcaoVisivel = true;
                   });
                 },
               ),
@@ -318,93 +322,89 @@ class _TelaPagamento extends State<TelaPagamento> {
               )
             : FlatButton(
                 color: Colors.principalTheOffer,
-                child: Text('FINALIZAR PEDIDO',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.secundariaTheOffer),
+                child: Text(
+                  'FINALIZAR PEDIDO',
+                  style:
+                      TextStyle(fontSize: 20, color: Colors.secundariaTheOffer),
                 ),
                 onPressed: () async {
-                    
                   if (!pagamentoEntregaVisivel && !pagamentoBalcaoVisivel) {
-                    _scaffoldKey.currentState.showSnackBar(
-                      SnackBar(
-                        content: Text("Favor escolher uma modalidade de entrega"),
-                        duration: Duration(seconds: 5),
-                    ));  
-                    } else {
-                      print("ESTADO DO PEDIDO ___________ ${widget.pedido.status}");
-                      Map<dynamic, dynamic> objetoPedido = Map();
-                      Map<String, String> headers = getHeaders();
-                      if (widget.pedido != null) {
-                        if (Autenticacao.codigoUsuario > 0 ) {
-                          if (widget.pedido.status == 2) {
-                                objetoPedido = {
-                                  "usuario": Autenticacao.codigoUsuario.toString(), 
-                                  "pedido": widget.pedido.id.toString(),
-                                  "modalidadeRecebimento": pagamentoEntregaVisivel
-                                                          ? '1'
-                                                          : '2',
-                                  "formaPagamento":        (formaPagamentoRecebimentoSelecionada.index + 1).toString()      
-                                };
-                                http.post(
-                                        Configuracoes.BASE_URL + 'pedido/pagarPedido/',
-                                        headers: headers,
-                                        body: objetoPedido)
-                                    .then((response) {
-                                  print("PAGANDO PEDIDO");
-                                  print(json.decode(response.body).toString());       
-                                  final snackBar = 
-                                    SnackBar(
-                                      content: Text('Pedido efetuado com sucessoo.'),
-                                      duration: Duration(seconds: 5)
-                                    );
-                                  Scaffold.of(context).showSnackBar(snackBar);
-                                  MaterialPageRoute produtosRoute =
-                                      MaterialPageRoute(
-                                          builder: (context) => TelaProdutos(idCategoria: 0));
-                                  Navigator.push(context, produtosRoute);
-                                });
-                          }
-                        } else {
-                          MaterialPageRoute authRoute = MaterialPageRoute(
-                              builder: (context) => Authentication(0));
-                          Navigator.push(context, authRoute);
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text("Favor escolher uma modalidade de entrega"),
+                      duration: Duration(seconds: 5),
+                    ));
+                  } else {
+                    print(
+                        "ESTADO DO PEDIDO ___________ ${widget.pedido.status}");
+                    Map<dynamic, dynamic> objetoPedido = Map();
+                    Map<String, String> headers = getHeaders();
+                    if (widget.pedido != null) {
+                      if (Autenticacao.codigoUsuario > 0) {
+                        if (widget.pedido.status == 2) {
+                          objetoPedido = {
+                            "usuario": Autenticacao.codigoUsuario.toString(),
+                            "pedido": widget.pedido.id.toString(),
+                            "modalidadeRecebimento":
+                                pagamentoEntregaVisivel ? '1' : '2',
+                            "formaPagamento":
+                                (formaPagamentoRecebimentoSelecionada.index + 1)
+                                    .toString()
+                          };
+                          http
+                              .post(
+                                  Configuracoes.BASE_URL +
+                                      'pedido/pagarPedido/',
+                                  headers: headers,
+                                  body: objetoPedido)
+                              .then((response) {
+                            print("PAGANDO PEDIDO");
+                            print(json.decode(response.body).toString());
+                            final snackBar = SnackBar(
+                                content: Text('Pedido efetuado com sucessoo.'),
+                                duration: Duration(seconds: 5));
+                            Scaffold.of(context).showSnackBar(snackBar);
+                            MaterialPageRoute produtosRoute = MaterialPageRoute(
+                                builder: (context) =>
+                                    TelaProdutos(idCategoria: 0));
+                            Navigator.push(context, produtosRoute);
+                          });
                         }
                       } else {
-                        Navigator.popUntil(context,
-                            ModalRoute.withName(Navigator.defaultRouteName));
+                        MaterialPageRoute authRoute = MaterialPageRoute(
+                            builder: (context) => Authentication(0));
+                        Navigator.push(context, authRoute);
                       }
+                    } else {
+                      Navigator.popUntil(context,
+                          ModalRoute.withName(Navigator.defaultRouteName));
+                    }
                   }
                 },
               ),
       );
     });
   }
-  
-Widget linhaTotal(
-    String title, String displayAmount) {
-  return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    Container(
-      padding: EdgeInsets.all(5),
-      child: Text(
-        title,
-        style: TextStyle(color: Colors.principalTheOffer, 
-          fontWeight: FontWeight.bold),
-        
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.all(5),
-      child: Text(
-        displayAmount == null ? '' : displayAmount,
-        style: TextStyle(
-          fontSize: 17,
-          color: Colors.principalTheOffer,
-          fontWeight: FontWeight.bold
+
+  Widget linhaTotal(String title, String displayAmount) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Container(
+        padding: EdgeInsets.all(5),
+        child: Text(
+          title,
+          style: TextStyle(
+              color: Colors.principalTheOffer, fontWeight: FontWeight.bold),
         ),
       ),
-    )
-  ]);
-}
-
+      Container(
+        padding: EdgeInsets.all(5),
+        child: Text(
+          displayAmount == null ? '' : displayAmount,
+          style: TextStyle(
+              fontSize: 17,
+              color: Colors.principalTheOffer,
+              fontWeight: FontWeight.bold),
+        ),
+      )
+    ]);
+  }
 }

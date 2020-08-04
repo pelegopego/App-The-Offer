@@ -44,207 +44,234 @@ class _DetalharPedido extends State<DetalharPedido> {
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return 
-      Scaffold(
+      return Scaffold(
         appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            title: Text('Pedido',
-            style: TextStyle(color: Colors.principalTheOffer)
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            bottom: 
-                PreferredSize(
-                    child: Container(),
-                    preferredSize: Size.fromHeight(10),
-                  )
-        ),
-        body: Container (
-                color: Colors.terciariaTheOffer,
-                child: CustomScrollView(slivers: [ 
-                  SliverToBoxAdapter(
-                    child: Container(
-                      height: _deviceSize.height * 0.50,
-                      child:  CustomScrollView(
-                          slivers: <Widget>[
-                            itensPedido(),
-                          ],
-                      )
-                    )
-                  ),
-                  widget.pedido.endereco != null
-                  ? SliverToBoxAdapter(
-                    child: Card(
+            title: Text('Pedido',
+                style: TextStyle(color: Colors.principalTheOffer)),
+            bottom: PreferredSize(
+              child: Container(),
+              preferredSize: Size.fromHeight(10),
+            )),
+        body: Container(
+            color: Colors.terciariaTheOffer,
+            child: CustomScrollView(slivers: [
+              SliverToBoxAdapter(
                   child: Container(
-                    height: 60,
-                    color: Colors.principalTheOffer,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      width: 250,
-                                      child: RichText(
-                                        text: TextSpan(
-                                            text: widget.pedido.endereco.nome,
-                                            style: TextStyle(
-                                                color: Colors.secundariaTheOffer,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(
-                                              text: widget.pedido.endereco.rua + ', ' + widget.pedido.endereco.numero.toString(),
-                                              style: TextStyle(
-                                                  color: Colors.secundariaTheOffer,
-                                                  fontSize: 15.0
-                                              ),
-                                          )
-                                      ),
-                                    ),
-                                  ]
-                                )
-                              ),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                    alignment: Alignment.topLeft,
-                                    child: RichText(
-                                        text: TextSpan(
-                                            text: widget.pedido.endereco.cidade.nome + ', Bairro ' + widget.pedido.endereco.bairro.nome,
-                                            style: TextStyle(
-                                                color: Colors.secundariaTheOffer,
-                                                fontSize: 15.0, 
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                  ]
-                                )
-                              ),
-                            ],
-                          )),
+                      height: _deviceSize.height * 0.50,
+                      child: CustomScrollView(
+                        slivers: <Widget>[
+                          itensPedido(),
                         ],
-                      ),
-                  ),
-                )
-              )
-              : SliverToBoxAdapter(
-                    child: Container()
-                ),
-                  SliverToBoxAdapter(
-                    child: Padding(padding: EdgeInsets.only(top: 0),
-                      child: widget.pedido == null
-                      ? Container()
-                      : Container(
-                          color: Colors.principalTheOffer,
-                          margin: EdgeInsets.all(5),
-                          child: Column(
-                            children: <Widget>[
-                              linhaTotal('Mercadorias:', widget.pedido.somaValorTotalPedido().toString()),
-                              linhaTotal('Frete:', frete.toString()),
-                              linhaTotal('Total do pedido:', (widget.pedido.somaValorTotalPedido() + frete).toString())
-                            ],
-                        ),
-                      ),
-                    )
-                  ),
-                  SliverToBoxAdapter(
-                    child: Card(
+                      ))),
+              widget.pedido.endereco != null
+                  ? SliverToBoxAdapter(
+                      child: Card(
                       child: Container(
-                        height: 40,
-                        color: Colors.secundariaTheOffer,
-                          child: Row(
+                        height: 60,
+                        color: Colors.principalTheOffer,
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(
                               width: 10,
                             ),
                             Expanded(
-                              child: Column(
+                                child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Container(
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
-                                        alignment: Alignment.topLeft,
+                                        width: 250,
                                         child: RichText(
-                                            text: TextSpan(
-                                                text: widget.pedido.modalidadeEntrega == 1 
-                                                      ? 'Entrega: delivery'
-                                                      : 'Entrega: retirou no local',
-                                                style: TextStyle(
-                                                    color: Colors.principalTheOffer,
-                                                    fontSize: 15.0,
-                                                    fontWeight: FontWeight.bold
-                                                ),
-                                            )
+                                          text: TextSpan(
+                                            text: widget.pedido.endereco.nome,
+                                            style: TextStyle(
+                                                color:
+                                                    Colors.secundariaTheOffer,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
-                                    ]
-                                  )
+                                    ],
+                                  ),
                                 ),
                                 Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(
-                                                text: widget.pedido.modalidadeEntrega == 1
-                                                      ?widget.pedido.formaPagamento == 1 
-                                                        ? 'Pagamento: dinheiro'
-                                                        : 'Pagamento: cartao'
-                                                      : 'Pagou no balcão',
-                                              style: TextStyle(
-                                                  color: Colors.principalTheOffer,
-                                                  fontSize: 15.0),
-                                            ),
-                                        ),
+                                    child: Row(children: <Widget>[
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: RichText(
+                                        text: TextSpan(
+                                      text: widget.pedido.endereco.rua +
+                                          ', ' +
+                                          widget.pedido.endereco.numero
+                                              .toString(),
+                                      style: TextStyle(
+                                          color: Colors.secundariaTheOffer,
+                                          fontSize: 15.0),
+                                    )),
+                                  ),
+                                ])),
+                                Container(
+                                    child: Row(children: <Widget>[
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: widget
+                                                .pedido.endereco.cidade.nome +
+                                            ', Bairro ' +
+                                            widget.pedido.endereco.bairro.nome,
+                                        style: TextStyle(
+                                            color: Colors.secundariaTheOffer,
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                    ]
-                                  )
-                                ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                ])),
                               ],
                             )),
                           ],
                         ),
                       ),
+                    ))
+                  : SliverToBoxAdapter(child: Container()),
+              SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.only(top: 0),
+                child: widget.pedido == null
+                    ? Container()
+                    : Container(
+                        color: Colors.principalTheOffer,
+                        margin: EdgeInsets.all(5),
+                        child: Column(
+                          children: <Widget>[
+                            linhaTotal(
+                                'Mercadorias:',
+                                widget.pedido
+                                    .somaValorTotalPedido()
+                                    .toString()),
+                            linhaTotal('Frete:', frete.toString()),
+                            linhaTotal(
+                                'Total do pedido:',
+                                (widget.pedido.somaValorTotalPedido() + frete)
+                                    .toString())
+                          ],
+                        ),
+                      ),
+              )),
+              SliverToBoxAdapter(
+                child: Card(
+                  child: Container(
+                    height: 40,
+                    color: Colors.secundariaTheOffer,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                                child: Row(children: <Widget>[
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: RichText(
+                                    text: TextSpan(
+                                  text: widget.pedido.modalidadeEntrega == 1
+                                      ? 'Entrega: delivery'
+                                      : 'Entrega: retirou no local',
+                                  style: TextStyle(
+                                      color: Colors.principalTheOffer,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                              ),
+                            ])),
+                            Container(
+                                child: Row(children: <Widget>[
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: widget.pedido.modalidadeEntrega == 1
+                                        ? widget.pedido.formaPagamento == 1
+                                            ? 'Pagamento: dinheiro'
+                                            : 'Pagamento: cartao'
+                                        : 'Pagou no balcão',
+                                    style: TextStyle(
+                                        color: Colors.principalTheOffer,
+                                        fontSize: 15.0),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ])),
+                          ],
+                        )),
+                      ],
                     ),
                   ),
-                ])
-            ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Card(
+                  child: Container(
+                    height: 20,
+                    color: Colors.secundariaTheOffer,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                                child: Row(children: <Widget>[
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: RichText(
+                                    text: TextSpan(
+                                  text: 'Previsão de entrega: ' +
+                                      widget.pedido.horaPrevista,
+                                  style: TextStyle(
+                                      color: Colors.principalTheOffer,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                              ),
+                            ])),
+                          ],
+                        )),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ])),
       );
     });
   }
@@ -254,19 +281,19 @@ class _DetalharPedido extends State<DetalharPedido> {
     Map<dynamic, dynamic> objetoFrete = Map();
     Map<String, String> headers = getHeaders();
     objetoFrete = {
-      "empresa": widget.pedido.empresa.toString(), "bairro": widget.pedido.endereco.bairro.id.toString()
+      "empresa": widget.pedido.empresa.toString(),
+      "bairro": widget.pedido.endereco.bairro.id.toString()
     };
-    http.post(
-            Configuracoes.BASE_URL + 'frete/',
-            headers: headers,
-            body: objetoFrete)
+    http
+        .post(Configuracoes.BASE_URL + 'frete/',
+            headers: headers, body: objetoFrete)
         .then((response) {
       print("BUSCANDO VALOR DE FRETE");
-      print(json.decode(response.body).toString());   
+      print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
-      setState(() {
-        frete = double.parse(responseBody['fretes']['0']['valor']);       
-      });
+      if (responseBody['possuiFrete'] == true) {
+        frete = double.parse(responseBody['fretes'][0]['valor']);
+      }
     });
   }
 
@@ -291,13 +318,14 @@ class _DetalharPedido extends State<DetalharPedido> {
                             width: 10,
                           ),
                           Expanded(
-                            child: Column(
+                              child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Container(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Container(
                                       width: 250,
@@ -312,10 +340,15 @@ class _DetalharPedido extends State<DetalharPedido> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           TextSpan(
-                                            text: widget.pedido.listaItensPedido[index].produto.titulo,
+                                            text: widget
+                                                .pedido
+                                                .listaItensPedido[index]
+                                                .produto
+                                                .titulo,
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.principalTheOffer),
+                                                color:
+                                                    Colors.principalTheOffer),
                                           ),
                                         ]),
                                       ),
@@ -328,55 +361,57 @@ class _DetalharPedido extends State<DetalharPedido> {
                                 color: Colors.principalTheOffer,
                               ),
                               Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      'Valor: ' + widget.pedido.listaItensPedido[index].produto.valor,
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          color: Colors.principalTheOffer,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 100,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  child: Row(children: <Widget>[
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'Valor: ' +
+                                        widget.pedido.listaItensPedido[index]
+                                            .produto.valor,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Colors.principalTheOffer,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                ),
+                                Expanded(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                                Container(
-                                                  alignment: Alignment.centerRight,
-                                                  child: Text(
-                                                    'Quantidade: ' + widget.pedido.listaItensPedido[index].quantidade.toString(),
-                                                    textAlign: TextAlign.right,
-                                                    style: TextStyle(
-                                                        color: Colors.principalTheOffer,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 16),
-                                                  ),
-                                                )
-                                        ]
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          'Quantidade: ' +
+                                              widget
+                                                  .pedido
+                                                  .listaItensPedido[index]
+                                                  .quantidade
+                                                  .toString(),
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                              color: Colors.principalTheOffer,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
                                       )
-                                    ), 
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                  ]
-                                )
-                              ),
+                                    ])),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                              ])),
                             ],
                           )),
                         ],
                       ),
                     ),
                   ),
-                )
-              );
+                ));
           }, childCount: widget.pedido.listaItensPedido.length),
         );
       },
@@ -390,41 +425,36 @@ class _DetalharPedido extends State<DetalharPedido> {
         color: Colors.terciariaTheOffer,
         padding: EdgeInsets.all(5),
         child: Container(
-                color: Colors.secundariaTheOffer,
-                child: Text('PAGAMENTO',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.principalTheOffer),
-                ),
-              ),
+          color: Colors.secundariaTheOffer,
+          child: Text(
+            'PAGAMENTO',
+            style: TextStyle(fontSize: 20, color: Colors.principalTheOffer),
+          ),
+        ),
       );
     });
   }
 
-Widget linhaTotal(
-    String title, String displayAmount) {
-  return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-    Container(
-      padding: EdgeInsets.all(5),
-      child: Text(
-        title,
-        style: TextStyle(color: Colors.secundariaTheOffer, 
-          fontWeight: FontWeight.bold),
-        
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.all(5),
-      child: Text(
-        displayAmount == null ? '' : displayAmount,
-        style: TextStyle(
-          fontSize: 17,
-          color: Colors.secundariaTheOffer,
-          fontWeight: FontWeight.bold
+  Widget linhaTotal(String title, String displayAmount) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Container(
+        padding: EdgeInsets.all(5),
+        child: Text(
+          title,
+          style: TextStyle(
+              color: Colors.secundariaTheOffer, fontWeight: FontWeight.bold),
         ),
       ),
-    )
-  ]);
-}
-
+      Container(
+        padding: EdgeInsets.all(5),
+        child: Text(
+          displayAmount == null ? '' : displayAmount,
+          style: TextStyle(
+              fontSize: 17,
+              color: Colors.secundariaTheOffer,
+              fontWeight: FontWeight.bold),
+        ),
+      )
+    ]);
+  }
 }
