@@ -59,7 +59,7 @@ class _TelaCidade extends State<TelaCidade> {
     String cidadeSelecionadaAuxiliar;
     cidadeSelecionadaAuxiliar = await storage.read(key: "CidadeSelecionada");
     if (cidadeSelecionadaAuxiliar != null) {
-      CidadeSelecionada.id = int.parse(cidadeSelecionadaAuxiliar);
+      CidadeSelecionada.id = int. parse(cidadeSelecionadaAuxiliar);
     }
  }
 

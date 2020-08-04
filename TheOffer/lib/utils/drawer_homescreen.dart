@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
+import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/screens/listagemEndereco.dart';
 import 'package:theoffer/screens/listagemPedidos.dart';
 import 'package:theoffer/screens/produtos.dart';
@@ -135,9 +136,9 @@ class _HomeDrawer extends State<HomeDrawer> {
         ),
         onTap: () {
           if (Autenticacao.codigoUsuario > 0) {
-            MaterialPageRoute account =
+            MaterialPageRoute listagemEndereco =
                 MaterialPageRoute(builder: (context) => ListagemEndereco());
-            Navigator.push(context, account);
+            Navigator.push(context, listagemEndereco);
           } else {
             MaterialPageRoute route =
                 MaterialPageRoute(builder: (context) => Authentication(0));
@@ -163,15 +164,42 @@ class _HomeDrawer extends State<HomeDrawer> {
         ),
         onTap: () {
           if (Autenticacao.codigoUsuario > 0) {
-            MaterialPageRoute account =
+            MaterialPageRoute listagemPedidos =
                 MaterialPageRoute(builder: (context) => ListagemPedidos());
-            Navigator.push(context, account);
+            Navigator.push(context, listagemPedidos);
           } else {
             MaterialPageRoute route =
                 MaterialPageRoute(builder: (context) => Authentication(0));
 
             Navigator.push(context, route);
           }
+        },
+      );
+    });
+  }
+  writeStorageCidade() async {
+    final storage = new FlutterSecureStorage();
+    CidadeSelecionada.id = 0;
+    await storage.delete(key: "CidadeSelecionada");
+    MaterialPageRoute cidades =
+        MaterialPageRoute(builder: (context) => TelaCidade());
+    Navigator.push(context, cidades);
+  }
+
+  Widget trocarCidade() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.refresh,
+          color: Colors.secundariaTheOffer,
+        ),
+        title: Text(
+          'Trocar de cidade',
+          style: TextStyle(color: Colors.secundariaTheOffer),
+        ),
+        onTap: () {
+          writeStorageCidade();
         },
       );
     });
@@ -310,6 +338,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               decoration: BoxDecoration(color: Colors.secundariaTheOffer),
             ),
+          trocarCidade(),
           ListTile(
             onTap: () {
               MaterialPageRoute produtosRoute =
@@ -325,7 +354,8 @@ class _HomeDrawer extends State<HomeDrawer> {
               'Página inicial',
               style: TextStyle(color: Colors.secundariaTheOffer),
             ),
-          ),/*
+          ),
+          /*
           favoritesLineTile(),
           accountListTile(),*/
           meusPedidos(),
