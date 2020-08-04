@@ -90,9 +90,9 @@ class _AuthenticationState extends State<Authentication>
               ],
             ),
             title: Image.asset(
-                    'images/logos/appBar.png',
-                    fit: BoxFit.fill,
-                    height: 60,
+              'images/logos/appBar.png',
+              fit: BoxFit.fill,
+              height: 60,
             ),
           ),
           body: TabBarView(
@@ -120,7 +120,7 @@ class _AuthenticationState extends State<Authentication>
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildEmailTextField(),
+                _buildUsuarioTextField(),
                 SizedBox(
                   height: 45.0,
                 ),
@@ -142,13 +142,13 @@ class _AuthenticationState extends State<Authentication>
                             style: TextStyle(fontSize: 12.0),
                           ),
                           onPressed: () => _realizarLogin(model),
-                        )
-                      ),
+                        )),
                 SizedBox(
                   height: 20.0,
                 ),
                 GestureDetector(
-                  onTap: () {/*
+                  onTap: () {
+                    /*
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return ForgetPassword();
@@ -184,6 +184,10 @@ class _AuthenticationState extends State<Authentication>
                 SizedBox(
                   height: 30.0,
                 ),
+                _buildUsuarioTextField(),
+                SizedBox(
+                  height: 30.0,
+                ),
                 _buildNomeTextField(),
                 SizedBox(
                   height: 30.0,
@@ -215,12 +219,14 @@ class _AuthenticationState extends State<Authentication>
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(15),
                         child: FlatButton(
-                          textColor: Colors.principalTheOffer,
-                          color: Colors.secundariaTheOffer,
-                          child: Text('CRIAR CONTA',
-                              style: TextStyle(fontSize: 12.0)),
-                          onPressed: () => _abrirCadastroUsuario(),
-                        )),
+                            textColor: Colors.principalTheOffer,
+                            color: Colors.secundariaTheOffer,
+                            child: Text('CRIAR CONTA',
+                                style: TextStyle(fontSize: 12.0)),
+                            onPressed: () => {
+                                  _abrirCadastroUsuario(),
+                                  Navigator.of(context).pop(),
+                                })),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -270,6 +276,31 @@ class _AuthenticationState extends State<Authentication>
         ));
   }
 
+  Widget _buildUsuarioTextField() {
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        child: TextFormField(
+          style: TextStyle(
+            color: Colors.secundariaTheOffer,
+          ),
+          decoration: InputDecoration(
+              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelText: 'Usuario',
+              contentPadding: EdgeInsets.all(0.0),
+              enabledBorder: _underlineInputBorder),
+          keyboardType: TextInputType.text,
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Informe um usuário valido';
+            }
+            return null;
+          },
+          onSaved: (String value) {
+            _formData['usuario'] = value;
+          },
+        ));
+  }
+
   Widget _buildEmailTextField() {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -293,7 +324,7 @@ class _AuthenticationState extends State<Authentication>
             _formData['email'] = value;
           },
         ));
-  }  
+  }
 
   Widget _buildPasswordTextField([bool isLimitCharacter = false]) {
     return Padding(
@@ -391,35 +422,36 @@ class _AuthenticationState extends State<Authentication>
     _formKeyForLogin.currentState.save();
 
     Map<dynamic, dynamic> oMapLogin = {
-      'usuario': _formData['email'],
-      'senha':  md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
+      'usuario': _formData['usuario'],
+      'senha':
+          md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
     };
-        
+
     bool hasError = true;
     http
-        .post(Configuracoes.BASE_URL + 'usuario/logar/', headers: headers, body: oMapLogin)
+        .post(Configuracoes.BASE_URL + 'usuario/logar/',
+            headers: headers, body: oMapLogin)
         .then((response) {
-      
       String message = 'Ocorreu algum erro.';
-           
+
       responseBody = json.decode(response.body);
       message = responseBody['message'];
       if (message.isEmpty) {
         message = "Entrou com sucesso.";
-        
+
         responseBody['usuario'].forEach((usuarioJson) {
-          Autenticacao.codigoUsuario =  int.parse(usuarioJson['id']);
-          Autenticacao.nomeUsuario  = usuarioJson['nome'];
-          Autenticacao.token        = usuarioJson['token'];
-          writeStorage();      
-        });        
+          Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
+          Autenticacao.nomeUsuario = usuarioJson['nome'];
+          Autenticacao.token = usuarioJson['token'];
+          writeStorage();
+        });
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Entrou com sucesso"),
           duration: Duration(seconds: 104),
         ));
         hasError = false;
         model.localizarCarrinho(null, Autenticacao.codigoUsuario);
-      } else {        
+      } else {
         setState(() {
           _isLoader = false;
         });
@@ -429,7 +461,7 @@ class _AuthenticationState extends State<Authentication>
         'message': message
       };
       if (successInformation['success']) {
-        Navigator.of(context).pop();        
+        Navigator.of(context).pop();
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text('${successInformation['message']}'),
           duration: Duration(seconds: 1),
@@ -458,15 +490,17 @@ class _AuthenticationState extends State<Authentication>
     Map<String, String> headers = getHeaders();
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
-      'nome': _formData['nome'] + ' ' +  _formData['sobrenome'],
-      'usuario': _formData['nome'],
+      'nome': _formData['nome'] + ' ' + _formData['sobrenome'],
+      'usuario': _formData['usuario'],
       'email': _formData['email'],
-      'senha': md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
+      'senha':
+          md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
       'telefone': _formData['telefone'],
     };
 
     http
-        .post(Configuracoes.BASE_URL + 'usuario/salvar/', headers: headers, body: oMapCadastrarLogin)
+        .post(Configuracoes.BASE_URL + 'usuario/salvar/',
+            headers: headers, body: oMapCadastrarLogin)
         .then((response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       String message = 'Ocorreu algum erro.';
@@ -487,7 +521,6 @@ class _AuthenticationState extends State<Authentication>
         'message': message
       };
       if (successInformation['success']) {
-        Navigator.of(context).pop();
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -513,7 +546,8 @@ class _AuthenticationState extends State<Authentication>
   writeStorage() async {
     final storage = FlutterSecureStorage();
     await storage.deleteAll();
-    await storage.write(key: "codigoUsuario", value: Autenticacao.codigoUsuario.toString());
+    await storage.write(
+        key: "codigoUsuario", value: Autenticacao.codigoUsuario.toString());
     await storage.write(key: "nomeUsuario", value: Autenticacao.nomeUsuario);
     await storage.write(key: "token", value: Autenticacao.token);
   }
