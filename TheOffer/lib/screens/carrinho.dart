@@ -88,8 +88,11 @@ class _CarrinhoState extends State<Carrinho> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: itemTotalContainer(model),
                     ),
-                    botaoGerarPedido(),
-                  ]))));
+                    !model.isLoading && model.pedido != null
+                    ? botaoGerarPedido()
+                    : Container(),
+                  ])))
+                  );
     });
   }
 
@@ -103,7 +106,7 @@ class _CarrinhoState extends State<Carrinho> {
   Widget body() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (model.pedido.listaItensPedido.length > 0)  {
+        if (model.pedido != null)  {
             return CustomScrollView(
               slivers: <Widget>[
                 items(),
@@ -124,7 +127,7 @@ class _CarrinhoState extends State<Carrinho> {
   }
 
   Widget itemTotalContainer(MainModel model) {
-      if (model.pedido != null) { 
+        if (model.pedido != null)  {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[carrinhoData()],
@@ -137,7 +140,7 @@ class _CarrinhoState extends State<Carrinho> {
   Widget carrinhoData() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      if (model.pedido != null) { 
+        if (model.pedido != null) {
         return Text(
               'Valor total do carrinho (${model.pedido.somaValorTotalPedido()}): ',
               style:  TextStyle(
@@ -173,7 +176,7 @@ class _CarrinhoState extends State<Carrinho> {
                     Map<String, String> headers = getHeaders();
                     print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
                     Map<dynamic, dynamic> objetoItemPedido = Map();
-                    if (model.pedido != null) {
+                     if (model.pedido != null) {
                       if (Autenticacao.codigoUsuario > 0 ) {
                               print("finalizandocarrinho");
                               objetoItemPedido = {

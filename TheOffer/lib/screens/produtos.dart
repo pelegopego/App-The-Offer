@@ -88,7 +88,7 @@ class _TelaProdutos extends State<TelaProdutos> {
             ],
             bottom: 
               PreferredSize(
-                preferredSize: Size(_deviceSize.width, 100),
+                preferredSize: Size(_deviceSize.width, 110),
                 child: Column(
                   children: <Widget> [
                       searchBar(),

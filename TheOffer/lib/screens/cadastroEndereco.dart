@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -59,7 +60,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
   Widget body() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-          return Row(
+          return Row( 
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[SingleChildScrollView(
               child: Container(
@@ -99,7 +100,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
                       _salvando
                       ? CircularProgressIndicator(
                           backgroundColor: Colors.secundariaTheOffer)
-                      :montarBotaoSalvar()
+                      :montarBotaoSalvar(model)
                     ],
                   )
                 )
@@ -111,7 +112,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
     );
   }
 
-  Widget montarBotaoSalvar() {
+  Widget montarBotaoSalvar(MainModel model) {
     return Container(     
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(15),
@@ -124,10 +125,17 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         ),
         onPressed: () {
           salvarEndereco();
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: (context) => ListagemEndereco());
+          if ((model.pedido != null) && (model.pedido.id > 0) && (model.pedido.endereco == null)) {
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
 
-          Navigator.push(context, route);
+            Navigator.push(context, route);
+          } else {
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => ListagemEndereco());
+
+            Navigator.push(context, route);
+          }
         },
       )
     );
@@ -147,7 +155,6 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
       'favorito'   : favorito.toString(),
       'usuario'    : Autenticacao.codigoUsuario.toString()
     };
-        
     http.post(Configuracoes.BASE_URL + 'enderecos/salvar', headers: headers, body: objetoEndereco).
     then((response) {
       print("SALVOU ENDEREÇO: " + _camposForm['nome']);

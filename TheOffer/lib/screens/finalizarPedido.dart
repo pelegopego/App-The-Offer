@@ -5,6 +5,7 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/listagemEnderecoPedido.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/pagamento.dart';
+import 'package:theoffer/screens/cadastroEndereco.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -30,12 +31,15 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   double frete;
   String _character = '';
   int selectedPaymentId;
+  bool _localizarPedido = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    _localizarPedido = true;
     locator<ConnectivityManager>().initConnectivity(context);    
+
   }
 
   @override
@@ -49,6 +53,10 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+          if ((_localizarPedido) && (model.pedido != null) && (model.pedido.id > 0) && (model.pedido.endereco == null)) {
+            _localizarPedido = false;
+            model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
+          }
           if (frete == null) {
             getFretes(model.pedido);
           }
@@ -217,8 +225,89 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                 )
               )
               : SliverToBoxAdapter(
-                    child: Container()
-                ),
+                    child: Card(
+                      child: Container(
+                        height: 90,
+                        color: Colors.principalTheOffer,
+                        child: GestureDetector(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          width: 250,
+                                          child: RichText(
+                                            text: TextSpan(
+                                                text: 'Sem endereço cadastrado',
+                                                style: TextStyle(
+                                                    color: Colors.secundariaTheOffer,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.centerRight,
+                                                child: IconButton(
+                                                  iconSize: 24,
+                                                  color: Colors.secundariaTheOffer,
+                                                  icon: Icon(Icons.add),
+                                                  onPressed: () {
+                                                      MaterialPageRoute route =
+                                                          MaterialPageRoute(builder: (context) => TelaCadastroEndereco());
+                                                      Navigator.push(context, route);
+                                                  },
+                                                ),
+                                              ),
+                                            ]
+                                          )
+                                        ), 
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: RichText(
+                                              text: TextSpan(
+                                                text: 'Favor cadastrar um endereço',
+                                                  style: TextStyle(
+                                                      color: Colors.secundariaTheOffer,
+                                                      fontSize: 15
+                                                  ),
+                                              )
+                                          ),
+                                        ),
+                                      ]
+                                    )
+                                  ),
+                                ],
+                              )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ),
+
                   SliverToBoxAdapter(
                     child: Padding(padding: EdgeInsets.only(top: 0),
                       child: model.pedido == null
@@ -251,25 +340,24 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   }
 
   getFretes(Pedido pedido) async {
-    Map<dynamic, dynamic> objetoFrete = Map();
-    Map<String, String> headers = getHeaders();
-    objetoFrete = {
-      "empresa": pedido.empresa.toString(), "bairro": pedido.endereco.bairro.id.toString()
-    };
-    
-    http.Response response = await http.post(Configuracoes.BASE_URL + 'frete/', headers: headers, body: objetoFrete);
-    responseBody = json.decode(response.body);
-    if (responseBody['possuiFrete'] == true) { 
-      print("BUSCANDO VALOR DE FRETE");
-      print(json.decode(response.body).toString());   
+    if ((pedido.empresa > 0) && (pedido.endereco != null)) {
+      Map<dynamic, dynamic> objetoFrete = Map();
+      Map<String, String> headers = getHeaders();
+      objetoFrete = {
+        "empresa": pedido.empresa.toString(), "bairro": pedido.endereco.bairro.id.toString()
+      };
+      http.Response response = await http.post(Configuracoes.BASE_URL + 'frete/', headers: headers, body: objetoFrete);
       responseBody = json.decode(response.body);
-      setState(() {
-        frete = double.parse(responseBody['fretes'][0]['valor']);     
-      });
+      if (responseBody['possuiFrete'] == true) { 
+        print("BUSCANDO VALOR DE FRETE");
+        print(json.decode(response.body).toString());   
+        responseBody = json.decode(response.body);
+          frete = double.parse(responseBody['fretes'][0]['valor']);   
+      } else {
+          frete = 0;     
+      }
     } else {
-      setState(() {
-        frete = 0;     
-      });
+          frete = 0;    
     }
   }
 
