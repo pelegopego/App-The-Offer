@@ -422,9 +422,8 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
               referencia: enderecoJson['referencia'],
               usuarioId: int.parse(enderecoJson['usuario_id']),
               favorito: (enderecoJson['favorito'] == 'S'),
-              dataCadastro: DateTime.parse(enderecoJson['dataCadastro']),
-              dataConfirmacao:
-                  DateTime.parse(enderecoJson['dataConfirmacao'])));
+              dataCadastro: enderecoJson['dataCadastro'],
+              dataConfirmacao: enderecoJson['dataConfirmacao']));
         });
       });
       listaEnderecos = _listaEnderecos;

@@ -31,6 +31,7 @@ class _TelaPagamento extends State<TelaPagamento> {
   bool _isLoading = false;
   bool pagamentoEntregaVisivel = false;
   bool pagamentoBalcaoVisivel = false;
+  String observacao = '';
   double frete;
   FormaPagamentoRecebimento formaPagamentoRecebimentoSelecionada =
       FormaPagamentoRecebimento.dinheiro;
@@ -119,7 +120,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                           pagamentoEntrega(context),
-                          retirarLocal(context)
+                          retirarLocal(context),
                         ])),
                     //Pagamento na entrega
                     SliverToBoxAdapter(
@@ -184,6 +185,37 @@ class _TelaPagamento extends State<TelaPagamento> {
                                 ),
                               ),
                             ))),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.secundariaTheOffer,
+                        margin: EdgeInsets.only(top: 10, right: 29, left: 29),
+                        height: 112,
+                        child: TextFormField(
+                          style: TextStyle(
+                            color: Colors.principalTheOffer,
+                          ),
+                          decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                  color: Colors.principalTheOffer, width: 1.0),
+                            ),
+                            hintText: 'Observação',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 18,
+                                color: Colors.principalTheOffer),
+                            alignLabelWithHint: true,
+                          ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 6,
+                          onChanged: (String value) {
+                            observacao = value;
+                          },
+                        ),
+                      ),
+                    ),
                   ])),
           bottomNavigationBar:
               !_isLoading ? paymentButton(context) : Container(),
@@ -348,7 +380,8 @@ class _TelaPagamento extends State<TelaPagamento> {
                                 pagamentoEntregaVisivel ? '1' : '2',
                             "formaPagamento":
                                 (formaPagamentoRecebimentoSelecionada.index + 1)
-                                    .toString()
+                                    .toString(),
+                            "observacao": observacao
                           };
                           http
                               .post(

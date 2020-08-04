@@ -289,10 +289,9 @@ mixin CarrinhoModel on Model {
               numero: int.parse(responseBody['pedidos'][0]['numero']),
               complemento: responseBody['pedidos'][0]['complemento'],
               referencia: responseBody['pedidos'][0]['referencia'],
-              dataCadastro: DateTime.parse(
-                  responseBody['pedidos'][0]['dataCadastroEndereco']),
-              dataConfirmacao: DateTime.parse(
-                  responseBody['pedidos'][0]['dataConfirmacaoEndereco']));
+              dataCadastro: responseBody['pedidos'][0]['dataCadastroEndereco'],
+              dataConfirmacao: responseBody['pedidos'][0]
+                  ['dataConfirmacaoEndereco']);
         }
         _pedido = Pedido(
             id: int.parse(responseBody['pedidos'][0]['pedido_id']),
@@ -383,10 +382,9 @@ mixin CarrinhoModel on Model {
             numero: int.parse(responseBody['pedidos'][0]['numero']),
             complemento: responseBody['pedidos'][0]['complemento'],
             referencia: responseBody['pedidos'][0]['referencia'],
-            dataCadastro: DateTime.parse(
-                responseBody['pedidos'][0]['dataCadastroEndereco']),
-            dataConfirmacao: DateTime.parse(
-                responseBody['pedidos'][0]['dataConfirmacaoEndereco']));
+            dataCadastro: responseBody['pedidos'][0]['dataCadastroEndereco'],
+            dataConfirmacao: responseBody['pedidos'][0]
+                ['dataConfirmacaoEndereco']);
       }
       _pedido = Pedido(
           id: int.parse(responseBody['pedidos'][0]['pedido_id']),

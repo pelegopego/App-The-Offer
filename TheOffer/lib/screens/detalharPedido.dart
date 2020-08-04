@@ -255,8 +255,10 @@ class _DetalharPedido extends State<DetalharPedido> {
                                 alignment: Alignment.topLeft,
                                 child: RichText(
                                     text: TextSpan(
-                                  text: 'Previsão de entrega: ' +
-                                      widget.pedido.horaPrevista,
+                                  text: widget.pedido.status >= 4
+                                      ? 'Previsão de entrega: ' +
+                                          widget.pedido.horaPrevista
+                                      : 'Aguardando confirmação',
                                   style: TextStyle(
                                       color: Colors.principalTheOffer,
                                       fontSize: 15.0,

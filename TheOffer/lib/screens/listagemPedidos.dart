@@ -329,28 +329,31 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                 nome: pedidosJson['nomeCidade']);
 
             endereco = Endereco(
-                id: int.parse(pedidosJson['endereco_id']),
-                nome: pedidosJson['nomeEndereco'],
-                cidade: cidade,
-                bairro: bairro,
-                rua: pedidosJson['rua'],
-                numero: int.parse(pedidosJson['numero']),
-                complemento: pedidosJson['complemento'],
-                referencia: pedidosJson['referencia'],
-                dataCadastro:
-                    DateTime.parse(pedidosJson['dataCadastroEndereco']),
-                dataConfirmacao:
-                    DateTime.parse(pedidosJson['dataConfirmacaoEndereco']));
+              id: int.parse(pedidosJson['endereco_id']),
+              nome: pedidosJson['nomeEndereco'],
+              cidade: cidade,
+              bairro: bairro,
+              rua: pedidosJson['rua'],
+              numero: int.parse(pedidosJson['numero']),
+              complemento: pedidosJson['complemento'],
+              referencia: pedidosJson['referencia'],
+              dataCadastro: pedidosJson['dataCadastroEndereco'],
+              dataConfirmacao: pedidosJson['dataConfirmacaoEndereco'],
+            );
           }
           pedido = Pedido(
               id: int.parse(pedidosJson['pedido_id']),
               usuarioId: int.parse(pedidosJson['usuario_id']),
               empresa: int.parse(pedidosJson['produto_empresa']),
-              modalidadeEntrega: int.parse(pedidosJson['modalidadeEntrega']),
-              formaPagamento: int.parse(pedidosJson['formaPagamento']),
+              modalidadeEntrega: pedidosJson['modalidadeEntrega'] != null
+                  ? int.parse(pedidosJson['modalidadeEntrega'])
+                  : 0,
+              formaPagamento: pedidosJson['formaPagamento'] != null
+                  ? int.parse(pedidosJson['formaPagamento'])
+                  : 0,
               horaPrevista: pedidosJson['horaPrevista'],
               dataInclusao: pedidosJson['dataInclusao'],
-              dataConfirmacao: pedidosJson['dataConfirmacao'],
+              dataConfirmacao: pedidosJson['dataConfirmacaoEndereco'],
               status: int.parse(pedidosJson['status']),
               endereco: endereco,
               listaItensPedido: []);
