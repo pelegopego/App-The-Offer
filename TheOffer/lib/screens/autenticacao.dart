@@ -8,6 +8,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:crypto/crypto.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Authentication extends StatefulWidget {
@@ -148,11 +149,7 @@ class _AuthenticationState extends State<Authentication>
                 ),
                 GestureDetector(
                   onTap: () {
-                    /*
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ForgetPassword();
-                    }));*/
+                    esqueceuSenha();
                   },
                   child: Text(
                     'Esqueceu sua senha?',
@@ -169,6 +166,15 @@ class _AuthenticationState extends State<Authentication>
         ),
       );
     });
+  }
+
+  esqueceuSenha() async {
+    const url = 'http://sistema.theoffer.com.br/recuperarconta';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Não foi possível abrir a página, tente novamente mais tarde.';
+    }
   }
 
   Widget _renderSignup(double targetWidth) {
