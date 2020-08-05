@@ -41,16 +41,18 @@ mixin CarrinhoModel on Model {
   }
 
   void limparPedido() {
-    _pedido.id = 0;
-    _pedido.usuarioId = 0;
-    _pedido.dataInclusao = null;
-    _pedido.status = 0;
-    _pedido.endereco = null;
-    _pedido.empresa = 0;
-    _pedido.modalidadeEntrega = null;
-    _pedido.formaPagamento = null;
-    _pedido.horaPrevista = null;
-    _pedido.listaItensPedido.clear();
+    if (_pedido != null) {
+      _pedido.id = 0;
+      _pedido.usuarioId = 0;
+      _pedido.dataInclusao = null;
+      _pedido.status = 0;
+      _pedido.endereco = null;
+      _pedido.empresa = 0;
+      _pedido.modalidadeEntrega = null;
+      _pedido.formaPagamento = null;
+      _pedido.horaPrevista = null;
+      _pedido.listaItensPedido.clear();
+    }
     notifyListeners();
   }
 
