@@ -26,7 +26,7 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return FlatButton (
+      return FlatButton(
         onPressed: widget.produto.quantidadeRestante > 0
             ? () async {
                 print('selectedProductIndex');
@@ -34,23 +34,21 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 setState(() {
                   selectedIndex = widget.index;
                 });
-                if (widget.produto.quantidadeRestante > 0) {                  
+                if (widget.produto.quantidadeRestante > 0) {
                   if (Autenticacao.codigoUsuario > 0) {
-                      model.adicionarProduto(
-                              usuarioId: Autenticacao.codigoUsuario, 
-                              produtoId: widget.produto.id, 
-                              quantidade: 1,
-                              somar: 1);
-                    final snackBar = 
-                      SnackBar(
+                    model.adicionarProduto(
+                        usuarioId: Autenticacao.codigoUsuario,
+                        produtoId: widget.produto.id,
+                        quantidade: 1,
+                        somar: 1);
+                    final snackBar = SnackBar(
                         content: Text('Produto adicionado ao carrinho'),
-                        duration: Duration(seconds: 5)
-                      );
+                        duration: Duration(seconds: 5));
                     Scaffold.of(context).showSnackBar(snackBar);
                   } else {
-                      MaterialPageRoute authRoute = MaterialPageRoute(
-                          builder: (context) => Authentication(0));
-                      Navigator.push(context, authRoute);
+                    MaterialPageRoute authRoute = MaterialPageRoute(
+                        builder: (context) => Authentication(0));
+                    Navigator.push(context, authRoute);
                   }
                 }
               }
@@ -70,14 +68,17 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
 
 Widget buttonContent(int index, Produto produto) {
   return Text(
-    produto.quantidadeRestante > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
+    produto.quantidadeRestante > 0
+        ? 'ADICIONAR AO CARRINHO'
+        : 'FORA DE ESTOQUE',
     style: TextStyle(
-        color: produto.quantidadeRestante > 0 ? Colors.principalTheOffer : Colors.grey,
+        color: produto.quantidadeRestante > 0
+            ? Colors.principalTheOffer
+            : Colors.grey,
         fontSize: 14,
         fontWeight: FontWeight.w500),
   );
 }
-
 
 Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
     Size _deviceSize, BuildContext context) {
@@ -86,120 +87,119 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
     return GestureDetector(
         onTap: () {
           MaterialPageRoute route = MaterialPageRoute(
-              builder: (context) => TelaEmpresaDetalhada(idEmpresa: listaProdutoEmpresa[index].empresaId));
+              builder: (context) => TelaEmpresaDetalhada(
+                  idEmpresa: listaProdutoEmpresa[index].empresaId));
           Navigator.push(context, route);
-
         },
         child: SizedBox(
             width: _deviceSize.width * 0.4,
-            child:  Column(
-                children: <Widget>[ 
-                Container(
-                    width: _deviceSize.width,
-                    color: Colors.terciariaTheOffer,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.business,
-                            color: Colors.secundariaTheOffer,
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(listaProdutoEmpresa[index].fantasia,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.secundariaTheOffer)
-                              ),
-                        ],
-                      ),
-                    )
+            child: Column(children: <Widget>[
+              Container(
+                  width: _deviceSize.width,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.business,
+                          color: Colors.secundariaTheOffer,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(listaProdutoEmpresa[index].fantasia,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.secundariaTheOffer)),
+                      ],
                     ),
-                  Container(height: 260,
-                      child: 
-                        ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listaProdutoEmpresa[index].listaProduto.length,
-                        itemBuilder: (context, index2) {
-                          if (listaProdutoEmpresa[index].listaProduto.length > 0) {
-                            return Container(child: cardProdutos(index2, listaProdutoEmpresa[index].listaProduto, _deviceSize, context));
-                          } else {
-                            return Container();
-                          }
-                        }
-                      ),
-            ),
-                 Divider(
+                  )),
+              Container(
+                height: 260,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listaProdutoEmpresa[index].listaProduto.length,
+                    itemBuilder: (context, index2) {
+                      if (listaProdutoEmpresa[index].listaProduto.length > 0) {
+                        return Container(
+                            child: cardProdutos(
+                                index2,
+                                listaProdutoEmpresa[index].listaProduto,
+                                _deviceSize,
+                                context));
+                      } else {
+                        return Container();
+                      }
+                    }),
+              ),
+              Divider(
                 height: 5,
               ),
-              ]
-              )
-                )
-                );
-      });
+            ])));
+  });
 }
 
-
-Widget cardProdutosCategoria(int index, List<CategoriaDetalhada> listaProdutoCategoria,
-    Size _deviceSize, BuildContext context) {
+Widget cardProdutosCategoria(
+    int index,
+    List<CategoriaDetalhada> listaProdutoCategoria,
+    Size _deviceSize,
+    BuildContext context) {
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
     return GestureDetector(
         child: SizedBox(
             width: _deviceSize.width * 0.4,
-            child:  Column(
-                children: <Widget>[ 
-                Container(
-                    width: _deviceSize.width,
-                    color: Colors.terciariaTheOffer,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.bookmark_border,
-                            color: Colors.secundariaTheOffer,
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(listaProdutoCategoria[index].nome,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.secundariaTheOffer)
-                              ),
-                        ],
-                      ),
-                    )
+            child: Column(children: <Widget>[
+              Container(
+                  width: _deviceSize.width,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.bookmark_border,
+                          color: Colors.secundariaTheOffer,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(listaProdutoCategoria[index].nome,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.secundariaTheOffer)),
+                      ],
                     ),
-                  Container(height: 290,
-                      child: 
-                        ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: listaProdutoCategoria[index].listaProduto.length,
-                        itemBuilder: (context, index2) {
-                          if (listaProdutoCategoria[index].listaProduto.length > 0) {
-                            return Container(child: cardProdutos(index2, listaProdutoCategoria[index].listaProduto, _deviceSize, context));
-                          } else {
-                            return Container();
-                          }
-                        }
-                      ),
-            ),
-                 Divider(
+                  )),
+              Container(
+                height: 290,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listaProdutoCategoria[index].listaProduto.length,
+                    itemBuilder: (context, index2) {
+                      if (listaProdutoCategoria[index].listaProduto.length >
+                          0) {
+                        return Container(
+                            child: cardProdutos(
+                                index2,
+                                listaProdutoCategoria[index].listaProduto,
+                                _deviceSize,
+                                context));
+                      } else {
+                        return Container();
+                      }
+                    }),
+              ),
+              Divider(
                 height: 5,
               ),
-              ]
-              )
-                )
-                );
-      });
+            ])));
+  });
 }
 
-Widget cardProdutos(int index, List<Produto> listaProdutos,
-    Size _deviceSize, BuildContext context) {
+Widget cardProdutos(int index, List<Produto> listaProdutos, Size _deviceSize,
+    BuildContext context) {
   Produto produtoDetalhado = listaProdutos[index];
   return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
@@ -210,7 +210,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
         child: SizedBox(
             width: _deviceSize.width * 0.4,
             child: Card(
-              color: Colors.secundariaTheOffer, 
+              color: Colors.secundariaTheOffer,
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.grey.withOpacity(0.4)),
                   borderRadius: BorderRadius.circular(4.0)),
@@ -230,7 +230,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                     child: Text(
                       produtoDetalhado.titulo,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 3, 
+                      maxLines: 3,
                       style: TextStyle(color: Colors.principalTheOffer),
                     ),
                   ),
@@ -243,7 +243,8 @@ Widget cardProdutos(int index, List<Produto> listaProdutos,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 15, color: Colors.principalTheOffer),
+                            fontSize: 15,
+                            color: Colors.principalTheOffer),
                       ),
                     ),
                   ),

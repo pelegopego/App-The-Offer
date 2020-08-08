@@ -56,12 +56,12 @@ class _AuthenticationState extends State<Authentication>
       color: Colors.secundariaTheOffer,
       theme: ThemeData(
         primarySwatch: Colors.secundariaTheOffer,
-        accentColor: Colors.terciariaTheOffer,
+        accentColor: Colors.white,
       ),
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.terciariaTheOffer,
+          backgroundColor: Colors.white,
           key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: false,

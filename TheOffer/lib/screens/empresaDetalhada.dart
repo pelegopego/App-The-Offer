@@ -19,7 +19,6 @@ class TelaEmpresaDetalhada extends StatefulWidget {
   final int idEmpresa;
   TelaEmpresaDetalhada({this.idEmpresa});
   @override
-  
   State<StatefulWidget> createState() {
     return _TelaEmpresaDetalhada();
   }
@@ -56,26 +55,26 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
         appBar: AppBar(
-            title: Image.asset(
-              'images/logos/appBar.png',
-              fit: BoxFit.fill,
-              height: 55,
-            ),
-            leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.principalTheOffer,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            actions: <Widget>[
-              shoppingCarrinhoIconButton(),
-            ],
+          title: Image.asset(
+            'images/logos/appBar.png',
+            fit: BoxFit.fill,
+            height: 55,
+          ),
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.principalTheOffer,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          actions: <Widget>[
+            shoppingCarrinhoIconButton(),
+          ],
         ),
         drawer: HomeDrawer(),
         body: Container(
-          color: Colors.terciariaTheOffer,
+          color: Colors.white,
           child: CustomScrollView(slivers: [
             _empresasLoading
                 ? SliverList(
@@ -91,36 +90,44 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                 : SliverToBoxAdapter(
                     child: Container(
                       height: Autenticacao.codigoUsuario == 0
-                        ? _deviceSize.height * 0.80
-                        : _deviceSize.height * 0.87,
+                          ? _deviceSize.height * 0.80
+                          : _deviceSize.height * 0.87,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: empresaDetalhada.listaCategoria.length,
                           shrinkWrap: true,
-                          itemBuilder: (context, index) {                            
+                          itemBuilder: (context, index) {
                             if (empresaDetalhada.listaCategoria.length > 0) {
                               if (index == 0) {
-                                  return Column(mainAxisAlignment: MainAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: <Widget>[
-                                              Card(shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12)),
-                                            elevation: 1,
-                                            margin: EdgeInsets.all(8.0),
-                                            child: Container(
+                                return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: <Widget>[
+                                      Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                          elevation: 1,
+                                          margin: EdgeInsets.all(8.0),
+                                          child: Container(
                                               color: Colors.secundariaTheOffer,
                                               child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Stack(
                                                     children: <Widget>[
                                                       Container(
-                                                        padding: EdgeInsets.all(15),
+                                                        padding:
+                                                            EdgeInsets.all(15),
                                                         height: 170,
                                                         width: 180,
-                                                        color: Colors.secundariaTheOffer,
+                                                        color: Colors
+                                                            .secundariaTheOffer,
                                                         child: Image(
-                                                        image: NetworkImage(empresaDetalhada.imagem),
+                                                          image: NetworkImage(
+                                                              empresaDetalhada
+                                                                  .imagem),
                                                         ),
                                                       ),
                                                     ],
@@ -129,56 +136,71 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                     width: 10,
                                                   ),
                                                   Expanded(
-                                                        child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        Container(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment.spaceBetween,
-                                                            children: <Widget>[
-                                                              Container(
-                                                                padding: EdgeInsets.only(top: 10),
-                                                                width: 150,
-                                                                child: RichText(
-                                                                  text: TextSpan(children: [
-                                                                    TextSpan(
-                                                                      text:
-                                                                          '${empresaDetalhada.fantasia} ',
-                                                                      style: TextStyle(
-                                                                          color: Colors.principalTheOffer,
-                                                                          fontSize: 15.0,
-                                                                          fontWeight: FontWeight.bold),
-                                                                    ),
-                                                                  ]),
-                                                                ),
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 10),
+                                                              width: 150,
+                                                              child: RichText(
+                                                                text: TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text:
+                                                                            '${empresaDetalhada.fantasia} ',
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .principalTheOffer,
+                                                                            fontSize:
+                                                                                15.0,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ]),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                        SizedBox(height: 10),
-                                                        Container(
-                                                          alignment: Alignment.topLeft,
-                                                          child: Text(
-                                                            empresaDetalhada.telefone.toString(),
-                                                            textAlign: TextAlign.left,
-                                                            style: TextStyle(
-                                                                color: Colors.principalTheOffer,
-                                                                fontSize: 18),
-                                                          ),
+                                                      ),
+                                                      SizedBox(height: 10),
+                                                      Container(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Text(
+                                                          empresaDetalhada
+                                                              .telefone
+                                                              .toString(),
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .principalTheOffer,
+                                                              fontSize: 18),
                                                         ),
-                                                      ],
-                                                    )
-                                                  ),
+                                                      ),
+                                                    ],
+                                                  )),
                                                 ],
-                                              )
-                                          )
-                                        ),
-                                  ]
-                                );
+                                              ))),
+                                    ]);
                               } else {
-                                return cardProdutosCategoria(index, empresaDetalhada.listaCategoria, _deviceSize, context);
+                                return cardProdutosCategoria(
+                                    index,
+                                    empresaDetalhada.listaCategoria,
+                                    _deviceSize,
+                                    context);
                               }
                             } else {
                               return Container();
@@ -242,57 +264,56 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
       "cidade": CidadeSelecionada.id.toString()
     };
     http
-        .post(Configuracoes.BASE_URL + 'produtos/localizarPorEmpresa', headers: headers, body: objetoItemPedido)
+        .post(Configuracoes.BASE_URL + 'produtos/localizarPorEmpresa',
+            headers: headers, body: objetoItemPedido)
         .then((response) {
       responseBody = json.decode(response.body);
       responseBody['empresas'].forEach((empresaJson) {
         if (empresaJson['categorias'] != null) {
           _listaCategoriaDetalhada = [];
-          
+
           _listaCategoriaDetalhada.add(CategoriaDetalhada(
-              id: 0,
-              nome: '',
-              imagem: '',
-              listaProduto: null
-              ));
+              id: 0, nome: '', imagem: '', listaProduto: null));
 
           empresaJson['categorias'].forEach((categoriasJson) {
-              _listaProduto = [];
-              if (categoriasJson['produtos'] != null) {
-                categoriasJson['produtos'].forEach((produtosJson) {
-                  setState(() {
-                    _listaProduto.add(Produto(
-                        id                    : int.parse(produtosJson['id']),
-                        titulo                : produtosJson['titulo'],
-                        descricao             : produtosJson['descricao'],
-                        imagem                : produtosJson['imagem'],
-                        valor                 : produtosJson['valor'],
-                        valorNumerico         : double.parse(produtosJson['valorNumerico']),
-                        quantidade            : int.parse(produtosJson['quantidade']),
-                        quantidadeRestante    : int.parse(produtosJson['quantidadeRestante']),
-                        dataInicial           : produtosJson['dataInicial'],
-                        dataFinal             : produtosJson['dataFinal'],
-                        dataCadastro          : produtosJson['dataCadastro'],
-                        usuarioId             : int.parse(produtosJson['usuario_id'])));
-                  });
+            _listaProduto = [];
+            if (categoriasJson['produtos'] != null) {
+              categoriasJson['produtos'].forEach((produtosJson) {
+                setState(() {
+                  _listaProduto.add(Produto(
+                      id: int.parse(produtosJson['id']),
+                      titulo: produtosJson['titulo'],
+                      descricao: produtosJson['descricao'],
+                      imagem: produtosJson['imagem'],
+                      valor: produtosJson['valor'],
+                      valorNumerico:
+                          double.parse(produtosJson['valorNumerico']),
+                      quantidade: int.parse(produtosJson['quantidade']),
+                      quantidadeRestante:
+                          int.parse(produtosJson['quantidadeRestante']),
+                      dataInicial: produtosJson['dataInicial'],
+                      dataFinal: produtosJson['dataFinal'],
+                      dataCadastro: produtosJson['dataCadastro'],
+                      usuarioId: int.parse(produtosJson['usuario_id'])));
                 });
+              });
               setState(() {
                 _listaCategoriaDetalhada.add(CategoriaDetalhada(
                     id: int.parse(categoriasJson['id']),
                     nome: categoriasJson['nome'],
                     imagem: categoriasJson['imagem'],
-                    listaProduto: _listaProduto
-                    ));
+                    listaProduto: _listaProduto));
               });
             }
           });
         }
-        empresaDetalhada = EmpresaDetalhada(id            : int.parse(empresaJson['id']), 
-                                            imagem        : empresaJson['imagem'],
-                                            razaoSocial   : empresaJson['razaosocial'], 
-                                            fantasia      : empresaJson['fantasia'], 
-                                            telefone      : num.parse(empresaJson['telefone']), 
-                                            listaCategoria: _listaCategoriaDetalhada);
+        empresaDetalhada = EmpresaDetalhada(
+            id: int.parse(empresaJson['id']),
+            imagem: empresaJson['imagem'],
+            razaoSocial: empresaJson['razaosocial'],
+            fantasia: empresaJson['fantasia'],
+            telefone: num.parse(empresaJson['telefone']),
+            listaCategoria: _listaCategoriaDetalhada);
       });
       setState(() {
         _empresasLoading = false;

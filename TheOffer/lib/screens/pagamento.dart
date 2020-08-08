@@ -81,7 +81,7 @@ class _TelaPagamento extends State<TelaPagamento> {
           body: _isLoading
               ? Container()
               : Container(
-                  color: Colors.terciariaTheOffer,
+                  color: Colors.white,
                   child: CustomScrollView(slivers: [
                     SliverToBoxAdapter(
                         child: Padding(
@@ -237,7 +237,7 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        color: Colors.terciariaTheOffer,
+        color: Colors.white,
         margin: EdgeInsets.only(left: 30),
         child: widget.isLoading
             ? Center(
@@ -306,7 +306,7 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        color: Colors.terciariaTheOffer,
+        color: Colors.white,
         margin: EdgeInsets.only(right: 30),
         child: widget.isLoading
             ? Center(
@@ -344,7 +344,7 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        color: Colors.terciariaTheOffer,
+        color: Colors.white,
         padding: EdgeInsets.all(5),
         child: widget.isLoading
             ? Center(

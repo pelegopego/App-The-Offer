@@ -21,7 +21,6 @@ class TelaProdutos extends StatefulWidget {
   final int idCategoria;
   TelaProdutos({this.idCategoria});
   @override
-  
   State<StatefulWidget> createState() {
     return _TelaProdutos();
   }
@@ -72,10 +71,10 @@ class _TelaProdutos extends State<TelaProdutos> {
     );*/
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          if (_localizarCarrinho) {
-            _localizarCarrinho = false;
-            model.localizarCarrinho(null, Autenticacao.codigoUsuario);
-          }
+      if (_localizarCarrinho) {
+        _localizarCarrinho = false;
+        model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+      }
       return Scaffold(
         appBar: AppBar(
             title: Image.asset(
@@ -86,21 +85,18 @@ class _TelaProdutos extends State<TelaProdutos> {
             actions: <Widget>[
               shoppingCarrinhoIconButton(),
             ],
-            bottom: 
-              PreferredSize(
+            bottom: PreferredSize(
                 preferredSize: Size(_deviceSize.width, 110),
                 child: Column(
-                  children: <Widget> [
-                      searchBar(),
-                      trocarCategoria(),
-                  ],               
-                )  
-              ),
-            iconTheme: new IconThemeData(color: Colors.principalTheOffer)
-          ),
+                  children: <Widget>[
+                    searchBar(),
+                    trocarCategoria(),
+                  ],
+                )),
+            iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
         drawer: HomeDrawer(),
         body: Container(
-          color: Colors.terciariaTheOffer,
+          color: Colors.white,
           child: CustomScrollView(slivers: [
             /*SliverList(
               delegate: SliverChildListDelegate([
@@ -127,8 +123,8 @@ class _TelaProdutos extends State<TelaProdutos> {
                 : SliverToBoxAdapter(
                     child: Container(
                       height: Autenticacao.codigoUsuario == 0
-                        ? _deviceSize.height * 0.70
-                        : _deviceSize.height * 0.77,
+                          ? _deviceSize.height * 0.70
+                          : _deviceSize.height * 0.77,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: listaProdutoEmpresa.length,
@@ -207,8 +203,8 @@ class _TelaProdutos extends State<TelaProdutos> {
     } else {
       return GestureDetector(
           onTap: () {
-            MaterialPageRoute route = MaterialPageRoute(
-                builder: (context) => TelaPesquisaProduto());
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => TelaPesquisaProduto());
             Navigator.of(context).push(route);
           },
           child: Container(
@@ -248,7 +244,8 @@ class _TelaProdutos extends State<TelaProdutos> {
       "cidade": CidadeSelecionada.id.toString()
     };
     http
-        .post(Configuracoes.BASE_URL + 'produtos', headers: headers, body: objetoItemPedido)
+        .post(Configuracoes.BASE_URL + 'produtos',
+            headers: headers, body: objetoItemPedido)
         .then((response) {
       responseBody = json.decode(response.body);
       responseBody['empresas'].forEach((empresaJson) {
@@ -334,9 +331,7 @@ class _TelaProdutos extends State<TelaProdutos> {
         ),
         title: Text(
           'Trocar categoria',
-          style: TextStyle(
-                   color: Colors.principalTheOffer,
-                   fontSize: 12),
+          style: TextStyle(color: Colors.principalTheOffer, fontSize: 12),
         ),
         onTap: () {
           MaterialPageRoute route =
@@ -346,6 +341,7 @@ class _TelaProdutos extends State<TelaProdutos> {
       );
     });
   }
+
   getBanners() async {
     /*
     http

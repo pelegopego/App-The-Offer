@@ -39,11 +39,11 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
   @override
   void initState() {
     _tabController = TabController(length: 1, vsync: this);
-      _isFavorite = true;
-      produtoSelecionado = widget.produto;
-      discount = false;
-      htmlDescription =
-          widget.produto.descricao != null ? widget.produto.descricao : '';
+    _isFavorite = true;
+    produtoSelecionado = widget.produto;
+    discount = false;
+    htmlDescription =
+        widget.produto.descricao != null ? widget.produto.descricao : '';
     //getSimilarProducts();
     locator<ConnectivityManager>().initConnectivity(context);
     // _dropDownVariantItems = getVariants();
@@ -63,20 +63,25 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
           key: _scaffoldKey,
-          backgroundColor: Colors.terciariaTheOffer,
+          backgroundColor: Colors.white,
           appBar: AppBar(
             leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+                icon:
+                    Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
-            title: Text('Detalhes do item', style: TextStyle(color: Colors.principalTheOffer),),
+            title: Text(
+              'Detalhes do item',
+              style: TextStyle(color: Colors.principalTheOffer),
+            ),
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.search, color: Colors.principalTheOffer),
                 onPressed: () {
-                  MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) => TelaPesquisaProduto(descricao: 'a'));
+                  MaterialPageRoute route = MaterialPageRoute(
+                      builder: (context) =>
+                          TelaPesquisaProduto(descricao: 'a'));
                   Navigator.of(context).push(route);
                 },
               ),
@@ -174,10 +179,10 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
   }
 
   Widget linhaQuantidade(MainModel model, Produto produtoSelecionado) {
-    print(
-        "PRODUTO SELECIONADO ---> ${produtoSelecionado.id}");
+    print("PRODUTO SELECIONADO ---> ${produtoSelecionado.id}");
     return Container(
-        height: 60.0,color: Colors.secundariaTheOffer,
+        height: 60.0,
+        color: Colors.secundariaTheOffer,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: 20,
@@ -207,9 +212,10 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                     child: Text(
                       index.toString(),
                       style: TextStyle(
-                          color: quantidade == index
-                              ? Colors.white
-                              : Colors.principalTheOffer,),
+                        color: quantidade == index
+                            ? Colors.white
+                            : Colors.principalTheOffer,
+                      ),
                     )),
               );
             }
@@ -232,19 +238,17 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                         Expanded(
-                           child:
-                        Center(
+                        Expanded(
+                            child: Center(
                           child: Container(
-                            alignment: Alignment.center,    
+                            alignment: Alignment.center,
                             height: 320,
                             width: 390,
                             child: Image(
                               image: NetworkImage(produtoSelecionado.imagem),
                             ),
                           ),
-                        )
-                        ),
+                        )),
                       ],
                     ),
                   ),
@@ -254,7 +258,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       padding: EdgeInsets.only(top: 40, right: 15.0),
                       alignment: Alignment.topRight,
                       icon: Icon(Icons.favorite),
-                      color: _isFavorite ? Colors.principalTheOffer : Colors.grey,
+                      color:
+                          _isFavorite ? Colors.principalTheOffer : Colors.grey,
                       onPressed: () async {
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
@@ -275,7 +280,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                                 },
                               ),
                             ));
-                          } else {/*
+                          } else {
+                            /*
                             _scaffoldKey.currentState.showSnackBar(SnackBar(
                               content: Text(
                                 'Adicionando aos favoritos aguarde.',
@@ -301,7 +307,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                               ));
                             });*/
                           }
-                        } else {/*
+                        } else {
+                          /*
                           _scaffoldKey.currentState.showSnackBar(SnackBar(
                             content: Text(
                               'Removendo produto dos favoritos, aguarde.',
@@ -383,7 +390,10 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       padding: EdgeInsets.all(10),
                       child: Text(
                         'Quantidade ',
-                        style: TextStyle(fontSize: 14, fontFamily: fontFamily, color: Colors.principalTheOffer),
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: fontFamily,
+                            color: Colors.principalTheOffer),
                       ),
                     )
                   : Container(),
@@ -397,9 +407,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                     )
                   : Container(),
               linhaPrecos('Preço: ', produtoSelecionado.valor,
-                  strike: discount,
-                  valor:
-                      '${produtoSelecionado.valor}'),
+                  strike: discount, valor: '${produtoSelecionado.valor}'),
               /*discount
                   ? Column(
                       children: <Widget>[
@@ -459,7 +467,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         backgroundColor: Colors.secundariaTheOffer,
                       ),
                     )
-                  : Container(/*
+                  : Container(
+                      /*
                       height: 355,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -471,21 +480,25 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                           //     _deviceSize, context, true);
                         },
                       ),*/
-                    ),
+                      ),
               Container(
                   color: Colors.secundariaTheOffer,
                   padding: EdgeInsets.only(left: 10.0, top: 20.0),
                   alignment: Alignment.centerLeft,
                   child: Text("Descrição",
                       style: TextStyle(
-                          fontSize: 15.0, fontWeight: FontWeight.w600, color: Colors.principalTheOffer))),
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.principalTheOffer))),
               Container(
                   color: Colors.secundariaTheOffer,
                   padding: EdgeInsets.only(left: 10.0, top: 20.0),
                   alignment: Alignment.centerLeft,
                   child: Text(htmlDescription,
                       style: TextStyle(
-                          fontSize: 15.0, fontWeight: FontWeight.w600, color: Colors.principalTheOffer))),
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.principalTheOffer))),
             ],
           ),
         ),
@@ -504,27 +517,31 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.quantidadeRestante > 0 ? 'COMPRAR AGORA' : 'FORA DE ESTOQUE',
-                style: TextStyle(color: produtoSelecionado.quantidadeRestante > 0 ? Colors.principalTheOffer : Colors.grey),
+                produtoSelecionado.quantidadeRestante > 0
+                    ? 'COMPRAR AGORA'
+                    : 'FORA DE ESTOQUE',
+                style: TextStyle(
+                    color: produtoSelecionado.quantidadeRestante > 0
+                        ? Colors.principalTheOffer
+                        : Colors.grey),
               ),
               onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
                       if (produtoSelecionado.quantidadeRestante > 0) {
-                        
                         if (Autenticacao.codigoUsuario > 0) {
                           model.comprarProduto(
                               usuarioId: Autenticacao.codigoUsuario,
                               produtoId: produtoSelecionado.id,
                               quantidade: quantidade);
                         } else {
-                            MaterialPageRoute authRoute = MaterialPageRoute(
-                                builder: (context) => Authentication(0));
-                            Navigator.push(context, authRoute);
+                          MaterialPageRoute authRoute = MaterialPageRoute(
+                              builder: (context) => Authentication(0));
+                          Navigator.push(context, authRoute);
                         }
                         if (model.pedido != null) {
                           if (!model.isLoading) {
-                            MaterialPageRoute route =
-                                MaterialPageRoute(builder: (context) => TelaFinalizarPedido());
+                            MaterialPageRoute route = MaterialPageRoute(
+                                builder: (context) => TelaFinalizarPedido());
 
                             Navigator.push(context, route);
                           }
@@ -550,7 +567,9 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.quantidadeRestante > 0 ? 'ADICIONAR AO CARRINHO' : 'FORA DE ESTOQUE',
+                produtoSelecionado.quantidadeRestante > 0
+                    ? 'ADICIONAR AO CARRINHO'
+                    : 'FORA DE ESTOQUE',
                 style: TextStyle(
                     color: produtoSelecionado.quantidadeRestante > 0
                         ? Colors.principalTheOffer
@@ -558,19 +577,19 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               ),
               onPressed: produtoSelecionado.quantidadeRestante > 0
                   ? () {
-                       if (Autenticacao.codigoUsuario > 0) {
-                          if (produtoSelecionado.quantidadeRestante > 0) {
-                            model.adicionarProduto(
-                                usuarioId: Autenticacao.codigoUsuario,
-                                produtoId: produtoSelecionado.id,
-                                quantidade: quantidade,
-                                somar: 1);
-                          }   
-                        } else {
-                            MaterialPageRoute authRoute = MaterialPageRoute(
-                                builder: (context) => Authentication(0));
-                            Navigator.push(context, authRoute);
+                      if (Autenticacao.codigoUsuario > 0) {
+                        if (produtoSelecionado.quantidadeRestante > 0) {
+                          model.adicionarProduto(
+                              usuarioId: Autenticacao.codigoUsuario,
+                              produtoId: produtoSelecionado.id,
+                              quantidade: quantidade,
+                              somar: 1);
                         }
+                      } else {
+                        MaterialPageRoute authRoute = MaterialPageRoute(
+                            builder: (context) => Authentication(0));
+                        Navigator.push(context, authRoute);
+                      }
                     }
                   : () {},
             ),
@@ -589,18 +608,18 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   Icons.shopping_basket,
                   color: Colors.secundariaTheOffer,
                 ),
-                onPressed: produtoSelecionado.quantidadeRestante > 0 
-                    ? () {                        
-                       if (Autenticacao.codigoUsuario > 0) {
-                            model.adicionarProduto(
-                                usuarioId: Autenticacao.codigoUsuario,
-                                produtoId: produtoSelecionado.id,
-                                quantidade: quantidade,
-                                somar: 1);
+                onPressed: produtoSelecionado.quantidadeRestante > 0
+                    ? () {
+                        if (Autenticacao.codigoUsuario > 0) {
+                          model.adicionarProduto(
+                              usuarioId: Autenticacao.codigoUsuario,
+                              produtoId: produtoSelecionado.id,
+                              quantidade: quantidade,
+                              somar: 1);
                         } else {
-                            MaterialPageRoute authRoute = MaterialPageRoute(
-                                builder: (context) => Authentication(0));
-                            Navigator.push(context, authRoute);
+                          MaterialPageRoute authRoute = MaterialPageRoute(
+                              builder: (context) => Authentication(0));
+                          Navigator.push(context, authRoute);
                         }
                       }
                     : () {},
@@ -613,7 +632,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   Icons.add,
                   color: Colors.blue,
                 ),
-                onPressed: () {/*
+                onPressed: () {
+                  /*
                   if (Autenticacao.CodigoUsuario > 0) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
@@ -639,54 +659,36 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     );
   }
 
-  Widget linhaPrecos(String key, String value,
-      {bool strike, String valor}) {
-      return Container(
-            color: Colors.secundariaTheOffer,
-            child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.all(10),
-          child: Text(
-            key,
-            style: TextStyle(
-              fontSize: 17,
-              fontFamily: fontFamily,
-              color: Colors.principalTheOffer,
+  Widget linhaPrecos(String key, String value, {bool strike, String valor}) {
+    return Container(
+        color: Colors.secundariaTheOffer,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.all(10),
+              child: Text(
+                key,
+                style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: fontFamily,
+                  color: Colors.principalTheOffer,
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.all(10),
-          child: strike
-              ? RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                        text: valor,
-                        style: TextStyle(
-                            color: Colors.principalTheOffer,
-                            decoration: TextDecoration.lineThrough)),
-                    TextSpan(text: '   '),
-                    TextSpan(
-                        text: value,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.principalTheOffer,
-                            fontFamily: fontFamily,
-                            fontWeight: FontWeight.bold)),
-                  ]),
-                )
-              : discount
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.all(10),
+              child: strike
                   ? RichText(
                       text: TextSpan(children: [
                         TextSpan(
-                            text: '0',
+                            text: valor,
                             style: TextStyle(
-                              color: Colors.principalTheOffer,
-                            )),
+                                color: Colors.principalTheOffer,
+                                decoration: TextDecoration.lineThrough)),
+                        TextSpan(text: '   '),
                         TextSpan(
                             text: value,
                             style: TextStyle(
@@ -696,18 +698,35 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                                 fontWeight: FontWeight.bold)),
                       ]),
                     )
-                  : Text(
-                      value,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.principalTheOffer,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: fontFamily,
-                      ),
-                    ),
-        ),
-      ],
-    ));
+                  : discount
+                      ? RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                                text: '0',
+                                style: TextStyle(
+                                  color: Colors.principalTheOffer,
+                                )),
+                            TextSpan(
+                                text: value,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.principalTheOffer,
+                                    fontFamily: fontFamily,
+                                    fontWeight: FontWeight.bold)),
+                          ]),
+                        )
+                      : Text(
+                          value,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.principalTheOffer,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: fontFamily,
+                          ),
+                        ),
+            ),
+          ],
+        ));
   }
 
   Widget pincodeBox(MainModel model, BuildContext context) {
@@ -745,8 +764,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                     color: Colors.secundariaTheOffer),
               ),
             ),
-            onPressed: () async {
-            }),
+            onPressed: () async {}),
       ],
     );
   }

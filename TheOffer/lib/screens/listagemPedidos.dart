@@ -43,7 +43,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Colors.terciariaTheOffer,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
@@ -102,7 +102,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
               child: _pedidosLoading
                   ? Container()
                   : Container(
-                      color: Colors.terciariaTheOffer,
+                      color: Colors.white,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,

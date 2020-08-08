@@ -49,7 +49,7 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Colors.terciariaTheOffer,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(

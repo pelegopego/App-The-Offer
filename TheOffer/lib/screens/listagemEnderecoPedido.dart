@@ -41,7 +41,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Colors.terciariaTheOffer,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
@@ -153,7 +153,7 @@ class _ListagemEnderecoPedido extends State<ListagemEnderecoPedido> {
                     ? Container()
                     : index != listaEnderecos.length
                         ? Container(
-                            color: Colors.terciariaTheOffer,
+                            color: Colors.white,
                             child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

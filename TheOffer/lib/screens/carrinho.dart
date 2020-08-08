@@ -38,20 +38,22 @@ class _CarrinhoState extends State<Carrinho> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-          backgroundColor: Colors.terciariaTheOffer,
+          backgroundColor: Colors.white,
           appBar: AppBar(
-                centerTitle: false,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+              centerTitle: false,
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios,
+                      color: Colors.principalTheOffer),
                   onPressed: () => {
-                    Navigator.of(context).pop(),
-                  }
-                ),
-                title: Text('Carrinho', style: TextStyle(color: Colors.principalTheOffer),
+                        Navigator.of(context).pop(),
+                      }),
+              title: Text(
+                'Carrinho',
+                style: TextStyle(color: Colors.principalTheOffer),
               ),
               actions: <Widget>[
-                  IconButton(
-                  iconSize: 30, 
+                IconButton(
+                  iconSize: 30,
                   icon: new Icon(
                     Icons.close,
                     color: Colors.principalTheOffer,
@@ -70,8 +72,7 @@ class _CarrinhoState extends State<Carrinho> {
                   : PreferredSize(
                       child: Container(),
                       preferredSize: Size.fromHeight(10),
-                    )
-               ),
+                    )),
           body: model.isLoading
               ? Center(
                   child: CircularProgressIndicator(
@@ -89,65 +90,64 @@ class _CarrinhoState extends State<Carrinho> {
                       child: itemTotalContainer(model),
                     ),
                     !model.isLoading && model.pedido != null
-                    ? botaoGerarPedido()
-                    : Container(),
-                  ])))
-                  );
+                        ? botaoGerarPedido()
+                        : Container(),
+                  ]))));
     });
   }
 
   Widget botaoDeletar(int index) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Text(model.pedido.listaItensPedido[index].produto.quantidade.toString());
+      return Text(
+          model.pedido.listaItensPedido[index].produto.quantidade.toString());
     });
   }
 
   Widget body() {
     return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget child, MainModel model) {
-        if (model.pedido != null)  {
-            return CustomScrollView(
-              slivers: <Widget>[
-                items(),
-              ],
-            );
-        } else {
-          return Container( child: 
-            Text('Não foram selecionados itens para o carrinho',
-              style:  TextStyle(
-                      fontSize: 16.5, 
-                      color: Colors.secundariaTheOffer,
-                      fontWeight: FontWeight.bold),
-            )
-          );
-        }
+        builder: (BuildContext context, Widget child, MainModel model) {
+      if (model.pedido != null) {
+        return CustomScrollView(
+          slivers: <Widget>[
+            items(),
+          ],
+        );
+      } else {
+        return Container(
+            child: Text(
+          'Não foram selecionados itens para o carrinho',
+          style: TextStyle(
+              fontSize: 16.5,
+              color: Colors.secundariaTheOffer,
+              fontWeight: FontWeight.bold),
+        ));
       }
-    );
+    });
   }
 
   Widget itemTotalContainer(MainModel model) {
-        if (model.pedido != null)  {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[carrinhoData()],
-        );
-      } else {
-        return Container();
-      }
+    if (model.pedido != null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[carrinhoData()],
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget carrinhoData() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-        if (model.pedido != null) {
+      if (model.pedido != null) {
         return Text(
-              'Valor total do carrinho (${model.pedido.somaValorTotalPedido()}): ',
-              style:  TextStyle(
-                      fontSize: 16.5,
-                      color: Colors.principalTheOffer,
-                      fontWeight: FontWeight.bold),
-            );
+          'Valor total do carrinho (${model.pedido.somaValorTotalPedido()}): ',
+          style: TextStyle(
+              fontSize: 16.5,
+              color: Colors.principalTheOffer,
+              fontWeight: FontWeight.bold),
+        );
       } else {
         return Container();
       }
@@ -164,55 +164,53 @@ class _CarrinhoState extends State<Carrinho> {
           height: 58.0,
           padding: EdgeInsets.all(10),
           child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2)),
-                  color: Colors.principalTheOffer,
-                  child: Text( 'GERAR PEDIDO',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.secundariaTheOffer),
-                  ),
-                  onPressed: () async {
-                    Map<String, String> headers = getHeaders();
-                    print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
-                    Map<dynamic, dynamic> objetoItemPedido = Map();
-                     if (model.pedido != null) {
-                      if (Autenticacao.codigoUsuario > 0 ) {
-                              print("finalizandocarrinho");
-                              objetoItemPedido = {
-                                "usuario": Autenticacao.codigoUsuario.toString()
-                              };
-                              http
-                                  .post(
-                                      Configuracoes.BASE_URL + 'pedido/finalizarCarrinho/',
-                                      headers: headers,
-                                      body: objetoItemPedido)
-                                  .then((response) {
-                                print("GERANDO CARRINHO");
-                                print(json.decode(response.body).toString());
-                                model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
-                                  MaterialPageRoute finalizarPedidoRoute =
-                                      MaterialPageRoute(
-                                          builder: (context) => TelaFinalizarPedido());
-                                  Navigator.push(context, finalizarPedidoRoute);
-                              });
-                      } else {
-                        MaterialPageRoute authRoute = MaterialPageRoute(
-                            builder: (context) => Authentication(0));
-                        Navigator.push(context, authRoute);
-                      }
-                    } else {
-                      Navigator.popUntil(context,
-                          ModalRoute.withName(Navigator.defaultRouteName));
-                    }
-
-                  },
-                ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+            color: Colors.principalTheOffer,
+            child: Text(
+              'GERAR PEDIDO',
+              style: TextStyle(fontSize: 15, color: Colors.secundariaTheOffer),
+            ),
+            onPressed: () async {
+              Map<String, String> headers = getHeaders();
+              print("ESTADO DO PEDIDO ___________ ${model.pedido.status}");
+              Map<dynamic, dynamic> objetoItemPedido = Map();
+              if (model.pedido != null) {
+                if (Autenticacao.codigoUsuario > 0) {
+                  print("finalizandocarrinho");
+                  objetoItemPedido = {
+                    "usuario": Autenticacao.codigoUsuario.toString()
+                  };
+                  http
+                      .post(
+                          Configuracoes.BASE_URL + 'pedido/finalizarCarrinho/',
+                          headers: headers,
+                          body: objetoItemPedido)
+                      .then((response) {
+                    print("GERANDO CARRINHO");
+                    print(json.decode(response.body).toString());
+                    model.localizarPedido(
+                        model.pedido.id, Autenticacao.codigoUsuario, 2);
+                    MaterialPageRoute finalizarPedidoRoute = MaterialPageRoute(
+                        builder: (context) => TelaFinalizarPedido());
+                    Navigator.push(context, finalizarPedidoRoute);
+                  });
+                } else {
+                  MaterialPageRoute authRoute = MaterialPageRoute(
+                      builder: (context) => Authentication(0));
+                  Navigator.push(context, authRoute);
+                }
+              } else {
+                Navigator.popUntil(
+                    context, ModalRoute.withName(Navigator.defaultRouteName));
+              }
+            },
+          ),
         ),
       );
     });
   }
-  
+
   Widget items() {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
@@ -241,7 +239,8 @@ class _CarrinhoState extends State<Carrinho> {
                                 width: 180,
                                 color: Colors.secundariaTheOffer,
                                 child: Image(
-                                 image: NetworkImage(model.pedido.listaItensPedido[index].produto.imagem),
+                                  image: NetworkImage(model.pedido
+                                      .listaItensPedido[index].produto.imagem),
                                 ),
                               ),
                             ],
@@ -273,10 +272,15 @@ class _CarrinhoState extends State<Carrinho> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           TextSpan(
-                                            text: model.pedido.listaItensPedido[index].produto.titulo,
+                                            text: model
+                                                .pedido
+                                                .listaItensPedido[index]
+                                                .produto
+                                                .titulo,
                                             style: TextStyle(
                                                 fontSize: 15,
-                                                color: Colors.principalTheOffer),
+                                                color:
+                                                    Colors.principalTheOffer),
                                           ),
                                         ]),
                                       ),
@@ -288,9 +292,16 @@ class _CarrinhoState extends State<Carrinho> {
                                         color: Colors.principalTheOffer,
                                         icon: Icon(Icons.close),
                                         onPressed: () {
-                                          model.removerProdutoCarrinho(model.pedido.listaItensPedido[index].pedidoId,
-                                             Autenticacao.codigoUsuario,
-                                              model.pedido.listaItensPedido[index].produtoId);
+                                          model.removerProdutoCarrinho(
+                                              model
+                                                  .pedido
+                                                  .listaItensPedido[index]
+                                                  .pedidoId,
+                                              Autenticacao.codigoUsuario,
+                                              model
+                                                  .pedido
+                                                  .listaItensPedido[index]
+                                                  .produtoId);
                                         },
                                       ),
                                     ),
@@ -301,7 +312,8 @@ class _CarrinhoState extends State<Carrinho> {
                               Container(
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                  model.pedido.listaItensPedido[index].produto.valor,
+                                  model.pedido.listaItensPedido[index].produto
+                                      .valor,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: Colors.principalTheOffer,
@@ -340,25 +352,33 @@ class _CarrinhoState extends State<Carrinho> {
               return GestureDetector(
                 onTap: () {
                   if (Autenticacao.codigoUsuario > 0) {
-                    if (model.pedido.listaItensPedido[lineItemIndex].produto.quantidade - model.pedido.listaItensPedido[lineItemIndex].produto.quantidadeRestante + model.pedido.listaItensPedido[lineItemIndex].quantidade >= index) {
-                    model.adicionarProduto(
-                      usuarioId: Autenticacao.codigoUsuario,
-                      produtoId: model.pedido.listaItensPedido[lineItemIndex].produtoId,
-                      quantidade: index,
-                      somar: 0
-                    );
+                    if (model.pedido.listaItensPedido[lineItemIndex].produto
+                                .quantidade -
+                            model.pedido.listaItensPedido[lineItemIndex].produto
+                                .quantidadeRestante +
+                            model.pedido.listaItensPedido[lineItemIndex]
+                                .quantidade >=
+                        index) {
+                      model.adicionarProduto(
+                          usuarioId: Autenticacao.codigoUsuario,
+                          produtoId: model
+                              .pedido.listaItensPedido[lineItemIndex].produtoId,
+                          quantidade: index,
+                          somar: 0);
                     }
                   } else {
-                      MaterialPageRoute authRoute = MaterialPageRoute(
-                          builder: (context) => Authentication(0));
-                      Navigator.push(context, authRoute);
+                    MaterialPageRoute authRoute = MaterialPageRoute(
+                        builder: (context) => Authentication(0));
+                    Navigator.push(context, authRoute);
                   }
                 },
                 child: Container(
                     width: 40,
                     decoration: BoxDecoration(
                         border: Border.all(
-                          color: model.pedido.listaItensPedido[lineItemIndex].quantidade == index
+                          color: model.pedido.listaItensPedido[lineItemIndex]
+                                      .quantidade ==
+                                  index
                               ? Colors.white
                               : Colors.principalTheOffer,
                         ),
@@ -368,9 +388,12 @@ class _CarrinhoState extends State<Carrinho> {
                     child: Text(
                       index.toString(),
                       style: TextStyle(
-                          color: model.pedido.listaItensPedido[lineItemIndex].quantidade == index
-                              ? Colors.white
-                              : Colors.principalTheOffer,),
+                        color: model.pedido.listaItensPedido[lineItemIndex]
+                                    .quantidade ==
+                                index
+                            ? Colors.white
+                            : Colors.principalTheOffer,
+                      ),
                     )),
               );
             }

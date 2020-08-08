@@ -92,11 +92,17 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                 },
                 autofocus: true,
                 decoration: InputDecoration(
-                    hintText: 'Produto...',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 18, color: Colors.principalTheOffer),
-                    labelStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 18, color: Colors.principalTheOffer),
-                        ),
+                  hintText: 'Produto...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 18,
+                      color: Colors.principalTheOffer),
+                  labelStyle: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 18,
+                      color: Colors.principalTheOffer),
+                ),
               ),
             ),
             actions: <Widget>[
@@ -121,79 +127,91 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
             ],
           ),
           body: Container(
-                  color: Colors.terciariaTheOffer, 
-                  child: Stack(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top:50),
-                                child: isSearched && !_isLoading
-                                    ? Theme(
-                                        data: ThemeData(primarySwatch: Colors.secundariaTheOffer),
-                                        child: !_isLoading && !possuiProdutos
-                                              ?Padding(
-                                                  padding: EdgeInsets.symmetric(vertical: 50.0),
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Não foram encontrados produtos.',
-                                                      style: TextStyle(fontSize: 20.0),
-                                                      textAlign: TextAlign.center,
-                                                    ),
-                                                  ),
-                                                )
-                                              :Container(
-                                                  color: Colors.terciariaTheOffer, 
-                                                  child: ListView.builder(
-                                                  itemCount: listaProdutoEmpresa.length,
-                                                  itemBuilder: (mainContext, index) {
-                                                  if (listaProdutoEmpresa[index].listaProduto.length >
-                                                      0) {
-                                                    return cardProdutosEmpresa(index,
-                                                        listaProdutoEmpresa, _deviceSize, context);
-                                                  } else if (_isLoading) {
-                                                      return Padding(
-                                                        padding: EdgeInsets.symmetric(vertical: 25.0),
-                                                        child: Center(
-                                                            child: CircularProgressIndicator(
-                                                          backgroundColor: Colors.principalTheOffer,
-                                                        )),
-                                                      );
-                                                    } else {
-                                                      return Container(color: Colors.terciariaTheOffer,);
-                                                    }
-                                                  })
-                                                ),
-                                      )
-                                    : Container(color: Colors.terciariaTheOffer,),
-                              ),
-                              Visibility(
-                                  visible: listaProdutoEmpresa.length > 0,
-                                  child: Material(
-                                    elevation: 2.0,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      color: Colors.secundariaTheOffer,
-                                      height: 50.0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 18.0, left: 16.0),
-                                        child: Text(
-                                          '$produtosEncontrados Produtos encontrados',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(color: Colors.principalTheOffer),
-                                        ),
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: isSearched && !_isLoading
+                        ? Theme(
+                            data: ThemeData(
+                                primarySwatch: Colors.secundariaTheOffer),
+                            child: !_isLoading && !possuiProdutos
+                                ? Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 50.0),
+                                    child: Center(
+                                      child: Text(
+                                        'Não foram encontrados produtos.',
+                                        style: TextStyle(fontSize: 20.0),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  )),
-                              Visibility(
-                                  visible: _isLoading,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      backgroundColor: Colors.secundariaTheOffer,
-                                    ),
-                                  )),
-                            ],
-          )
-        )  
-      );
+                                  )
+                                : Container(
+                                    color: Colors.white,
+                                    child: ListView.builder(
+                                        itemCount: listaProdutoEmpresa.length,
+                                        itemBuilder: (mainContext, index) {
+                                          if (listaProdutoEmpresa[index]
+                                                  .listaProduto
+                                                  .length >
+                                              0) {
+                                            return cardProdutosEmpresa(
+                                                index,
+                                                listaProdutoEmpresa,
+                                                _deviceSize,
+                                                context);
+                                          } else if (_isLoading) {
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 25.0),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                backgroundColor:
+                                                    Colors.principalTheOffer,
+                                              )),
+                                            );
+                                          } else {
+                                            return Container(
+                                              color: Colors.white,
+                                            );
+                                          }
+                                        })),
+                          )
+                        : Container(
+                            color: Colors.white,
+                          ),
+                  ),
+                  Visibility(
+                      visible: listaProdutoEmpresa.length > 0,
+                      child: Material(
+                        elevation: 2.0,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.secundariaTheOffer,
+                          height: 50.0,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 18.0, left: 16.0),
+                            child: Text(
+                              '$produtosEncontrados Produtos encontrados',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(color: Colors.principalTheOffer),
+                            ),
+                          ),
+                        ),
+                      )),
+                  Visibility(
+                      visible: _isLoading,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.secundariaTheOffer,
+                        ),
+                      )),
+                ],
+              )));
     });
   }
 
@@ -214,8 +232,10 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
       "descricao": descricao
     };
 
-    http.Response response =
-        await http.post(Configuracoes.BASE_URL + 'produtos/pesquisar', headers: headers, body: objetoProduto);
+    http.Response response = await http.post(
+        Configuracoes.BASE_URL + 'produtos/pesquisar',
+        headers: headers,
+        body: objetoProduto);
 
     responseBody = json.decode(response.body);
     responseBody['empresas'].forEach((empresaJson) {
@@ -257,8 +277,7 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
       _isLoading = false;
       isSearched = true;
     });
-    
+
     return listaProdutoEmpresa;
   }
-
 }
