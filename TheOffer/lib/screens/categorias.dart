@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
@@ -52,7 +53,7 @@ class _TelaCategorias extends State<TelaCategorias> {
 
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return Scaffold( 
+      return Scaffold(
         drawer: HomeDrawer(),
         body: Container(
           color: Colors.secundariaTheOffer,
@@ -90,109 +91,108 @@ class _TelaCategorias extends State<TelaCategorias> {
                         ]),
                       ),
           ]),
-        ),  
+        ),
       );
     });
   }
 
-Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
-    List<Categoria> listaCategoria) {
-  if (index == 0) {
+  Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
+      List<Categoria> listaCategoria) {
+    if (index == 0) {
+      return GestureDetector(
+          onTap: () {
+            MaterialPageRoute route = MaterialPageRoute(
+                builder: (context) => TelaProdutos(idCategoria: 0));
+            Navigator.push(context, route);
+          },
+          child: Container(
+              margin: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: Colors.principalTheOffer,
+                  width: 1,
+                ),
+                color: Colors.secundariaTheOffer,
+              ),
+              child: Stack(children: [
+                Container(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Tudo',
+                              style: TextStyle(
+                                  color: Colors.principalTheOffer,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
+                            ),
+                          ]),
+                    )),
+              ])));
+    }
     return GestureDetector(
         onTap: () {
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: (context) => TelaProdutos(idCategoria: 0));
+          MaterialPageRoute route = MaterialPageRoute(
+              builder: (context) =>
+                  TelaProdutos(idCategoria: listaCategoria[index].id));
           Navigator.push(context, route);
         },
         child: Container(
             margin: EdgeInsets.all(5.0),
+            width: _deviceSize.width * 0.4,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),  
+              borderRadius: BorderRadius.circular(5),
               border: Border.all(
-                color: Colors.principalTheOffer, 
+                color: Colors.principalTheOffer,
                 width: 1,
               ),
               color: Colors.secundariaTheOffer,
             ),
             child: Stack(children: [
               Container(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Tudo',
-                            style: TextStyle(
-                                color: Colors.principalTheOffer,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                            textAlign: TextAlign.center,
-                          ),
-                        ]),
-                  )),
+                alignment: Alignment.bottomRight,
+                child:
+                    CachedNetworkImage(imageUrl: listaCategoria[index].imagem),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 10, top: 10),
+                child: Text(
+                  listaCategoria[index].nome,
+                  style: TextStyle(
+                      color: Colors.principalTheOffer,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
             ])));
   }
-  return GestureDetector(
-      onTap: () {
-        MaterialPageRoute route = MaterialPageRoute(
-            builder: (context) => TelaProdutos(idCategoria: listaCategoria[index].id));
-        Navigator.push(context, route);
-      },
-      child: Container(
-          margin: EdgeInsets.all(5.0),
-          width: _deviceSize.width * 0.4,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Colors.principalTheOffer, 
-              width: 1,
-            ),
-            color: Colors.secundariaTheOffer,
-          ),
-          child: Stack(children: [
-            Container(
-                alignment: Alignment.bottomRight,
-                 child: Image(
-                    image: NetworkImage(listaCategoria[index].imagem),
-                    ),
-                  ),
-            Container(
-              padding: EdgeInsets.only(left: 10, top: 10),
-              child: Text(
-                listaCategoria[index].nome,
-                style: TextStyle(
-                    color: Colors.principalTheOffer,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-          ])));
-}
 
   getCategorias() async {
     Map<String, String> headers = getHeaders();
 
-    http.get(Configuracoes.BASE_URL + 'categorias/', headers: headers).then((response) {
-    setState(() {
-      _carregandoCategoria = true;
-      listaProdutos = [];
-    });
+    http
+        .get(Configuracoes.BASE_URL + 'categorias/', headers: headers)
+        .then((response) {
+      setState(() {
+        _carregandoCategoria = true;
+        listaProdutos = [];
+      });
       responseBody = json.decode(response.body);
       responseBody['categorias'].forEach((categoriaJson) {
-          listaCategoria.add(Categoria(
-            id    : int.parse(categoriaJson['id']),
-            nome  : categoriaJson['nome'],
-            imagem: categoriaJson['imagem']
-          ));
-        }
-      );
+        listaCategoria.add(Categoria(
+            id: int.parse(categoriaJson['id']),
+            nome: categoriaJson['nome'],
+            imagem: categoriaJson['imagem']));
+      });
       setState(() {
         _carregandoCategoria = false;
       });
     });
-
   }
-
 }
