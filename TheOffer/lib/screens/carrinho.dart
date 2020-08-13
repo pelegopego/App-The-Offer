@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -238,10 +239,12 @@ class _CarrinhoState extends State<Carrinho> {
                                 height: 170,
                                 width: 180,
                                 color: Colors.secundariaTheOffer,
-                                child: Image(
-                                  image: NetworkImage(model.pedido
-                                      .listaItensPedido[index].produto.imagem),
-                                ),
+                                child: CachedNetworkImage(
+                                    imageUrl: model
+                                        .pedido
+                                        .listaItensPedido[index]
+                                        .produto
+                                        .imagem),
                               ),
                             ],
                           ),

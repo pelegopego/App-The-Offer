@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:theoffer/models/favorito.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -28,8 +29,7 @@ class _TelaFavorito extends State<TelaFavorito> {
     locator<ConnectivityManager>().initConnectivity(context);
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
-      }
+          scrollController.offset) {}
     });
   }
 
@@ -185,7 +185,7 @@ class _TelaFavorito extends State<TelaFavorito> {
         return GestureDetector(
           onTap: () {
             // getProductDetail(favorite.slug);
-            model.getProdutoDetalhe(1, context);//*bug
+            model.getProdutoDetalhe(1, context); //*bug
           },
           child: Card(
             elevation: 2,
@@ -198,10 +198,8 @@ class _TelaFavorito extends State<TelaFavorito> {
                 height: 150,
                 width: 150,
                 color: Colors.principalTheOffer,
-                child: Image(
-                  image: NetworkImage(
-                      favorito.image != null ? favorito.image : ''),
-                ),
+                child: CachedNetworkImage(
+                    imageUrl: favorito.image != null ? favorito.image : ''),
               ),
               Expanded(
                 child: Container(
@@ -248,7 +246,8 @@ class _TelaFavorito extends State<TelaFavorito> {
                                     'Removendo dos favoritos, aguarde.',
                                   ),
                                   duration: Duration(seconds: 1),
-                                ));/*
+                                ));
+                                /*
                                 http
                                     .delete(
                                         Settings.SERVER_URL +
@@ -317,5 +316,4 @@ class _TelaFavorito extends State<TelaFavorito> {
   void addItemtoDeleteList(Favorito favorito) {
     deletedProducts.add(favorito);
   }
-
 }

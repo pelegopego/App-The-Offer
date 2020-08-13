@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:theoffer/models/Produto.dart';
@@ -244,9 +245,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             alignment: Alignment.center,
                             height: 320,
                             width: 390,
-                            child: Image(
-                              image: NetworkImage(produtoSelecionado.imagem),
-                            ),
+                            child: CachedNetworkImage(
+                                imageUrl: produtoSelecionado.imagem),
                           ),
                         )),
                       ],

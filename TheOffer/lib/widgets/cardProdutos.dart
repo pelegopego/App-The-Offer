@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/models/Produto.dart';
@@ -217,11 +218,10 @@ Widget cardProdutos(int index, List<Produto> listaProdutos, Size _deviceSize,
               child: Column(
                 children: <Widget>[
                   Container(
-                    child: Image(
-                      image: NetworkImage(produtoDetalhado.imagem),
-                      height: 140,
-                      width: 140,
-                    ),
+                    child:
+                        CachedNetworkImage(imageUrl: produtoDetalhado.imagem),
+                    height: 140,
+                    width: 140,
                   ),
                   Container(
                     width: double.infinity,
