@@ -97,7 +97,6 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
             child: Column(children: <Widget>[
               Container(
                   width: _deviceSize.width,
-                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
@@ -112,6 +111,7 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
                         Text(listaProdutoEmpresa[index].fantasia,
                             style: TextStyle(
                                 fontSize: 14,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.secundariaTheOffer)),
                       ],
                     ),
@@ -154,7 +154,6 @@ Widget cardProdutosCategoria(
             child: Column(children: <Widget>[
               Container(
                   width: _deviceSize.width,
-                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Row(

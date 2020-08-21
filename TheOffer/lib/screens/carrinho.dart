@@ -39,7 +39,6 @@ class _CarrinhoState extends State<Carrinho> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
               centerTitle: false,
               leading: IconButton(
@@ -109,20 +108,20 @@ class _CarrinhoState extends State<Carrinho> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       if (model.pedido != null) {
-        return CustomScrollView(
-          slivers: <Widget>[
-            items(),
-          ],
-        );
-      } else {
         return Container(
-            child: Text(
-          'Não foram selecionados itens para o carrinho',
-          style: TextStyle(
-              fontSize: 16.5,
-              color: Colors.secundariaTheOffer,
-              fontWeight: FontWeight.bold),
-        ));
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/fundoBranco.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: CustomScrollView(
+              slivers: <Widget>[
+                items(),
+              ],
+            ));
+      } else {
+        return Container();
       }
     });
   }
@@ -382,7 +381,7 @@ class _CarrinhoState extends State<Carrinho> {
                           color: model.pedido.listaItensPedido[lineItemIndex]
                                       .quantidade ==
                                   index
-                              ? Colors.white
+                              ? Colors.white //Quantidade
                               : Colors.principalTheOffer,
                         ),
                         borderRadius: BorderRadius.circular(5)),
@@ -394,7 +393,7 @@ class _CarrinhoState extends State<Carrinho> {
                         color: model.pedido.listaItensPedido[lineItemIndex]
                                     .quantidade ==
                                 index
-                            ? Colors.white
+                            ? Colors.white //Quantidade
                             : Colors.principalTheOffer,
                       ),
                     )),

@@ -57,12 +57,11 @@ class _AuthenticationState extends State<Authentication>
       theme: ThemeData(
         fontFamily: fontFamily,
         primarySwatch: Colors.secundariaTheOffer,
-        accentColor: Colors.white,
+        accentColor: Colors.white, //Acentuação
       ),
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.white,
           key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: false,
@@ -97,12 +96,20 @@ class _AuthenticationState extends State<Authentication>
               height: 60,
             ),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              _renderLogin(targetWidth),
-              _renderSignup(targetWidth),
-            ],
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/fundoBranco.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _renderLogin(targetWidth),
+                _renderSignup(targetWidth),
+              ],
+            ),
           ),
         ),
       ),
@@ -113,94 +120,101 @@ class _AuthenticationState extends State<Authentication>
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return SingleChildScrollView(
-        child: Container(
-          width: targetWidth,
-          child: Form(
-            key: _formKeyForLogin,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Container(
+            width: targetWidth,
+            child: Form(
+              key: _formKeyForLogin,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
                   ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-                      labelText: 'Usuario',
-                      contentPadding: EdgeInsets.all(0.0),
-                      enabledBorder: _underlineInputBorder),
-                  keyboardType: TextInputType.text,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Informe um usuário valido';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    _formData['usuario'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 45.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelText: 'Senha (Mínimo de 6 dígitos)',
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-                      contentPadding: EdgeInsets.all(0.0),
-                      enabledBorder: _underlineInputBorder),
-                  obscureText: true,
-                  controller: _passwordTextController,
-                  validator: (String value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'A senha precisa possuir pelo menos 6 dígitos.';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    _formData['senha'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 35.0,
-                ),
-                _isLoader
-                    ? CircularProgressIndicator(
-                        backgroundColor: Colors.secundariaTheOffer)
-                    : Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(15),
-                        child: FlatButton(
-                          textColor: Colors.principalTheOffer,
-                          color: Colors.secundariaTheOffer,
-                          child: Text(
-                            'ENTRAR',
-                            style: TextStyle(fontSize: 12.0),
-                          ),
-                          onPressed: () => _realizarLogin(model),
-                        )),
-                SizedBox(
-                  height: 20.0,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    esqueceuSenha();
-                  },
-                  child: Text(
-                    'Esqueceu sua senha?',
-                    textAlign: TextAlign.center,
+                  TextFormField(
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.secundariaTheOffer,
-                        fontSize: 14.0),
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold),
+                        labelText: 'Usuario',
+                        contentPadding: EdgeInsets.all(0.0),
+                        enabledBorder: _underlineInputBorder),
+                    keyboardType: TextInputType.text,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Informe um usuário valido';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      _formData['usuario'] = value;
+                    },
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 45.0,
+                  ),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelText: 'Senha (Mínimo de 6 dígitos)',
+                        labelStyle: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold),
+                        contentPadding: EdgeInsets.all(0.0),
+                        enabledBorder: _underlineInputBorder),
+                    obscureText: true,
+                    controller: _passwordTextController,
+                    validator: (String value) {
+                      if (value.isEmpty || value.length < 5) {
+                        return 'A senha precisa possuir pelo menos 6 dígitos.';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      _formData['senha'] = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  _isLoader
+                      ? CircularProgressIndicator(
+                          backgroundColor: Colors.secundariaTheOffer)
+                      : Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(15),
+                          child: FlatButton(
+                            textColor: Colors.principalTheOffer,
+                            color: Colors.secundariaTheOffer,
+                            child: Text(
+                              'ENTRAR',
+                              style: TextStyle(fontSize: 12.0),
+                            ),
+                            onPressed: () => _realizarLogin(model),
+                          )),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      esqueceuSenha();
+                    },
+                    child: Text(
+                      'Esqueceu sua senha?',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.secundariaTheOffer,
+                          fontSize: 14.0),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -235,7 +249,9 @@ class _AuthenticationState extends State<Authentication>
                     color: Colors.secundariaTheOffer,
                   ),
                   decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
                       labelText: 'Usuario',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.text,
@@ -257,7 +273,9 @@ class _AuthenticationState extends State<Authentication>
                     color: Colors.secundariaTheOffer,
                   ),
                   decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
                       labelText: 'Nome',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.text,
@@ -273,7 +291,9 @@ class _AuthenticationState extends State<Authentication>
                     color: Colors.secundariaTheOffer,
                   ),
                   decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
                       labelText: 'Sobrenome',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.text,
@@ -289,7 +309,9 @@ class _AuthenticationState extends State<Authentication>
                     color: Colors.secundariaTheOffer,
                   ),
                   decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
                       labelText: 'Email',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.text,
@@ -312,7 +334,9 @@ class _AuthenticationState extends State<Authentication>
                   ),
                   decoration: InputDecoration(
                       labelText: 'Senha (Mínimo de 6 dígitos)',
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
                       enabledBorder: _underlineInputBorder),
                   obscureText: true,
                   controller: _passwordTextController,
@@ -334,7 +358,9 @@ class _AuthenticationState extends State<Authentication>
                     color: Colors.secundariaTheOffer,
                   ),
                   decoration: InputDecoration(
-                    labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                    labelStyle: TextStyle(
+                        color: Colors.secundariaTheOffer,
+                        fontWeight: FontWeight.bold),
                     labelText: 'Confirmar senha',
                     enabledBorder: _underlineInputBorder,
                   ),
@@ -354,7 +380,9 @@ class _AuthenticationState extends State<Authentication>
                     color: Colors.secundariaTheOffer,
                   ),
                   decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
                       labelText: 'Telefone',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.phone,

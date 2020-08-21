@@ -85,7 +85,12 @@ class _TelaCategorias extends State<TelaCategorias> {
                         delegate: SliverChildListDelegate([
                           Container(
                             width: _deviceSize.width,
-                            color: Colors.white,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("images/fundoBranco.png"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             child: Center(
                               child: Text('Sem categorias.'),
                             ),

@@ -43,7 +43,6 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
@@ -64,8 +63,22 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                     preferredSize: Size.fromHeight(10),
                   )),
         body: !_pedidosLoading || listaPedidos.length > 0
-            ? Container(child: body())
-            : Container(child: Text('Você ainda não efetuou nenhum pedido.')),
+            ? Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("images/fundoBranco.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: body())
+            : Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("images/fundoBranco.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
       );
     });
   }
@@ -102,7 +115,12 @@ class _ListagemPedidos extends State<ListagemPedidos> {
               child: _pedidosLoading
                   ? Container()
                   : Container(
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("images/fundoBranco.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,

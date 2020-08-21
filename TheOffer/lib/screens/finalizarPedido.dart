@@ -102,7 +102,12 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
           body: _isLoading
               ? Container()
               : Container(
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("images/fundoBranco.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   child: CustomScrollView(slivers: [
                     SliverToBoxAdapter(
                         child: Container(
@@ -522,7 +527,6 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Container(
-        color: Colors.white,
         padding: EdgeInsets.all(5),
         child: model.isLoading
             ? Center(

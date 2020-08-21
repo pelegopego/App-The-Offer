@@ -40,7 +40,6 @@ class _ListagemEndereco extends State<ListagemEndereco> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
@@ -61,14 +60,23 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                     preferredSize: Size.fromHeight(10),
                   )),
         body: !_enderecosLoading || listaEnderecos != null
-            ? Container(child: body())
+            ? Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("images/fundoBranco.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: body())
             : !_enderecosLoading
                 ? Container(
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.secundariaTheOffer,
-                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage("images/fundoBranco.png"),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     child: IconButton(
                       iconSize: 24,
@@ -124,7 +132,12 @@ class _ListagemEndereco extends State<ListagemEndereco> {
                     ? Container()
                     : index != listaEnderecos.length
                         ? Container(
-                            color: Colors.white,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("images/fundoBranco.png"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

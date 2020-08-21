@@ -49,7 +49,6 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
@@ -57,8 +56,17 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text('Cadastro de Endereço',
-                style: TextStyle(color: Colors.principalTheOffer))),
-        body: body(),
+                style: TextStyle(
+                    color: Colors.principalTheOffer,
+                    fontWeight: FontWeight.bold))),
+        body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/fundoBranco.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: body()),
       );
     });
   }
@@ -176,8 +184,10 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text("Bairro",
-                style:
-                    TextStyle(fontSize: 17, color: Colors.secundariaTheOffer)),
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold)),
           ),
           Container(
               decoration: BoxDecoration(color: Colors.secundariaTheOffer),
@@ -185,7 +195,9 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
                 child: DropdownButton<int>(
                   isExpanded: true,
                   items: listaBairros,
-                  style: TextStyle(color: Colors.principalTheOffer),
+                  style: TextStyle(
+                      color: Colors.principalTheOffer,
+                      fontWeight: FontWeight.bold),
                   onChanged: (value) => mudouBairro(value),
                 ),
               ))
@@ -214,7 +226,9 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
           listaBairros.add(new DropdownMenuItem(
               child: new Text(
                 categoriaJson['nome'],
-                style: TextStyle(color: Colors.principalTheOffer),
+                style: TextStyle(
+                    color: Colors.principalTheOffer,
+                    fontWeight: FontWeight.bold),
               ),
               value: int.parse(categoriaJson['id'])));
         });
@@ -232,9 +246,12 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         child: TextFormField(
           style: TextStyle(
             color: Colors.secundariaTheOffer,
+            fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelStyle: TextStyle(
+                  color: Colors.secundariaTheOffer,
+                  fontWeight: FontWeight.bold),
               labelText: 'Nome',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: UnderlineInputBorder(
@@ -258,9 +275,12 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         child: TextFormField(
           style: TextStyle(
             color: Colors.secundariaTheOffer,
+            fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelStyle: TextStyle(
+                  color: Colors.secundariaTheOffer,
+                  fontWeight: FontWeight.bold),
               labelText: 'Rua',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: UnderlineInputBorder(
@@ -284,9 +304,12 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         child: TextFormField(
           style: TextStyle(
             color: Colors.secundariaTheOffer,
+            fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelStyle: TextStyle(
+                  color: Colors.secundariaTheOffer,
+                  fontWeight: FontWeight.bold),
               labelText: 'Número',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: UnderlineInputBorder(
@@ -310,9 +333,12 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         child: TextFormField(
           style: TextStyle(
             color: Colors.secundariaTheOffer,
+            fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelStyle: TextStyle(
+                  color: Colors.secundariaTheOffer,
+                  fontWeight: FontWeight.bold),
               labelText: 'Complemento',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: UnderlineInputBorder(
@@ -336,9 +362,12 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
         child: TextFormField(
           style: TextStyle(
             color: Colors.secundariaTheOffer,
+            fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+              labelStyle: TextStyle(
+                  color: Colors.secundariaTheOffer,
+                  fontWeight: FontWeight.bold),
               labelText: 'Referência',
               contentPadding: EdgeInsets.all(0.0),
               enabledBorder: UnderlineInputBorder(
@@ -364,7 +393,8 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
     return CheckboxListTile(
       title: Text(
         "ENDEREÇO FAVORITO",
-        style: TextStyle(color: Colors.secundariaTheOffer),
+        style: TextStyle(
+            color: Colors.secundariaTheOffer, fontWeight: FontWeight.bold),
       ),
       value: favorito,
       onChanged: alterouCheckbox,

@@ -75,7 +75,12 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
         ),
         drawer: HomeDrawer(),
         body: Container(
-          color: Colors.white,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/fundoBranco.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: CustomScrollView(slivers: [
             _empresasLoading
                 ? SliverList(

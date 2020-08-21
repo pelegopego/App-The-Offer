@@ -64,7 +64,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
           key: _scaffoldKey,
-          backgroundColor: Colors.white,
           appBar: AppBar(
             leading: IconButton(
                 icon:
@@ -106,9 +105,17 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               ),
             ),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[highlightsTab()],
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/fundoBranco.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[highlightsTab()],
+            ),
           ),
           floatingActionButton: adicionarCarrinhoFloatButton());
     });
@@ -202,7 +209,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                     decoration: BoxDecoration(
                         border: Border.all(
                           color: quantidade == index
-                              ? Colors.white
+                              ? Colors.white //Quantidade
                               : Colors.principalTheOffer,
                         ),
                         borderRadius: BorderRadius.circular(5)),
@@ -214,7 +221,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       index.toString(),
                       style: TextStyle(
                         color: quantidade == index
-                            ? Colors.white
+                            ? Colors.white //Quantidade
                             : Colors.principalTheOffer,
                       ),
                     )),

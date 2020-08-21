@@ -57,7 +57,12 @@ class _DetalharPedido extends State<DetalharPedido> {
               preferredSize: Size.fromHeight(10),
             )),
         body: Container(
-            color: Colors.white,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/fundoBranco.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: CustomScrollView(slivers: [
               SliverToBoxAdapter(
                   child: Container(
@@ -424,7 +429,6 @@ class _DetalharPedido extends State<DetalharPedido> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Container(
-        color: Colors.white,
         padding: EdgeInsets.all(5),
         child: Container(
           color: Colors.secundariaTheOffer,

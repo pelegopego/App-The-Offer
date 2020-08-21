@@ -96,7 +96,12 @@ class _TelaProdutos extends State<TelaProdutos> {
             iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
         drawer: HomeDrawer(),
         body: Container(
-          color: Colors.white,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/fundoBranco.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: CustomScrollView(slivers: [
             /*SliverList(
               delegate: SliverChildListDelegate([
@@ -301,7 +306,7 @@ class _TelaProdutos extends State<TelaProdutos> {
             Container(
               decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
-                  color: Colors.white,
+                  color: Colors.white, //Barra de pesquisa
                   borderRadius: BorderRadius.circular(5)),
               width: _deviceSize.width,
               height: 49,

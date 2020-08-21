@@ -127,7 +127,12 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
             ],
           ),
           body: Container(
-              color: Colors.white,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/fundoBranco.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Stack(
                 children: <Widget>[
                   Padding(
@@ -149,7 +154,13 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                                     ),
                                   )
                                 : Container(
-                                    color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            "images/fundoBranco.png"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                     child: ListView.builder(
                                         itemCount: listaProdutoEmpresa.length,
                                         itemBuilder: (mainContext, index) {
@@ -174,15 +185,11 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                                               )),
                                             );
                                           } else {
-                                            return Container(
-                                              color: Colors.white,
-                                            );
+                                            return Container();
                                           }
                                         })),
                           )
-                        : Container(
-                            color: Colors.white,
-                          ),
+                        : Container(),
                   ),
                   Visibility(
                       visible: listaProdutoEmpresa.length > 0,

@@ -81,7 +81,12 @@ class _TelaPagamento extends State<TelaPagamento> {
           body: _isLoading
               ? Container()
               : Container(
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("images/fundoBranco.png"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   child: CustomScrollView(slivers: [
                     SliverToBoxAdapter(
                         child: Padding(
@@ -237,7 +242,12 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/fundoBranco.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         margin: EdgeInsets.only(left: 30),
         child: widget.isLoading
             ? Center(
@@ -306,7 +316,12 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/fundoBranco.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         margin: EdgeInsets.only(right: 30),
         child: widget.isLoading
             ? Center(
@@ -344,7 +359,12 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/fundoBranco.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: EdgeInsets.all(5),
         child: widget.isLoading
             ? Center(
