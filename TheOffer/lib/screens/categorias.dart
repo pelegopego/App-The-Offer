@@ -62,10 +62,12 @@ class _TelaCategorias extends State<TelaCategorias> {
                 ? SliverList(
                     delegate: SliverChildListDelegate([
                     Container(
-                      height: _deviceSize.height * 0.5,
+                      height: _deviceSize.height * 1,
                       alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.secundariaTheOffer,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.secundariaTheOffer,
+                        ),
                       ),
                     )
                   ]))

@@ -18,39 +18,51 @@ class TelaCidade extends StatefulWidget {
 
 class _TelaCidade extends State<TelaCidade> {
   List<DropdownMenuItem<int>> listaCidades = [];
+  bool cidadesLoading;
 
   criaDropDownButton() {
-    return Container(      
-      color: Colors.secundariaTheOffer,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),  
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 280),
-          Text("Selecione a cidade",
-          style: TextStyle(color: Colors.principalTheOffer),
+    if (cidadesLoading) {
+      return Container(
+        color: Colors.secundariaTheOffer,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.secundariaTheOffer,
           ),
-          Container(   
-             decoration: BoxDecoration(
-             color: Colors.principalTheOffer,
-             borderRadius: BorderRadius.circular(5)),   
-             child: DropdownButtonHideUnderline(
-              child: DropdownButton<int>(
-                isExpanded: true,
-                items: listaCidades,
-                style: 
-                TextStyle(color: Colors.secundariaTheOffer),
-                onChanged: (value) => mudouCidade(value),   
-                ),
-            )     
-          )
-        ],
-      ),
-    );
+        ),
+      );
+    } else {
+      return Container(
+        color: Colors.secundariaTheOffer,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 280),
+            Text(
+              "Selecione a cidade",
+              style: TextStyle(color: Colors.principalTheOffer),
+            ),
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.principalTheOffer,
+                    borderRadius: BorderRadius.circular(5)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<int>(
+                    isExpanded: true,
+                    items: listaCidades,
+                    style: TextStyle(color: Colors.secundariaTheOffer),
+                    onChanged: (value) => mudouCidade(value),
+                  ),
+                ))
+          ],
+        ),
+      );
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    cidadesLoading = true;
     getCidadeStorage();
   }    
 
@@ -74,9 +86,13 @@ class _TelaCidade extends State<TelaCidade> {
 
   @override
   Widget build(BuildContext context) {
-    if (CidadeSelecionada.id > 0){
-      mudarRota();
-      return Container();
+    if (CidadeSelecionada.id > 0) {
+      if (cidadesLoading) {
+        mudarRota();
+      }
+      return Container(
+        color: Colors.secundariaTheOffer,
+      );
     } else {
       getCidades();
       return ScopedModelDescendant<MainModel>(
@@ -115,6 +131,11 @@ class _TelaCidade extends State<TelaCidade> {
                   child: new Text(categoriaJson['nome']), value: int.parse(categoriaJson['id'])));
           });
         });
+        if (listaCidades.length > 0) {
+          setState(() {
+            cidadesLoading = false;
+          });
+        }
       }
     });
   }
