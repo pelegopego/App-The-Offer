@@ -55,6 +55,7 @@ class _AuthenticationState extends State<Authentication>
       debugShowCheckedModeBanner: false,
       color: Colors.secundariaTheOffer,
       theme: ThemeData(
+        fontFamily: fontFamily,
         primarySwatch: Colors.secundariaTheOffer,
         accentColor: Colors.white,
       ),
@@ -121,11 +122,50 @@ class _AuthenticationState extends State<Authentication>
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildUsuarioTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelText: 'Usuario',
+                      contentPadding: EdgeInsets.all(0.0),
+                      enabledBorder: _underlineInputBorder),
+                  keyboardType: TextInputType.text,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Informe um usuário valido';
+                    }
+                    return null;
+                  },
+                  onSaved: (String value) {
+                    _formData['usuario'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 45.0,
                 ),
-                _buildPasswordTextField(false),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelText: 'Senha (Mínimo de 6 dígitos)',
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      contentPadding: EdgeInsets.all(0.0),
+                      enabledBorder: _underlineInputBorder),
+                  obscureText: true,
+                  controller: _passwordTextController,
+                  validator: (String value) {
+                    if (value.isEmpty || value.length < 5) {
+                      return 'A senha precisa possuir pelo menos 6 dígitos.';
+                    }
+                    return null;
+                  },
+                  onSaved: (String value) {
+                    _formData['senha'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 35.0,
                 ),
@@ -190,31 +230,138 @@ class _AuthenticationState extends State<Authentication>
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildUsuarioTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelText: 'Usuario',
+                      enabledBorder: _underlineInputBorder),
+                  keyboardType: TextInputType.text,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Informe um usuário valido';
+                    }
+                    return null;
+                  },
+                  onSaved: (String value) {
+                    _formData['usuario'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildNomeTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelText: 'Nome',
+                      enabledBorder: _underlineInputBorder),
+                  keyboardType: TextInputType.text,
+                  onSaved: (String value) {
+                    _formData['nome'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildSobreNomeTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelText: 'Sobrenome',
+                      enabledBorder: _underlineInputBorder),
+                  keyboardType: TextInputType.text,
+                  onSaved: (String value) {
+                    _formData['sobrenome'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildEmailTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelText: 'Email',
+                      enabledBorder: _underlineInputBorder),
+                  keyboardType: TextInputType.text,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Informe email valido';
+                    }
+                    return null;
+                  },
+                  onSaved: (String value) {
+                    _formData['email'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildPasswordTextField(true),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelText: 'Senha (Mínimo de 6 dígitos)',
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      enabledBorder: _underlineInputBorder),
+                  obscureText: true,
+                  controller: _passwordTextController,
+                  validator: (String value) {
+                    if (value.isEmpty || value.length < 5) {
+                      return 'A senha precisa possuir pelo menos 6 dígitos.';
+                    }
+                    return null;
+                  },
+                  onSaved: (String value) {
+                    _formData['senha'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildPasswordConfirmTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                    labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                    labelText: 'Confirmar senha',
+                    enabledBorder: _underlineInputBorder,
+                  ),
+                  obscureText: true,
+                  validator: (String value) {
+                    if (_passwordTextController.text != value) {
+                      return 'As senhas estão diferentes.';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
-                _buildTelefoneTextField(),
+                TextFormField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(color: Colors.secundariaTheOffer),
+                      labelText: 'Telefone',
+                      enabledBorder: _underlineInputBorder),
+                  keyboardType: TextInputType.phone,
+                  onSaved: (String value) {
+                    _formData['telefone'] = value;
+                  },
+                ),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -242,173 +389,6 @@ class _AuthenticationState extends State<Authentication>
         ),
       ),
     );
-  }
-
-  Widget _buildNomeTextField() {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(
-          style: TextStyle(
-            color: Colors.secundariaTheOffer,
-          ),
-          decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Nome',
-              contentPadding: EdgeInsets.all(0.0),
-              enabledBorder: _underlineInputBorder),
-          keyboardType: TextInputType.text,
-          onSaved: (String value) {
-            _formData['nome'] = value;
-          },
-        ));
-  }
-
-  Widget _buildSobreNomeTextField() {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(
-          style: TextStyle(
-            color: Colors.secundariaTheOffer,
-          ),
-          decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Sobrenome',
-              contentPadding: EdgeInsets.all(0.0),
-              enabledBorder: _underlineInputBorder),
-          keyboardType: TextInputType.text,
-          onSaved: (String value) {
-            _formData['sobrenome'] = value;
-          },
-        ));
-  }
-
-  Widget _buildUsuarioTextField() {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(
-          style: TextStyle(
-            color: Colors.secundariaTheOffer,
-          ),
-          decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Usuario',
-              contentPadding: EdgeInsets.all(0.0),
-              enabledBorder: _underlineInputBorder),
-          keyboardType: TextInputType.text,
-          validator: (String value) {
-            if (value.isEmpty) {
-              return 'Informe um usuário valido';
-            }
-            return null;
-          },
-          onSaved: (String value) {
-            _formData['usuario'] = value;
-          },
-        ));
-  }
-
-  Widget _buildEmailTextField() {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(
-          style: TextStyle(
-            color: Colors.secundariaTheOffer,
-          ),
-          decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Email',
-              contentPadding: EdgeInsets.all(0.0),
-              enabledBorder: _underlineInputBorder),
-          keyboardType: TextInputType.text,
-          validator: (String value) {
-            if (value.isEmpty) {
-              return 'Informe email valido';
-            }
-            return null;
-          },
-          onSaved: (String value) {
-            _formData['email'] = value;
-          },
-        ));
-  }
-
-  Widget _buildPasswordTextField([bool isLimitCharacter = false]) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15.0),
-      child: TextFormField(
-        style: TextStyle(
-          color: Colors.secundariaTheOffer,
-        ),
-        decoration: InputDecoration(
-            labelText:
-                isLimitCharacter ? 'Senha (Mínimo de 6 dígitos)' : 'Senha',
-            labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-            contentPadding: EdgeInsets.all(0.0),
-            enabledBorder: _underlineInputBorder),
-        obscureText: true,
-        controller: _passwordTextController,
-        validator: (String value) {
-          if (value.isEmpty || value.length < 5) {
-            return 'A senha precisa possuir pelo menos 6 dígitos.';
-          }
-          return null;
-        },
-        onSaved: (String value) {
-          _formData['senha'] = value;
-        },
-      ),
-    );
-  }
-
-  Widget _buildPasswordConfirmTextField() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      child: TextFormField(
-        style: TextStyle(
-          color: Colors.secundariaTheOffer,
-        ),
-        decoration: InputDecoration(
-          labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-          labelText: 'Confirmar senha',
-          enabledBorder: _underlineInputBorder,
-          contentPadding: EdgeInsets.all(0.0),
-        ),
-        obscureText: true,
-        validator: (String value) {
-          if (_passwordTextController.text != value) {
-            return 'As senhas estão diferentes.';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildTelefoneTextField() {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        child: TextFormField(
-          style: TextStyle(
-            color: Colors.secundariaTheOffer,
-          ),
-          decoration: InputDecoration(
-              labelStyle: TextStyle(color: Colors.secundariaTheOffer),
-              labelText: 'Telefone',
-              contentPadding: EdgeInsets.all(0.0),
-              enabledBorder: _underlineInputBorder),
-          keyboardType: TextInputType.phone,
-          /*validator: (String value) {
-            if (value.isEmpty ||
-                !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-                    .hasMatch(value)) {
-              return 'Informe um email válido';
-            }
-            return null;
-          },*/
-          onSaved: (String value) {
-            _formData['telefone'] = value;
-          },
-        ));
   }
 
   void _realizarLogin(MainModel model) {

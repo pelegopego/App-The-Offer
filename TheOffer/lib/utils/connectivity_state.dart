@@ -4,6 +4,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:theoffer/utils/constants.dart';
 
 class ConnectivityManager {
   StreamSubscription<ConnectivityResult> subscription;
@@ -57,7 +58,9 @@ class ConnectivityManager {
                 'TheOffer',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: 'HolyFat', fontSize: 50, color: Colors.principalTheOffer),
+                    fontFamily: fontFamily,
+                    fontSize: 50,
+                    color: Colors.principalTheOffer),
               ),
             ),
             Column(
@@ -72,7 +75,8 @@ class ConnectivityManager {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'You are not connected to internet',
-                    style: TextStyle(color: Colors.principalTheOffer, fontSize: 18.0),
+                    style: TextStyle(
+                        color: Colors.principalTheOffer, fontSize: 18.0),
                   ),
                 ),
               ],
@@ -129,7 +133,9 @@ class _ConnectivityPageState extends State<ConnectivityPage> {
                   'TheOffer',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontFamily: 'HolyFat', fontSize: 50, color: Colors.principalTheOffer),
+                      fontFamily: fontFamily,
+                      fontSize: 50,
+                      color: Colors.principalTheOffer),
                 ),
               ),
             ),
@@ -147,7 +153,8 @@ class _ConnectivityPageState extends State<ConnectivityPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'You are not connected to the internet.',
-                      style: TextStyle(color: Colors.principalTheOffer, fontSize: 22.0),
+                      style: TextStyle(
+                          color: Colors.principalTheOffer, fontSize: 22.0),
                       textAlign: TextAlign.center,
                     ),
                   ),

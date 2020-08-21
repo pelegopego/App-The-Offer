@@ -46,11 +46,10 @@ class _MyAppState extends State<MyApp> {
     String token;
 
     Map<String, String> allValues = await storage.readAll();
-    if (allValues.length > 0) 
-    {
-      codigoUsuarioAuxiliar     = await storage.read(key: "codigoUsuario");
-      nomeUsuarioAuxiliar       = await storage.read(key: "nomeUsuario");
-      token                     = await storage.read(key: "token");
+    if (allValues.length > 0) {
+      codigoUsuarioAuxiliar = await storage.read(key: "codigoUsuario");
+      nomeUsuarioAuxiliar = await storage.read(key: "nomeUsuario");
+      token = await storage.read(key: "token");
 
       if (codigoUsuarioAuxiliar != null) {
         Autenticacao.codigoUsuario = int.parse(codigoUsuarioAuxiliar);
@@ -72,14 +71,12 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'TheOffer',
         initialRoute: '/cidades',
-        routes: {
-          '/cidades' : (context) => TelaCidade()
-        },
+        routes: {'/cidades': (context) => TelaCidade()},
         theme: ThemeData(
-          primarySwatch: Colors.secundariaTheOffer,
-          accentColor: Colors.principalTheOffer,
-          unselectedWidgetColor: Colors.principalTheOffer
-        ),
+            fontFamily: fontFamily,
+            primarySwatch: Colors.secundariaTheOffer,
+            accentColor: Colors.principalTheOffer,
+            unselectedWidgetColor: Colors.principalTheOffer),
         home: TelaCidade(),
       ),
     );
