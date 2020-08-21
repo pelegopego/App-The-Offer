@@ -195,8 +195,9 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
                 child: DropdownButton<int>(
                   isExpanded: true,
                   items: listaBairros,
+                  value: bairroSelecionado != 0 ? bairroSelecionado : null,
                   style: TextStyle(
-                      color: Colors.principalTheOffer,
+                      color: Colors.secundariaTheOffer,
                       fontWeight: FontWeight.bold),
                   onChanged: (value) => mudouBairro(value),
                 ),
@@ -237,7 +238,9 @@ class _TelaCadastroEndereco extends State<TelaCadastroEndereco> {
   }
 
   mudouBairro(int idBairro) {
-    bairroSelecionado = idBairro;
+    setState(() {
+      bairroSelecionado = idBairro;
+    });
   }
 
   Widget montarCampoNomeTexto() {

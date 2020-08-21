@@ -46,7 +46,7 @@ class _TelaCidade extends State<TelaCidade> {
                     color: Colors.principalTheOffer,
                     borderRadius: BorderRadius.circular(5)),
                 child: DropdownButtonHideUnderline(
-                  child: DropdownButton<int>(
+                  child: DropdownButton(
                     isExpanded: true,
                     items: listaCidades,
                     style: TextStyle(color: Colors.secundariaTheOffer),
