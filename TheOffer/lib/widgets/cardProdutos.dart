@@ -167,6 +167,7 @@ Widget cardProdutosCategoria(
                         ),
                         Text(listaProdutoCategoria[index].nome,
                             style: TextStyle(
+                                fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Colors.secundariaTheOffer)),
                       ],

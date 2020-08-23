@@ -128,8 +128,13 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                             EdgeInsets.all(15),
                                                         height: 170,
                                                         width: 180,
-                                                        color: Colors
-                                                            .secundariaTheOffer,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .secundariaTheOffer,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5)),
                                                         child: CachedNetworkImage(
                                                             imageUrl:
                                                                 empresaDetalhada
