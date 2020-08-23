@@ -217,6 +217,9 @@ Widget cardProdutos(int index, List<Produto> listaProdutos, Size _deviceSize,
               child: Column(
                 children: <Widget>[
                   Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                    margin: EdgeInsets.all(5),
                     child:
                         CachedNetworkImage(imageUrl: produtoDetalhado.imagem),
                     height: 140,
@@ -236,7 +239,7 @@ Widget cardProdutos(int index, List<Produto> listaProdutos, Size _deviceSize,
                   Container(
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0, top: 10.0),
+                      padding: const EdgeInsets.only(left: 12.0, top: 5.0),
                       child: Text(
                         produtoDetalhado.valor.toString(),
                         textAlign: TextAlign.start,
