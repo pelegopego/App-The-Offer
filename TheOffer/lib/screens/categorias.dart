@@ -105,44 +105,6 @@ class _TelaCategorias extends State<TelaCategorias> {
 
   Widget cardCategoria(int index, BuildContext context, Size _deviceSize,
       List<Categoria> listaCategoria) {
-    if (index == 0) {
-      return GestureDetector(
-          onTap: () {
-            MaterialPageRoute route = MaterialPageRoute(
-                builder: (context) => TelaProdutos(idCategoria: 0));
-            Navigator.push(context, route);
-          },
-          child: Container(
-              margin: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: Colors.principalTheOffer,
-                  width: 1,
-                ),
-                color: Colors.secundariaTheOffer,
-              ),
-              child: Stack(children: [
-                Container(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Tudo',
-                              style: TextStyle(
-                                  color: Colors.principalTheOffer,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                    )),
-              ])));
-    }
     return GestureDetector(
         onTap: () {
           MaterialPageRoute route = MaterialPageRoute(
@@ -163,20 +125,28 @@ class _TelaCategorias extends State<TelaCategorias> {
             ),
             child: Stack(children: [
               Container(
-                alignment: Alignment.bottomRight,
+                margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 25),
+                alignment: Alignment.center,
                 child:
                     CachedNetworkImage(imageUrl: listaCategoria[index].imagem),
               ),
               Container(
-                padding: EdgeInsets.only(left: 10, top: 10),
-                child: Text(
-                  listaCategoria[index].nome,
-                  style: TextStyle(
-                      color: Colors.principalTheOffer,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
+                margin: EdgeInsets.only(left: 50, top: 5),
+                height: 20,
+                width: 100,
+                color: Colors.principalTheOffer,
+                alignment: Alignment.center,
+                child: RichText(
+                  text: TextSpan(
+                    text: listaCategoria[index].nome[0].toUpperCase() +
+                        listaCategoria[index].nome.toLowerCase().substring(1),
+                    style: TextStyle(
+                        color: Colors.secundariaTheOffer,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
+              )
             ])));
   }
 
