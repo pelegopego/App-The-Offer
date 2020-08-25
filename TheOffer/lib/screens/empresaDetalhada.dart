@@ -15,6 +15,7 @@ import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TelaEmpresaDetalhada extends StatefulWidget {
   final int idEmpresa;
@@ -51,6 +52,15 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
   @override
   Widget build(BuildContext context) {
     _deviceSize = MediaQuery.of(context).size;
+
+    _callMe(String phone) async {
+      final uri = 'tel:$phone';
+      if (await canLaunch(uri)) {
+        await launch(uri);
+      } else {
+        throw 'Não foi possível $uri';
+      }
+    }
 
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
@@ -188,16 +198,28 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                       Container(
                                                         alignment:
                                                             Alignment.topLeft,
-                                                        child: Text(
-                                                          empresaDetalhada
-                                                              .telefone
-                                                              .toString(),
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            _callMe(
+                                                                empresaDetalhada
+                                                                    .telefone
+                                                                    .toString());
+                                                          },
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                              Icons.call,
                                                               color: Colors
                                                                   .principalTheOffer,
-                                                              fontSize: 18),
+                                                            ),
+                                                            title: Text(
+                                                              empresaDetalhada
+                                                                  .telefone
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .principalTheOffer),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
