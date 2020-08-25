@@ -72,6 +72,7 @@ mixin CarrinhoModel on Model {
     responseBody['empresas'].forEach((empresaJson) {
       empresaJson['produtos'].forEach((produtoJson) {
         produtoDetalhado = Produto(
+            empresa: int.parse(produtoJson['empresa_id']),
             id: int.parse(produtoJson['id']),
             titulo: produtoJson['titulo'],
             descricao: produtoJson['descricao'],
@@ -83,7 +84,8 @@ mixin CarrinhoModel on Model {
             dataInicial: produtoJson['dataInicial'],
             dataFinal: produtoJson['dataFinal'],
             dataCadastro: produtoJson['dataCadastro'],
-            usuarioId: int.parse(produtoJson['usuario_id']));
+            usuarioId: int.parse(produtoJson['usuario_id']),
+            categoria: int.parse(produtoJson['categoria_id']));
       });
     });
 

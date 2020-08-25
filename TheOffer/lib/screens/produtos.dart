@@ -128,8 +128,8 @@ class _TelaProdutos extends State<TelaProdutos> {
                 : SliverToBoxAdapter(
                     child: Container(
                       height: Autenticacao.codigoUsuario == 0
-                          ? _deviceSize.height * 0.70
-                          : _deviceSize.height * 0.77,
+                          ? _deviceSize.height * 0.64
+                          : _deviceSize.height * 0.72,
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
                           itemCount: listaProdutoEmpresa.length,
@@ -273,6 +273,7 @@ class _TelaProdutos extends State<TelaProdutos> {
                     dataInicial: produtoJson['dataInicial'],
                     dataFinal: produtoJson['dataFinal'],
                     dataCadastro: produtoJson['dataCadastro'],
+                    categoria: int.parse(produtoJson['categoria_id']),
                     usuarioId: int.parse(produtoJson['usuario_id'])));
               });
             });

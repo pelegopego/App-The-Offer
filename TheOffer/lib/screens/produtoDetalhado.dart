@@ -1,5 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
+import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/scoped-models/main.dart';
@@ -12,6 +14,8 @@ import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:http/http.dart' as http;
 
 class TelaProdutoDetalhado extends StatefulWidget {
   final Produto produto;
@@ -26,11 +30,12 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     with SingleTickerProviderStateMixin {
   bool _isFavorite = false;
   bool discount = true;
-  bool _isLoading = true;
   TabController _tabController;
   Size _deviceSize;
   int quantidade = 1;
   Produto produtoSelecionado;
+  bool _produtosRelacionadosLoading = true;
+  List<Produto> listaProdutosRelacionados;
   String htmlDescription;
   List<Produto> produtosSimilares = List();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -45,7 +50,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     discount = false;
     htmlDescription =
         widget.produto.descricao != null ? widget.produto.descricao : '';
-    //getSimilarProducts();
+    getProdutosRelacionados();
     locator<ConnectivityManager>().initConnectivity(context);
     // _dropDownVariantItems = getVariants();
     super.initState();
@@ -55,6 +60,53 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
   void dispose() {
     super.dispose();
     locator<ConnectivityManager>().dispose();
+  }
+
+  getProdutosRelacionados() async {
+    Map<dynamic, dynamic> responseBody;
+    Map<dynamic, dynamic> objetoItemPedido = Map();
+    Map<String, String> headers = getHeaders();
+    setState(() {
+      _produtosRelacionadosLoading = true;
+      listaProdutosRelacionados = [];
+    });
+
+    objetoItemPedido = {
+      "categoria": produtoSelecionado.categoria.toString(),
+      "produto": produtoSelecionado.id.toString(),
+      "empresa": produtoSelecionado.empresa.toString()
+    };
+    http
+        .post(Configuracoes.BASE_URL + 'produtos/relacionados/',
+            headers: headers, body: objetoItemPedido)
+        .then((response) {
+      responseBody = json.decode(response.body);
+      if (responseBody['produtos'] != null) {
+        responseBody['produtos'].forEach((produtoJson) {
+          setState(() {
+            listaProdutosRelacionados.add(Produto(
+                empresa: int.parse(produtoJson['empresa_id']),
+                id: int.parse(produtoJson['id']),
+                titulo: produtoJson['titulo'],
+                descricao: produtoJson['descricao'],
+                imagem: produtoJson['imagem'],
+                valor: produtoJson['valor'],
+                valorNumerico: double.parse(produtoJson['valorNumerico']),
+                quantidade: int.parse(produtoJson['quantidade']),
+                quantidadeRestante:
+                    int.parse(produtoJson['quantidadeRestante']),
+                dataInicial: produtoJson['dataInicial'],
+                dataFinal: produtoJson['dataFinal'],
+                dataCadastro: produtoJson['dataCadastro'],
+                categoria: int.parse(produtoJson['categoria_id']),
+                usuarioId: int.parse(produtoJson['usuario_id'])));
+          });
+        });
+      }
+    });
+    setState(() {
+      _produtosRelacionadosLoading = false;
+    });
   }
 
   @override
@@ -118,71 +170,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             ),
           ),
           floatingActionButton: adicionarCarrinhoFloatButton());
-    });
-  }
-
-  Widget writeReview() {
-    return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              height: 40.0,
-              width: 335,
-              child: GestureDetector(
-                onTap: () {
-                  /*if (Autenticacao.CodigoUsuario > 0) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ReviewDetailScreen(produtoSelecionado)));
-                  } else {
-                    // Scaffold.of(context).showSnackBar(LoginErroSnackbar);
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      content: Text(
-                        'Precisa entrar na conta para avaliar.',
-                      ),
-                      action: SnackBarAction(
-                        label: 'LOGIN',
-                        onPressed: () {
-                          MaterialPageRoute route = MaterialPageRoute(
-                              builder: (context) => Authentication(0));
-                          Navigator.push(context, route);
-                        },
-                      ),
-                    ));
-                  }*/
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.secundariaTheOffer,
-                      style: BorderStyle.solid,
-                      width: 1.0,
-                    ),
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: Text(
-                          "AVALIE O PRODUTO",
-                          style: TextStyle(
-                            color: Colors.secundariaTheOffer,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ]);
     });
   }
 
@@ -415,29 +402,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   : Container(),
               linhaPrecos('Preço: ', produtoSelecionado.valor,
                   strike: discount, valor: '${produtoSelecionado.valor}'),
-              /*discount
-                  ? Column(
-                      children: <Widget>[
-                        buildPriceRow(
-                            'Economizou: ',
-                            '${selectedProduct.currencySymbol}' +
-                                (double.parse(selectedProduct.costPrice) -
-                                        double.parse(selectedProduct.price))
-                                    .toString(),
-                            strike: false,
-                            discountPercent: '(' +
-                                (((double.parse(selectedProduct.costPrice) -
-                                                double.parse(
-                                                    selectedProduct.price)) /
-                                            double.parse(
-                                                selectedProduct.costPrice)) *
-                                        100)
-                                    .round()
-                                    .toString() +
-                                '%)  '),
-                      ],
-                    )
-                  : Container(),*/
               Divider(color: Colors.secundariaTheOffer),
               SizedBox(
                 height: 12.0,
@@ -455,18 +419,18 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 children: <Widget>[
                   Container(
                       width: _deviceSize.width,
-                      color: Colors.secundariaTheOffer,
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 10.0),
                         title: Text('Você também pode gostar',
                             style: TextStyle(
                                 fontSize: 14,
-                                // fontWeight: FontWeight.w600,
-                                color: Colors.principalTheOffer)),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.secundariaTheOffer)),
                       )),
                 ],
               ),
-              _isLoading
+              _produtosRelacionadosLoading &&
+                      listaProdutosRelacionados.length == 0
                   ? Container(
                       height: _deviceSize.height * 0.47,
                       alignment: Alignment.center,
@@ -475,19 +439,26 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       ),
                     )
                   : Container(
-                      /*
-                      height: 355,
+                      height: _deviceSize.height * 0.381,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: produtosSimilares.length,
-                        itemBuilder: (context, index) {
-                          return cardProdutos(
-                              index, produtosSimilares, _deviceSize, context);
-                          // similarProductCard(index, similarProducts,
-                          //     _deviceSize, context, true);
-                        },
-                      ),*/
-                      ),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: listaProdutosRelacionados.length,
+                          itemBuilder: (context, index) {
+                            if (listaProdutosRelacionados.length > 0) {
+                              return Container(
+                                  child: cardProdutos(
+                                      index,
+                                      listaProdutosRelacionados,
+                                      _deviceSize,
+                                      context));
+                            } else {
+                              return Container();
+                            }
+                          }),
+                    ),
+              SizedBox(
+                height: 12.0,
+              ),
               Container(
                   color: Colors.secundariaTheOffer,
                   padding: EdgeInsets.only(left: 10.0, top: 20.0),
@@ -639,28 +610,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   Icons.add,
                   color: Colors.blue,
                 ),
-                onPressed: () {
-                  /*
-                  if (Autenticacao.CodigoUsuario > 0) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ReviewDetailScreen(produtoSelecionado)));
-                  } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                        'Por favor, entre em sua conta para avaliar.',
-                      ),
-                      action: SnackBarAction(
-                        label: 'LOGIN',
-                        onPressed: () {
-                          MaterialPageRoute route = MaterialPageRoute(
-                              builder: (context) => Authentication(0));
-                          Navigator.push(context, route);
-                        },
-                      ),
-                    ));
-                  }*/
-                },
+                onPressed: () {},
                 backgroundColor: Colors.orange);
       },
     );
