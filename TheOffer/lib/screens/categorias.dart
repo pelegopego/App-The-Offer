@@ -125,15 +125,15 @@ class _TelaCategorias extends State<TelaCategorias> {
             ),
             child: Stack(children: [
               Container(
-                margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 25),
+                margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 30),
                 alignment: Alignment.center,
                 child:
                     CachedNetworkImage(imageUrl: listaCategoria[index].imagem),
               ),
               Container(
-                margin: EdgeInsets.only(left: 50, top: 5),
+                margin: EdgeInsets.only(left: 20, top: 5),
                 height: 20,
-                width: 100,
+                width: 150,
                 color: Colors.principalTheOffer,
                 alignment: Alignment.center,
                 child: RichText(
