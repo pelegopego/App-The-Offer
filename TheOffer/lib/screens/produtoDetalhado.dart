@@ -429,8 +429,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       )),
                 ],
               ),
-              _produtosRelacionadosLoading &&
-                      listaProdutosRelacionados.length == 0
+              _produtosRelacionadosLoading
                   ? Container(
                       height: _deviceSize.height * 0.47,
                       alignment: Alignment.center,
