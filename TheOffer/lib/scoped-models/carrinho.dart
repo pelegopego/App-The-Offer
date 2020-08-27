@@ -108,12 +108,13 @@ mixin CarrinhoModel on Model {
     notifyListeners();
   }
 
-  void comprarProduto({int usuarioId, int produtoId, int quantidade}) {
+  void comprarProduto(
+      {int usuarioId, int produtoId, int quantidade, BuildContext context}) {
     _isLoading = true;
     notifyListeners();
     print("QUANTIDADE COMPRADA $quantidade");
     _listaItensPedido.clear();
-    adquirirProduto(usuarioId, produtoId, quantidade);
+    adquirirProduto(usuarioId, produtoId, quantidade, context);
     _isLoading = false;
     notifyListeners();
   }
@@ -203,7 +204,8 @@ mixin CarrinhoModel on Model {
     });
   }
 
-  void adquirirProduto(int usuarioId, int produtoId, int quantidade) {
+  void adquirirProduto(
+      int usuarioId, int produtoId, int quantidade, BuildContext context) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
     print("COMPRANDO PRODUTO");
@@ -219,8 +221,19 @@ mixin CarrinhoModel on Model {
       print("PRODUTO COMPRADO _______");
       print(json.decode(response.body).toString());
       responseBody = json.decode(response.body);
-      localizarPedido(
-          int.parse(responseBody['id']), Autenticacao.codigoUsuario, 2);
+      if (responseBody['id'] == 0) {
+        final snackBar = SnackBar(
+            content: Text(responseBody['message']),
+            duration: Duration(seconds: 5));
+        Scaffold.of(context).showSnackBar(snackBar);
+      } else {
+        final snackBar = SnackBar(
+            content: Text(responseBody['message']),
+            duration: Duration(seconds: 5));
+        Scaffold.of(context).showSnackBar(snackBar);
+        localizarPedido(
+            int.parse(responseBody['id']), Autenticacao.codigoUsuario, 2);
+      }
     });
     _isLoading = false;
   }

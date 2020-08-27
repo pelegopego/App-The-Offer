@@ -254,6 +254,7 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
             setState(() {
               produtosEncontrados++;
               _listaProduto.add(Produto(
+                  empresa: int.parse(produtoJson['empresa_id']),
                   id: int.parse(produtoJson['id']),
                   titulo: produtoJson['titulo'],
                   descricao: produtoJson['descricao'],
@@ -266,6 +267,7 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                   dataInicial: produtoJson['dataInicial'],
                   dataFinal: produtoJson['dataFinal'],
                   dataCadastro: produtoJson['dataCadastro'],
+                  categoria: int.parse(produtoJson['categoria_id']),
                   usuarioId: int.parse(produtoJson['usuario_id'])));
             });
           });

@@ -509,7 +509,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                           model.comprarProduto(
                               usuarioId: Autenticacao.codigoUsuario,
                               produtoId: produtoSelecionado.id,
-                              quantidade: quantidade);
+                              quantidade: quantidade,
+                              context: context);
                         } else {
                           MaterialPageRoute authRoute = MaterialPageRoute(
                               builder: (context) => Authentication(0));

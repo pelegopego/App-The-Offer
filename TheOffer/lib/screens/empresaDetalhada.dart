@@ -313,6 +313,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
               categoriasJson['produtos'].forEach((produtosJson) {
                 setState(() {
                   _listaProduto.add(Produto(
+                      empresa: int.parse(produtosJson['empresa_id']),
                       id: int.parse(produtosJson['id']),
                       titulo: produtosJson['titulo'],
                       descricao: produtosJson['descricao'],
@@ -326,6 +327,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                       dataInicial: produtosJson['dataInicial'],
                       dataFinal: produtosJson['dataFinal'],
                       dataCadastro: produtosJson['dataCadastro'],
+                      categoria: int.parse(produtosJson['categoria_id']),
                       usuarioId: int.parse(produtosJson['usuario_id'])));
                 });
               });
