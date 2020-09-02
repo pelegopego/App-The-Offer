@@ -113,6 +113,24 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                           itemCount: empresaDetalhada.listaCategoria.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
+                            String horaInicial = ('00' +
+                                (empresaDetalhada.horaInicio / 60).toString() +
+                                '00');
+                            String horaFim = ('00' +
+                                (empresaDetalhada.horaFim / 60).toString() +
+                                '00');
+
+                            horaInicial = horaInicial.replaceAll('.', ':');
+                            horaFim = horaFim.replaceAll('.', ':');
+
+                            horaInicial = horaInicial.substring(
+                                (horaInicial.indexOf(':') - 2),
+                                horaInicial.indexOf(':') + 3);
+
+                            horaFim = horaFim.substring(
+                                (horaFim.indexOf(':') - 2),
+                                horaFim.indexOf(':') + 3);
+
                             if (empresaDetalhada.listaCategoria.length > 0) {
                               if (index == 0) {
                                 return Column(
@@ -215,6 +233,34 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                               empresaDetalhada
                                                                   .telefone
                                                                   .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .principalTheOffer),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 10),
+                                                      Container(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: InkWell(
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                              Icons.timer,
+                                                              color: Colors
+                                                                  .principalTheOffer,
+                                                            ),
+                                                            title: Text(
+                                                              horaInicial
+                                                                      .replaceAll(
+                                                                          '.',
+                                                                          ':') +
+                                                                  ' às ' +
+                                                                  horaFim
+                                                                      .replaceAll(
+                                                                          '.',
+                                                                          ':'),
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .principalTheOffer),
