@@ -156,10 +156,14 @@ mixin CarrinhoModel on Model {
             headers: headers, body: objetoCarrinho)
         .then((response) {
       print("DELETANDO PEDIDO _______");
-      print(json.decode(response.body).toString());
-      responseBody = json.decode(response.body);
-      localizarCarrinho(pedidoId, Autenticacao.codigoUsuario);
-      return responseBody['message'];
+      if (response.body != '') {
+        print(json.decode(response.body).toString());
+        responseBody = json.decode(response.body);
+        localizarCarrinho(pedidoId, Autenticacao.codigoUsuario);
+        return responseBody['message'];
+      } else {
+        localizarCarrinho(null, Autenticacao.codigoUsuario);
+      }
     });
   }
 

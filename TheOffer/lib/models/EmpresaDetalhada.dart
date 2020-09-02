@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:theoffer/models/Produto.dart';
 
 class CategoriaDetalhada {
