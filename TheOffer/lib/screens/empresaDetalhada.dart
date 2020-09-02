@@ -327,6 +327,9 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                       dataInicial: produtosJson['dataInicial'],
                       dataFinal: produtosJson['dataFinal'],
                       dataCadastro: produtosJson['dataCadastro'],
+                      empresaHoraInicio:
+                          double.parse(empresaJson['horaInicio']),
+                      empresaHoraFim: double.parse(empresaJson['horaFim']),
                       categoria: int.parse(produtosJson['categoria_id']),
                       usuarioId: int.parse(produtosJson['usuario_id'])));
                 });
@@ -347,6 +350,8 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
             razaoSocial: empresaJson['razaosocial'],
             fantasia: empresaJson['fantasia'],
             telefone: num.parse(empresaJson['telefone']),
+            horaInicio: double.parse(empresaJson['horaInicio']),
+            horaFim: double.parse(empresaJson['horaFim']),
             listaCategoria: _listaCategoriaDetalhada);
       });
       setState(() {

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Produto {
   final int id;
   final String titulo;
@@ -13,6 +15,8 @@ class Produto {
   final int usuarioId;
   final int categoria;
   final int empresa;
+  final double empresaHoraInicio;
+  final double empresaHoraFim;
 
   Produto(
       {this.id,
@@ -28,5 +32,7 @@ class Produto {
       this.dataCadastro,
       this.usuarioId,
       this.categoria,
+      this.empresaHoraInicio,
+      this.empresaHoraFim,
       this.empresa});
 }

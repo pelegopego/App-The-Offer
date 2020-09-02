@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -23,19 +24,25 @@ class AddToCarrinho extends StatefulWidget {
 
 class _AddToCarrinhoState extends State<AddToCarrinho> {
   int selectedIndex;
+  int horaAtual =
+      (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return FlatButton(
-        onPressed: widget.produto.quantidadeRestante > 0
+        onPressed: widget.produto.empresaHoraInicio < horaAtual &&
+                widget.produto.empresaHoraFim > horaAtual &&
+                widget.produto.quantidadeRestante > 0
             ? () async {
                 print('selectedProductIndex');
                 print(widget.index);
                 setState(() {
                   selectedIndex = widget.index;
                 });
-                if (widget.produto.quantidadeRestante > 0) {
+                if (widget.produto.empresaHoraInicio < horaAtual &&
+                    widget.produto.empresaHoraFim > horaAtual &&
+                    widget.produto.quantidadeRestante > 0) {
                   if (Autenticacao.codigoUsuario > 0) {
                     model.adicionarProduto(
                         usuarioId: Autenticacao.codigoUsuario,
@@ -68,12 +75,18 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
 }
 
 Widget buttonContent(int index, Produto produto) {
+  int horaAtual =
+      (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
   return Text(
-    produto.quantidadeRestante > 0
-        ? 'ADICIONAR AO CARRINHO'
-        : 'FORA DE ESTOQUE',
+    produto.empresaHoraInicio < horaAtual && produto.empresaHoraFim > horaAtual
+        ? produto.quantidadeRestante > 0
+            ? 'ADICIONAR AO CARRINHO'
+            : 'FORA DE ESTOQUE'
+        : 'ESTABELECIMENTO FECHADO',
     style: TextStyle(
-        color: produto.quantidadeRestante > 0
+        color: produto.empresaHoraInicio < horaAtual &&
+                produto.empresaHoraFim > horaAtual &&
+                produto.quantidadeRestante > 0
             ? Colors.principalTheOffer
             : Colors.grey,
         fontSize: 14,

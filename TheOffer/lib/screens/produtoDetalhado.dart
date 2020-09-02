@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +99,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 dataInicial: produtoJson['dataInicial'],
                 dataFinal: produtoJson['dataFinal'],
                 dataCadastro: produtoJson['dataCadastro'],
+                empresaHoraInicio: double.parse(produtoJson['horaInicio']),
+                empresaHoraFim: double.parse(produtoJson['horaFim']),
                 categoria: int.parse(produtoJson['categoria_id']),
                 usuarioId: int.parse(produtoJson['usuario_id'])));
           });
@@ -484,6 +487,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
   }
 
   Widget comprarAgoraButton() {
+    int horaAtual = (DateTime.now().toLocal().hour * 60) +
+        (DateTime.now().toLocal().minute);
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Padding(
@@ -494,17 +499,26 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.quantidadeRestante > 0
-                    ? 'COMPRAR AGORA'
-                    : 'FORA DE ESTOQUE',
+                produtoSelecionado.empresaHoraInicio < horaAtual &&
+                        produtoSelecionado.empresaHoraFim > horaAtual
+                    ? produtoSelecionado.quantidadeRestante > 0
+                        ? 'ADICIONAR AO CARRINHO'
+                        : 'FORA DE ESTOQUE'
+                    : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
-                    color: produtoSelecionado.quantidadeRestante > 0
+                    color: produtoSelecionado.empresaHoraInicio < horaAtual &&
+                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0
                         ? Colors.principalTheOffer
                         : Colors.grey),
               ),
-              onPressed: produtoSelecionado.quantidadeRestante > 0
+              onPressed: produtoSelecionado.empresaHoraInicio < horaAtual &&
+                      produtoSelecionado.empresaHoraFim > horaAtual &&
+                      produtoSelecionado.quantidadeRestante > 0
                   ? () {
-                      if (produtoSelecionado.quantidadeRestante > 0) {
+                      if (produtoSelecionado.empresaHoraInicio < horaAtual &&
+                          produtoSelecionado.empresaHoraFim > horaAtual &&
+                          produtoSelecionado.quantidadeRestante > 0) {
                         if (Autenticacao.codigoUsuario > 0) {
                           model.comprarProduto(
                               usuarioId: Autenticacao.codigoUsuario,
@@ -535,6 +549,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
   }
 
   Widget adicionarCarrinhoButton() {
+    int horaAtual = (DateTime.now().toLocal().hour * 60) +
+        (DateTime.now().toLocal().minute);
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Padding(
@@ -545,18 +561,33 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.quantidadeRestante > 0
-                    ? 'ADICIONAR AO CARRINHO'
-                    : 'FORA DE ESTOQUE',
+                /*produtoSelecionado.empresaHoraInicio
+                            .difference(DateTime.parse(
+                                DateFormat("H:m").format(DateTime.now())))
+                            .isNegative ||
+                        DateTime.parse(DateFormat("H:m").format(DateTime.now()))
+                            .difference(produtoSelecionado.empresaHoraFim)
+                            .isNegative
+                    ? produtoSelecionado.quantidadeRestante > 0
+                        ? 'ADICIONAR AO CARRINHO'
+                        : 'FORA DE ESTOQUE'
+                    : */
+                'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
-                    color: produtoSelecionado.quantidadeRestante > 0
+                    color: produtoSelecionado.empresaHoraInicio < horaAtual &&
+                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0
                         ? Colors.principalTheOffer
                         : Colors.grey),
               ),
-              onPressed: produtoSelecionado.quantidadeRestante > 0
+              onPressed: produtoSelecionado.empresaHoraInicio < horaAtual &&
+                      produtoSelecionado.empresaHoraFim > horaAtual &&
+                      produtoSelecionado.quantidadeRestante > 0
                   ? () {
                       if (Autenticacao.codigoUsuario > 0) {
-                        if (produtoSelecionado.quantidadeRestante > 0) {
+                        if (produtoSelecionado.empresaHoraInicio < horaAtual &&
+                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0) {
                           model.adicionarProduto(
                               usuarioId: Autenticacao.codigoUsuario,
                               produtoId: produtoSelecionado.id,
@@ -578,6 +609,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
   }
 
   Widget adicionarCarrinhoFloatButton() {
+    int horaAtual = (DateTime.now().toLocal().hour * 60) +
+        (DateTime.now().toLocal().minute);
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return _tabController.index == 0
@@ -586,7 +619,9 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   Icons.shopping_basket,
                   color: Colors.secundariaTheOffer,
                 ),
-                onPressed: produtoSelecionado.quantidadeRestante > 0
+                onPressed: produtoSelecionado.empresaHoraInicio < horaAtual &&
+                        produtoSelecionado.empresaHoraFim > horaAtual &&
+                        produtoSelecionado.quantidadeRestante > 0
                     ? () {
                         if (Autenticacao.codigoUsuario > 0) {
                           model.adicionarProduto(
@@ -601,9 +636,12 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         }
                       }
                     : () {},
-                backgroundColor: produtoSelecionado.quantidadeRestante > 0
-                    ? Colors.principalTheOffer
-                    : Colors.grey,
+                backgroundColor:
+                    produtoSelecionado.empresaHoraInicio < horaAtual &&
+                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0
+                        ? Colors.principalTheOffer
+                        : Colors.grey,
               )
             : FloatingActionButton(
                 child: Icon(

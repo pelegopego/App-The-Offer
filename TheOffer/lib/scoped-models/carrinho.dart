@@ -85,6 +85,8 @@ mixin CarrinhoModel on Model {
             dataFinal: produtoJson['dataFinal'],
             dataCadastro: produtoJson['dataCadastro'],
             usuarioId: int.parse(produtoJson['usuario_id']),
+            empresaHoraInicio: double.parse(empresaJson['horaInicio']),
+            empresaHoraFim: double.parse(empresaJson['horaFim']),
             categoria: int.parse(produtoJson['categoria_id']));
       });
     });

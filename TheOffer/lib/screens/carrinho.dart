@@ -223,7 +223,8 @@ class _CarrinhoState extends State<Carrinho> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                   elevation: 1,
-                  margin: EdgeInsets.all(8.0),
+                  margin:
+                      EdgeInsets.only(top: 8, bottom: 8, right: 10, left: 10),
                   child: Container(
                     color: Colors.secundariaTheOffer,
                     child: GestureDetector(
@@ -264,7 +265,7 @@ class _CarrinhoState extends State<Carrinho> {
                                   children: <Widget>[
                                     Container(
                                       padding: EdgeInsets.only(top: 10),
-                                      width: 150,
+                                      width: 120,
                                       child: RichText(
                                         text: TextSpan(children: [
                                           TextSpan(
@@ -290,7 +291,6 @@ class _CarrinhoState extends State<Carrinho> {
                                       ),
                                     ),
                                     Container(
-                                      padding: EdgeInsets.only(top: 0),
                                       child: IconButton(
                                         iconSize: 24,
                                         color: Colors.principalTheOffer,

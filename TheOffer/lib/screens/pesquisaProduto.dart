@@ -266,6 +266,8 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                       int.parse(produtoJson['quantidadeRestante']),
                   dataInicial: produtoJson['dataInicial'],
                   dataFinal: produtoJson['dataFinal'],
+                  empresaHoraInicio: double.parse(empresaJson['horaInicio']),
+                  empresaHoraFim: double.parse(empresaJson['horaFim']),
                   dataCadastro: produtoJson['dataCadastro'],
                   categoria: int.parse(produtoJson['categoria_id']),
                   usuarioId: int.parse(produtoJson['usuario_id'])));
@@ -278,6 +280,8 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
               imagem: empresaJson['imagem'],
               razaoSocial: empresaJson['razaosocial'],
               fantasia: empresaJson['fantasia'],
+              horaInicio: double.parse(empresaJson['horaInicio']),
+              horaFim: double.parse(empresaJson['horaFim']),
               listaProduto: _listaProduto),
         );
       });
