@@ -277,6 +277,7 @@ class _TelaProdutos extends State<TelaProdutos> {
                     empresaHoraFim: double.parse(empresaJson['horaFim']),
                     dataCadastro: produtoJson['dataCadastro'],
                     categoria: int.parse(produtoJson['categoria_id']),
+                    possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
                     usuarioId: int.parse(produtoJson['usuario_id'])));
               });
             });

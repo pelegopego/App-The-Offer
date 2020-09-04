@@ -377,6 +377,8 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                           double.parse(empresaJson['horaInicio']),
                       empresaHoraFim: double.parse(empresaJson['horaFim']),
                       categoria: int.parse(produtosJson['categoria_id']),
+                      possuiSabores:
+                          int.parse(produtosJson['possuiSabores']) > 0,
                       usuarioId: int.parse(produtosJson['usuario_id'])));
                 });
               });

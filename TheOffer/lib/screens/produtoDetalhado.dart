@@ -12,6 +12,7 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/screens/finalizarPedido.dart';
+import 'package:theoffer/screens/sabores.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theoffer/utils/headers.dart';
@@ -101,6 +102,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 empresaHoraInicio: double.parse(produtoJson['horaInicio']),
                 empresaHoraFim: double.parse(produtoJson['horaFim']),
                 categoria: int.parse(produtoJson['categoria_id']),
+                possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
                 usuarioId: int.parse(produtoJson['usuario_id'])));
           });
         });
@@ -592,6 +594,14 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                               produtoId: produtoSelecionado.id,
                               quantidade: quantidade,
                               somar: 1);
+
+                          if (widget.produto.possuiSabores) {
+                            MaterialPageRoute pagamentoRoute =
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TelaSabores(produtoSelecionado.id));
+                            Navigator.push(context, pagamentoRoute);
+                          }
                         }
                       } else {
                         MaterialPageRoute authRoute = MaterialPageRoute(
@@ -628,6 +638,14 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                               produtoId: produtoSelecionado.id,
                               quantidade: quantidade,
                               somar: 1);
+
+                          if (widget.produto.possuiSabores) {
+                            MaterialPageRoute pagamentoRoute =
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TelaSabores(produtoSelecionado.id));
+                            Navigator.push(context, pagamentoRoute);
+                          }
                         } else {
                           MaterialPageRoute authRoute = MaterialPageRoute(
                               builder: (context) => Authentication(0));

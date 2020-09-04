@@ -87,6 +87,7 @@ mixin CarrinhoModel on Model {
             usuarioId: int.parse(produtoJson['usuario_id']),
             empresaHoraInicio: double.parse(empresaJson['horaInicio']),
             empresaHoraFim: double.parse(empresaJson['horaFim']),
+            possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
             categoria: int.parse(produtoJson['categoria_id']));
       });
     });
@@ -99,8 +100,8 @@ mixin CarrinhoModel on Model {
     notifyListeners();
   }
 
-  void adicionarProduto(
-      {int usuarioId, int produtoId, int quantidade, int somar}) {
+  Future<void> adicionarProduto(
+      {int usuarioId, int produtoId, int quantidade, int somar}) async {
     print("QUANTIDADE ADICIONADA AO CARRINHO $quantidade");
     _listaItensPedido.clear();
     _isLoading = true;

@@ -1,3 +1,4 @@
+import 'package:theoffer/screens/sabores.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -43,11 +44,20 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                     widget.produto.empresaHoraFim > horaAtual &&
                     widget.produto.quantidadeRestante > 0) {
                   if (Autenticacao.codigoUsuario > 0) {
-                    model.adicionarProduto(
-                        usuarioId: Autenticacao.codigoUsuario,
-                        produtoId: widget.produto.id,
-                        quantidade: 1,
-                        somar: 1);
+                    setState(() {
+                      model.adicionarProduto(
+                          usuarioId: Autenticacao.codigoUsuario,
+                          produtoId: widget.produto.id,
+                          quantidade: 1,
+                          somar: 1);
+
+                      if (widget.produto.possuiSabores) {
+                        MaterialPageRoute pagamentoRoute = MaterialPageRoute(
+                            builder: (context) =>
+                                TelaSabores(widget.produto.id));
+                        Navigator.push(context, pagamentoRoute);
+                      }
+                    });
                     final snackBar = SnackBar(
                         content: Text('Produto adicionado ao carrinho'),
                         duration: Duration(seconds: 5));

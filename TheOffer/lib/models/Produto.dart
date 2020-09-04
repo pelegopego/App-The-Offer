@@ -15,6 +15,7 @@ class Produto {
   final int empresa;
   final double empresaHoraInicio;
   final double empresaHoraFim;
+  final bool possuiSabores;
 
   Produto(
       {this.id,
@@ -32,5 +33,6 @@ class Produto {
       this.categoria,
       this.empresaHoraInicio,
       this.empresaHoraFim,
-      this.empresa});
+      this.empresa,
+      this.possuiSabores});
 }

@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
             fontFamily: fontFamily,
             primarySwatch: Colors.secundariaTheOffer,
             accentColor: Colors.principalTheOffer,
-            unselectedWidgetColor: Colors.principalTheOffer),
+            unselectedWidgetColor: Colors.secundariaTheOffer),
         home: TelaCidade(),
       ),
     );

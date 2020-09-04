@@ -242,12 +242,6 @@ class _TelaPagamento extends State<TelaPagamento> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
       return Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/fundoBranco.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
         margin: EdgeInsets.only(left: 30),
         child: widget.isLoading
             ? Center(
