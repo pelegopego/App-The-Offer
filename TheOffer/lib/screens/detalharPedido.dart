@@ -44,6 +44,22 @@ class _DetalharPedido extends State<DetalharPedido> {
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+      String valorTotalPedidoString =
+          (widget.pedido.somaValorTotalPedido().toString() + '00');
+      String freteString = (frete.toString() + '00');
+      String somaTotalPedidoString =
+          ((widget.pedido.somaValorTotalPedido() + frete).toString() + '00');
+      valorTotalPedidoString = valorTotalPedidoString.replaceAll('.', ',');
+      valorTotalPedidoString = valorTotalPedidoString.substring(
+          0, valorTotalPedidoString.indexOf(',') + 3);
+
+      freteString = freteString.replaceAll('.', ',');
+      freteString = freteString.substring(0, freteString.indexOf(',') + 3);
+
+      somaTotalPedidoString = somaTotalPedidoString.replaceAll('.', ',');
+      somaTotalPedidoString = somaTotalPedidoString.substring(
+          0, somaTotalPedidoString.indexOf(',') + 3);
+
       return Scaffold(
         appBar: AppBar(
             leading: IconButton(
@@ -164,16 +180,10 @@ class _DetalharPedido extends State<DetalharPedido> {
                         margin: EdgeInsets.all(5),
                         child: Column(
                           children: <Widget>[
+                            linhaTotal('Mercadorias:', valorTotalPedidoString),
+                            linhaTotal('Frete:', freteString),
                             linhaTotal(
-                                'Mercadorias:',
-                                widget.pedido
-                                    .somaValorTotalPedido()
-                                    .toString()),
-                            linhaTotal('Frete:', frete.toString()),
-                            linhaTotal(
-                                'Total do pedido:',
-                                (widget.pedido.somaValorTotalPedido() + frete)
-                                    .toString())
+                                'Total do pedido:', somaTotalPedidoString)
                           ],
                         ),
                       ),

@@ -57,6 +57,21 @@ class _TelaPagamento extends State<TelaPagamento> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
+      String valorTotalPedidoString =
+          (widget.pedido.somaValorTotalPedido().toString() + '00');
+      String freteString = (frete.toString() + '00');
+      String somaTotalPedidoString =
+          ((widget.pedido.somaValorTotalPedido() + frete).toString() + '00');
+      valorTotalPedidoString = valorTotalPedidoString.replaceAll('.', ',');
+      valorTotalPedidoString = valorTotalPedidoString.substring(
+          0, valorTotalPedidoString.indexOf(',') + 3);
+
+      freteString = freteString.replaceAll('.', ',');
+      freteString = freteString.substring(0, freteString.indexOf(',') + 3);
+
+      somaTotalPedidoString = somaTotalPedidoString.replaceAll('.', ',');
+      somaTotalPedidoString = somaTotalPedidoString.substring(
+          0, somaTotalPedidoString.indexOf(',') + 3);
       return WillPopScope(
         onWillPop: _canGoBack,
         child: Scaffold(
@@ -100,22 +115,14 @@ class _TelaPagamento extends State<TelaPagamento> {
                               child: Column(
                                 children: <Widget>[
                                   linhaTotal(
-                                      'Mercadorias:',
-                                      widget.pedido
-                                          .somaValorTotalPedido()
-                                          .toString()),
+                                      'Mercadorias:', valorTotalPedidoString),
                                   frete == null
-                                      ? linhaTotal('Entrega:', '0')
-                                      : linhaTotal(
-                                          'Entrega:', frete.toString()),
+                                      ? linhaTotal('Entrega:', '00,00')
+                                      : linhaTotal('Entrega:', freteString),
                                   frete == null
-                                      ? linhaTotal('Total do pedido:', '0')
-                                      : linhaTotal(
-                                          'Total do pedido:',
-                                          (widget.pedido
-                                                      .somaValorTotalPedido() +
-                                                  frete)
-                                              .toString())
+                                      ? linhaTotal('Total do pedido:', '00,00')
+                                      : linhaTotal('Total do pedido:',
+                                          somaTotalPedidoString)
                                 ],
                               ),
                             ),
@@ -134,16 +141,17 @@ class _TelaPagamento extends State<TelaPagamento> {
                             child: Container(
                                 margin: EdgeInsets.only(right: 29, left: 29),
                                 height: 112,
-                                color: Colors.secundariaTheOffer,
+                                color: Colors.principalTheOffer,
                                 child: Column(children: <Widget>[
                                   ListTile(
                                     title: const Text('Dinheiro',
                                         style: TextStyle(
-                                            color: Colors.principalTheOffer)),
+                                            color: Colors.secundariaTheOffer)),
                                     leading: Radio(
                                       value: FormaPagamentoRecebimento.dinheiro,
                                       groupValue:
                                           formaPagamentoRecebimentoSelecionada,
+                                      activeColor: Colors.secundariaTheOffer,
                                       onChanged:
                                           (FormaPagamentoRecebimento value) {
                                         setState(() {
@@ -156,12 +164,12 @@ class _TelaPagamento extends State<TelaPagamento> {
                                   ListTile(
                                     title: const Text('Cartão',
                                         style: TextStyle(
-                                            color: Colors.principalTheOffer)),
+                                            color: Colors.secundariaTheOffer)),
                                     leading: Radio(
                                       value: FormaPagamentoRecebimento.cartao,
                                       groupValue:
                                           formaPagamentoRecebimentoSelecionada,
-                                      activeColor: Colors.principalTheOffer,
+                                      activeColor: Colors.secundariaTheOffer,
                                       onChanged:
                                           (FormaPagamentoRecebimento value) {
                                         setState(() {
@@ -179,14 +187,14 @@ class _TelaPagamento extends State<TelaPagamento> {
                             child: Container(
                               height: 112,
                               margin: EdgeInsets.only(right: 29, left: 29),
-                              color: Colors.secundariaTheOffer,
+                              color: Colors.principalTheOffer,
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
                                   'O pagamento será efetuado na retirada.',
                                   style: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.principalTheOffer),
+                                      color: Colors.secundariaTheOffer),
                                 ),
                               ),
                             ))),
@@ -247,22 +255,22 @@ class _TelaPagamento extends State<TelaPagamento> {
             ? Center(
                 child: CircularProgressIndicator(
                   backgroundColor: pagamentoEntregaVisivel
-                      ? Colors.secundariaTheOffer
-                      : Colors.principalTheOffer,
+                      ? Colors.principalTheOffer
+                      : Colors.secundariaTheOffer,
                 ),
               )
             : FlatButton(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 color: pagamentoEntregaVisivel
-                    ? Colors.secundariaTheOffer
-                    : Colors.principalTheOffer,
+                    ? Colors.principalTheOffer
+                    : Colors.secundariaTheOffer,
                 child: Text(
                   'PAGAR NA ENTREGA',
                   style: TextStyle(
                       fontSize: 15,
                       color: pagamentoEntregaVisivel
-                          ? Colors.principalTheOffer
-                          : Colors.secundariaTheOffer),
+                          ? Colors.secundariaTheOffer
+                          : Colors.principalTheOffer),
                 ),
                 onPressed: () {
                   setState(() {
@@ -321,22 +329,22 @@ class _TelaPagamento extends State<TelaPagamento> {
             ? Center(
                 child: CircularProgressIndicator(
                   backgroundColor: pagamentoBalcaoVisivel
-                      ? Colors.principalTheOffer
-                      : Colors.secundariaTheOffer,
+                      ? Colors.secundariaTheOffer
+                      : Colors.principalTheOffer,
                 ),
               )
             : FlatButton(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 color: pagamentoBalcaoVisivel
-                    ? Colors.secundariaTheOffer
-                    : Colors.principalTheOffer,
+                    ? Colors.principalTheOffer
+                    : Colors.secundariaTheOffer,
                 child: Text(
                   'RETIRAR NO LOCAL',
                   style: TextStyle(
                       fontSize: 15,
                       color: pagamentoBalcaoVisivel
-                          ? Colors.principalTheOffer
-                          : Colors.secundariaTheOffer),
+                          ? Colors.secundariaTheOffer
+                          : Colors.principalTheOffer),
                 ),
                 onPressed: () {
                   setState(() {

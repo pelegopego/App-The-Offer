@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/screens/sabores.dart';
 import 'package:http/http.dart' as http;
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
@@ -141,9 +140,16 @@ class _CarrinhoState extends State<Carrinho> {
   Widget carrinhoData() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+      String valorTotalPedido =
+          (model.pedido.somaValorTotalPedido().toString() + '00');
+
+      valorTotalPedido = valorTotalPedido.replaceAll('.', ',');
+      valorTotalPedido =
+          valorTotalPedido.substring(0, valorTotalPedido.indexOf(',') + 3);
+
       if (model.pedido != null) {
         return Text(
-          'Valor total do carrinho (${model.pedido.somaValorTotalPedido()}): ',
+          'Valor total do carrinho (R\$ $valorTotalPedido): ',
           style: TextStyle(
               fontSize: 16.5,
               color: Colors.principalTheOffer,
@@ -370,13 +376,6 @@ class _CarrinhoState extends State<Carrinho> {
                               .pedido.listaItensPedido[lineItemIndex].produtoId,
                           quantidade: index,
                           somar: 0);
-                      if (model.pedido.listaItensPedido[lineItemIndex].produto
-                          .possuiSabores) {
-                        MaterialPageRoute pagamentoRoute = MaterialPageRoute(
-                            builder: (context) => TelaSabores(model.pedido
-                                .listaItensPedido[lineItemIndex].produtoId));
-                        Navigator.push(context, pagamentoRoute);
-                      }
                     }
                   } else {
                     MaterialPageRoute authRoute = MaterialPageRoute(

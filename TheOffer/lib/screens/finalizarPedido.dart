@@ -61,6 +61,23 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
       if (frete == null) {
         getFretes(model.pedido);
       }
+
+      String valorTotalPedidoString =
+          (model.pedido.somaValorTotalPedido().toString() + '00');
+      String freteString = (frete.toString() + '00');
+      String somaTotalPedidoString =
+          ((model.pedido.somaValorTotalPedido() + frete).toString() + '00');
+      valorTotalPedidoString = valorTotalPedidoString.replaceAll('.', ',');
+      valorTotalPedidoString = valorTotalPedidoString.substring(
+          0, valorTotalPedidoString.indexOf(',') + 3);
+
+      freteString = freteString.replaceAll('.', ',');
+      freteString = freteString.substring(0, freteString.indexOf(',') + 3);
+
+      somaTotalPedidoString = somaTotalPedidoString.replaceAll('.', ',');
+      somaTotalPedidoString = somaTotalPedidoString.substring(
+          0, somaTotalPedidoString.indexOf(',') + 3);
+
       return WillPopScope(
         onWillPop: _canGoBack,
         child: Scaffold(
@@ -340,21 +357,14 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                               child: Column(
                                 children: <Widget>[
                                   linhaTotal(
-                                      'Mercadorias:',
-                                      model.pedido
-                                          .somaValorTotalPedido()
-                                          .toString()),
+                                      'Mercadorias:', valorTotalPedidoString),
                                   frete == null
-                                      ? linhaTotal('Entrega:', '0')
-                                      : linhaTotal(
-                                          'Entrega:', frete.toString()),
+                                      ? linhaTotal('Entrega:', '00,00')
+                                      : linhaTotal('Entrega:', freteString),
                                   frete == null
-                                      ? linhaTotal('Total do pedido:', '0')
-                                      : linhaTotal(
-                                          'Total do pedido:',
-                                          (model.pedido.somaValorTotalPedido() +
-                                                  frete)
-                                              .toString())
+                                      ? linhaTotal('Total do pedido:', '00,00')
+                                      : linhaTotal('Total do pedido:',
+                                          somaTotalPedidoString)
                                 ],
                               ),
                             ),

@@ -13,7 +13,8 @@ import 'dart:convert';
 
 class TelaSabores extends StatefulWidget {
   final int produtoId;
-  TelaSabores(this.produtoId);
+  final int quantidade;
+  TelaSabores(this.produtoId, this.quantidade);
   @override
   State<StatefulWidget> createState() {
     return _TelaSabores();
@@ -80,10 +81,7 @@ class _TelaSabores extends State<TelaSabores> {
                 icon:
                     Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
                 onPressed: () {
-                  model.removerProdutoCarrinho(model.pedido.id,
-                      Autenticacao.codigoUsuario, widget.produtoId);
                   Navigator.of(context).pop();
-                  //ajustar para remover quantidade se so add um
                 },
               ),
               title: Text('Sabores',
@@ -208,17 +206,20 @@ class _TelaSabores extends State<TelaSabores> {
                       objetoPedido = {
                         "sabores": stringSabores(),
                         "usuario": Autenticacao.codigoUsuario.toString(),
-                        "produto": widget.produtoId.toString()
+                        "produto": widget.produtoId.toString(),
+                        "quantidade": widget.quantidade.toString()
                       };
                       http
                           .post(
                               Configuracoes.BASE_URL +
-                                  'pedido/selecionarSabores/',
+                                  'pedido/adicionarCarrinhoSabores/',
                               headers: headers,
                               body: objetoPedido)
                           .then((response) {
                         print("Adicionando sabores ao pedido.");
                         print(json.decode(response.body).toString());
+                        model.localizarCarrinho(
+                            null, Autenticacao.codigoUsuario);
                         final snackBar = SnackBar(
                             content: Text('Sabores selecionados com sucesso.'),
                             duration: Duration(seconds: 2));

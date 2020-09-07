@@ -168,6 +168,26 @@ mixin CarrinhoModel on Model {
     });
   }
 
+  void removerProdutoPedido(int pedidoId, int usuarioId, int produtoId) {
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+    print("REMOVENDO ITEM DO PEDIDO");
+    objetoItemPedido = {
+      "pedido": pedidoId.toString(),
+      "produto": produtoId.toString()
+    };
+    http
+        .post(Configuracoes.BASE_URL + 'pedido/removerProdutoPedido/',
+            headers: headers, body: objetoItemPedido)
+        .then((response) {
+      print("REMOVENDO PRODUTO DO PEDIDO _______");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      localizarCarrinho(pedidoId, usuarioId);
+      return responseBody['message'];
+    });
+  }
+
   void removerProdutoCarrinho(int pedidoId, int usuarioId, int produtoId) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();

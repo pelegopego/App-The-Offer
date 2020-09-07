@@ -411,10 +411,10 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 height: 12.0,
               ),
               adicionarCarrinhoButton(),
-              SizedBox(
+              /*SizedBox(
                 height: 12.0,
               ),
-              comprarAgoraButton(),
+              comprarAgoraButton(),*/
               Divider(color: Colors.principalTheOffer),
               SizedBox(
                 height: 2,
@@ -503,7 +503,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 produtoSelecionado.empresaHoraInicio < horaAtual &&
                         produtoSelecionado.empresaHoraFim > horaAtual
                     ? produtoSelecionado.quantidadeRestante > 0
-                        ? 'ADICIONAR AO CARRINHO'
+                        ? 'COMPRAR AGORA'
                         : 'FORA DE ESTOQUE'
                     : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
@@ -539,6 +539,12 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             Navigator.push(context, route);
                           }
                         }
+                        if (produtoSelecionado.possuiSabores) {
+                          MaterialPageRoute pagamentoRoute = MaterialPageRoute(
+                              builder: (context) => TelaSabores(
+                                  produtoSelecionado.id, quantidade));
+                          Navigator.push(context, pagamentoRoute);
+                        }
                       }
                     }
                   : () {},
@@ -562,18 +568,12 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                /*produtoSelecionado.empresaHoraInicio
-                            .difference(DateTime.parse(
-                                DateFormat("H:m").format(DateTime.now())))
-                            .isNegative ||
-                        DateTime.parse(DateFormat("H:m").format(DateTime.now()))
-                            .difference(produtoSelecionado.empresaHoraFim)
-                            .isNegative
+                produtoSelecionado.empresaHoraInicio < horaAtual &&
+                        produtoSelecionado.empresaHoraFim > horaAtual
                     ? produtoSelecionado.quantidadeRestante > 0
                         ? 'ADICIONAR AO CARRINHO'
                         : 'FORA DE ESTOQUE'
-                    : */
-                'ESTABELECIMENTO FECHADO',
+                    : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
                     color: produtoSelecionado.empresaHoraInicio < horaAtual &&
                             produtoSelecionado.empresaHoraFim > horaAtual &&
@@ -589,18 +589,18 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         if (produtoSelecionado.empresaHoraInicio < horaAtual &&
                             produtoSelecionado.empresaHoraFim > horaAtual &&
                             produtoSelecionado.quantidadeRestante > 0) {
-                          model.adicionarProduto(
-                              usuarioId: Autenticacao.codigoUsuario,
-                              produtoId: produtoSelecionado.id,
-                              quantidade: quantidade,
-                              somar: 1);
-
                           if (widget.produto.possuiSabores) {
                             MaterialPageRoute pagamentoRoute =
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        TelaSabores(produtoSelecionado.id));
+                                    builder: (context) => TelaSabores(
+                                        produtoSelecionado.id, quantidade));
                             Navigator.push(context, pagamentoRoute);
+                          } else {
+                            model.adicionarProduto(
+                                usuarioId: Autenticacao.codigoUsuario,
+                                produtoId: produtoSelecionado.id,
+                                quantidade: quantidade,
+                                somar: 1);
                           }
                         }
                       } else {
@@ -633,18 +633,18 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         produtoSelecionado.quantidadeRestante > 0
                     ? () {
                         if (Autenticacao.codigoUsuario > 0) {
-                          model.adicionarProduto(
-                              usuarioId: Autenticacao.codigoUsuario,
-                              produtoId: produtoSelecionado.id,
-                              quantidade: quantidade,
-                              somar: 1);
-
                           if (widget.produto.possuiSabores) {
                             MaterialPageRoute pagamentoRoute =
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        TelaSabores(produtoSelecionado.id));
+                                    builder: (context) => TelaSabores(
+                                        produtoSelecionado.id, quantidade));
                             Navigator.push(context, pagamentoRoute);
+                          } else {
+                            model.adicionarProduto(
+                                usuarioId: Autenticacao.codigoUsuario,
+                                produtoId: produtoSelecionado.id,
+                                quantidade: quantidade,
+                                somar: 1);
                           }
                         } else {
                           MaterialPageRoute authRoute = MaterialPageRoute(

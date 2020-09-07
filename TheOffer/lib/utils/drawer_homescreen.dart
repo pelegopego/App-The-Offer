@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
 class HomeDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -27,7 +26,8 @@ class _HomeDrawer extends State<HomeDrawer> {
     getFavoritesCount();
   }
 
-  getFavoritesCount() async {/*
+  getFavoritesCount() async {
+    /*
     favCount = 0;
     Map<String, String> headers = getHeaders();
     Map<String, dynamic> responseBody = Map();
@@ -85,7 +85,8 @@ class _HomeDrawer extends State<HomeDrawer> {
           child: favCount != null && favCount > 0
               ? Stack(
                   children: <Widget>[
-                    Icon(Icons.brightness_1, size: 30.0, color: Colors.secundariaTheOffer),
+                    Icon(Icons.brightness_1,
+                        size: 30.0, color: Colors.secundariaTheOffer),
                     Center(
                       child: Text(
                         '$favCount',
@@ -106,7 +107,8 @@ class _HomeDrawer extends State<HomeDrawer> {
           'Favoritos',
           style: TextStyle(color: Colors.secundariaTheOffer),
         ),
-        onTap: () {/*
+        onTap: () {
+          /*
           if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute orderList =
                 MaterialPageRoute(builder: (context) => FavoritesScreen());
@@ -177,6 +179,7 @@ class _HomeDrawer extends State<HomeDrawer> {
       );
     });
   }
+
   writeStorageCidade() async {
     final storage = new FlutterSecureStorage();
     CidadeSelecionada.id = 0;
@@ -209,14 +212,15 @@ class _HomeDrawer extends State<HomeDrawer> {
     getUserName();
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
-        if (Autenticacao.codigoUsuario > 0)  {
+        if (Autenticacao.codigoUsuario > 0) {
           return Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Text('Oi, ${formatarNome()}!',
                     style: TextStyle(
-                        color: Colors.principalTheOffer, fontWeight: FontWeight.w500))
+                        color: Colors.principalTheOffer,
+                        fontWeight: FontWeight.w500))
               ],
             ),
           );
@@ -229,7 +233,8 @@ class _HomeDrawer extends State<HomeDrawer> {
                 child: Text(
                   'Entrar',
                   style: TextStyle(
-                      color: Colors.principalTheOffer, fontWeight: FontWeight.w300),
+                      color: Colors.principalTheOffer,
+                      fontWeight: FontWeight.w300),
                 ),
                 onTap: () {
                   MaterialPageRoute route = MaterialPageRoute(
@@ -240,11 +245,13 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               Text(' | ',
                   style: TextStyle(
-                      color: Colors.principalTheOffer, fontWeight: FontWeight.w300)),
+                      color: Colors.principalTheOffer,
+                      fontWeight: FontWeight.w300)),
               GestureDetector(
                 child: Text('Criar conta',
                     style: TextStyle(
-                        color: Colors.principalTheOffer, fontWeight: FontWeight.w300)),
+                        color: Colors.principalTheOffer,
+                        fontWeight: FontWeight.w300)),
                 onTap: () {
                   MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) => Authentication(1));
@@ -261,7 +268,8 @@ class _HomeDrawer extends State<HomeDrawer> {
 
   formatarNome() {
     if (Autenticacao.nomeUsuario != null) {
-      return  Autenticacao.nomeUsuario[0].toUpperCase() + Autenticacao.nomeUsuario.substring(1).split('@')[0];
+      return Autenticacao.nomeUsuario[0].toUpperCase() +
+          Autenticacao.nomeUsuario.substring(1).split('@')[0];
     }
   }
 
@@ -272,7 +280,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     });
   }
 
-    void _showDialog(context, model) {
+  void _showDialog(context, model) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -308,7 +316,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     model.limparPedido();
     model.clearData();
     Autenticacao.codigoUsuario = 0;
-    Autenticacao.nomeUsuario   = '';
+    Autenticacao.nomeUsuario = '';
     final storage = FlutterSecureStorage();
     await storage.deleteAll();
   }
@@ -321,28 +329,26 @@ class _HomeDrawer extends State<HomeDrawer> {
         children: <Widget>[
           DrawerHeader(
             child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, 
-                children: [
-                  Image.asset(
-                        'images/logos/appBar.png',
-                        fit: BoxFit.fill,
-                        height: 90,
-                  ),
-                  Text(
-                    'PRE-ALPHA',
-                    style:
-                        TextStyle(color: Colors.principalTheOffer, fontWeight: FontWeight.w300),
-                  ),
-                  signInLineTile()
-                ]
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Image.asset(
+                'images/logos/appBar.png',
+                fit: BoxFit.fill,
+                height: 90,
               ),
-              decoration: BoxDecoration(color: Colors.secundariaTheOffer),
-            ),
+              Text(
+                'PRE-ALPHA',
+                style: TextStyle(
+                    color: Colors.principalTheOffer,
+                    fontWeight: FontWeight.w300),
+              ),
+              signInLineTile()
+            ]),
+            decoration: BoxDecoration(color: Colors.secundariaTheOffer),
+          ),
           ListTile(
             onTap: () {
-              MaterialPageRoute produtosRoute =
-                  MaterialPageRoute(
-                      builder: (context) => TelaProdutos(idCategoria: 0));
+              MaterialPageRoute produtosRoute = MaterialPageRoute(
+                  builder: (context) => TelaProdutos(idCategoria: 0));
               Navigator.push(context, produtosRoute);
             },
             leading: Icon(
@@ -375,7 +381,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               title: Text(
                 '+55 (49) 9 9903-1587',
-              style: TextStyle(color: Colors.secundariaTheOffer),
+                style: TextStyle(color: Colors.secundariaTheOffer),
               ),
             ),
           ),
@@ -390,7 +396,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               ),
               title: Text(
                 'supporte@theoffer.com.br',
-              style: TextStyle(color: Colors.secundariaTheOffer),
+                style: TextStyle(color: Colors.secundariaTheOffer),
               ),
             ),
           ),

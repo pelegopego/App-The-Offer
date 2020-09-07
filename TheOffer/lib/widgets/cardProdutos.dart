@@ -45,17 +45,17 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                     widget.produto.quantidadeRestante > 0) {
                   if (Autenticacao.codigoUsuario > 0) {
                     setState(() {
-                      model.adicionarProduto(
-                          usuarioId: Autenticacao.codigoUsuario,
-                          produtoId: widget.produto.id,
-                          quantidade: 1,
-                          somar: 1);
-
                       if (widget.produto.possuiSabores) {
                         MaterialPageRoute pagamentoRoute = MaterialPageRoute(
                             builder: (context) =>
-                                TelaSabores(widget.produto.id));
+                                TelaSabores(widget.produto.id, 1));
                         Navigator.push(context, pagamentoRoute);
+                      } else {
+                        model.adicionarProduto(
+                            usuarioId: Autenticacao.codigoUsuario,
+                            produtoId: widget.produto.id,
+                            quantidade: 1,
+                            somar: 1);
                       }
                     });
                     final snackBar = SnackBar(
@@ -130,7 +130,14 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
                         SizedBox(
                           width: 8.0,
                         ),
-                        Text(listaProdutoEmpresa[index].fantasia,
+                        Text(
+                            listaProdutoEmpresa[index]
+                                    .fantasia[0]
+                                    .toUpperCase() +
+                                listaProdutoEmpresa[index]
+                                    .fantasia
+                                    .toLowerCase()
+                                    .substring(1),
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -187,7 +194,12 @@ Widget cardProdutosCategoria(
                         SizedBox(
                           width: 8.0,
                         ),
-                        Text(listaProdutoCategoria[index].nome,
+                        Text(
+                            listaProdutoCategoria[index].nome[0].toUpperCase() +
+                                listaProdutoCategoria[index]
+                                    .nome
+                                    .toLowerCase()
+                                    .substring(1),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -253,7 +265,8 @@ Widget cardProdutos(int index, List<Produto> listaProdutos, Size _deviceSize,
                     height: 30,
                     padding: EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
-                      produtoDetalhado.titulo,
+                      produtoDetalhado.titulo[0].toUpperCase() +
+                          produtoDetalhado.titulo.toLowerCase().substring(1),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
                       style: TextStyle(color: Colors.principalTheOffer),
