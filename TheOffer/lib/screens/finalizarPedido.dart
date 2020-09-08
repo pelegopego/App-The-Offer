@@ -28,7 +28,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   MaterialPageRoute produtosRoute;
   bool _isLoading = false;
   MainModel model;
-  double frete;
+  double frete = 0;
   String _character = '';
   int selectedPaymentId;
   bool _localizarPedido = false;
@@ -56,9 +56,11 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
           (model.pedido.id > 0) &&
           (model.pedido.endereco == null)) {
         _localizarPedido = false;
-        model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
+        setState(() {
+          model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
+        });
       }
-      if (frete == null) {
+      if ((model.pedido.empresa > 0) && (model.pedido.endereco != null)) {
         getFretes(model.pedido);
       }
 
@@ -394,7 +396,9 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
         print("BUSCANDO VALOR DE FRETE");
         print(json.decode(response.body).toString());
         responseBody = json.decode(response.body);
-        frete = double.parse(responseBody['fretes'][0]['valor']);
+        setState(() {
+          frete = double.parse(responseBody['fretes'][0]['valor']);
+        });
       } else {
         frete = 0;
       }
