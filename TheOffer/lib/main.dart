@@ -6,6 +6,7 @@ import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() {
@@ -27,19 +28,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
     getUser();
-    Map<dynamic, dynamic> responseBody;
-    if (Autenticacao.token == "") {
-      http.get(Configuracoes.BASE_URL + 'usuario/gerarToken').then((response) {
-        responseBody = json.decode(response.body);
-        Autenticacao.token = responseBody['token'];
-      });
+    if (Autenticacao.token != "") {
+      super.initState();
     }
-    super.initState();
   }
 
   getUser() async {
+    Map<dynamic, dynamic> responseBody;
     final storage = FlutterSecureStorage();
     String codigoUsuarioAuxiliar;
     String nomeUsuarioAuxiliar;
@@ -47,24 +43,46 @@ class _MyAppState extends State<MyApp> {
 
     Map<String, String> allValues = await storage.readAll();
     if (allValues.length > 0) {
-      codigoUsuarioAuxiliar = await storage.read(key: "codigoUsuario");
-      nomeUsuarioAuxiliar = await storage.read(key: "nomeUsuario");
-      token = await storage.read(key: "token");
+      codigoUsuarioAuxiliar = allValues["codigoUsuario"];
+      nomeUsuarioAuxiliar = allValues["nomeUsuario"];
+      token = allValues["token"];
 
       if (codigoUsuarioAuxiliar != null) {
-        Autenticacao.codigoUsuario = int.parse(codigoUsuarioAuxiliar);
+        setState(() {
+          Autenticacao.codigoUsuario = int.parse(codigoUsuarioAuxiliar);
+        });
       }
       if (nomeUsuarioAuxiliar != null) {
-        Autenticacao.nomeUsuario = nomeUsuarioAuxiliar;
+        setState(() {
+          Autenticacao.nomeUsuario = nomeUsuarioAuxiliar;
+        });
       }
       if (token != null) {
-        Autenticacao.token = token;
+        setState(() {
+          Autenticacao.token = token;
+        });
       }
+    }
+
+    if (Autenticacao.token == "") {
+      http.get(Configuracoes.BASE_URL + 'usuario/gerarToken').then((response) {
+        responseBody = json.decode(response.body);
+        setState(() {
+          Autenticacao.token = responseBody['token'];
+        });
+      });
+    }
+
+    if (Autenticacao.token != "") {
+      setState(() {
+        _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.restoreSystemUIOverlays();
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(

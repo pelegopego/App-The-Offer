@@ -31,9 +31,6 @@ dependencies:
   flushbar: 1.10.2 
   get_it: ^1.0.3+2
   back_button_interceptor: ^4.1.1
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   intl: ^0.15.8
   flutter_secure_storage: 3.2.1+1

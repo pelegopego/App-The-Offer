@@ -152,7 +152,6 @@ class _TelaCategorias extends State<TelaCategorias> {
 
   getCategorias() async {
     Map<String, String> headers = getHeaders();
-
     http
         .get(Configuracoes.BASE_URL + 'categorias/', headers: headers)
         .then((response) {
