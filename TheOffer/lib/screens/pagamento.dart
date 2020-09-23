@@ -223,6 +223,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                           ),
                           keyboardType: TextInputType.multiline,
                           maxLines: 6,
+                          textInputAction: TextInputAction.done,
                           onChanged: (String value) {
                             observacao = value;
                           },
