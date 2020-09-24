@@ -275,6 +275,9 @@ class _TelaPagamento extends State<TelaPagamento> {
                 ),
                 onPressed: () {
                   setState(() {
+                    if (frete == 0) {
+                      getFretes();
+                    }
                     pagamentoEntregaVisivel = true;
                     pagamentoBalcaoVisivel = false;
                   });
@@ -349,6 +352,7 @@ class _TelaPagamento extends State<TelaPagamento> {
                 ),
                 onPressed: () {
                   setState(() {
+                    frete = 0;
                     pagamentoEntregaVisivel = false;
                     pagamentoBalcaoVisivel = true;
                   });
