@@ -156,6 +156,14 @@ class _TelaProdutos extends State<TelaProdutos> {
     if (Autenticacao.codigoUsuario == 0) {
       return BottomNavigationBar(
         backgroundColor: Colors.secundariaTheOffer,
+        selectedLabelStyle: TextStyle(
+            color: Colors.principalTheOffer,
+            fontSize: 15,
+            fontWeight: FontWeight.w600),
+        unselectedLabelStyle: TextStyle(
+            color: Colors.principalTheOffer,
+            fontSize: 15,
+            fontWeight: FontWeight.w600),
         onTap: (index) {
           MaterialPageRoute route =
               MaterialPageRoute(builder: (context) => Authentication(index));
@@ -165,21 +173,13 @@ class _TelaProdutos extends State<TelaProdutos> {
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
-              title: Text('ENTRAR',
-                  style: TextStyle(
-                      color: Colors.principalTheOffer,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600))),
+              label: 'ENTRAR'),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.person_outline,
                 color: Colors.principalTheOffer,
               ),
-              title: Text('CRIAR CONTA',
-                  style: TextStyle(
-                      color: Colors.principalTheOffer,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600))),
+              label: 'CRIAR CONTA'),
         ],
       );
     } else {
