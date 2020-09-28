@@ -285,13 +285,19 @@ class _HomeDrawer extends State<HomeDrawer> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Sair"),
-            content: new Text("Você deseja realmente sair?"),
+            title: Text("Sair",
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold)),
+            content: new Text("Você deseja realmente sair?",
+                style: TextStyle(color: Colors.secundariaTheOffer)),
             actions: <Widget>[
               new FlatButton(
                 child: Text(
                   "Cancelar",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -300,7 +306,9 @@ class _HomeDrawer extends State<HomeDrawer> {
               new FlatButton(
                 child: Text(
                   "OK",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
