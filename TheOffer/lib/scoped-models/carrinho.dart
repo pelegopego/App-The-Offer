@@ -13,6 +13,7 @@ import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:theoffer/screens/finalizarPedido.dart';
 
 mixin CarrinhoModel on Model {
   bool hi = false;
@@ -452,6 +453,153 @@ mixin CarrinhoModel on Model {
       _isLoading = false;
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<bool> localizarPedidoPendente(
+      int pedidoId, int usuarioId, int status) async {
+    print("LOCALIZANDO CARRINHO");
+    _isLoading = true;
+    notifyListeners();
+    Map<dynamic, dynamic> responseBody;
+    Produto produto;
+    Endereco endereco;
+    Bairro bairro;
+    Cidade cidade;
+    ItemPedido itemPedido;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, String> headers = getHeaders();
+    limparPedido();
+    try {
+      _listaItensPedido.clear();
+      objetoItemPedido = {
+        "usuario": usuarioId.toString(),
+        "pedido": pedidoId.toString(),
+        "status": status.toString()
+      };
+      http.Response response = await http.post(
+          Configuracoes.BASE_URL + 'pedido/verificarPedidoPendente',
+          headers: headers,
+          body: objetoItemPedido);
+
+      responseBody = json.decode(response.body);
+      if (responseBody['possuiPedidos'] == true) {
+        responseBody['pedidos'].forEach((pedidosJson) {
+          produto = Produto(
+              id: int.parse(pedidosJson['produto_id']),
+              titulo: pedidosJson['titulo'],
+              descricao: pedidosJson['descricao'],
+              imagem: pedidosJson['imagem'],
+              valor: pedidosJson['valor'],
+              valorNumerico: double.parse(pedidosJson['valorNumerico']),
+              quantidade: int.parse(pedidosJson['quantidade']),
+              quantidadeRestante: int.parse(pedidosJson['quantidadeRestante']),
+              dataInicial: pedidosJson['dataInicial'],
+              dataFinal: pedidosJson['dataFinal'],
+              dataCadastro: pedidosJson['DataCadastro'],
+              usuarioId: int.parse(pedidosJson['usuario_id']));
+
+          itemPedido = ItemPedido(
+              pedidoId: int.parse(pedidosJson['pedido_id']),
+              produtoId: int.parse(pedidosJson['produto_id']),
+              quantidade: int.parse(pedidosJson['quantidade_item']),
+              sabores: pedidosJson['sabores_item'],
+              produto: produto);
+          _listaItensPedido.add(itemPedido);
+          notifyListeners();
+        });
+
+        if (responseBody['pedidos'][0]['endereco_id'] != null) {
+          bairro = Bairro(
+              id: int.parse(responseBody['pedidos'][0]['bairro_id']),
+              nome: responseBody['pedidos'][0]['nomeBairro']);
+
+          cidade = Cidade(
+              id: int.parse(responseBody['pedidos'][0]['cidade_id']),
+              nome: responseBody['pedidos'][0]['nomeCidade']);
+
+          endereco = Endereco(
+              id: int.parse(responseBody['pedidos'][0]['endereco_id']),
+              nome: responseBody['pedidos'][0]['nomeEndereco'],
+              cidade: cidade,
+              bairro: bairro,
+              rua: responseBody['pedidos'][0]['rua'],
+              numero: int.parse(responseBody['pedidos'][0]['numero']),
+              complemento: responseBody['pedidos'][0]['complemento'],
+              referencia: responseBody['pedidos'][0]['referencia'],
+              dataCadastro: responseBody['pedidos'][0]['dataCadastroEndereco'],
+              dataConfirmacao: responseBody['pedidos'][0]
+                  ['dataConfirmacaoEndereco']);
+        }
+        _pedido = Pedido(
+            id: int.parse(responseBody['pedidos'][0]['pedido_id']),
+            usuarioId: int.parse(responseBody['pedidos'][0]['usuario_id']),
+            empresa: int.parse(responseBody['pedidos'][0]['produto_empresa']),
+            dataInclusao: responseBody['pedidos'][0]['dataInclusao'],
+            dataConfirmacao: responseBody['pedidos'][0]['dataConfirmacao'],
+            status: int.parse(responseBody['pedidos'][0]['status']),
+            endereco: endereco,
+            listaItensPedido: _listaItensPedido);
+      }
+
+      _isLoading = false;
+      prefs.setString('numeroItens', _listaItensPedido.length.toString());
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future verificarPedidoPendente(
+    int pedidoId,
+    int usuarioId,
+    BuildContext context,
+  ) async {
+    print("VERIFICANDO PENDENCIAS");
+    limparPedido();
+    await localizarPedidoPendente(pedidoId, usuarioId, 2);
+    if (pedido != null && pedido.id > 0) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                "Existe um pedido não finalizado.",
+                style: TextStyle(color: Colors.secundariaTheOffer),
+              ),
+              content: new Text(
+                "Você deseja?",
+                style: TextStyle(color: Colors.secundariaTheOffer),
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  child: Text(
+                    "Visualizar",
+                    style: TextStyle(color: Colors.secundariaTheOffer),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    MaterialPageRoute finalizarPedidoRoute = MaterialPageRoute(
+                        builder: (context) => TelaFinalizarPedido());
+                    Navigator.push(context, finalizarPedidoRoute);
+                  },
+                ),
+                new FlatButton(
+                  child: Text(
+                    "Excluir",
+                    style: TextStyle(color: Colors.secundariaTheOffer),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    deletarPedido(pedido.id, 2);
+                  },
+                )
+              ],
+            );
+          });
     }
   }
 

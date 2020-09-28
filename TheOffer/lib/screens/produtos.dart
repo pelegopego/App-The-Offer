@@ -73,6 +73,7 @@ class _TelaProdutos extends State<TelaProdutos> {
         builder: (BuildContext context, Widget child, MainModel model) {
       if (_localizarCarrinho) {
         _localizarCarrinho = false;
+        model.verificarPedidoPendente(null, Autenticacao.codigoUsuario, context);
         model.localizarCarrinho(null, Autenticacao.codigoUsuario);
       }
       return Scaffold(
