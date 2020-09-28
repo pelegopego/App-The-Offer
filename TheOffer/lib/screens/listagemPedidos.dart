@@ -411,6 +411,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                       pedidoId: int.parse(pedidosJson['pedido_id']),
                       produtoId: int.parse(pedidosJson['produto_id']),
                       quantidade: int.parse(pedidosJson['quantidade_item']),
+                      sabores: pedidosJson['sabores_item'],
                       produto: produto));
                 }
               }

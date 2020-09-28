@@ -288,7 +288,22 @@ class _CarrinhoState extends State<Carrinho> {
                                                 .pedido
                                                 .listaItensPedido[index]
                                                 .produto
-                                                .titulo,
+                                                .titulo
+                                                .substring(
+                                                    model
+                                                            .pedido
+                                                            .listaItensPedido[
+                                                                index]
+                                                            .produto
+                                                            .titulo
+                                                            .indexOf(' ') +
+                                                        1,
+                                                    model
+                                                        .pedido
+                                                        .listaItensPedido[index]
+                                                        .produto
+                                                        .titulo
+                                                        .length),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color:
@@ -319,7 +334,26 @@ class _CarrinhoState extends State<Carrinho> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              model.pedido.listaItensPedido[index].sabores != ""
+                                  ? Column(children: <Widget>[
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          'Sabores: ' +
+                                              model
+                                                  .pedido
+                                                  .listaItensPedido[index]
+                                                  .sabores,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.principalTheOffer,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                    ])
+                                  : Container(),
                               Container(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -328,11 +362,12 @@ class _CarrinhoState extends State<Carrinho> {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: Colors.principalTheOffer,
-                                      fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
                               ),
-                              SizedBox(height: 12),
+                              model.pedido.listaItensPedido[index].sabores == ""
+                                  ? SizedBox(height: 35)
+                                  : Container(),
                               quantityRow(model, index),
                             ],
                           )),
@@ -351,10 +386,9 @@ class _CarrinhoState extends State<Carrinho> {
     print(
         "QUANTIDADE DE ITENS NO CARRINHO, ${model.pedido.somaQuantidadePedido()}");
     return Container(
-        height: 60.0,
+        height: 60,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          // itemExtent: 50,
           itemCount: 20,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {

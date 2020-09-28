@@ -29,6 +29,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
   bool _isLoading = false;
   MainModel model;
   double frete = 0;
+  bool achouFrete = false;
   String _character = '';
   int selectedPaymentId;
   bool _localizarPedido = false;
@@ -60,7 +61,9 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
           model.localizarPedido(model.pedido.id, Autenticacao.codigoUsuario, 2);
         });
       }
-      if ((model.pedido.empresa > 0) && (model.pedido.endereco != null)) {
+      if ((model.pedido.empresa > 0) &&
+          (model.pedido.endereco != null) &&
+          (achouFrete == false)) {
         getFretes(model.pedido);
       }
 
@@ -399,6 +402,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
         setState(() {
           frete = double.parse(responseBody['fretes'][0]['valor']);
         });
+        achouFrete = true;
       } else {
         frete = 0;
       }
@@ -417,7 +421,9 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                 onTap: () {},
                 child: Card(
                   child: Container(
-                    height: 58,
+                    height: model.pedido.listaItensPedido[index].sabores != ""
+                        ? 58
+                        : 43,
                     color: Colors.secundariaTheOffer,
                     child: GestureDetector(
                       onTap: () {},
@@ -454,7 +460,22 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                                 .pedido
                                                 .listaItensPedido[index]
                                                 .produto
-                                                .titulo,
+                                                .titulo
+                                                .substring(
+                                                    model
+                                                            .pedido
+                                                            .listaItensPedido[
+                                                                index]
+                                                            .produto
+                                                            .titulo
+                                                            .indexOf(' ') +
+                                                        1,
+                                                    model
+                                                        .pedido
+                                                        .listaItensPedido[index]
+                                                        .produto
+                                                        .titulo
+                                                        .length),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color:
@@ -470,6 +491,26 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                 height: 1.0,
                                 color: Colors.principalTheOffer,
                               ),
+                              model.pedido.listaItensPedido[index].sabores != ""
+                                  ? Container(
+                                      child: Row(children: <Widget>[
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          'Sabores: ' +
+                                              model
+                                                  .pedido
+                                                  .listaItensPedido[index]
+                                                  .sabores,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.principalTheOffer,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                    ]))
+                                  : Container(),
                               Container(
                                   child: Row(children: <Widget>[
                                 Container(
@@ -481,12 +522,11 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                         color: Colors.principalTheOffer,
-                                        fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 100,
+                                  width: 90,
                                 ),
                                 Expanded(
                                     child: Column(
@@ -495,6 +535,7 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.only(right: 5),
                                         alignment: Alignment.centerRight,
                                         child: Text(
                                           'Quantidade: ' +
@@ -506,14 +547,16 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                               color: Colors.principalTheOffer,
-                                              fontWeight: FontWeight.bold,
                                               fontSize: 16),
                                         ),
                                       )
                                     ])),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                model.pedido.listaItensPedido[index].sabores !=
+                                        ""
+                                    ? SizedBox(
+                                        width: 5,
+                                      )
+                                    : Container(),
                               ])),
                             ],
                           )),
