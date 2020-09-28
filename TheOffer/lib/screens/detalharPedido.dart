@@ -324,7 +324,9 @@ class _DetalharPedido extends State<DetalharPedido> {
                 onTap: () {},
                 child: Card(
                   child: Container(
-                    height: 58,
+                    height: widget.pedido.listaItensPedido[index].sabores != ""
+                        ? 58
+                        : 43,
                     color: Colors.secundariaTheOffer,
                     child: GestureDetector(
                       onTap: () {},
@@ -361,7 +363,22 @@ class _DetalharPedido extends State<DetalharPedido> {
                                                 .pedido
                                                 .listaItensPedido[index]
                                                 .produto
-                                                .titulo,
+                                                .titulo
+                                                .substring(
+                                                    widget
+                                                            .pedido
+                                                            .listaItensPedido[
+                                                                index]
+                                                            .produto
+                                                            .titulo
+                                                            .indexOf(' ') +
+                                                        1,
+                                                    widget
+                                                        .pedido
+                                                        .listaItensPedido[index]
+                                                        .produto
+                                                        .titulo
+                                                        .length),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 color:
@@ -377,6 +394,27 @@ class _DetalharPedido extends State<DetalharPedido> {
                                 height: 1.0,
                                 color: Colors.principalTheOffer,
                               ),
+                              widget.pedido.listaItensPedido[index].sabores !=
+                                      ""
+                                  ? Container(
+                                      child: Row(children: <Widget>[
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          'Sabores: ' +
+                                              widget
+                                                  .pedido
+                                                  .listaItensPedido[index]
+                                                  .sabores,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.principalTheOffer,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                    ]))
+                                  : Container(),
                               Container(
                                   child: Row(children: <Widget>[
                                 Container(
@@ -388,12 +426,11 @@ class _DetalharPedido extends State<DetalharPedido> {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                         color: Colors.principalTheOffer,
-                                        fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 100,
+                                  width: 90,
                                 ),
                                 Expanded(
                                     child: Column(
@@ -402,6 +439,7 @@ class _DetalharPedido extends State<DetalharPedido> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.only(right: 5),
                                         alignment: Alignment.centerRight,
                                         child: Text(
                                           'Quantidade: ' +
@@ -413,14 +451,16 @@ class _DetalharPedido extends State<DetalharPedido> {
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                               color: Colors.principalTheOffer,
-                                              fontWeight: FontWeight.bold,
                                               fontSize: 16),
                                         ),
                                       )
                                     ])),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                widget.pedido.listaItensPedido[index].sabores !=
+                                        ""
+                                    ? SizedBox(
+                                        width: 5,
+                                      )
+                                    : Container(),
                               ])),
                             ],
                           )),
