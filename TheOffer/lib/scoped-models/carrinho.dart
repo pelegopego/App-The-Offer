@@ -563,12 +563,15 @@ mixin CarrinhoModel on Model {
     await localizarPedidoPendente(pedidoId, usuarioId, 2);
     if (pedido != null && pedido.id > 0) {
       showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text(
                 "Existe um pedido não finalizado.",
-                style: TextStyle(color: Colors.secundariaTheOffer),
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold),
               ),
               content: new Text(
                 "Você deseja?",
@@ -578,7 +581,9 @@ mixin CarrinhoModel on Model {
                 new FlatButton(
                   child: Text(
                     "Visualizar",
-                    style: TextStyle(color: Colors.secundariaTheOffer),
+                    style: TextStyle(
+                        color: Colors.secundariaTheOffer,
+                        fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -590,7 +595,9 @@ mixin CarrinhoModel on Model {
                 new FlatButton(
                   child: Text(
                     "Excluir",
-                    style: TextStyle(color: Colors.secundariaTheOffer),
+                    style: TextStyle(
+                        color: Colors.secundariaTheOffer,
+                        fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
