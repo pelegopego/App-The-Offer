@@ -236,9 +236,14 @@ class _FinalizarPedido extends State<TelaFinalizarPedido> {
                                               text: TextSpan(
                                                 text: model.pedido.endereco
                                                         .cidade.nome +
-                                                    ', Bairro ' +
+                                                    ', bairro ' +
                                                     model.pedido.endereco.bairro
-                                                        .nome,
+                                                        .nome[0]
+                                                        .toUpperCase() +
+                                                    model.pedido.endereco.bairro
+                                                        .nome
+                                                        .toLowerCase()
+                                                        .substring(1),
                                                 style: TextStyle(
                                                     color: Colors
                                                         .secundariaTheOffer,
