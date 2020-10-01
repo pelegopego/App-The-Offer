@@ -81,18 +81,23 @@ class _CarrinhoState extends State<Carrinho> {
                 )
               : body(),
           bottomNavigationBar: BottomAppBar(
-              child: Container(
-                  color: Colors.secundariaTheOffer,
-                  height: 100,
-                  child: Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: itemTotalContainer(model),
-                    ),
-                    !model.isLoading && model.pedido != null
-                        ? botaoGerarPedido()
-                        : Container(),
-                  ]))));
+            child: !model.isLoading &&
+                    model.pedido != null &&
+                    model.pedido.listaItensPedido.length > 0
+                ? Container(
+                    color: Colors.secundariaTheOffer,
+                    height: 100,
+                    child: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: itemTotalContainer(model),
+                      ),
+                      botaoGerarPedido()
+                    ]))
+                : Container(
+                    height: 0,
+                  ),
+          ));
     });
   }
 
@@ -107,7 +112,9 @@ class _CarrinhoState extends State<Carrinho> {
   Widget body() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      if (model.pedido != null) {
+      if ((!model.isLoading) &&
+          (model.pedido != null) &&
+          (model.pedido.listaItensPedido.length > 0)) {
         return Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -121,13 +128,35 @@ class _CarrinhoState extends State<Carrinho> {
               ],
             ));
       } else {
-        return Container();
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/fundoBranco.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          padding: EdgeInsets.only(top: 10),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              'Não foram incluídos itens no carrinho ainda.',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.secundariaTheOffer,
+                  fontSize: 20),
+            ),
+          ),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        );
       }
     });
   }
 
   Widget itemTotalContainer(MainModel model) {
-    if (model.pedido != null) {
+    if ((!model.isLoading) &&
+        (model.pedido != null) &&
+        (model.pedido.listaItensPedido.length > 0)) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[carrinhoData()],
