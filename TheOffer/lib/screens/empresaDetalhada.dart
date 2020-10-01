@@ -123,13 +123,39 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                             horaInicial = horaInicial.replaceAll('.', ':');
                             horaFim = horaFim.replaceAll('.', ':');
 
+                            String minutosInicial = ((int.parse(
+                                            horaInicial.substring(
+                                                (horaInicial.indexOf(':') + 1),
+                                                horaInicial.indexOf(':') + 3)) /
+                                        100) *
+                                    60)
+                                .round()
+                                .toString();
+
+                            String minutosFim = ((int.parse(horaFim.substring(
+                                            (horaFim.indexOf(':') + 1),
+                                            horaFim.indexOf(':') + 3)) /
+                                        100) *
+                                    60)
+                                .round()
+                                .toString();
+
+                            if (int.parse(minutosInicial) <= 9) {
+                              minutosInicial = '0' + minutosInicial;
+                            }
+                            if (int.parse(minutosFim) <= 9) {
+                              minutosFim = '0' + minutosFim;
+                            }
+
                             horaInicial = horaInicial.substring(
-                                (horaInicial.indexOf(':') - 2),
-                                horaInicial.indexOf(':') + 3);
+                                    (horaInicial.indexOf(':') - 2),
+                                    horaInicial.indexOf(':') + 1) +
+                                minutosInicial;
 
                             horaFim = horaFim.substring(
-                                (horaFim.indexOf(':') - 2),
-                                horaFim.indexOf(':') + 3);
+                                    (horaFim.indexOf(':') - 2),
+                                    horaFim.indexOf(':') + 1) +
+                                minutosFim;
 
                             if (empresaDetalhada.listaCategoria.length > 0) {
                               if (index == 0) {
