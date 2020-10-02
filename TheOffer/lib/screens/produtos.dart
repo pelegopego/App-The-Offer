@@ -15,6 +15,7 @@ import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/screens/empresaDetalhada.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TelaProdutos extends StatefulWidget {
@@ -73,7 +74,8 @@ class _TelaProdutos extends State<TelaProdutos> {
         builder: (BuildContext context, Widget child, MainModel model) {
       if (_localizarCarrinho) {
         _localizarCarrinho = false;
-        model.verificarPedidoPendente(null, Autenticacao.codigoUsuario, context);
+        model.verificarPedidoPendente(
+            null, Autenticacao.codigoUsuario, context);
         model.localizarCarrinho(null, Autenticacao.codigoUsuario);
       }
       return Scaffold(
@@ -138,8 +140,12 @@ class _TelaProdutos extends State<TelaProdutos> {
                           itemBuilder: (context, index) {
                             if (listaProdutoEmpresa[index].listaProduto.length >
                                 0) {
-                              return cardProdutosEmpresa(index,
-                                  listaProdutoEmpresa, _deviceSize, context);
+                              return Container(
+                                  padding:
+                                      listaProdutoEmpresa[index].cardVisivel
+                                          ? EdgeInsets.all(0)
+                                          : EdgeInsets.only(left: 5, right: 5),
+                                  child: montarCardProdutosEmpresa(index));
                             } else {
                               return Container();
                             }
@@ -151,6 +157,154 @@ class _TelaProdutos extends State<TelaProdutos> {
         bottomNavigationBar: bottomNavigationBar(),
       );
     });
+  }
+
+  Widget montarCardProdutosEmpresa(index) {
+    return SizedBox(
+        width: _deviceSize.width * 0.4,
+        child: Container(
+            margin: EdgeInsets.only(
+                bottom: listaProdutoEmpresa[index].cardVisivel ? 0 : 5),
+            decoration: listaProdutoEmpresa[index].cardVisivel
+                ? BoxDecoration()
+                : BoxDecoration(
+                    border: Border.all(
+                      color: Colors.secundariaTheOffer,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(5)),
+            child: Column(children: <Widget>[
+              Container(
+                width: _deviceSize.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                        child: Row(children: <Widget>[
+                      GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            MaterialPageRoute route = MaterialPageRoute(
+                                builder: (context) => TelaEmpresaDetalhada(
+                                    idEmpresa:
+                                        listaProdutoEmpresa[index].empresaId));
+                            Navigator.push(context, route);
+                          },
+                          child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              height: 45,
+                              child: Row(children: <Widget>[
+                                Icon(
+                                  Icons.business,
+                                  color: Colors.secundariaTheOffer,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                    listaProdutoEmpresa[index]
+                                            .fantasia[0]
+                                            .toUpperCase() +
+                                        listaProdutoEmpresa[index]
+                                            .fantasia
+                                            .toLowerCase()
+                                            .substring(1),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.secundariaTheOffer)),
+                              ]))),
+                      Expanded(
+                          child: Container(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            if (listaProdutoEmpresa[index].cardVisivel) {
+                              setState(() {
+                                listaProdutoEmpresa[index].cardVisivel = false;
+                              });
+                            } else {
+                              setState(() {
+                                listaProdutoEmpresa[index].cardVisivel = true;
+                              });
+                            }
+                          },
+                        ),
+                        alignment: Alignment.center,
+                        height: 45,
+                      )),
+                      GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            if (listaProdutoEmpresa[index].cardVisivel) {
+                              setState(() {
+                                listaProdutoEmpresa[index].cardVisivel = false;
+                              });
+                            } else {
+                              setState(() {
+                                listaProdutoEmpresa[index].cardVisivel = true;
+                              });
+                            }
+                          },
+                          child: Container(
+                              child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: 45,
+                                child: IconButton(
+                                    iconSize: 30,
+                                    color: Colors.secundariaTheOffer,
+                                    icon: listaProdutoEmpresa[index].cardVisivel
+                                        ? Icon(Icons.arrow_drop_up)
+                                        : Icon(Icons.arrow_drop_down),
+                                    onPressed: () {
+                                      if (listaProdutoEmpresa[index]
+                                          .cardVisivel) {
+                                        setState(() {
+                                          listaProdutoEmpresa[index]
+                                              .cardVisivel = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          listaProdutoEmpresa[index]
+                                              .cardVisivel = true;
+                                        });
+                                      }
+                                    }),
+                              ),
+                            ],
+                          )))
+                    ])),
+                  ],
+                ),
+              ),
+              Container(
+                height: listaProdutoEmpresa[index].cardVisivel ? 260 : 0,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listaProdutoEmpresa[index].listaProduto.length,
+                    itemBuilder: (context, index2) {
+                      if (listaProdutoEmpresa[index].listaProduto.length > 0) {
+                        return Container(
+                            child: Visibility(
+                                visible: listaProdutoEmpresa[index].cardVisivel,
+                                child: Container(
+                                    child: cardProdutos(
+                                        index2,
+                                        listaProdutoEmpresa[index].listaProduto,
+                                        _deviceSize,
+                                        context))));
+                      } else {
+                        return Container();
+                      }
+                    }),
+              ),
+              Divider(
+                height: 5,
+              ),
+            ])));
   }
 
   Widget bottomNavigationBar() {
@@ -291,6 +445,7 @@ class _TelaProdutos extends State<TelaProdutos> {
                 fantasia: empresaJson['fantasia'],
                 horaInicio: double.parse(empresaJson['horaInicio']),
                 horaFim: double.parse(empresaJson['horaFim']),
+                cardVisivel: false,
                 listaProduto: _listaProduto),
           );
         });

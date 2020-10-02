@@ -7,6 +7,7 @@ class ProdutoEmpresa {
   final String imagem;
   final double horaInicio;
   final double horaFim;
+  bool cardVisivel = false;
   final List<Produto> listaProduto;
 
   ProdutoEmpresa(
@@ -16,5 +17,6 @@ class ProdutoEmpresa {
       this.imagem,
       this.horaInicio,
       this.horaFim,
-      this.listaProduto});
+      this.listaProduto,
+      this.cardVisivel});
 }
