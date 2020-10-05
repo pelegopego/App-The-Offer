@@ -1,19 +1,22 @@
 class Configuracoes {
   static const String IP = '10.0.0.22';
-  static const String BASE_URL = 'http://' + IP + ':8080/theoffer/api/index.php/';  
+  static const String BASE_URL =
+      'http://' + IP + ':8080/theoffer/api/index.php/';
 }
 
-class Autenticacao {  
-  static int codigoUsuario = 0;  
-  static String nomeUsuario = '';  
-  static String token = '';  
+class Autenticacao {
+  static int codigoUsuario = 0;
+  static String nomeUsuario = '';
+  static String token = '';
+  static String notificacao = '';
 }
 
-class CidadeSelecionada {  
-  static int id = 0;  
+class CidadeSelecionada {
+  static int id = 0;
 }
 
-final String politicaPrivacidade = 'Ao fazer este pedido, você concorda com os termos de uso e privacidade do theoffer.com.br';
+final String politicaPrivacidade =
+    'Ao fazer este pedido, você concorda com os termos de uso e privacidade do theoffer.com.br';
 
 final returnPolicyHeading1 = 'Return Policy';
 final String retunPolicyText1 =

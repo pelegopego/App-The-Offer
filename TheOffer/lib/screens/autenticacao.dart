@@ -457,6 +457,7 @@ class _AuthenticationState extends State<Authentication>
           Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
           Autenticacao.nomeUsuario = usuarioJson['nome'];
           Autenticacao.token = usuarioJson['token'];
+          Autenticacao.notificacao = usuarioJson['notificacao'];
           writeStorage();
         });
         _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -510,6 +511,7 @@ class _AuthenticationState extends State<Authentication>
       'senha':
           md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
       'telefone': _formData['telefone'],
+      'notificacao': Autenticacao.notificacao
     };
 
     http
@@ -564,6 +566,7 @@ class _AuthenticationState extends State<Authentication>
         key: "codigoUsuario", value: Autenticacao.codigoUsuario.toString());
     await storage.write(key: "nomeUsuario", value: Autenticacao.nomeUsuario);
     await storage.write(key: "token", value: Autenticacao.token);
+    await storage.write(key: "notificacao", value: Autenticacao.notificacao);
   }
 
   Widget _alertDialog(String boxTitle, String message, BuildContext context) {

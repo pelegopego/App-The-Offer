@@ -8,6 +8,8 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:theoffer/utils/headers.dart';
 
 void main() {
   setupLocator();
@@ -24,10 +26,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final MainModel _model = MainModel();
+  String notificacao;
+  _registerOnFirebase() {
+    _firebaseMessaging.subscribeToTopic('all');
+    _firebaseMessaging.getToken().then((token) => notificacao = token);
+  }
 
   @override
   void initState() {
+    _registerOnFirebase();
     getUser();
     if (Autenticacao.token != "") {
       super.initState();
@@ -62,6 +71,19 @@ class _MyAppState extends State<MyApp> {
           Autenticacao.token = token;
         });
       }
+
+      notificacao =
+          'euA78Knk2CU:APA91bG_O4fYBWhDCnyApV3t5HoiR36keEout_DWQ1Dh-DMpxdi_95kdByKtsrNtt9AEvbjCmOOOJLtFq9h80GXTTQyu5n6c31Re_fl6z2EuUhlyXFxtOlxIMdePYARQRJr3moFDx59l';
+      if ((notificacao != allValues["notificacao"]) && (notificacao != '')) {
+        if (Autenticacao.codigoUsuario > 0) {
+          salvarTokenNotificacao();
+          storage.write(key: "notificacao", value: notificacao);
+          Autenticacao.notificacao = notificacao;
+        }
+      } else {
+        notificacao = allValues["notificacao"];
+        Autenticacao.notificacao = notificacao;
+      }
     }
 
     if (Autenticacao.token == "") {
@@ -78,6 +100,16 @@ class _MyAppState extends State<MyApp> {
         _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
       });
     }
+  }
+
+  salvarTokenNotificacao() {
+    Map<String, String> headers = getHeaders();
+    Map<dynamic, dynamic> oMapSalvarNotificacao = {
+      'usuario': Autenticacao.codigoUsuario.toString(),
+      'notificacao': notificacao
+    };
+    http.post(Configuracoes.BASE_URL + 'usuario/salvarTokenNotificacao/',
+        headers: headers, body: oMapSalvarNotificacao);
   }
 
   @override
