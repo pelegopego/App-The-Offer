@@ -8,7 +8,6 @@ import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:theoffer/utils/headers.dart';
 
 void main() {
@@ -26,17 +25,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final MainModel _model = MainModel();
   String notificacao;
-  _registerOnFirebase() {
-    _firebaseMessaging.subscribeToTopic('all');
-    _firebaseMessaging.getToken().then((token) => notificacao = token);
-  }
 
   @override
   void initState() {
-    _registerOnFirebase();
     getUser();
     if (Autenticacao.token != "") {
       super.initState();
