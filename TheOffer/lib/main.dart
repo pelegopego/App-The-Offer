@@ -9,6 +9,8 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
 
 void main() {
   setupLocator();
@@ -30,10 +32,37 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    initPlatformState();
     getUser();
     if (Autenticacao.token != "") {
       super.initState();
     }
+  }
+  
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+    OneSignal.shared.setRequiresUserPrivacyConsent(true);
+
+    var settings = {
+      OSiOSSettings.autoPrompt: false,
+      OSiOSSettings.promptBeforeOpeningPushUrl: true
+    };
+
+    // TheOffer
+    await OneSignal.shared
+        .init("060cfdde-6123-4086-b569-9d03093a5e08", iOSSettings: settings);
+
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
+    await OneSignal.shared.requiresUserPrivacyConsent();
+    OneSignal().setSubscription(true);
+    var status = await OneSignal.shared.getPermissionSubscriptionState();
+    var playerId = status.subscriptionStatus.userId;
+    notificacao = playerId;
   }
 
   getUser() async {

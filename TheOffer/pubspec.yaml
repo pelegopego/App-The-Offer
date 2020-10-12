@@ -37,6 +37,7 @@ dependencies:
   flutter_widget_from_html_core: ^0.2.0
   flutter_launcher_icons: ^0.7.2
   flutter_pagewise: ^1.2.3
+  onesignal_flutter: ^2.6.1
   flutter_webview_plugin: 
     git:
       url: https://github.com/sakina1403/flutter_webview_plugin.git
