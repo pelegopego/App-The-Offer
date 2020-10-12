@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
   
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
+  void initPlatformState() async {
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
     OneSignal.shared.setRequiresUserPrivacyConsent(true);
@@ -52,17 +52,16 @@ class _MyAppState extends State<MyApp> {
     };
 
     // TheOffer
-    await OneSignal.shared
+    OneSignal.shared
         .init("060cfdde-6123-4086-b569-9d03093a5e08", iOSSettings: settings);
 
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
-    await OneSignal.shared.requiresUserPrivacyConsent();
+    OneSignal.shared.requiresUserPrivacyConsent();
     OneSignal().setSubscription(true);
     var status = await OneSignal.shared.getPermissionSubscriptionState();
-    var playerId = status.subscriptionStatus.userId;
-    notificacao = playerId;
+     notificacao = status.subscriptionStatus.userId;
   }
 
   getUser() async {
@@ -94,8 +93,6 @@ class _MyAppState extends State<MyApp> {
         });
       }
 
-      notificacao =
-          'euA78Knk2CU:APA91bG_O4fYBWhDCnyApV3t5HoiR36keEout_DWQ1Dh-DMpxdi_95kdByKtsrNtt9AEvbjCmOOOJLtFq9h80GXTTQyu5n6c31Re_fl6z2EuUhlyXFxtOlxIMdePYARQRJr3moFDx59l';
       if ((notificacao != allValues["notificacao"]) && (notificacao != '')) {
         if (Autenticacao.codigoUsuario > 0) {
           salvarTokenNotificacao();
