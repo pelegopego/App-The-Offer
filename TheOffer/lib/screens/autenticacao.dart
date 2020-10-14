@@ -457,7 +457,17 @@ class _AuthenticationState extends State<Authentication>
           Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
           Autenticacao.nomeUsuario = usuarioJson['nome'];
           Autenticacao.token = usuarioJson['token'];
-          Autenticacao.notificacao = usuarioJson['notificacao'];
+          if (Autenticacao.notificacao != usuarioJson['notificacao']) {
+            Map<String, String> headers = getHeaders();
+            Map<dynamic, dynamic> oMapSalvarNotificacao = {
+              'usuario': Autenticacao.codigoUsuario.toString(),
+              'notificacao': Autenticacao.notificacao
+            };
+            http.post(Configuracoes.BASE_URL + 'usuario/salvarTokenNotificacao/',
+                headers: headers, body: oMapSalvarNotificacao);
+                
+            print('ATUALIZANDO TOKEN DE NOTIFICAÇÃO.');
+          }
           writeStorage();
         });
         _scaffoldKey.currentState.showSnackBar(SnackBar(

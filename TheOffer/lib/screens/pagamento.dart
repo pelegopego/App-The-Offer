@@ -418,7 +418,6 @@ class _TelaPagamento extends State<TelaPagamento> {
                                   body: objetoPedido)
                               .then((response) {
                             print("PAGANDO PEDIDO");
-                            print(json.decode(response.body).toString());
                             final snackBar = SnackBar(
                                 content: Text('Pedido efetuado com sucessoo.'),
                                 duration: Duration(seconds: 5));
