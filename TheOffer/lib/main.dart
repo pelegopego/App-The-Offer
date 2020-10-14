@@ -11,7 +11,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-
 void main() {
   setupLocator();
   runApp(MyApp());
@@ -38,30 +37,27 @@ class _MyAppState extends State<MyApp> {
       super.initState();
     }
   }
-  
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  void initPlatformState() async {
+  void initPlatformState() {
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+    var settings = {
+      OSiOSSettings.autoPrompt: true,
+      OSiOSSettings.inAppLaunchUrl: true
+    };
 
     OneSignal.shared.setRequiresUserPrivacyConsent(true);
 
-    var settings = {
-      OSiOSSettings.autoPrompt: false,
-      OSiOSSettings.promptBeforeOpeningPushUrl: true
-    };
-
-    // TheOffer
     OneSignal.shared
         .init("060cfdde-6123-4086-b569-9d03093a5e08", iOSSettings: settings);
 
+    OneSignal.shared.consentGranted(true);
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
-
     OneSignal.shared.requiresUserPrivacyConsent();
-    OneSignal().setSubscription(true);
-    var status = await OneSignal.shared.getPermissionSubscriptionState();
-     notificacao = status.subscriptionStatus.userId;
+    OneSignal.shared
+        .getPermissionSubscriptionState()
+        .then((status) => notificacao = status.subscriptionStatus.userId);
   }
 
   getUser() async {
@@ -98,11 +94,16 @@ class _MyAppState extends State<MyApp> {
           salvarTokenNotificacao();
           storage.write(key: "notificacao", value: notificacao);
           Autenticacao.notificacao = notificacao;
+        } else {
+          Autenticacao.notificacao = notificacao;
         }
       } else {
         notificacao = allValues["notificacao"];
         Autenticacao.notificacao = notificacao;
       }
+    }
+    if (Autenticacao.notificacao == "") {
+      Autenticacao.notificacao = notificacao;
     }
 
     if (Autenticacao.token == "") {

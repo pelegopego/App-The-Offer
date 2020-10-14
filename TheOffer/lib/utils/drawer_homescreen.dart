@@ -344,7 +344,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                 height: 90,
               ),
               Text(
-                'PRE-ALPHA',
+                '1.1.2',
                 style: TextStyle(
                     color: Colors.principalTheOffer,
                     fontWeight: FontWeight.w300),
