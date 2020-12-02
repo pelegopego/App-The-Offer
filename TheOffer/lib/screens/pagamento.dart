@@ -78,8 +78,8 @@ class _TelaPagamento extends State<TelaPagamento> {
           key: _scaffoldKey,
           appBar: AppBar(
               leading: IconButton(
-                icon:
-                    Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Colors.principalTheOffer),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               title: Text('Pagamento',
@@ -146,12 +146,14 @@ class _TelaPagamento extends State<TelaPagamento> {
                                   ListTile(
                                     title: const Text('Dinheiro',
                                         style: TextStyle(
-                                            color: Colors.secundariaTheOffer)),
+                                            color:
+                                                Colors.secundariaTheOffer)),
                                     leading: Radio(
                                       value: FormaPagamentoRecebimento.dinheiro,
                                       groupValue:
                                           formaPagamentoRecebimentoSelecionada,
-                                      activeColor: Colors.secundariaTheOffer,
+                                      activeColor:
+                                          Colors.secundariaTheOffer,
                                       onChanged:
                                           (FormaPagamentoRecebimento value) {
                                         setState(() {
@@ -164,12 +166,14 @@ class _TelaPagamento extends State<TelaPagamento> {
                                   ListTile(
                                     title: const Text('Cartão',
                                         style: TextStyle(
-                                            color: Colors.secundariaTheOffer)),
+                                            color:
+                                                Colors.secundariaTheOffer)),
                                     leading: Radio(
                                       value: FormaPagamentoRecebimento.cartao,
                                       groupValue:
                                           formaPagamentoRecebimentoSelecionada,
-                                      activeColor: Colors.secundariaTheOffer,
+                                      activeColor:
+                                          Colors.secundariaTheOffer,
                                       onChanged:
                                           (FormaPagamentoRecebimento value) {
                                         setState(() {
@@ -212,7 +216,8 @@ class _TelaPagamento extends State<TelaPagamento> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
                               borderSide: const BorderSide(
-                                  color: Colors.principalTheOffer, width: 1.0),
+                                  color: Colors.principalTheOffer,
+                                  width: 1.0),
                             ),
                             hintText: 'Observação',
                             hintStyle: TextStyle(
@@ -362,6 +367,88 @@ class _TelaPagamento extends State<TelaPagamento> {
     });
   }
 
+  Future exibirSugestao(BuildContext context) async {
+    Map<dynamic, dynamic> objetoSugestao = Map();
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              scrollable: true,
+              contentPadding: EdgeInsets.all(0),
+              backgroundColor: Colors.transparent,
+              content: Container(
+                  width: 260,
+                  height: 220,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Sugerir / Relatar problema',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 18,
+                                color: Colors.principalTheOffer),
+                          ),
+                        ),
+                        Container(
+                          color: Colors.secundariaTheOffer,
+                          margin: EdgeInsets.only(top: 10, right: 29, left: 29),
+                          width: 250,
+                          height: 140,
+                          child: TextFormField(
+                            style: TextStyle(
+                              color: Colors.principalTheOffer,
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 6,
+                            textInputAction: TextInputAction.done,
+                            onChanged: (String value) {
+                              observacao = value;
+                            },
+                          ),
+                        ),
+                        Container(
+                            alignment: Alignment.center,
+                            child: FlatButton(
+                              color: Colors.secundariaTheOffer,
+                              child: Text('Enviar',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.principalTheOffer)),
+                              onPressed: () {
+                                Map<String, String> headers = getHeaders();
+                                objetoSugestao = {
+                                  "descricao": observacao,
+                                  "usuario":
+                                      Autenticacao.codigoUsuario.toString()
+                                };
+                                http
+                                    .post(
+                                        Configuracoes.BASE_URL +
+                                            'sugestao/salvar/',
+                                        headers: headers,
+                                        body: objetoSugestao)
+                                    .then((response) {
+                                  print("Sugerindo _______");
+                                  print(json.decode(response.body).toString());
+                                });
+                                Navigator.pop(context);
+                              },
+                            )),
+                      ])));
+        });
+    final snackBar = SnackBar(
+        content: Text('Pedido efetuado com sucessoo.'),
+        duration: Duration(seconds: 5));
+    Scaffold.of(context).showSnackBar(snackBar);
+    MaterialPageRoute produtosRoute =
+        MaterialPageRoute(builder: (context) => TelaProdutos(idCategoria: 0));
+    Navigator.push(context, produtosRoute);
+  }
+
   Widget paymentButton(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel widget) {
@@ -383,8 +470,8 @@ class _TelaPagamento extends State<TelaPagamento> {
                 color: Colors.principalTheOffer,
                 child: Text(
                   'FINALIZAR PEDIDO',
-                  style:
-                      TextStyle(fontSize: 20, color: Colors.secundariaTheOffer),
+                  style: TextStyle(
+                      fontSize: 20, color: Colors.secundariaTheOffer),
                 ),
                 onPressed: () async {
                   if (!pagamentoEntregaVisivel && !pagamentoBalcaoVisivel) {
@@ -417,15 +504,31 @@ class _TelaPagamento extends State<TelaPagamento> {
                                   headers: headers,
                                   body: objetoPedido)
                               .then((response) {
+                            responseBody = json.decode(response.body);
                             print("PAGANDO PEDIDO");
-                            final snackBar = SnackBar(
-                                content: Text('Pedido efetuado com sucessoo.'),
-                                duration: Duration(seconds: 5));
-                            Scaffold.of(context).showSnackBar(snackBar);
-                            MaterialPageRoute produtosRoute = MaterialPageRoute(
-                                builder: (context) =>
-                                    TelaProdutos(idCategoria: 0));
-                            Navigator.push(context, produtosRoute);
+                            if (int.parse(responseBody['quantidadePedidos']) ==
+                                    5 ||
+                                int.parse(responseBody['quantidadePedidos']) ==
+                                    15 ||
+                                int.parse(responseBody['quantidadePedidos']) ==
+                                    30 ||
+                                int.parse(responseBody['quantidadePedidos']) ==
+                                    55 ||
+                                int.parse(responseBody['quantidadePedidos']) ==
+                                    100) {
+                              exibirSugestao(context);
+                            } else {
+                              final snackBar = SnackBar(
+                                  content:
+                                      Text('Pedido efetuado com sucessoo.'),
+                                  duration: Duration(seconds: 5));
+                              Scaffold.of(context).showSnackBar(snackBar);
+                              MaterialPageRoute produtosRoute =
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TelaProdutos(idCategoria: 0));
+                              Navigator.push(context, produtosRoute);
+                            }
                           });
                         }
                       } else {

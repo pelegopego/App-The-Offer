@@ -10,6 +10,7 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/autenticacao.dart';
+import 'package:theoffer/utils/Hora.dart';
 
 class AddToCarrinho extends StatefulWidget {
   final List<Produto> todaysDealProducts;
@@ -31,8 +32,8 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return FlatButton(
-        onPressed: widget.produto.empresaHoraInicio < horaAtual &&
-                widget.produto.empresaHoraFim > horaAtual &&
+        onPressed: getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
+                getHoraFimProdutoHoje(widget.produto) > horaAtual &&
                 widget.produto.quantidadeRestante > 0
             ? () async {
                 print('selectedProductIndex');
@@ -40,8 +41,8 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 setState(() {
                   selectedIndex = widget.index;
                 });
-                if (widget.produto.empresaHoraInicio < horaAtual &&
-                    widget.produto.empresaHoraFim > horaAtual &&
+                if (getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
+                    getHoraFimProdutoHoje(widget.produto) > horaAtual &&
                     widget.produto.quantidadeRestante > 0) {
                   if (Autenticacao.codigoUsuario > 0) {
                     setState(() {
@@ -87,14 +88,15 @@ Widget buttonContent(int index, Produto produto) {
   int horaAtual =
       (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
   return Text(
-    produto.empresaHoraInicio < horaAtual && produto.empresaHoraFim > horaAtual
+    getHoraInicioProdutoHoje(produto) < horaAtual &&
+            getHoraFimProdutoHoje(produto) > horaAtual
         ? produto.quantidadeRestante > 0
             ? 'ADICIONAR AO CARRINHO'
             : 'FORA DE ESTOQUE'
         : 'ESTABELECIMENTO FECHADO',
     style: TextStyle(
-        color: produto.empresaHoraInicio < horaAtual &&
-                produto.empresaHoraFim > horaAtual &&
+        color: getHoraInicioProdutoHoje(produto) < horaAtual &&
+                getHoraFimProdutoHoje(produto) > horaAtual &&
                 produto.quantidadeRestante > 0
             ? Colors.principalTheOffer
             : Colors.grey,
@@ -111,6 +113,7 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
         onTap: () {
           MaterialPageRoute route = MaterialPageRoute(
               builder: (context) => TelaEmpresaDetalhada(
+                  idCategoria: 0,
                   idEmpresa: listaProdutoEmpresa[index].empresaId));
           Navigator.push(context, route);
         },

@@ -14,6 +14,7 @@ import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/models/bairro.dart';
 import 'package:theoffer/screens/detalharPedido.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListagemPedidos extends StatefulWidget {
   @override
@@ -24,6 +25,8 @@ class ListagemPedidos extends StatefulWidget {
 
 class _ListagemPedidos extends State<ListagemPedidos> {
   bool _pedidosLoading = true;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   List<Pedido> listaPedidos = [];
   @override
   void initState() {
@@ -46,7 +49,8 @@ class _ListagemPedidos extends State<ListagemPedidos> {
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+              icon: Icon(Icons.arrow_back_ios,
+                  color: Colors.principalTheOffer),
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text(
@@ -83,6 +87,11 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     });
   }
 
+  void _onRefresh() async {
+    await getPedidos();
+    _refreshController.refreshCompleted();
+  }
+
   Widget body() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
@@ -90,11 +99,17 @@ class _ListagemPedidos extends State<ListagemPedidos> {
         SliverToBoxAdapter(
             child: Container(
                 height: MediaQuery.of(context).size.height * 0.865,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    items(),
-                  ],
-                )))
+                child: SmartRefresher(
+                    enablePullDown: true,
+                    enablePullUp: false,
+                    controller: _refreshController,
+                    onRefresh: _onRefresh,
+                    //onLoading: _onLoading,
+                    child: CustomScrollView(
+                      slivers: <Widget>[
+                        items(),
+                      ],
+                    )))),
       ]);
     });
   }
@@ -254,8 +269,8 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                               child: Column(children: <Widget>[
                                                 Container(
                                                   width: 300,
-                                                  color:
-                                                      Colors.principalTheOffer,
+                                                  color: Colors
+                                                      .principalTheOffer,
                                                   alignment:
                                                       Alignment.bottomRight,
                                                   child: RichText(

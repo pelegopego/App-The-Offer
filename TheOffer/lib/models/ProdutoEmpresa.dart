@@ -5,8 +5,20 @@ class ProdutoEmpresa {
   final String razaoSocial;
   final String fantasia;
   final String imagem;
-  final double horaInicio;
-  final double horaFim;
+  double segundaInicio;
+  double segundaFim;
+  double tercaInicio;
+  double tercaFim;
+  double quartaInicio;
+  double quartaFim;
+  double quintaInicio;
+  double quintaFim;
+  double sextaInicio;
+  double sextaFim;
+  double sabadoInicio;
+  double sabadoFim;
+  double domingoInicio;
+  double domingoFim;
   bool cardVisivel = false;
   final List<Produto> listaProduto;
 
@@ -15,8 +27,20 @@ class ProdutoEmpresa {
       this.razaoSocial,
       this.fantasia,
       this.imagem,
-      this.horaInicio,
-      this.horaFim,
+      this.segundaInicio,
+      this.segundaFim,
+      this.tercaInicio,
+      this.tercaFim,
+      this.quartaInicio,
+      this.quartaFim,
+      this.quintaInicio,
+      this.quintaFim,
+      this.sextaInicio,
+      this.sextaFim,
+      this.sabadoInicio,
+      this.sabadoFim,
+      this.domingoInicio,
+      this.domingoFim,
       this.listaProduto,
       this.cardVisivel});
 }

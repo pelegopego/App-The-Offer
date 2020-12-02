@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   setupLocator();
@@ -138,6 +139,14 @@ class _MyAppState extends State<MyApp> {
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('pt'),
+        ],
         debugShowCheckedModeBanner: false,
         title: 'TheOffer',
         initialRoute: '/cidades',

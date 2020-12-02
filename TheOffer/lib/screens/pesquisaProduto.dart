@@ -180,8 +180,8 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                                               child: Center(
                                                   child:
                                                       CircularProgressIndicator(
-                                                backgroundColor:
-                                                    Colors.principalTheOffer,
+                                                backgroundColor: Colors
+                                                    .principalTheOffer,
                                               )),
                                             );
                                           } else {
@@ -205,7 +205,8 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                             child: Text(
                               '$produtosEncontrados Produtos encontrados',
                               textAlign: TextAlign.left,
-                              style: TextStyle(color: Colors.principalTheOffer),
+                              style: TextStyle(
+                                  color: Colors.principalTheOffer),
                             ),
                           ),
                         ),
@@ -266,8 +267,25 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
                       int.parse(produtoJson['quantidadeRestante']),
                   dataInicial: produtoJson['dataInicial'],
                   dataFinal: produtoJson['dataFinal'],
-                  empresaHoraInicio: double.parse(empresaJson['horaInicio']),
-                  empresaHoraFim: double.parse(empresaJson['horaFim']),
+                  empresaSegundaInicio:
+                      double.parse(empresaJson['segundaInicio']),
+                  empresaSegundaFim: double.parse(empresaJson['segundaFim']),
+                  empresaTercaInicio: double.parse(empresaJson['tercaInicio']),
+                  empresaTercaFim: double.parse(empresaJson['tercaFim']),
+                  empresaQuartaInicio:
+                      double.parse(empresaJson['quartaInicio']),
+                  empresaQuartaFim: double.parse(empresaJson['quartaFim']),
+                  empresaQuintaInicio:
+                      double.parse(empresaJson['quintaInicio']),
+                  empresaQuintaFim: double.parse(empresaJson['quintaFim']),
+                  empresaSextaInicio: double.parse(empresaJson['sextaInicio']),
+                  empresaSextaFim: double.parse(empresaJson['sextaFim']),
+                  empresaSabadoInicio:
+                      double.parse(empresaJson['sabadoInicio']),
+                  empresaSabadoFim: double.parse(empresaJson['sabadoFim']),
+                  empresaDomingoInicio:
+                      double.parse(empresaJson['domingoInicio']),
+                  empresaDomingoFim: double.parse(empresaJson['domingoFim']),
                   dataCadastro: produtoJson['dataCadastro'],
                   categoria: int.parse(produtoJson['categoria_id']),
                   possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
@@ -281,8 +299,20 @@ class _TelaPesquisaProduto extends State<TelaPesquisaProduto> {
               imagem: empresaJson['imagem'],
               razaoSocial: empresaJson['razaosocial'],
               fantasia: empresaJson['fantasia'],
-              horaInicio: double.parse(empresaJson['horaInicio']),
-              horaFim: double.parse(empresaJson['horaFim']),
+              segundaInicio: double.parse(empresaJson['segundaInicio']),
+              segundaFim: double.parse(empresaJson['segundaFim']),
+              tercaInicio: double.parse(empresaJson['tercaInicio']),
+              tercaFim: double.parse(empresaJson['tercaFim']),
+              quartaInicio: double.parse(empresaJson['quartaInicio']),
+              quartaFim: double.parse(empresaJson['quartaFim']),
+              quintaInicio: double.parse(empresaJson['quintaInicio']),
+              quintaFim: double.parse(empresaJson['quintaFim']),
+              sextaInicio: double.parse(empresaJson['sextaInicio']),
+              sextaFim: double.parse(empresaJson['sextaFim']),
+              sabadoInicio: double.parse(empresaJson['sabadoInicio']),
+              sabadoFim: double.parse(empresaJson['sabadoFim']),
+              domingoInicio: double.parse(empresaJson['domingoInicio']),
+              domingoFim: double.parse(empresaJson['domingoFim']),
               listaProduto: _listaProduto),
         );
       });

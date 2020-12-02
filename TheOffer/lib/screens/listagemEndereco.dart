@@ -11,6 +11,7 @@ import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/screens/cadastroEndereco.dart';
 import 'package:theoffer/models/bairro.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListagemEndereco extends StatefulWidget {
   @override
@@ -22,6 +23,8 @@ class ListagemEndereco extends StatefulWidget {
 class _ListagemEndereco extends State<ListagemEndereco> {
   bool _enderecosLoading = true;
   List<Endereco> listaEnderecos = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   @override
   void initState() {
     super.initState();
@@ -43,7 +46,8 @@ class _ListagemEndereco extends State<ListagemEndereco> {
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+              icon: Icon(Icons.arrow_back_ios,
+                  color: Colors.principalTheOffer),
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text(
@@ -95,18 +99,30 @@ class _ListagemEndereco extends State<ListagemEndereco> {
     });
   }
 
+  void _onRefresh() async {
+    await getEnderecos();
+    _refreshController.refreshCompleted();
+  }
+
   Widget body() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return CustomScrollView(shrinkWrap: true, slivers: <Widget>[
         SliverToBoxAdapter(
             child: Container(
-                height: MediaQuery.of(context).size.height * 0.865,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    items(),
-                  ],
-                )))
+          height: MediaQuery.of(context).size.height * 0.865,
+          child: SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: false,
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              //onLoading: _onLoading,
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  items(),
+                ],
+              )),
+        ))
       ]);
     });
   }

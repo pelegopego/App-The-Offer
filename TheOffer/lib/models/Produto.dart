@@ -13,8 +13,20 @@ class Produto {
   final int usuarioId;
   final int categoria;
   final int empresa;
-  final double empresaHoraInicio;
-  final double empresaHoraFim;
+  final double empresaSegundaInicio;
+  final double empresaSegundaFim;
+  final double empresaTercaInicio;
+  final double empresaTercaFim;
+  final double empresaQuartaInicio;
+  final double empresaQuartaFim;
+  final double empresaQuintaInicio;
+  final double empresaQuintaFim;
+  final double empresaSextaInicio;
+  final double empresaSextaFim;
+  final double empresaSabadoInicio;
+  final double empresaSabadoFim;
+  final double empresaDomingoInicio;
+  final double empresaDomingoFim;
   final bool possuiSabores;
 
   Produto(
@@ -31,8 +43,20 @@ class Produto {
       this.dataCadastro,
       this.usuarioId,
       this.categoria,
-      this.empresaHoraInicio,
-      this.empresaHoraFim,
+      this.empresaSegundaInicio,
+      this.empresaSegundaFim,
+      this.empresaTercaInicio,
+      this.empresaTercaFim,
+      this.empresaQuartaInicio,
+      this.empresaQuartaFim,
+      this.empresaQuintaInicio,
+      this.empresaQuintaFim,
+      this.empresaSextaInicio,
+      this.empresaSextaFim,
+      this.empresaSabadoInicio,
+      this.empresaSabadoFim,
+      this.empresaDomingoInicio,
+      this.empresaDomingoFim,
       this.empresa,
       this.possuiSabores});
 }

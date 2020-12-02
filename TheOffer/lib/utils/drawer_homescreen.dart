@@ -1,15 +1,19 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/screens/listagemEndereco.dart';
 import 'package:theoffer/screens/listagemPedidos.dart';
 import 'package:theoffer/screens/produtos.dart';
+import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:theoffer/utils/headers.dart';
 
 class HomeDrawer extends StatefulWidget {
   @override
@@ -47,6 +51,8 @@ class _HomeDrawer extends State<HomeDrawer> {
   }
 
   String userName = '';
+  String observacao = '';
+  Map<dynamic, dynamic> objetoSugestao = Map();
   Widget logOutButton() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
@@ -152,6 +158,100 @@ class _HomeDrawer extends State<HomeDrawer> {
     });
   }
 
+  Widget sugestao() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.add_comment,
+          color: Colors.secundariaTheOffer,
+        ),
+        title: Text(
+          'Sugerir melhoria / Relatar um problema',
+          style: TextStyle(color: Colors.secundariaTheOffer),
+        ),
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    scrollable: true,
+                    contentPadding: EdgeInsets.all(0),
+                    backgroundColor: Colors.transparent,
+                    content: Container(
+                        width: 260,
+                        height: 220,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Sugerir / Relatar problema',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 18,
+                                      color: Colors.principalTheOffer),
+                                ),
+                              ),
+                              Container(
+                                color: Colors.secundariaTheOffer,
+                                margin: EdgeInsets.only(
+                                    top: 10, right: 29, left: 29),
+                                width: 250,
+                                height: 140,
+                                child: TextFormField(
+                                  style: TextStyle(
+                                    color: Colors.principalTheOffer,
+                                  ),
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 6,
+                                  textInputAction: TextInputAction.done,
+                                  onChanged: (String value) {
+                                    observacao = value;
+                                  },
+                                ),
+                              ),
+                              Container(
+                                  alignment: Alignment.center,
+                                  child: FlatButton(
+                                    color: Colors.secundariaTheOffer,
+                                    child: Text('Enviar',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Colors.principalTheOffer)),
+                                    onPressed: () {
+                                      Map<String, String> headers =
+                                          getHeaders();
+                                      objetoSugestao = {
+                                        "descricao": observacao,
+                                        "usuario": Autenticacao.codigoUsuario
+                                            .toString()
+                                      };
+                                      http
+                                          .post(
+                                              Configuracoes.BASE_URL +
+                                                  'sugestao/salvar/',
+                                              headers: headers,
+                                              body: objetoSugestao)
+                                          .then((response) {
+                                        print("Sugerindo _______");
+                                        print(json
+                                            .decode(response.body)
+                                            .toString());
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  )),
+                            ])));
+              });
+        },
+      );
+    });
+  }
+
   Widget meusPedidos() {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
@@ -187,6 +287,27 @@ class _HomeDrawer extends State<HomeDrawer> {
     MaterialPageRoute cidades =
         MaterialPageRoute(builder: (context) => TelaCidade());
     Navigator.push(context, cidades);
+  }
+
+  Widget trocarCategoria() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.refresh,
+          color: Colors.secundariaTheOffer,
+        ),
+        title: Text(
+          'Trocar categoria',
+          style: TextStyle(color: Colors.secundariaTheOffer),
+        ),
+        onTap: () {
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: (context) => TelaCategorias());
+          Navigator.of(context).push(route);
+        },
+      );
+    });
   }
 
   Widget trocarCidade() {
@@ -369,8 +490,10 @@ class _HomeDrawer extends State<HomeDrawer> {
             ),
           ),
           trocarCidade(),
+          trocarCategoria(),
           meusPedidos(),
           meusEndereco(),
+          sugestao(),
           Divider(color: Colors.secundariaTheOffer),
           ListTile(
             title: Text(

@@ -5,7 +5,6 @@ import 'package:theoffer/models/Produto.dart';
 import 'package:theoffer/models/ProdutoEmpresa.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
-import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/screens/pesquisaProduto.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
@@ -17,6 +16,8 @@ import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/screens/empresaDetalhada.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TelaProdutos extends StatefulWidget {
   final int idCategoria;
@@ -27,11 +28,17 @@ class TelaProdutos extends StatefulWidget {
   }
 }
 
-class _TelaProdutos extends State<TelaProdutos> {
+class _TelaProdutos extends State<TelaProdutos>
+    with SingleTickerProviderStateMixin {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
   bool _isBannerLoading = true;
   bool _produtosLoading = true;
+  bool abaProdutos = true;
+  bool abaPromocoes = false;
+  bool abaComparar = false;
   List<ProdutoEmpresa> listaProdutoEmpresa = [];
   List<Produto> _listaProduto = [];
   List<BannerImage> banners = [];
@@ -43,8 +50,6 @@ class _TelaProdutos extends State<TelaProdutos> {
   @override
   void initState() {
     super.initState();
-    // getFavoritesCount();
-    //getBanners();
     getProdutos();
     _localizarCarrinho = true;
     locator<ConnectivityManager>().initConnectivity(context);
@@ -59,17 +64,7 @@ class _TelaProdutos extends State<TelaProdutos> {
   @override
   Widget build(BuildContext context) {
     _deviceSize = MediaQuery.of(context).size;
-    List<Widget> actions = [];
 
-    for (int i = 0; i < banners.length; i++) {
-      actions.add(bannerCards(i));
-    }
-/*
-    Widget bannerCarousel = CarouselSlider(
-      items: _isBannerLoading ? [bannerCards(0)] : actions,
-      autoPlay: true,
-      enlargeCenterPage: true,
-    );*/
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       if (_localizarCarrinho) {
@@ -89,11 +84,10 @@ class _TelaProdutos extends State<TelaProdutos> {
               shoppingCarrinhoIconButton(),
             ],
             bottom: PreferredSize(
-                preferredSize: Size(_deviceSize.width, 110),
+                preferredSize: Size(_deviceSize.width, 65),
                 child: Column(
                   children: <Widget>[
                     searchBar(),
-                    trocarCategoria(),
                   ],
                 )),
             iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
@@ -105,61 +99,140 @@ class _TelaProdutos extends State<TelaProdutos> {
               fit: BoxFit.cover,
             ),
           ),
-          child: CustomScrollView(slivers: [
-            /*SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                    color: Colors.grey.withOpacity(0.1), child: bannerCarousel)
-              ]),
-            ),*/
-            SliverToBoxAdapter(
-              child: Divider(
-                height: 1.0,
-              ),
-            ),
-            _produtosLoading
-                ? SliverList(
-                    delegate: SliverChildListDelegate([
-                    Container(
-                      height: _deviceSize.height * 0.47,
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.secundariaTheOffer,
+          child: Container(
+          padding: EdgeInsets.only(top: 10),
+          child: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: false,
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            //onLoading: _onLoading,
+            child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),slivers: [
+              _produtosLoading
+                  ? SliverList(
+                      delegate: SliverChildListDelegate([
+                      Container(
+                        height: _deviceSize.height * 0.47,
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.secundariaTheOffer,
+                        ),
+                      )
+                    ]))
+                  : SliverToBoxAdapter(
+                      child: Container(
+                        child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: listaProdutoEmpresa.length,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              if (listaProdutoEmpresa[index]
+                                      .listaProduto
+                                      .length >
+                                  0) {
+                                return Container(
+                                    padding: listaProdutoEmpresa[index]
+                                            .cardVisivel
+                                        ? EdgeInsets.all(0)
+                                        : EdgeInsets.only(
+                                            left: 5, right: 5),
+                                    child:
+                                        montarCardProdutosEmpresaCollapse(
+                                            index));
+                              } else {
+                                return Container();
+                              }
+                            }),
                       ),
-                    )
-                  ]))
-                : SliverToBoxAdapter(
-                    child: Container(
-                      height: Autenticacao.codigoUsuario == 0
-                          ? _deviceSize.height * 0.64
-                          : _deviceSize.height * 0.72,
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: listaProdutoEmpresa.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            if (listaProdutoEmpresa[index].listaProduto.length >
-                                0) {
-                              return Container(
-                                  padding:
-                                      listaProdutoEmpresa[index].cardVisivel
-                                          ? EdgeInsets.all(0)
-                                          : EdgeInsets.only(left: 5, right: 5),
-                                  child: montarCardProdutosEmpresa(index));
-                            } else {
-                              return Container();
-                            }
-                          }),
                     ),
-                  ),
-          ]),
+            ])),)
         ),
         bottomNavigationBar: bottomNavigationBar(),
       );
     });
   }
 
-  Widget montarCardProdutosEmpresa(index) {
+  Widget montarCardProdutosEmpresaNoCollapse(index) {
+    return SizedBox(
+        width: _deviceSize.width * 0.4,
+        child: Container(
+            margin: EdgeInsets.only(bottom: 0),
+            child: Column(children: <Widget>[
+              Container(
+                width: _deviceSize.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                        child: Row(children: <Widget>[
+                      GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            MaterialPageRoute route = MaterialPageRoute(
+                                builder: (context) => TelaEmpresaDetalhada(
+                                    idCategoria: widget.idCategoria,
+                                    idEmpresa:
+                                        listaProdutoEmpresa[index].empresaId));
+                            Navigator.push(context, route);
+                          },
+                          child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              height: 45,
+                              child: Row(children: <Widget>[
+                                Icon(
+                                  Icons.business,
+                                  color: Colors.secundariaTheOffer,
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                    listaProdutoEmpresa[index]
+                                            .fantasia[0]
+                                            .toUpperCase() +
+                                        listaProdutoEmpresa[index]
+                                            .fantasia
+                                            .toLowerCase()
+                                            .substring(1),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.secundariaTheOffer)),
+                              ]))),
+                    ])),
+                  ],
+                ),
+              ),
+              Container(
+                height: 387,
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: listaProdutoEmpresa[index].listaProduto.length,
+                    itemBuilder: (context, index2) {
+                      if (listaProdutoEmpresa[index].listaProduto.length > 0) {
+                        return Container(
+                            child: Container(
+                                child: cardProdutos(
+                                    index2,
+                                    listaProdutoEmpresa[index].listaProduto,
+                                    _deviceSize,
+                                    context)));
+                      } else {
+                        return Container();
+                      }
+                    }),
+              ),
+              Divider(
+                height: 5,
+              ),
+            ])));
+  }
+
+  Widget montarCardProdutosEmpresaCollapse(index) {
     return SizedBox(
         width: _deviceSize.width * 0.4,
         child: Container(
@@ -187,6 +260,7 @@ class _TelaProdutos extends State<TelaProdutos> {
                           onTap: () {
                             MaterialPageRoute route = MaterialPageRoute(
                                 builder: (context) => TelaEmpresaDetalhada(
+                                    idCategoria: widget.idCategoria,
                                     idEmpresa:
                                         listaProdutoEmpresa[index].empresaId));
                             Navigator.push(context, route);
@@ -291,11 +365,43 @@ class _TelaProdutos extends State<TelaProdutos> {
                             child: Visibility(
                                 visible: listaProdutoEmpresa[index].cardVisivel,
                                 child: Container(
-                                    child: cardProdutos(
-                                        index2,
-                                        listaProdutoEmpresa[index].listaProduto,
-                                        _deviceSize,
-                                        context))));
+                                    child: listaProdutoEmpresa[index]
+                                                    .listaProduto
+                                                    .length -
+                                                1 ==
+                                            index2
+                                        ? Container(
+                                            child: MaterialButton(
+                                            onPressed: () {
+                                              MaterialPageRoute route =
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          TelaEmpresaDetalhada(
+                                                              idCategoria: widget
+                                                                  .idCategoria,
+                                                              idEmpresa:
+                                                                  listaProdutoEmpresa[
+                                                                          index]
+                                                                      .empresaId));
+                                              Navigator.push(context, route);
+                                            },
+                                            color:
+                                                Colors.secundariaTheOffer,
+                                            textColor:
+                                                Colors.principalTheOffer,
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 24,
+                                            ),
+                                            padding: EdgeInsets.all(16),
+                                            shape: CircleBorder(),
+                                          ))
+                                        : cardProdutos(
+                                            index2,
+                                            listaProdutoEmpresa[index]
+                                                .listaProduto,
+                                            _deviceSize,
+                                            context))));
                       } else {
                         return Container();
                       }
@@ -319,7 +425,8 @@ class _TelaProdutos extends State<TelaProdutos> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
+              icon: Icon(Icons.person_outline,
+                  color: Colors.principalTheOffer),
               title: Text('ENTRAR',
                   style: TextStyle(
                       color: Colors.principalTheOffer,
@@ -342,53 +449,10 @@ class _TelaProdutos extends State<TelaProdutos> {
     }
   }
 
-  Widget bannerCards(int index) {
-    if (_isBannerLoading) {
-      return Container(
-        width: _deviceSize.width * 0.8,
-        child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          elevation: 2,
-          margin: EdgeInsets.symmetric(
-              vertical: _deviceSize.height * 0.05,
-              horizontal: _deviceSize.width * 0.02),
-          child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              child: Image.asset(
-                'images/placeholders/slider1.jpg',
-                fit: BoxFit.fill,
-              )),
-        ),
-      );
-    } else {
-      return GestureDetector(
-          onTap: () {
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => TelaPesquisaProduto());
-            Navigator.of(context).push(route);
-          },
-          child: Container(
-            width: _deviceSize.width * 0.8,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4)),
-              elevation: 2,
-              margin: EdgeInsets.symmetric(
-                  vertical: _deviceSize.height * 0.05,
-                  horizontal: _deviceSize.width * 0.02),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                child: FadeInImage(
-                  image: NetworkImage(banners[index].imageUrl != null
-                      ? banners[index].imageUrl
-                      : ''),
-                  placeholder: AssetImage('images/placeholders/slider1.jpg'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-          ));
-    }
+  void _onRefresh() async {
+    listaProdutoEmpresa = [];
+    await getProdutos();
+    _refreshController.refreshCompleted();
   }
 
   getProdutos() async {
@@ -428,8 +492,27 @@ class _TelaProdutos extends State<TelaProdutos> {
                         int.parse(produtoJson['quantidadeRestante']),
                     dataInicial: produtoJson['dataInicial'],
                     dataFinal: produtoJson['dataFinal'],
-                    empresaHoraInicio: double.parse(empresaJson['horaInicio']),
-                    empresaHoraFim: double.parse(empresaJson['horaFim']),
+                    empresaSegundaInicio:
+                        double.parse(empresaJson['segundaInicio']),
+                    empresaSegundaFim: double.parse(empresaJson['segundaFim']),
+                    empresaTercaInicio:
+                        double.parse(empresaJson['tercaInicio']),
+                    empresaTercaFim: double.parse(empresaJson['tercaFim']),
+                    empresaQuartaInicio:
+                        double.parse(empresaJson['quartaInicio']),
+                    empresaQuartaFim: double.parse(empresaJson['quartaFim']),
+                    empresaQuintaInicio:
+                        double.parse(empresaJson['quintaInicio']),
+                    empresaQuintaFim: double.parse(empresaJson['quintaFim']),
+                    empresaSextaInicio:
+                        double.parse(empresaJson['sextaInicio']),
+                    empresaSextaFim: double.parse(empresaJson['sextaFim']),
+                    empresaSabadoInicio:
+                        double.parse(empresaJson['sabadoInicio']),
+                    empresaSabadoFim: double.parse(empresaJson['sabadoFim']),
+                    empresaDomingoInicio:
+                        double.parse(empresaJson['domingoInicio']),
+                    empresaDomingoFim: double.parse(empresaJson['domingoFim']),
                     dataCadastro: produtoJson['dataCadastro'],
                     categoria: int.parse(produtoJson['categoria_id']),
                     possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
@@ -443,8 +526,20 @@ class _TelaProdutos extends State<TelaProdutos> {
                 imagem: empresaJson['imagem'],
                 razaoSocial: empresaJson['razaosocial'],
                 fantasia: empresaJson['fantasia'],
-                horaInicio: double.parse(empresaJson['horaInicio']),
-                horaFim: double.parse(empresaJson['horaFim']),
+                segundaInicio: double.parse(empresaJson['segundaInicio']),
+                segundaFim: double.parse(empresaJson['segundaFim']),
+                tercaInicio: double.parse(empresaJson['tercaInicio']),
+                tercaFim: double.parse(empresaJson['tercaFim']),
+                quartaInicio: double.parse(empresaJson['quartaInicio']),
+                quartaFim: double.parse(empresaJson['quartaFim']),
+                quintaInicio: double.parse(empresaJson['quintaInicio']),
+                quintaFim: double.parse(empresaJson['quintaFim']),
+                sextaInicio: double.parse(empresaJson['sextaInicio']),
+                sextaFim: double.parse(empresaJson['sextaFim']),
+                sabadoInicio: double.parse(empresaJson['sabadoInicio']),
+                sabadoFim: double.parse(empresaJson['sabadoFim']),
+                domingoInicio: double.parse(empresaJson['domingoInicio']),
+                domingoFim: double.parse(empresaJson['domingoFim']),
                 cardVisivel: false,
                 listaProduto: _listaProduto),
           );
@@ -473,9 +568,10 @@ class _TelaProdutos extends State<TelaProdutos> {
                   borderRadius: BorderRadius.circular(5)),
               width: _deviceSize.width,
               height: 49,
-              margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
               child: ListTile(
-                leading: Icon(Icons.search, color: Colors.secundariaTheOffer),
+                leading:
+                    Icon(Icons.search, color: Colors.secundariaTheOffer),
                 title: Text(
                   'Encontrar produtos...',
                   style: TextStyle(
@@ -486,27 +582,6 @@ class _TelaProdutos extends State<TelaProdutos> {
             ),
             model.isLoading ? LinearProgressIndicator() : Container()
           ]));
-    });
-  }
-
-  Widget trocarCategoria() {
-    return ScopedModelDescendant(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      return ListTile(
-        leading: Icon(
-          Icons.refresh,
-          color: Colors.principalTheOffer,
-        ),
-        title: Text(
-          'Trocar categoria',
-          style: TextStyle(color: Colors.principalTheOffer, fontSize: 12),
-        ),
-        onTap: () {
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: (context) => TelaCategorias());
-          Navigator.of(context).push(route);
-        },
-      );
     });
   }
 

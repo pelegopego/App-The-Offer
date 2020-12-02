@@ -16,10 +16,12 @@ import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:theoffer/utils/hora.dart';
 
 class TelaEmpresaDetalhada extends StatefulWidget {
+  final int idCategoria;
   final int idEmpresa;
-  TelaEmpresaDetalhada({this.idEmpresa});
+  TelaEmpresaDetalhada({this.idCategoria, this.idEmpresa});
   @override
   State<StatefulWidget> createState() {
     return _TelaEmpresaDetalhada();
@@ -64,6 +66,33 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
 
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+      TableRow gerarLinha(String dia, String horario) {
+        return TableRow(children: [
+          TableCell(
+              child: Center(
+                  child: Container(
+                      margin: EdgeInsets.only(right: 2),
+                      child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text(dia,
+                              style: TextStyle(
+                                  color: Colors.principalTheOffer,
+                                  fontSize: 18)))))),
+          TableCell(
+              child: Center(
+                  child: Container(
+                      margin: EdgeInsets.only(left: 8),
+                      padding: EdgeInsets.all(5),
+                      width: 150,
+                      height: 50,
+                      color: Colors.principalTheOffer,
+                      child: Text(horario,
+                          style: TextStyle(
+                              color: Colors.secundariaTheOffer,
+                              fontSize: 15))))),
+        ]);
+      }
+
       return Scaffold(
         appBar: AppBar(
           title: Image.asset(
@@ -113,50 +142,6 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                           itemCount: empresaDetalhada.listaCategoria.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            String horaInicial = ('00' +
-                                (empresaDetalhada.horaInicio / 60).toString() +
-                                '00');
-                            String horaFim = ('00' +
-                                (empresaDetalhada.horaFim / 60).toString() +
-                                '00');
-
-                            horaInicial = horaInicial.replaceAll('.', ':');
-                            horaFim = horaFim.replaceAll('.', ':');
-
-                            String minutosInicial = ((int.parse(
-                                            horaInicial.substring(
-                                                (horaInicial.indexOf(':') + 1),
-                                                horaInicial.indexOf(':') + 3)) /
-                                        100) *
-                                    60)
-                                .round()
-                                .toString();
-
-                            String minutosFim = ((int.parse(horaFim.substring(
-                                            (horaFim.indexOf(':') + 1),
-                                            horaFim.indexOf(':') + 3)) /
-                                        100) *
-                                    60)
-                                .round()
-                                .toString();
-
-                            if (int.parse(minutosInicial) <= 9) {
-                              minutosInicial = '0' + minutosInicial;
-                            }
-                            if (int.parse(minutosFim) <= 9) {
-                              minutosFim = '0' + minutosFim;
-                            }
-
-                            horaInicial = horaInicial.substring(
-                                    (horaInicial.indexOf(':') - 2),
-                                    horaInicial.indexOf(':') + 1) +
-                                minutosInicial;
-
-                            horaFim = horaFim.substring(
-                                    (horaFim.indexOf(':') - 2),
-                                    horaFim.indexOf(':') + 1) +
-                                minutosFim;
-
                             if (empresaDetalhada.listaCategoria.length > 0) {
                               if (index == 0) {
                                 return Column(
@@ -170,7 +155,8 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                           elevation: 1,
                                           margin: EdgeInsets.all(8.0),
                                           child: Container(
-                                              color: Colors.secundariaTheOffer,
+                                              color:
+                                                  Colors.secundariaTheOffer,
                                               child: Row(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -222,15 +208,13 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                 text: TextSpan(
                                                                     children: [
                                                                       TextSpan(
-                                                                        text:
-                                                                            '${empresaDetalhada.fantasia} ',
+                                                                        text: empresaDetalhada.fantasia[0].toUpperCase() +
+                                                                            empresaDetalhada.fantasia.toLowerCase().substring(1),
                                                                         style: TextStyle(
                                                                             color: Colors
                                                                                 .principalTheOffer,
                                                                             fontSize:
-                                                                                15.0,
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
+                                                                                19),
                                                                       ),
                                                                     ]),
                                                               ),
@@ -240,8 +224,8 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                       ),
                                                       SizedBox(height: 10),
                                                       Container(
-                                                        alignment:
-                                                            Alignment.topLeft,
+                                                        color: Colors
+                                                            .principalTheOffer,
                                                         child: InkWell(
                                                           onTap: () {
                                                             _callMe(
@@ -253,43 +237,87 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                             leading: Icon(
                                                               Icons.call,
                                                               color: Colors
-                                                                  .principalTheOffer,
+                                                                  .secundariaTheOffer,
                                                             ),
                                                             title: Text(
                                                               empresaDetalhada
-                                                                  .telefone
-                                                                  .toString(),
+                                                                  .maskTelefone(),
                                                               style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                   color: Colors
-                                                                      .principalTheOffer),
+                                                                      .secundariaTheOffer),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
                                                       SizedBox(height: 10),
                                                       Container(
-                                                        alignment:
-                                                            Alignment.topLeft,
+                                                        color: Colors
+                                                            .principalTheOffer,
                                                         child: InkWell(
                                                           child: ListTile(
                                                             leading: Icon(
-                                                              Icons.timer,
+                                                              Icons
+                                                                  .calendar_today,
                                                               color: Colors
-                                                                  .principalTheOffer,
+                                                                  .secundariaTheOffer,
                                                             ),
+                                                            onTap: () {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .secundariaTheOffer,
+                                                                        content:
+                                                                            Container(
+                                                                          color:
+                                                                              Colors.secundariaTheOffer,
+                                                                          child:
+                                                                              Table(
+                                                                            defaultColumnWidth:
+                                                                                FixedColumnWidth(50.0),
+                                                                            border:
+                                                                                TableBorder(
+                                                                              verticalInside: BorderSide(
+                                                                                color: Colors.principalTheOffer,
+                                                                                style: BorderStyle.solid,
+                                                                                width: 1.0,
+                                                                              ),
+                                                                            ),
+                                                                            children: [
+                                                                              gerarLinha('Segunda-Feira', getHora(empresaDetalhada.segundaInicio) + ' às ' + getHora(empresaDetalhada.segundaFim)),
+                                                                              gerarLinha('Terça-Feira', getHora(empresaDetalhada.tercaInicio) + ' às ' + getHora(empresaDetalhada.tercaFim)),
+                                                                              gerarLinha('Quarta-Feira', getHora(empresaDetalhada.quartaInicio) + ' às ' + getHora(empresaDetalhada.quartaFim)),
+                                                                              gerarLinha('Quinta-Feira', getHora(empresaDetalhada.quintaInicio) + ' às ' + getHora(empresaDetalhada.quintaFim)),
+                                                                              gerarLinha('Sexta-Feira', getHora(empresaDetalhada.sextaInicio) + ' às ' + getHora(empresaDetalhada.sextaFim)),
+                                                                              gerarLinha('Sábado', getHora(empresaDetalhada.sabadoInicio) + ' às ' + getHora(empresaDetalhada.sabadoFim)),
+                                                                              gerarLinha('Domingo', getHora(empresaDetalhada.domingoInicio) + ' às ' + getHora(empresaDetalhada.domingoFim)),
+                                                                            ],
+                                                                          ),
+                                                                        ));
+                                                                  });
+                                                            },
                                                             title: Text(
-                                                              horaInicial
-                                                                      .replaceAll(
-                                                                          '.',
-                                                                          ':') +
+                                                              getHora(getHoraInicioEmpresaHoje(
+                                                                      empresaDetalhada)) +
                                                                   ' às ' +
-                                                                  horaFim
-                                                                      .replaceAll(
-                                                                          '.',
-                                                                          ':'),
+                                                                  getHora(getHoraFimEmpresaHoje(
+                                                                      empresaDetalhada)) +
+                                                                  ', ' +
+                                                                  getDiaSemana(),
                                                               style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                   color: Colors
-                                                                      .principalTheOffer),
+                                                                      .secundariaTheOffer),
                                                             ),
                                                           ),
                                                         ),
@@ -331,7 +359,8 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
+              icon: Icon(Icons.person_outline,
+                  color: Colors.principalTheOffer),
               title: Text('ENTRAR',
                   style: TextStyle(
                       color: Colors.principalTheOffer,
@@ -359,11 +388,10 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
     Map<String, String> headers = getHeaders();
     List<Produto> _listaProduto;
     List<CategoriaDetalhada> _listaCategoriaDetalhada;
-    setState(() {
-      _empresasLoading = true;
-    });
+    _empresasLoading = true;
 
     objetoItemPedido = {
+      "categoria": widget.idCategoria.toString(),
       "empresa": widget.idEmpresa.toString(),
       "cidade": CidadeSelecionada.id.toString()
     };
@@ -399,9 +427,29 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                       dataInicial: produtosJson['dataInicial'],
                       dataFinal: produtosJson['dataFinal'],
                       dataCadastro: produtosJson['dataCadastro'],
-                      empresaHoraInicio:
-                          double.parse(empresaJson['horaInicio']),
-                      empresaHoraFim: double.parse(empresaJson['horaFim']),
+                      empresaSegundaInicio:
+                          double.parse(empresaJson['segundaInicio']),
+                      empresaSegundaFim:
+                          double.parse(empresaJson['segundaFim']),
+                      empresaTercaInicio:
+                          double.parse(empresaJson['tercaInicio']),
+                      empresaTercaFim: double.parse(empresaJson['tercaFim']),
+                      empresaQuartaInicio:
+                          double.parse(empresaJson['quartaInicio']),
+                      empresaQuartaFim: double.parse(empresaJson['quartaFim']),
+                      empresaQuintaInicio:
+                          double.parse(empresaJson['quintaInicio']),
+                      empresaQuintaFim: double.parse(empresaJson['quintaFim']),
+                      empresaSextaInicio:
+                          double.parse(empresaJson['sextaInicio']),
+                      empresaSextaFim: double.parse(empresaJson['sextaFim']),
+                      empresaSabadoInicio:
+                          double.parse(empresaJson['sabadoInicio']),
+                      empresaSabadoFim: double.parse(empresaJson['sabadoFim']),
+                      empresaDomingoInicio:
+                          double.parse(empresaJson['domingoInicio']),
+                      empresaDomingoFim:
+                          double.parse(empresaJson['domingoFim']),
                       categoria: int.parse(produtosJson['categoria_id']),
                       possuiSabores:
                           int.parse(produtosJson['possuiSabores']) > 0,
@@ -424,8 +472,20 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
             razaoSocial: empresaJson['razaosocial'],
             fantasia: empresaJson['fantasia'],
             telefone: num.parse(empresaJson['telefone']),
-            horaInicio: double.parse(empresaJson['horaInicio']),
-            horaFim: double.parse(empresaJson['horaFim']),
+            segundaInicio: double.parse(empresaJson['segundaInicio']),
+            segundaFim: double.parse(empresaJson['segundaFim']),
+            tercaInicio: double.parse(empresaJson['tercaInicio']),
+            tercaFim: double.parse(empresaJson['tercaFim']),
+            quartaInicio: double.parse(empresaJson['quartaInicio']),
+            quartaFim: double.parse(empresaJson['quartaFim']),
+            quintaInicio: double.parse(empresaJson['quintaInicio']),
+            quintaFim: double.parse(empresaJson['quintaFim']),
+            sextaInicio: double.parse(empresaJson['sextaInicio']),
+            sextaFim: double.parse(empresaJson['sextaFim']),
+            sabadoInicio: double.parse(empresaJson['sabadoInicio']),
+            sabadoFim: double.parse(empresaJson['sabadoFim']),
+            domingoInicio: double.parse(empresaJson['domingoInicio']),
+            domingoFim: double.parse(empresaJson['domingoFim']),
             listaCategoria: _listaCategoriaDetalhada);
       });
       setState(() {

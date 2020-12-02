@@ -10,6 +10,10 @@ import 'package:crypto/crypto.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -22,13 +26,16 @@ class Authentication extends StatefulWidget {
 
 class _AuthenticationState extends State<Authentication>
     with SingleTickerProviderStateMixin {
-  final Map<String, dynamic> _formData = {'usuario': null, 'senha': null};
+  final Map<String, dynamic> _formData = {'email': null, 'senha': null};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyForLogin = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _passwordTextController = TextEditingController();
   final UnderlineInputBorder _underlineInputBorder = UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.secundariaTheOffer));
+
+  var maskFormatter = new MaskTextInputFormatter(
+      mask: '(##) # ####-####', filter: {"#": RegExp(r'[0-9]')});
 
   bool _isLoader = false;
   TabController _tabController;
@@ -52,12 +59,20 @@ class _AuthenticationState extends State<Authentication>
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('pt'),
+      ],
       debugShowCheckedModeBanner: false,
       color: Colors.secundariaTheOffer,
       theme: ThemeData(
         fontFamily: fontFamily,
         primarySwatch: Colors.secundariaTheOffer,
-        accentColor: Colors.white, //Acentuação
+        accentColor: Colors.white,
       ),
       home: DefaultTabController(
         length: 2,
@@ -85,8 +100,8 @@ class _AuthenticationState extends State<Authentication>
                 ),
                 Text(
                   "CRIAR CONTA",
-                  style:
-                      TextStyle(fontSize: 13, color: Colors.principalTheOffer),
+                  style: TextStyle(
+                      fontSize: 13, color: Colors.principalTheOffer),
                 )
               ],
             ),
@@ -139,18 +154,18 @@ class _AuthenticationState extends State<Authentication>
                         labelStyle: TextStyle(
                             color: Colors.secundariaTheOffer,
                             fontWeight: FontWeight.bold),
-                        labelText: 'Usuario',
+                        labelText: 'Email',
                         contentPadding: EdgeInsets.all(0.0),
                         enabledBorder: _underlineInputBorder),
                     keyboardType: TextInputType.text,
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return 'Informe um usuário valido';
+                        return 'Informe um email válido.';
                       }
                       return null;
                     },
                     onSaved: (String value) {
-                      _formData['usuario'] = value;
+                      _formData['email'] = value;
                     },
                   ),
                   SizedBox(
@@ -232,6 +247,7 @@ class _AuthenticationState extends State<Authentication>
   }
 
   Widget _renderSignup(double targetWidth) {
+    final format = DateFormat("dd/MM/yyyy");
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
@@ -252,53 +268,17 @@ class _AuthenticationState extends State<Authentication>
                       labelStyle: TextStyle(
                           color: Colors.secundariaTheOffer,
                           fontWeight: FontWeight.bold),
-                      labelText: 'Usuario',
+                      labelText: 'Nome completo',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.text,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Informe um usuário valido';
+                      return 'Informe o nome completo';
                     }
                     return null;
                   },
                   onSaved: (String value) {
-                    _formData['usuario'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      labelText: 'Nome',
-                      enabledBorder: _underlineInputBorder),
-                  keyboardType: TextInputType.text,
-                  onSaved: (String value) {
                     _formData['nome'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      labelText: 'Sobrenome',
-                      enabledBorder: _underlineInputBorder),
-                  keyboardType: TextInputType.text,
-                  onSaved: (String value) {
-                    _formData['sobrenome'] = value;
                   },
                 ),
                 SizedBox(
@@ -317,7 +297,7 @@ class _AuthenticationState extends State<Authentication>
                   keyboardType: TextInputType.text,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Informe email valido';
+                      return 'Informe email válido';
                     }
                     return null;
                   },
@@ -376,6 +356,7 @@ class _AuthenticationState extends State<Authentication>
                   height: 30.0,
                 ),
                 TextFormField(
+                  inputFormatters: [maskFormatter],
                   style: TextStyle(
                     color: Colors.secundariaTheOffer,
                   ),
@@ -386,12 +367,46 @@ class _AuthenticationState extends State<Authentication>
                       labelText: 'Telefone',
                       enabledBorder: _underlineInputBorder),
                   keyboardType: TextInputType.phone,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Informe um telefone válido';
+                    }
+                    return null;
+                  },
                   onSaved: (String value) {
-                    _formData['telefone'] = value;
+                    _formData['telefone'] = maskFormatter.getUnmaskedText();
                   },
                 ),
                 SizedBox(
                   height: 30.0,
+                ),
+                DateTimeField(
+                  style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                  ),
+                  decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
+                      labelText: 'Nascimento',
+                      enabledBorder: _underlineInputBorder),
+                  format: format,
+                  onShowPicker: (context, currentValue) {
+                    return showDatePicker(
+                        context: context,
+                        firstDate: DateTime(1900),
+                        initialDate: currentValue ?? DateTime.now(),
+                        lastDate: DateTime(2100));
+                  },
+                  validator: (DateTime value) {
+                    if (value == null) {
+                      return 'Informe uma data de nascimento válida';
+                    }
+                    return null;
+                  },
+                  onSaved: (DateTime value) {
+                    _formData['nascimento'] = value.toString();
+                  },
                 ),
                 _isLoader
                     ? CircularProgressIndicator(
@@ -405,8 +420,11 @@ class _AuthenticationState extends State<Authentication>
                             child: Text('CRIAR CONTA',
                                 style: TextStyle(fontSize: 12.0)),
                             onPressed: () => {
-                                  _abrirCadastroUsuario(),
-                                  Navigator.of(context).pop(),
+                                  if (_formKey.currentState.validate())
+                                    {
+                                      _abrirCadastroUsuario(),
+                                      Navigator.of(context).pop(),
+                                    }
                                 })),
                 SizedBox(
                   height: 20.0,
@@ -436,7 +454,7 @@ class _AuthenticationState extends State<Authentication>
     _formKeyForLogin.currentState.save();
 
     Map<dynamic, dynamic> oMapLogin = {
-      'usuario': _formData['usuario'],
+      'email': _formData['email'],
       'senha':
           md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
     };
@@ -463,9 +481,11 @@ class _AuthenticationState extends State<Authentication>
               'usuario': Autenticacao.codigoUsuario.toString(),
               'notificacao': Autenticacao.notificacao
             };
-            http.post(Configuracoes.BASE_URL + 'usuario/salvarTokenNotificacao/',
-                headers: headers, body: oMapSalvarNotificacao);
-                
+            http.post(
+                Configuracoes.BASE_URL + 'usuario/salvarTokenNotificacao/',
+                headers: headers,
+                body: oMapSalvarNotificacao);
+
             print('ATUALIZANDO TOKEN DE NOTIFICAÇÃO.');
           }
           writeStorage();
@@ -515,15 +535,14 @@ class _AuthenticationState extends State<Authentication>
     Map<String, String> headers = getHeaders();
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
-      'nome': _formData['nome'] + ' ' + _formData['sobrenome'],
-      'usuario': _formData['usuario'],
       'email': _formData['email'],
+      'nome': _formData['nome'],
       'senha':
           md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
       'telefone': _formData['telefone'],
+      'nascimento': _formData['nascimento'],
       'notificacao': Autenticacao.notificacao
     };
-
     http
         .post(Configuracoes.BASE_URL + 'usuario/salvar/',
             headers: headers, body: oMapCadastrarLogin)

@@ -17,6 +17,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:http/http.dart' as http;
+import 'package:theoffer/utils/Hora.dart';
 
 class TelaProdutoDetalhado extends StatefulWidget {
   final Produto produto;
@@ -99,8 +100,22 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 dataInicial: produtoJson['dataInicial'],
                 dataFinal: produtoJson['dataFinal'],
                 dataCadastro: produtoJson['dataCadastro'],
-                empresaHoraInicio: double.parse(produtoJson['horaInicio']),
-                empresaHoraFim: double.parse(produtoJson['horaFim']),
+                empresaSegundaInicio:
+                    double.parse(produtoJson['segundaInicio']),
+                empresaSegundaFim: double.parse(produtoJson['segundaFim']),
+                empresaTercaInicio: double.parse(produtoJson['tercaInicio']),
+                empresaTercaFim: double.parse(produtoJson['tercaFim']),
+                empresaQuartaInicio: double.parse(produtoJson['quartaInicio']),
+                empresaQuartaFim: double.parse(produtoJson['quartaFim']),
+                empresaQuintaInicio: double.parse(produtoJson['quintaInicio']),
+                empresaQuintaFim: double.parse(produtoJson['quintaFim']),
+                empresaSextaInicio: double.parse(produtoJson['sextaInicio']),
+                empresaSextaFim: double.parse(produtoJson['sextaFim']),
+                empresaSabadoInicio: double.parse(produtoJson['sabadoInicio']),
+                empresaSabadoFim: double.parse(produtoJson['sabadoFim']),
+                empresaDomingoInicio:
+                    double.parse(produtoJson['domingoInicio']),
+                empresaDomingoFim: double.parse(produtoJson['domingoFim']),
                 categoria: int.parse(produtoJson['categoria_id']),
                 possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
                 usuarioId: int.parse(produtoJson['usuario_id'])));
@@ -122,8 +137,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
           key: _scaffoldKey,
           appBar: AppBar(
             leading: IconButton(
-                icon:
-                    Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+                icon: Icon(Icons.arrow_back_ios,
+                    color: Colors.principalTheOffer),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -136,8 +151,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 icon: Icon(Icons.search, color: Colors.principalTheOffer),
                 onPressed: () {
                   MaterialPageRoute route = MaterialPageRoute(
-                      builder: (context) =>
-                          TelaPesquisaProduto(descricao: 'a'));
+                      builder: (context) => TelaPesquisaProduto());
                   Navigator.of(context).push(route);
                 },
               ),
@@ -256,8 +270,9 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       padding: EdgeInsets.only(top: 40, right: 15.0),
                       alignment: Alignment.topRight,
                       icon: Icon(Icons.favorite),
-                      color:
-                          _isFavorite ? Colors.principalTheOffer : Colors.grey,
+                      color: _isFavorite
+                          ? Colors.principalTheOffer
+                          : Colors.grey,
                       onPressed: () async {
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
@@ -500,25 +515,30 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.empresaHoraInicio < horaAtual &&
-                        produtoSelecionado.empresaHoraFim > horaAtual
+                getHoraInicioProdutoHoje(produtoSelecionado) < horaAtual &&
+                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual
                     ? produtoSelecionado.quantidadeRestante > 0
                         ? 'COMPRAR AGORA'
                         : 'FORA DE ESTOQUE'
                     : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
-                    color: produtoSelecionado.empresaHoraInicio < horaAtual &&
-                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                    color: getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual &&
                             produtoSelecionado.quantidadeRestante > 0
                         ? Colors.principalTheOffer
                         : Colors.grey),
               ),
-              onPressed: produtoSelecionado.empresaHoraInicio < horaAtual &&
-                      produtoSelecionado.empresaHoraFim > horaAtual &&
+              onPressed: getHoraInicioProdutoHoje(produtoSelecionado) <
+                          horaAtual &&
+                      getHoraFimProdutoHoje(produtoSelecionado) > horaAtual &&
                       produtoSelecionado.quantidadeRestante > 0
                   ? () {
-                      if (produtoSelecionado.empresaHoraInicio < horaAtual &&
-                          produtoSelecionado.empresaHoraFim > horaAtual &&
+                      if (getHoraInicioProdutoHoje(produtoSelecionado) <
+                              horaAtual &&
+                          getHoraFimProdutoHoje(produtoSelecionado) >
+                              horaAtual &&
                           produtoSelecionado.quantidadeRestante > 0) {
                         if (Autenticacao.codigoUsuario > 0) {
                           model.comprarProduto(
@@ -568,26 +588,31 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                produtoSelecionado.empresaHoraInicio < horaAtual &&
-                        produtoSelecionado.empresaHoraFim > horaAtual
+                getHoraInicioProdutoHoje(produtoSelecionado) < horaAtual &&
+                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual
                     ? produtoSelecionado.quantidadeRestante > 0
                         ? 'ADICIONAR AO CARRINHO'
                         : 'FORA DE ESTOQUE'
                     : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
-                    color: produtoSelecionado.empresaHoraInicio < horaAtual &&
-                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                    color: getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual &&
                             produtoSelecionado.quantidadeRestante > 0
                         ? Colors.principalTheOffer
                         : Colors.grey),
               ),
-              onPressed: produtoSelecionado.empresaHoraInicio < horaAtual &&
-                      produtoSelecionado.empresaHoraFim > horaAtual &&
+              onPressed: getHoraInicioProdutoHoje(produtoSelecionado) <
+                          horaAtual &&
+                      getHoraFimProdutoHoje(produtoSelecionado) > horaAtual &&
                       produtoSelecionado.quantidadeRestante > 0
                   ? () {
                       if (Autenticacao.codigoUsuario > 0) {
-                        if (produtoSelecionado.empresaHoraInicio < horaAtual &&
-                            produtoSelecionado.empresaHoraFim > horaAtual &&
+                        if (getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual &&
                             produtoSelecionado.quantidadeRestante > 0) {
                           if (widget.produto.possuiSabores) {
                             MaterialPageRoute pagamentoRoute =
@@ -628,8 +653,9 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   Icons.shopping_basket,
                   color: Colors.secundariaTheOffer,
                 ),
-                onPressed: produtoSelecionado.empresaHoraInicio < horaAtual &&
-                        produtoSelecionado.empresaHoraFim > horaAtual &&
+                onPressed: getHoraInicioProdutoHoje(produtoSelecionado) <
+                            horaAtual &&
+                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual &&
                         produtoSelecionado.quantidadeRestante > 0
                     ? () {
                         if (Autenticacao.codigoUsuario > 0) {
@@ -653,12 +679,12 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         }
                       }
                     : () {},
-                backgroundColor:
-                    produtoSelecionado.empresaHoraInicio < horaAtual &&
-                            produtoSelecionado.empresaHoraFim > horaAtual &&
-                            produtoSelecionado.quantidadeRestante > 0
-                        ? Colors.principalTheOffer
-                        : Colors.grey,
+                backgroundColor: getHoraInicioProdutoHoje(produtoSelecionado) <
+                            horaAtual &&
+                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual &&
+                        produtoSelecionado.quantidadeRestante > 0
+                    ? Colors.principalTheOffer
+                    : Colors.grey,
               )
             : FloatingActionButton(
                 child: Icon(

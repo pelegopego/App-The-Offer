@@ -54,6 +54,13 @@ class _TelaCategorias extends State<TelaCategorias> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
+        appBar: AppBar(
+            title: Image.asset(
+              'images/logos/appBar.png',
+              fit: BoxFit.fill,
+              height: 55,
+            ),
+            iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
         drawer: HomeDrawer(),
         body: Container(
           color: Colors.secundariaTheOffer,
