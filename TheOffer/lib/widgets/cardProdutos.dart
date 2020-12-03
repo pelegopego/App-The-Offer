@@ -52,17 +52,12 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                                 TelaSabores(widget.produto.id, 1));
                         Navigator.push(context, pagamentoRoute);
                       } else {
-                        model.adicionarProduto(
+                        model.pegarCupom(
                             usuarioId: Autenticacao.codigoUsuario,
                             produtoId: widget.produto.id,
-                            quantidade: 1,
-                            somar: 1);
+                            context: context);
                       }
                     });
-                    final snackBar = SnackBar(
-                        content: Text('Produto adicionado ao carrinho'),
-                        duration: Duration(seconds: 5));
-                    Scaffold.of(context).showSnackBar(snackBar);
                   } else {
                     MaterialPageRoute authRoute = MaterialPageRoute(
                         builder: (context) => Authentication(0));
@@ -91,9 +86,14 @@ Widget buttonContent(int index, Produto produto) {
     getHoraInicioProdutoHoje(produto) < horaAtual &&
             getHoraFimProdutoHoje(produto) > horaAtual
         ? produto.quantidadeRestante > 0
-            ? 'ADICIONAR AO CARRINHO'
+            ? 'ADIQUIRIR CUPOM'
             : 'FORA DE ESTOQUE'
         : 'ESTABELECIMENTO FECHADO',
+    /*
+        ? produto.quantidadeRestante > 0
+            ? 'ADICIONAR AO CARRINHO'
+            : 'FORA DE ESTOQUE'
+        : 'ESTABELECIMENTO FECHADO',*/
     style: TextStyle(
         color: getHoraInicioProdutoHoje(produto) < horaAtual &&
                 getHoraFimProdutoHoje(produto) > horaAtual &&

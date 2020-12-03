@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/screens/cidades.dart';
-import 'package:theoffer/screens/listagemEndereco.dart';
-import 'package:theoffer/screens/listagemPedidos.dart';
+//import 'package:theoffer/screens/listagemEndereco.dart';
+//import 'package:theoffer/screens/listagemPedidos.dart';
+import 'package:theoffer/screens/listagemCupom.dart';
 import 'package:theoffer/screens/produtos.dart';
 import 'package:theoffer/screens/categorias.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -129,7 +130,7 @@ class _HomeDrawer extends State<HomeDrawer> {
       );
     });
   }
-
+/*
   Widget meusEndereco() {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
@@ -156,7 +157,7 @@ class _HomeDrawer extends State<HomeDrawer> {
         },
       );
     });
-  }
+  }*/
 
   Widget sugestao() {
     return ScopedModelDescendant(
@@ -220,8 +221,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                                     child: Text('Enviar',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color:
-                                                Colors.principalTheOffer)),
+                                            color: Colors.principalTheOffer)),
                                     onPressed: () {
                                       Map<String, String> headers =
                                           getHeaders();
@@ -251,7 +251,7 @@ class _HomeDrawer extends State<HomeDrawer> {
       );
     });
   }
-
+/*
   Widget meusPedidos() {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
@@ -268,6 +268,34 @@ class _HomeDrawer extends State<HomeDrawer> {
           if (Autenticacao.codigoUsuario > 0) {
             MaterialPageRoute listagemPedidos =
                 MaterialPageRoute(builder: (context) => ListagemPedidos());
+            Navigator.push(context, listagemPedidos);
+          } else {
+            MaterialPageRoute route =
+                MaterialPageRoute(builder: (context) => Authentication(0));
+
+            Navigator.push(context, route);
+          }
+        },
+      );
+    });
+  }*/
+
+  Widget meusCupons() {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return ListTile(
+        leading: Icon(
+          Icons.library_books,
+          color: Colors.secundariaTheOffer,
+        ),
+        title: Text(
+          'Meus cupons',
+          style: TextStyle(color: Colors.secundariaTheOffer),
+        ),
+        onTap: () {
+          if (Autenticacao.codigoUsuario > 0) {
+            MaterialPageRoute listagemPedidos =
+                MaterialPageRoute(builder: (context) => ListagemCupom());
             Navigator.push(context, listagemPedidos);
           } else {
             MaterialPageRoute route =
@@ -491,8 +519,9 @@ class _HomeDrawer extends State<HomeDrawer> {
           ),
           trocarCidade(),
           trocarCategoria(),
-          meusPedidos(),
-          meusEndereco(),
+          meusCupons(),
+          //meusPedidos(),
+          //meusEndereco(),
           sugestao(),
           Divider(color: Colors.secundariaTheOffer),
           ListTile(

@@ -116,11 +116,11 @@ class _MyAppState extends State<MyApp> {
       });
     }
 
-    if (Autenticacao.token != "") {
+    /*if (Autenticacao.token != "") {
       setState(() {
         _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
       });
-    }
+    }*/
   }
 
   salvarTokenNotificacao() {

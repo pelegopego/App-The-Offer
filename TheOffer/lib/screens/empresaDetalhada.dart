@@ -10,7 +10,7 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/botaoCarrinho.dart';
+//import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
@@ -108,9 +108,9 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
               onPressed: () {
                 Navigator.pop(context);
               }),
-          actions: <Widget>[
+          /*actions: <Widget>[
             shoppingCarrinhoIconButton(),
-          ],
+          ],*/
         ),
         drawer: HomeDrawer(),
         body: Container(
@@ -155,8 +155,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                           elevation: 1,
                                           margin: EdgeInsets.all(8.0),
                                           child: Container(
-                                              color:
-                                                  Colors.secundariaTheOffer,
+                                              color: Colors.secundariaTheOffer,
                                               child: Row(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -211,10 +210,9 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                         text: empresaDetalhada.fantasia[0].toUpperCase() +
                                                                             empresaDetalhada.fantasia.toLowerCase().substring(1),
                                                                         style: TextStyle(
-                                                                            color: Colors
-                                                                                .principalTheOffer,
-                                                                            fontSize:
-                                                                                19),
+                                                                            color:
+                                                                                Colors.principalTheOffer,
+                                                                            fontSize: 19),
                                                                       ),
                                                                     ]),
                                                               ),
@@ -359,8 +357,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline,
-                  color: Colors.principalTheOffer),
+              icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
               title: Text('ENTRAR',
                   style: TextStyle(
                       color: Colors.principalTheOffer,

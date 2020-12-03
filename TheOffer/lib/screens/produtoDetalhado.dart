@@ -10,8 +10,8 @@ import 'package:theoffer/screens/pesquisaProduto.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/botaoCarrinho.dart';
-import 'package:theoffer/screens/finalizarPedido.dart';
+//import 'package:theoffer/widgets/botaoCarrinho.dart';
+//import 'package:theoffer/screens/finalizarPedido.dart';
 import 'package:theoffer/screens/sabores.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -134,60 +134,60 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios,
-                    color: Colors.principalTheOffer),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            title: Text(
-              'Detalhes do item',
-              style: TextStyle(color: Colors.principalTheOffer),
+        key: _scaffoldKey,
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          title: Text(
+            'Detalhes do item',
+            style: TextStyle(color: Colors.principalTheOffer),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search, color: Colors.principalTheOffer),
+              onPressed: () {
+                MaterialPageRoute route = MaterialPageRoute(
+                    builder: (context) => TelaPesquisaProduto());
+                Navigator.of(context).push(route);
+              },
             ),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.search, color: Colors.principalTheOffer),
-                onPressed: () {
-                  MaterialPageRoute route = MaterialPageRoute(
-                      builder: (context) => TelaPesquisaProduto());
-                  Navigator.of(context).push(route);
-                },
-              ),
-              shoppingCarrinhoIconButton()
-            ],
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: Column(
-                children: [
-                  TabBar(
-                    indicatorWeight: 1,
-                    controller: _tabController,
-                    tabs: <Widget>[
-                      Tab(
-                        text: '',
-                      ),
-                    ],
-                  ),
-                  model.isLoading ? LinearProgressIndicator() : Container()
-                ],
-              ),
+            //shoppingCarrinhoIconButton()
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: Column(
+              children: [
+                TabBar(
+                  indicatorWeight: 1,
+                  controller: _tabController,
+                  tabs: <Widget>[
+                    Tab(
+                      text: '',
+                    ),
+                  ],
+                ),
+                model.isLoading ? LinearProgressIndicator() : Container()
+              ],
             ),
           ),
-          body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("images/fundoBranco.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: TabBarView(
-              controller: _tabController,
-              children: <Widget>[highlightsTab()],
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/fundoBranco.png"),
+              fit: BoxFit.cover,
             ),
           ),
-          floatingActionButton: adicionarCarrinhoFloatButton());
+          child: TabBarView(
+            controller: _tabController,
+            children: <Widget>[highlightsTab()],
+          ),
+        ),
+        //floatingActionButton: adicionarCarrinhoFloatButton()
+      );
     });
   }
 
@@ -270,9 +270,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       padding: EdgeInsets.only(top: 40, right: 15.0),
                       alignment: Alignment.topRight,
                       icon: Icon(Icons.favorite),
-                      color: _isFavorite
-                          ? Colors.principalTheOffer
-                          : Colors.grey,
+                      color:
+                          _isFavorite ? Colors.principalTheOffer : Colors.grey,
                       onPressed: () async {
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
@@ -541,6 +540,150 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                               horaAtual &&
                           produtoSelecionado.quantidadeRestante > 0) {
                         if (Autenticacao.codigoUsuario > 0) {
+                          model.pegarCupom(
+                              usuarioId: Autenticacao.codigoUsuario,
+                              produtoId: produtoSelecionado.id,
+                              context: context);
+                        } else {
+                          MaterialPageRoute authRoute = MaterialPageRoute(
+                              builder: (context) => Authentication(0));
+                          Navigator.push(context, authRoute);
+                        }
+                        /*if (model.pedido != null) {
+                          if (!model.isLoading) {
+                            MaterialPageRoute route = MaterialPageRoute(
+                                builder: (context) => TelaFinalizarPedido());
+
+                            Navigator.push(context, route);
+                          }
+                        }*/
+                        if (produtoSelecionado.possuiSabores) {
+                          MaterialPageRoute pagamentoRoute = MaterialPageRoute(
+                              builder: (context) => TelaSabores(
+                                  produtoSelecionado.id, quantidade));
+                          Navigator.push(context, pagamentoRoute);
+                        }
+                      }
+                    }
+                  : () {},
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget adicionarCarrinhoButton() {
+    int horaAtual = (DateTime.now().toLocal().hour * 60) +
+        (DateTime.now().toLocal().minute);
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            color: Colors.secundariaTheOffer,
+            width: double.infinity,
+            height: 45.0,
+            child: FlatButton(
+              child: Text(
+                getHoraInicioProdutoHoje(produtoSelecionado) < horaAtual &&
+                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual
+                    ? produtoSelecionado.quantidadeRestante > 0
+                        ? 'ADIQUIRIR CUPOM'
+                        : 'FORA DE ESTOQUE'
+                    : 'ESTABELECIMENTO FECHADO',
+                /*
+                    ? produtoSelecionado.quantidadeRestante > 0
+                        ? 'ADICIONAR AO CARRINHO'
+                        : 'FORA DE ESTOQUE'
+                    : 'ESTABELECIMENTO FECHADO',*/
+                style: TextStyle(
+                    color: getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0
+                        ? Colors.principalTheOffer
+                        : Colors.grey),
+              ),
+              onPressed: getHoraInicioProdutoHoje(produtoSelecionado) <
+                          horaAtual &&
+                      getHoraFimProdutoHoje(produtoSelecionado) > horaAtual &&
+                      produtoSelecionado.quantidadeRestante > 0
+                  ? () {
+                      if (Autenticacao.codigoUsuario > 0) {
+                        if (getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0) {
+                          if (widget.produto.possuiSabores) {
+                            MaterialPageRoute pagamentoRoute =
+                                MaterialPageRoute(
+                                    builder: (context) => TelaSabores(
+                                        produtoSelecionado.id, quantidade));
+                            Navigator.push(context, pagamentoRoute);
+                          } else {
+                            model.pegarCupom(
+                                usuarioId: Autenticacao.codigoUsuario,
+                                produtoId: produtoSelecionado.id,
+                                context: context);
+                          }
+                        }
+                      } else {
+                        MaterialPageRoute authRoute = MaterialPageRoute(
+                            builder: (context) => Authentication(0));
+                        Navigator.push(context, authRoute);
+                      }
+                    }
+                  : () {},
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+/*
+  Widget comprarAgoraButton() {
+    int horaAtual = (DateTime.now().toLocal().hour * 60) +
+        (DateTime.now().toLocal().minute);
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            color: Colors.secundariaTheOffer,
+            width: double.infinity,
+            height: 45.0,
+            child: FlatButton(
+              child: Text(
+                getHoraInicioProdutoHoje(produtoSelecionado) < horaAtual &&
+                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual
+                    ? produtoSelecionado.quantidadeRestante > 0
+                        ? 'COMPRAR AGORA'
+                        : 'FORA DE ESTOQUE'
+                    : 'ESTABELECIMENTO FECHADO',
+                style: TextStyle(
+                    color: getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual &&
+                            produtoSelecionado.quantidadeRestante > 0
+                        ? Colors.principalTheOffer
+                        : Colors.grey),
+              ),
+              onPressed: getHoraInicioProdutoHoje(produtoSelecionado) <
+                          horaAtual &&
+                      getHoraFimProdutoHoje(produtoSelecionado) > horaAtual &&
+                      produtoSelecionado.quantidadeRestante > 0
+                  ? () {
+                      if (getHoraInicioProdutoHoje(produtoSelecionado) <
+                              horaAtual &&
+                          getHoraFimProdutoHoje(produtoSelecionado) >
+                              horaAtual &&
+                          produtoSelecionado.quantidadeRestante > 0) {
+                        if (Autenticacao.codigoUsuario > 0) {
                           model.comprarProduto(
                               usuarioId: Autenticacao.codigoUsuario,
                               produtoId: produtoSelecionado.id,
@@ -695,7 +838,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                 backgroundColor: Colors.orange);
       },
     );
-  }
+  }*/
 
   Widget linhaPrecos(String key, String value, {bool strike, String valor}) {
     return Container(

@@ -1,4 +1,4 @@
-/*import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/constants.dart';
@@ -7,31 +7,31 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/endereco.dart';
-import 'package:theoffer/models/Pedido.dart';
+import 'package:theoffer/models/Cupom.dart';
 import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/models/itemPedido.dart';
+import 'package:theoffer/models/itemCupom.dart';
 import 'package:theoffer/models/cidade.dart';
 import 'package:theoffer/models/bairro.dart';
-import 'package:theoffer/screens/detalharPedido.dart';
+import 'package:theoffer/screens/detalharCupom.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class ListagemPedidos extends StatefulWidget {
+class ListagemCupom extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ListagemPedidos();
+    return _ListagemCupom();
   }
 }
 
-class _ListagemPedidos extends State<ListagemPedidos> {
-  bool _pedidosLoading = true;
+class _ListagemCupom extends State<ListagemCupom> {
+  bool _cupomLoading = true;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  List<Pedido> listaPedidos = [];
+  List<Cupom> listaCupom = [];
   @override
   void initState() {
     super.initState();
-    getPedidos();
+    getCupom();
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -49,15 +49,14 @@ class _ListagemPedidos extends State<ListagemPedidos> {
         appBar: AppBar(
             centerTitle: false,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios,
-                  color: Colors.principalTheOffer),
+              icon: Icon(Icons.arrow_back_ios, color: Colors.principalTheOffer),
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text(
-              'Pedidos',
+              'Cupom',
               style: TextStyle(color: Colors.principalTheOffer),
             ),
-            bottom: _pedidosLoading
+            bottom: _cupomLoading
                 ? PreferredSize(
                     child: LinearProgressIndicator(),
                     preferredSize: Size.fromHeight(10),
@@ -66,7 +65,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                     child: Container(),
                     preferredSize: Size.fromHeight(10),
                   )),
-        body: !_pedidosLoading || listaPedidos.length > 0
+        body: !_cupomLoading || listaCupom.length > 0
             ? Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -88,7 +87,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
   }
 
   void _onRefresh() async {
-    await getPedidos();
+    await getCupom();
     _refreshController.refreshCompleted();
   }
 
@@ -123,11 +122,11 @@ class _ListagemPedidos extends State<ListagemPedidos> {
             return GestureDetector(
               onTap: () {
                 MaterialPageRoute route = MaterialPageRoute(
-                    builder: (context) => DetalharPedido(listaPedidos[index]));
+                    builder: (context) => DetalharCupom(listaCupom[index]));
 
                 Navigator.push(context, route);
               },
-              child: _pedidosLoading
+              child: _cupomLoading
                   ? Container()
                   : Container(
                       decoration: BoxDecoration(
@@ -168,8 +167,8 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                   width: 140,
                                                   child: RichText(
                                                     text: TextSpan(
-                                                      text: 'Pedido ' +
-                                                          listaPedidos[index]
+                                                      text: 'Cupom ' +
+                                                          listaCupom[index]
                                                               .id
                                                               .toString(),
                                                       style: TextStyle(
@@ -185,7 +184,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                   child: RichText(
                                                     text: TextSpan(
                                                       text: 'Data ' +
-                                                          listaPedidos[index]
+                                                          listaCupom[index]
                                                               .dataInclusao
                                                               .toString(),
                                                       style: TextStyle(
@@ -212,8 +211,8 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                                 route =
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        DetalharPedido(
-                                                                            listaPedidos[index]));
+                                                                        DetalharCupom(
+                                                                            listaCupom[index]));
 
                                                             Navigator.push(
                                                                 context, route);
@@ -231,8 +230,8 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                               child: RichText(
                                                   text: TextSpan(
                                                 text: 'Itens ' +
-                                                    listaPedidos[index]
-                                                        .somaQuantidadePedido()
+                                                    listaCupom[index]
+                                                        .somaQuantidadeCupom()
                                                         .toString(),
                                                 style: TextStyle(
                                                     color: Colors
@@ -243,40 +242,17 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                           ])),
                                           Container(
                                               child: Row(children: <Widget>[
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: RichText(
-                                                  text: TextSpan(
-                                                text: listaPedidos[index]
-                                                            .status >=
-                                                        4
-                                                    ? 'Entrega: ' +
-                                                        listaPedidos[index]
-                                                            .horaPrevista
-                                                    : 'Aguardando confirmação',
-                                                style: TextStyle(
-                                                    color: Colors
-                                                        .principalTheOffer,
-                                                    fontSize: 17.0,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                            ),
-                                            SizedBox(
-                                              width: 80,
-                                            ),
                                             Expanded(
                                               child: Column(children: <Widget>[
                                                 Container(
-                                                  width: 300,
-                                                  color: Colors
-                                                      .principalTheOffer,
-                                                  alignment:
-                                                      Alignment.bottomRight,
+                                                  width: 100,
+                                                  color:
+                                                      Colors.principalTheOffer,
+                                                  alignment: Alignment.center,
                                                   child: RichText(
                                                     text: TextSpan(
                                                       text: getStatus(
-                                                          listaPedidos[index]
+                                                          listaCupom[index]
                                                               .status),
                                                       style: TextStyle(
                                                           color: Colors
@@ -302,7 +278,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                             )
                           ])),
             );
-          }, childCount: listaPedidos.length),
+          }, childCount: listaCupom.length),
         );
       },
     );
@@ -310,123 +286,111 @@ class _ListagemPedidos extends State<ListagemPedidos> {
 
   getStatus(int status) {
     if (status == 1) {
-      return 'CARRINHO';
+      return 'ADQUIRIDO';
     } else if (status == 2) {
-      return 'EFETUADO';
-    } else if (status == 3) {
-      return 'PAGO';
-    } else if (status == 4) {
-      return 'CONFIRMADO';
-    } else if (status == 5) {
-      return 'EM PREPARO';
-    } else if (status == 6) {
-      return 'SAIU PARA ENTREGA';
-    } else if (status == 7) {
-      return 'FINALIZADO';
-    } else {
-      return '';
+      return 'UTILIZADO';
     }
   }
 
-  getPedidos() async {
+  getCupom() async {
     print("LOCALIZANDO PEDIDOS");
-    Map<dynamic, dynamic> objetoPedido = Map();
+    Map<dynamic, dynamic> objetoCupom = Map();
     Map<dynamic, dynamic> responseBody;
     Produto produto;
     Endereco endereco;
-    Pedido pedido;
-    bool pedidoAdicionado;
+    Cupom cupom;
+    bool cupomAdicionado;
     Bairro bairro;
     Cidade cidade;
     Map<String, String> headers = getHeaders();
     try {
       setState(() {
-        _pedidosLoading = true;
-        listaPedidos = [];
+        _cupomLoading = true;
+        listaCupom = [];
       });
 
-      objetoPedido = {"usuario": Autenticacao.codigoUsuario.toString()};
+      objetoCupom = {"usuario": Autenticacao.codigoUsuario.toString()};
       http
-          .post(Configuracoes.BASE_URL + 'pedido/localizar',
-              headers: headers, body: objetoPedido)
+          .post(Configuracoes.BASE_URL + 'cupom/localizar',
+              headers: headers, body: objetoCupom)
           .then((response) {
         responseBody = json.decode(response.body);
-        responseBody['pedidos'].forEach((pedidosJson) {
-          if (pedidosJson['endereco_id'] != null) {
+        responseBody['cupom'].forEach((cupomJson) {
+          if (cupomJson['endereco_id'] != null) {
             bairro = Bairro(
-                id: int.parse(pedidosJson['bairro_id']),
-                nome: pedidosJson['nomeBairro']);
+                id: int.parse(cupomJson['bairro_id']),
+                nome: cupomJson['nomeBairro']);
 
             cidade = Cidade(
-                id: int.parse(pedidosJson['cidade_id']),
-                nome: pedidosJson['nomeCidade']);
+                id: int.parse(cupomJson['cidade_id']),
+                nome: cupomJson['nomeCidade']);
 
             endereco = Endereco(
-              id: int.parse(pedidosJson['endereco_id']),
-              nome: pedidosJson['nomeEndereco'],
+              id: int.parse(cupomJson['endereco_id']),
+              nome: cupomJson['nomeEndereco'],
               cidade: cidade,
               bairro: bairro,
-              rua: pedidosJson['rua'],
-              numero: int.parse(pedidosJson['numero']),
-              complemento: pedidosJson['complemento'],
-              referencia: pedidosJson['referencia'],
-              dataCadastro: pedidosJson['dataCadastroEndereco'],
-              dataConfirmacao: pedidosJson['dataConfirmacaoEndereco'],
+              rua: cupomJson['rua'],
+              numero: int.parse(cupomJson['numero']),
+              complemento: cupomJson['complemento'],
+              referencia: cupomJson['referencia'],
+              dataCadastro: cupomJson['dataCadastroEndereco'],
+              dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
             );
           }
-          pedido = Pedido(
-              id: int.parse(pedidosJson['pedido_id']),
-              usuarioId: int.parse(pedidosJson['usuario_id']),
-              empresa: int.parse(pedidosJson['produto_empresa']),
-              modalidadeEntrega: pedidosJson['modalidadeEntrega'] != null
-                  ? int.parse(pedidosJson['modalidadeEntrega'])
+          cupom = Cupom(
+              id: int.parse(cupomJson['cupom_id']),
+              usuarioId: int.parse(cupomJson['usuario_id']),
+              empresa: int.parse(cupomJson['produto_empresa']),
+              modalidadeEntrega: cupomJson['modalidadeEntrega'] != null
+                  ? int.parse(cupomJson['modalidadeEntrega'])
                   : 0,
-              formaPagamento: pedidosJson['formaPagamento'] != null
-                  ? int.parse(pedidosJson['formaPagamento'])
+              formaPagamento: cupomJson['formaPagamento'] != null
+                  ? int.parse(cupomJson['formaPagamento'])
                   : 0,
-              horaPrevista: pedidosJson['horaPrevista'],
-              dataInclusao: pedidosJson['dataInclusao'],
-              dataConfirmacao: pedidosJson['dataConfirmacaoEndereco'],
-              status: int.parse(pedidosJson['status']),
+              horaPrevista: cupomJson['horaPrevista'],
+              dataInclusao: cupomJson['dataInclusao'],
+              dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
+              status: int.parse(cupomJson['status']),
               endereco: endereco,
-              listaItensPedido: []);
+              listaItensCupom: []);
 
-          pedidoAdicionado = false;
-          for (final pedidoAux in listaPedidos) {
-            if (pedidoAux.id == pedido.id) {
-              pedidoAdicionado = true;
+          cupomAdicionado = false;
+          for (final cupomAux in listaCupom) {
+            if (cupomAux.id == cupom.id) {
+              cupomAdicionado = true;
               break;
             }
           }
-          if (!pedidoAdicionado) {
-            listaPedidos.add(pedido);
+          if (!cupomAdicionado) {
+            listaCupom.add(cupom);
           }
         });
 
-        responseBody['pedidos'].forEach((pedidosJson) {
+        responseBody['cupom'].forEach((cupomJson) {
           setState(() {
-            for (final pedidoAux in listaPedidos) {
-              if (pedidoAux.id == int.parse(pedidosJson['pedido_id'])) {
-                if (pedidosJson['produto_id'] != null) {
+            for (final cupomAux in listaCupom) {
+              if (cupomAux.id == int.parse(cupomJson['cupom_id'])) {
+                if (cupomJson['produto_id'] != null) {
                   produto = Produto(
-                      id: int.parse(pedidosJson['produto_id']),
-                      titulo: pedidosJson['titulo'],
-                      descricao: pedidosJson['descricao'],
-                      imagem: pedidosJson['imagem'],
-                      valor: pedidosJson['valor'],
-                      valorNumerico: double.parse(pedidosJson['valorNumerico']),
-                      quantidade: int.parse(pedidosJson['quantidade']),
+                      id: int.parse(cupomJson['produto_id']),
+                      titulo: cupomJson['titulo'],
+                      descricao: cupomJson['descricao'],
+                      imagem: cupomJson['imagem'],
+                      valor: cupomJson['valor'],
+                      valorNumerico: double.parse(cupomJson['valorNumerico']),
+                      quantidade: int.parse(cupomJson['quantidade']),
                       quantidadeRestante:
-                          int.parse(pedidosJson['quantidadeRestante']),
-                      dataInicial: pedidosJson['dataInicial'],
-                      dataFinal: pedidosJson['dataFinal'],
-                      dataCadastro: pedidosJson['DataCadastro'],
-                      usuarioId: int.parse(pedidosJson['usuario_id']));
-                  pedidoAux.listaItensPedido.add(ItemPedido(
-                      pedidoId: int.parse(pedidosJson['pedido_id']),
-                      produtoId: int.parse(pedidosJson['produto_id']),
-                      quantidade: int.parse(pedidosJson['quantidade_item']),
-                      sabores: pedidosJson['sabores_item'],
+                          int.parse(cupomJson['quantidadeRestante']),
+                      dataInicial: cupomJson['dataInicial'],
+                      dataFinal: cupomJson['dataFinal'],
+                      dataCadastro: cupomJson['DataCadastro'],
+                      usuarioId: int.parse(cupomJson['usuario_id']));
+                  cupomAux.listaItensCupom.add(ItemCupom(
+                      cupomId: int.parse(cupomJson['cupom_id']),
+                      produtoId: int.parse(cupomJson['produto_id']),
+                      quantidade: int.parse(cupomJson['quantidade_item']),
+                      sabores: cupomJson['sabores_item'],
                       produto: produto));
                 }
               }
@@ -434,11 +398,11 @@ class _ListagemPedidos extends State<ListagemPedidos> {
           });
         });
         setState(() {
-          _pedidosLoading = false;
+          _cupomLoading = false;
         });
       });
     } catch (error) {
-      _pedidosLoading = true;
+      _cupomLoading = true;
     }
   }
 
@@ -462,4 +426,3 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     });
   }
 }
-*/

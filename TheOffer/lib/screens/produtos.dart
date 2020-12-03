@@ -10,13 +10,12 @@ import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
-import 'package:theoffer/widgets/botaoCarrinho.dart';
+//import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:theoffer/widgets/cardProdutos.dart';
 import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/screens/empresaDetalhada.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TelaProdutos extends StatefulWidget {
@@ -34,7 +33,6 @@ class _TelaProdutos extends State<TelaProdutos>
       RefreshController(initialRefresh: false);
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
-  bool _isBannerLoading = true;
   bool _produtosLoading = true;
   bool abaProdutos = true;
   bool abaPromocoes = false;
@@ -45,13 +43,13 @@ class _TelaProdutos extends State<TelaProdutos>
   List<String> bannerImageUrls = [];
   List<String> bannerLinks = [];
   int favCount;
-  bool _localizarCarrinho = false;
+  //bool _localizarCarrinho = false;
 
   @override
   void initState() {
     super.initState();
     getProdutos();
-    _localizarCarrinho = true;
+    //_localizarCarrinho = true;
     locator<ConnectivityManager>().initConnectivity(context);
   }
 
@@ -67,12 +65,12 @@ class _TelaProdutos extends State<TelaProdutos>
 
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      if (_localizarCarrinho) {
+      /*if (_localizarCarrinho) {
         _localizarCarrinho = false;
         model.verificarPedidoPendente(
             null, Autenticacao.codigoUsuario, context);
         model.localizarCarrinho(null, Autenticacao.codigoUsuario);
-      }
+      }*/
       return Scaffold(
         appBar: AppBar(
             title: Image.asset(
@@ -80,9 +78,9 @@ class _TelaProdutos extends State<TelaProdutos>
               fit: BoxFit.fill,
               height: 55,
             ),
-            actions: <Widget>[
+            /*actions: <Widget>[
               shoppingCarrinhoIconButton(),
-            ],
+            ],*/
             bottom: PreferredSize(
                 preferredSize: Size(_deviceSize.width, 65),
                 child: Column(
@@ -93,63 +91,65 @@ class _TelaProdutos extends State<TelaProdutos>
             iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
         drawer: HomeDrawer(),
         body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("images/fundoBranco.png"),
-              fit: BoxFit.cover,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/fundoBranco.png"),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          child: Container(
-          padding: EdgeInsets.only(top: 10),
-          child: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: false,
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            //onLoading: _onLoading,
-            child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),slivers: [
-              _produtosLoading
-                  ? SliverList(
-                      delegate: SliverChildListDelegate([
-                      Container(
-                        height: _deviceSize.height * 0.47,
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.secundariaTheOffer,
-                        ),
-                      )
-                    ]))
-                  : SliverToBoxAdapter(
-                      child: Container(
-                        child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: listaProdutoEmpresa.length,
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              if (listaProdutoEmpresa[index]
-                                      .listaProduto
-                                      .length >
-                                  0) {
-                                return Container(
-                                    padding: listaProdutoEmpresa[index]
-                                            .cardVisivel
-                                        ? EdgeInsets.all(0)
-                                        : EdgeInsets.only(
-                                            left: 5, right: 5),
-                                    child:
-                                        montarCardProdutosEmpresaCollapse(
-                                            index));
-                              } else {
-                                return Container();
-                              }
-                            }),
-                      ),
-                    ),
-            ])),)
-        ),
-        bottomNavigationBar: bottomNavigationBar(),
+            child: Container(
+              padding: EdgeInsets.only(top: 10),
+              child: SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: false,
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  //onLoading: _onLoading,
+                  child: CustomScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      slivers: [
+                        _produtosLoading
+                            ? SliverList(
+                                delegate: SliverChildListDelegate([
+                                Container(
+                                  height: _deviceSize.height * 0.47,
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.secundariaTheOffer,
+                                  ),
+                                )
+                              ]))
+                            : SliverToBoxAdapter(
+                                child: Container(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: listaProdutoEmpresa.length,
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        if (listaProdutoEmpresa[index]
+                                                .listaProduto
+                                                .length >
+                                            0) {
+                                          return Container(
+                                              padding:
+                                                  listaProdutoEmpresa[index]
+                                                          .cardVisivel
+                                                      ? EdgeInsets.all(0)
+                                                      : EdgeInsets.only(
+                                                          left: 5, right: 5),
+                                              child:
+                                                  montarCardProdutosEmpresaCollapse(
+                                                      index));
+                                        } else {
+                                          return Container();
+                                        }
+                                      }),
+                                ),
+                              ),
+                      ])),
+          )),
+      bottomNavigationBar: bottomNavigationBar(),
       );
     });
   }
@@ -385,10 +385,8 @@ class _TelaProdutos extends State<TelaProdutos>
                                                                       .empresaId));
                                               Navigator.push(context, route);
                                             },
-                                            color:
-                                                Colors.secundariaTheOffer,
-                                            textColor:
-                                                Colors.principalTheOffer,
+                                            color: Colors.secundariaTheOffer,
+                                            textColor: Colors.principalTheOffer,
                                             child: Icon(
                                               Icons.arrow_forward_ios,
                                               size: 24,
@@ -425,8 +423,7 @@ class _TelaProdutos extends State<TelaProdutos>
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline,
-                  color: Colors.principalTheOffer),
+              icon: Icon(Icons.person_outline, color: Colors.principalTheOffer),
               title: Text('ENTRAR',
                   style: TextStyle(
                       color: Colors.principalTheOffer,
@@ -570,8 +567,7 @@ class _TelaProdutos extends State<TelaProdutos>
               height: 49,
               margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
               child: ListTile(
-                leading:
-                    Icon(Icons.search, color: Colors.secundariaTheOffer),
+                leading: Icon(Icons.search, color: Colors.secundariaTheOffer),
                 title: Text(
                   'Encontrar produtos...',
                   style: TextStyle(

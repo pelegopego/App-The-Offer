@@ -100,8 +100,8 @@ class _AuthenticationState extends State<Authentication>
                 ),
                 Text(
                   "CRIAR CONTA",
-                  style: TextStyle(
-                      fontSize: 13, color: Colors.principalTheOffer),
+                  style:
+                      TextStyle(fontSize: 13, color: Colors.principalTheOffer),
                 )
               ],
             ),
@@ -495,7 +495,7 @@ class _AuthenticationState extends State<Authentication>
           duration: Duration(seconds: 104),
         ));
         hasError = false;
-        model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+        //model.localizarCarrinho(null, Autenticacao.codigoUsuario);
       } else {
         setState(() {
           _isLoader = false;

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/models/endereco.dart';
-import 'package:theoffer/models/cidade.dart';
-import 'package:theoffer/models/bairro.dart';
+//import 'package:theoffer/models/endereco.dart';
+//import 'package:theoffer/models/cidade.dart';
+//import 'package:theoffer/models/bairro.dart';
 import 'package:theoffer/models/itemPedido.dart';
 import 'package:theoffer/models/Pedido.dart';
 import 'package:theoffer/models/Produto.dart';
@@ -13,7 +13,7 @@ import 'package:theoffer/utils/headers.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:theoffer/screens/finalizarPedido.dart';
+//import 'package:theoffer/screens/finalizarPedido.dart';
 
 mixin CarrinhoModel on Model {
   bool hi = false;
@@ -113,6 +113,7 @@ mixin CarrinhoModel on Model {
     notifyListeners();
   }
 
+/*
   Future<void> adicionarProduto(
       {int usuarioId, int produtoId, int quantidade, int somar}) async {
     print("QUANTIDADE ADICIONADA AO CARRINHO $quantidade");
@@ -134,7 +135,18 @@ mixin CarrinhoModel on Model {
     _isLoading = false;
     notifyListeners();
   }
+  */
 
+  void pegarCupom({int usuarioId, int produtoId, BuildContext context}) {
+    _isLoading = true;
+    notifyListeners();
+    print("QUANTIDADE COMPRADA");
+    _listaItensPedido.clear();
+    adquirirCupom(usuarioId, produtoId, context);
+    _isLoading = false;
+    notifyListeners();
+  }
+/*
   void alterarStatus(int pedidoId, int status) {
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
@@ -276,8 +288,39 @@ mixin CarrinhoModel on Model {
       }
     });
     _isLoading = false;
+  }*/
+
+  void adquirirCupom(int usuarioId, int produtoId, BuildContext context) {
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+    print("COMPRANDO PRODUTO");
+    objetoItemPedido = {
+      "usuario": usuarioId.toString(),
+      "produto": produtoId.toString()
+    };
+    http
+        .post(Configuracoes.BASE_URL + 'cupom/adquirirCupom/',
+            headers: headers, body: objetoItemPedido)
+        .then((response) {
+      print("CUPOM ADQUIRIDO");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      if (responseBody['id'] == 0) {
+        final snackBar = SnackBar(
+            content: Text(responseBody['message']),
+            duration: Duration(seconds: 5));
+        Scaffold.of(context).showSnackBar(snackBar);
+      } else {
+        final snackBar = SnackBar(
+            content: Text(responseBody['message']),
+            duration: Duration(seconds: 5));
+        Scaffold.of(context).showSnackBar(snackBar);
+      }
+    });
+    _isLoading = false;
   }
 
+/*
   Future<bool> localizarCarrinho(int pedidoId, int usuarioId) async {
     print("LOCALIZANDO CARRINHO");
     _isLoading = true;
@@ -621,7 +664,7 @@ mixin CarrinhoModel on Model {
           });
     }
   }
-
+*/
   clearData() async {
     print("CLEAR DATA");
     final SharedPreferences prefs = await SharedPreferences.getInstance();

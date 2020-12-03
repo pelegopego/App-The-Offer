@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:theoffer/scoped-models/main.dart';
@@ -433,12 +433,18 @@ class _CarrinhoState extends State<Carrinho> {
                             model.pedido.listaItensPedido[lineItemIndex]
                                 .quantidade >=
                         index) {
-                      model.adicionarProduto(
+                      /*model.adicionarProduto(
                           usuarioId: Autenticacao.codigoUsuario,
                           produtoId: model
                               .pedido.listaItensPedido[lineItemIndex].produtoId,
                           quantidade: index,
-                          somar: 0);
+                          somar: 0);*/
+
+                      model.pegarCupom(
+                          usuarioId: Autenticacao.codigoUsuario,
+                          produtoId: model
+                              .pedido.listaItensPedido[lineItemIndex].produtoId,
+                          context: context);
                     }
                   } else {
                     MaterialPageRoute authRoute = MaterialPageRoute(
@@ -475,3 +481,4 @@ class _CarrinhoState extends State<Carrinho> {
         ));
   }
 }
+*/

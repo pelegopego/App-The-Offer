@@ -5,7 +5,7 @@ import 'package:theoffer/scoped-models/main.dart';
 import 'package:theoffer/utils/connectivity_state.dart';
 import 'package:theoffer/utils/drawer_homescreen.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:theoffer/widgets/botaoCarrinho.dart';
+//import 'package:theoffer/widgets/botaoCarrinho.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TelaFavorito extends StatefulWidget {
@@ -49,9 +49,9 @@ class _TelaFavorito extends State<TelaFavorito> {
         appBar: AppBar(
           centerTitle: false,
           title: Text('Favoritos'),
-          actions: <Widget>[
+          /*actions: <Widget>[
             shoppingCarrinhoIconButton(),
-          ],
+          ],*/
           bottom: _isLoading
               ? PreferredSize(
                   child: LinearProgressIndicator(),

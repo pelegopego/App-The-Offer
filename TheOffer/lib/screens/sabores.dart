@@ -206,20 +206,19 @@ class _TelaSabores extends State<TelaSabores> {
                       objetoPedido = {
                         "sabores": stringSabores(),
                         "usuario": Autenticacao.codigoUsuario.toString(),
-                        "produto": widget.produtoId.toString(),
-                        "quantidade": widget.quantidade.toString()
+                        "produto": widget.produtoId.toString()
                       };
                       http
                           .post(
                               Configuracoes.BASE_URL +
-                                  'pedido/adicionarCarrinhoSabores/',
+                                  'cupom/adquirirCupomSabores/',
                               headers: headers,
                               body: objetoPedido)
                           .then((response) {
-                        print("Adicionando sabores ao pedido.");
+                        print("Adicionando sabores ao cupom.");
                         print(json.decode(response.body).toString());
-                        model.localizarCarrinho(
-                            null, Autenticacao.codigoUsuario);
+                        /*model.localizarCarrinho(
+                            null, Autenticacao.codigoUsuario);*/
                         final snackBar = SnackBar(
                             content: Text('Sabores selecionados com sucesso.'),
                             duration: Duration(seconds: 2));
