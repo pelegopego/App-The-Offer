@@ -244,6 +244,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
+                                                                  fontSize: 12,
                                                                   color: Colors
                                                                       .secundariaTheOffer),
                                                             ),
@@ -314,6 +315,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
+                                                                  fontSize: 12,
                                                                   color: Colors
                                                                       .secundariaTheOffer),
                                                             ),
