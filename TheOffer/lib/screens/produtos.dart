@@ -148,8 +148,8 @@ class _TelaProdutos extends State<TelaProdutos>
                                 ),
                               ),
                       ])),
-          )),
-      bottomNavigationBar: bottomNavigationBar(),
+            )),
+        bottomNavigationBar: bottomNavigationBar(),
       );
     });
   }
@@ -516,6 +516,7 @@ class _TelaProdutos extends State<TelaProdutos>
                     usuarioId: int.parse(produtoJson['usuario_id'])));
               });
             });
+            _listaProduto.add(Produto());
           }
           listaProdutoEmpresa.add(
             ProdutoEmpresa(
