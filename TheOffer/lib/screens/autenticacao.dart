@@ -246,6 +246,15 @@ class _AuthenticationState extends State<Authentication>
     }
   }
 
+  confirmarEmail(String token) async {
+    String url = 'http://sistema.theoffer.com.br/confirmarEmail/' + token;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Não foi possível abrir a página, tente novamente mais tarde.';
+    }
+  }
+
   Widget _renderSignup(double targetWidth) {
     final format = DateFormat("dd/MM/yyyy");
     return SingleChildScrollView(
@@ -548,39 +557,10 @@ class _AuthenticationState extends State<Authentication>
             headers: headers, body: oMapCadastrarLogin)
         .then((response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      String message = 'Ocorreu algum erro.';
-      bool hasError = true;
-
-      message = responseData['message'];
-
-      if (message.isEmpty) {
-        print('success');
-        message = 'Registrado com sucesso.';
-        hasError = false;
-      } else if (responseData.containsKey('errors')) {
-        message = "Usuario " + responseData["errors"]["usuario"][0];
-      }
-
-      final Map<String, dynamic> successInformation = {
-        'success': !hasError,
-        'message': message
-      };
-      if (successInformation['success']) {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return _alertDialog('Success!',
-                  "Conta criada com sucesso! Entre para continuar.", context);
-            });
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('${successInformation['message']}'),
-          duration: Duration(seconds: 1),
-        ));
-      } else {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('${successInformation['message']}'),
-          duration: Duration(seconds: 1),
-        ));
+      if (responseData['token'] != '' &&
+          responseData['token'] != null &&
+          responseData['status']) {
+        confirmarEmail(responseData['token']);
       }
       setState(() {
         _isLoader = false;
@@ -596,35 +576,5 @@ class _AuthenticationState extends State<Authentication>
     await storage.write(key: "nomeUsuario", value: Autenticacao.nomeUsuario);
     await storage.write(key: "token", value: Autenticacao.token);
     await storage.write(key: "notificacao", value: Autenticacao.notificacao);
-  }
-
-  Widget _alertDialog(String boxTitle, String message, BuildContext context) {
-    return AlertDialog(
-      title: Text(boxTitle),
-      content: Text(message),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('Later',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.secundariaTheOffer.shade300)),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        FlatButton(
-          child: Text('Entrar',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.secundariaTheOffer.shade300)),
-          onPressed: () {
-            Navigator.pop(context);
-            MaterialPageRoute route =
-                MaterialPageRoute(builder: (context) => Authentication(0));
-            Navigator.push(context, route);
-          },
-        )
-      ],
-    );
   }
 }
