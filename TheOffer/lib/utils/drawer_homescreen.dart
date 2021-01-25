@@ -493,7 +493,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                 height: 90,
               ),
               Text(
-                '1.1.5',
+                '1.1.6',
                 style: TextStyle(
                     color: Colors.principalTheOffer,
                     fontWeight: FontWeight.w300),
