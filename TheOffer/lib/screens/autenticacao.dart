@@ -550,7 +550,8 @@ class _AuthenticationState extends State<Authentication>
           md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
       'telefone': _formData['telefone'],
       'nascimento': _formData['nascimento'],
-      'notificacao': Autenticacao.notificacao
+      'notificacao':
+          Autenticacao.notificacao != null ? Autenticacao.notificacao : ''
     };
     http
         .post(Configuracoes.BASE_URL + 'usuario/salvar/',
