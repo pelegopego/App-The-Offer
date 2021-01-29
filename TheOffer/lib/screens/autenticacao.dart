@@ -407,12 +407,6 @@ class _AuthenticationState extends State<Authentication>
                         initialDate: currentValue ?? DateTime.now(),
                         lastDate: DateTime(2100));
                   },
-                  validator: (DateTime value) {
-                    if (value == null) {
-                      return 'Informe uma data de nascimento válida';
-                    }
-                    return null;
-                  },
                   onSaved: (DateTime value) {
                     _formData['nascimento'] = value.toString();
                   },
