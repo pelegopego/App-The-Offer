@@ -474,6 +474,8 @@ class _HomeDrawer extends State<HomeDrawer> {
     model.clearData();
     Autenticacao.codigoUsuario = 0;
     Autenticacao.nomeUsuario = '';
+    Autenticacao.dataBloqueio = null;
+    Autenticacao.bloqueado = false;
     final storage = FlutterSecureStorage();
     await storage.deleteAll();
   }

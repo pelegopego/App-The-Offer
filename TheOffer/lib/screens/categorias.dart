@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/produtos.dart';
-import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/models/banners.dart';
+import 'package:theoffer/models/Produto.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:theoffer/screens/produtos.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/models/categoria.dart';
-import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:theoffer/utils/drawer_homescreen.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class TelaCategorias extends StatefulWidget {
   final int idCidade;
@@ -138,9 +138,7 @@ class _TelaCategorias extends State<TelaCategorias> {
                     CachedNetworkImage(imageUrl: listaCategoria[index].imagem),
               ),
               Container(
-                margin: EdgeInsets.only(left: 20, top: 5),
                 height: 20,
-                width: 150,
                 color: Colors.principalTheOffer,
                 alignment: Alignment.center,
                 child: RichText(

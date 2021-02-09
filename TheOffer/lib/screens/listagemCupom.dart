@@ -289,6 +289,8 @@ class _ListagemCupom extends State<ListagemCupom> {
       return 'ADQUIRIDO';
     } else if (status == 2) {
       return 'UTILIZADO';
+    } else if (status == 3) {
+      return 'Expirado';
     }
   }
 

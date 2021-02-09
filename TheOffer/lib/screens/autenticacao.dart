@@ -477,6 +477,10 @@ class _AuthenticationState extends State<Authentication>
         responseBody['usuario'].forEach((usuarioJson) {
           Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
           Autenticacao.nomeUsuario = usuarioJson['nome'];
+          Autenticacao.dataBloqueio =
+              DateTime.parse(usuarioJson['dataBloqueio']);
+          Autenticacao.bloqueado =
+              !Autenticacao.dataBloqueio.isBefore(DateTime.now());
           Autenticacao.token = usuarioJson['token'];
           if (Autenticacao.notificacao != usuarioJson['notificacao']) {
             Map<String, String> headers = getHeaders();
@@ -571,5 +575,7 @@ class _AuthenticationState extends State<Authentication>
     await storage.write(key: "nomeUsuario", value: Autenticacao.nomeUsuario);
     await storage.write(key: "token", value: Autenticacao.token);
     await storage.write(key: "notificacao", value: Autenticacao.notificacao);
+    await storage.write(
+        key: "dataBloqueio", value: Autenticacao.dataBloqueio.toString());
   }
 }

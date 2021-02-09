@@ -1,16 +1,16 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/screens/cidades.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/utils/locator.dart';
+import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/scoped-models/main.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() {
   setupLocator();
@@ -68,10 +68,17 @@ class _MyAppState extends State<MyApp> {
     String nomeUsuarioAuxiliar;
     String token;
 
+    storage.write(key: "dataBloqueio", value: '2021-02-01');
     Map<String, String> allValues = await storage.readAll();
     if (allValues.length > 0) {
       codigoUsuarioAuxiliar = allValues["codigoUsuario"];
       nomeUsuarioAuxiliar = allValues["nomeUsuario"];
+
+      if (allValues["dataBloqueio"] != null &&
+          allValues["dataBloqueio"] != '') {
+        Autenticacao.dataBloqueio = DateTime.parse(allValues["dataBloqueio"]);
+        Autenticacao.dataBloqueioAbriuApp = Autenticacao.dataBloqueio;
+      }
       token = allValues["token"];
 
       if (codigoUsuarioAuxiliar != null) {
@@ -115,7 +122,41 @@ class _MyAppState extends State<MyApp> {
         });
       });
     }
+    if (Autenticacao.codigoUsuario > 0) {
+      if (Autenticacao.dataBloqueio == null ||
+          !Autenticacao.dataBloqueio.isAfter(DateTime.now())) {
+        Map<String, String> headers = getHeaders();
+        Map<dynamic, dynamic> oMapSalvarNotificacao = {
+          'usuario': Autenticacao.codigoUsuario.toString()
+        };
+        http
+            .post(Configuracoes.BASE_URL + 'usuario/getBloqueio/',
+                headers: headers, body: oMapSalvarNotificacao)
+            .then((response) {
+          setState(() {
+            if (json.decode(response.body)[0]['dataBloqueio'] != null) {
+              Autenticacao.dataBloqueio =
+                  DateTime.parse(json.decode(response.body)[0]['dataBloqueio']);
+            }
 
+            if (Autenticacao.dataBloqueio == null ||
+                !Autenticacao.dataBloqueio.isAfter(DateTime.now())) {
+              Autenticacao.bloqueado = false;
+            } else {
+              Autenticacao.bloqueado = true;
+            }
+
+            storage.write(
+                key: "dataBloqueio",
+                value: Autenticacao.dataBloqueio.toString());
+          });
+        });
+      } else {
+        Autenticacao.bloqueado = true;
+      }
+    } else {
+      Autenticacao.bloqueado = false;
+    }
     /*if (Autenticacao.token != "") {
       setState(() {
         _model.localizarCarrinho(null, Autenticacao.codigoUsuario);
@@ -136,6 +177,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.restoreSystemUIOverlays();
+
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(

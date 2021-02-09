@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,9 +46,19 @@ class _TelaProdutos extends State<TelaProdutos>
   int favCount;
   //bool _localizarCarrinho = false;
 
+  _showDialog() async {
+    await Future.delayed(Duration(milliseconds: 50));
+    showBlockMessage();
+  }
+
   @override
   void initState() {
     super.initState();
+
+    if (Autenticacao.bloqueado &&
+        Autenticacao.dataBloqueio != Autenticacao.dataBloqueioAbriuApp) {
+      _showDialog();
+    }
     getProdutos();
     //_localizarCarrinho = true;
     locator<ConnectivityManager>().initConnectivity(context);
@@ -62,7 +73,6 @@ class _TelaProdutos extends State<TelaProdutos>
   @override
   Widget build(BuildContext context) {
     _deviceSize = MediaQuery.of(context).size;
-
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       /*if (_localizarCarrinho) {
@@ -82,11 +92,10 @@ class _TelaProdutos extends State<TelaProdutos>
               shoppingCarrinhoIconButton(),
             ],*/
             bottom: PreferredSize(
-                preferredSize: Size(_deviceSize.width, 65),
+                preferredSize:
+                    Size(_deviceSize.width, Autenticacao.bloqueado ? 85 : 65),
                 child: Column(
-                  children: <Widget>[
-                    searchBar(),
-                  ],
+                  children: <Widget>[searchBar(), blockBar()],
                 )),
             iconTheme: new IconThemeData(color: Colors.principalTheOffer)),
         drawer: HomeDrawer(),
@@ -547,6 +556,105 @@ class _TelaProdutos extends State<TelaProdutos>
         _produtosLoading = false;
       });
     });
+  }
+
+  void showBlockMessage() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+                "Você foi bloqueado até " +
+                    DateFormat("dd/MM/yyyy")
+                        .format(Autenticacao.dataBloqueio)
+                        .toString() +
+                    ".",
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15)),
+            content: new Text(
+                "O bloqueio ocorre por ter adquirido dois cupons e não utiliza-los.\n" +
+                    "Verifique em meus cupons(Menu lateral / Meus cupons) para maiores informações.",
+                style:
+                    TextStyle(color: Colors.secundariaTheOffer, fontSize: 12)),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text(
+                  "Entendi",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Widget blockBar() {
+    if (Autenticacao.bloqueado) {
+      return GestureDetector(
+          child: Container(
+            height: 20,
+            width: 230,
+            color: Colors.principalTheOffer,
+            alignment: Alignment.center,
+            child: RichText(
+              text: TextSpan(
+                text: 'Você está bloqueado até ' +
+                    DateFormat("dd/MM/yyyy")
+                        .format(Autenticacao.dataBloqueio)
+                        .toString(),
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(
+                        "Você foi bloqueado até " +
+                            DateFormat("dd/MM/yyyy")
+                                .format(Autenticacao.dataBloqueio)
+                                .toString() +
+                            ".",
+                        style: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)),
+                    content: new Text(
+                        "O bloqueio ocorre por ter adquirido dois cupons e não utiliza-los.\n" +
+                            "Verifique em meus cupons(Menu lateral / Meus cupons) para maiores informações.",
+                        style: TextStyle(
+                            color: Colors.secundariaTheOffer, fontSize: 12)),
+                    actions: <Widget>[
+                      new FlatButton(
+                        child: Text(
+                          "Entendi",
+                          style: TextStyle(
+                              color: Colors.secundariaTheOffer,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+          });
+    } else {
+      return Container();
+    }
   }
 
   Widget searchBar() {

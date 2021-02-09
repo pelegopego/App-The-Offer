@@ -136,15 +136,67 @@ mixin CarrinhoModel on Model {
     notifyListeners();
   }
   */
+  void perguntarPegarCupom(int usuarioId, int produtoId, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext acontext) {
+          return AlertDialog(
+            title: Text("Pegar cupom",
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold)),
+            content: new Text(
+                "Você deseja realmente adquirir o cupom?\n" +
+                    "O cupom é valido apenas presencialmente.\n" +
+                    "Caso seja adquirido o cupom e não utilizado, o cupom é expirado, a cada dois cupons expirados você é bloqueado por uma semana.",
+                style: TextStyle(color: Colors.secundariaTheOffer)),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text(
+                  "Cancelar",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(acontext).pop();
+                },
+              ),
+              new FlatButton(
+                child: Text(
+                  "Pegar cupom!",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(acontext).pop();
+                  _isLoading = true;
+                  notifyListeners();
+                  print("QUANTIDADE COMPRADA");
+                  _listaItensPedido.clear();
+                  adquirirCupom(usuarioId, produtoId, context);
+                  _isLoading = false;
+                  notifyListeners();
+                },
+              )
+            ],
+          );
+        });
+  }
 
   void pegarCupom({int usuarioId, int produtoId, BuildContext context}) {
-    _isLoading = true;
-    notifyListeners();
-    print("QUANTIDADE COMPRADA");
-    _listaItensPedido.clear();
-    adquirirCupom(usuarioId, produtoId, context);
-    _isLoading = false;
-    notifyListeners();
+    //verificar quantidade de pedidos
+    perguntarPegarCupom(usuarioId, produtoId, context);
+
+    /*
+      _isLoading = true;
+      notifyListeners();
+      print("QUANTIDADE COMPRADA");
+      _listaItensPedido.clear();
+      adquirirCupom(usuarioId, produtoId, context);
+      _isLoading = false;
+      notifyListeners();*/
   }
 /*
   void alterarStatus(int pedidoId, int status) {

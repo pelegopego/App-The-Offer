@@ -356,30 +356,6 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Container(
-                  color: Colors.secundariaTheOffer,
-                  width: _deviceSize.width,
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          '${produtoSelecionado.titulo}',
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.principalTheOffer,
-                              fontFamily: fontFamily),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Container(
                 color: Colors.secundariaTheOffer,
                 alignment: Alignment.centerLeft,
@@ -483,7 +459,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   child: Text("Descrição",
                       style: TextStyle(
                           fontSize: 15.0,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: Colors.principalTheOffer))),
               Container(
                   color: Colors.secundariaTheOffer,
@@ -492,7 +468,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                   child: Text(htmlDescription,
                       style: TextStyle(
                           fontSize: 15.0,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.normal,
                           color: Colors.principalTheOffer))),
             ],
           ),
@@ -514,12 +490,16 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                getHoraInicioProdutoHoje(produtoSelecionado) < horaAtual &&
-                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual
-                    ? produtoSelecionado.quantidadeRestante > 0
-                        ? 'COMPRAR AGORA'
-                        : 'FORA DE ESTOQUE'
-                    : 'ESTABELECIMENTO FECHADO',
+                Autenticacao.bloqueado
+                    ? 'USUÁRIO BLOQUEADO'
+                    : getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual
+                        ? produtoSelecionado.quantidadeRestante > 0
+                            ? 'COMPRAR AGORA'
+                            : 'FORA DE ESTOQUE'
+                        : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
                     color: getHoraInicioProdutoHoje(produtoSelecionado) <
                                 horaAtual &&
@@ -586,12 +566,16 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
             height: 45.0,
             child: FlatButton(
               child: Text(
-                getHoraInicioProdutoHoje(produtoSelecionado) < horaAtual &&
-                        getHoraFimProdutoHoje(produtoSelecionado) > horaAtual
-                    ? produtoSelecionado.quantidadeRestante > 0
-                        ? 'ADIQUIRIR CUPOM'
-                        : 'FORA DE ESTOQUE'
-                    : 'ESTABELECIMENTO FECHADO',
+                Autenticacao.bloqueado
+                    ? 'USUÁRIO BLOQUEADO'
+                    : getHoraInicioProdutoHoje(produtoSelecionado) <
+                                horaAtual &&
+                            getHoraFimProdutoHoje(produtoSelecionado) >
+                                horaAtual
+                        ? produtoSelecionado.quantidadeRestante > 0
+                            ? 'ADIQUIRIR CUPOM'
+                            : 'FORA DE ESTOQUE'
+                        : 'ESTABELECIMENTO FECHADO',
                 /*
                     ? produtoSelecionado.quantidadeRestante > 0
                         ? 'ADICIONAR AO CARRINHO'
@@ -602,7 +586,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                                 horaAtual &&
                             getHoraFimProdutoHoje(produtoSelecionado) >
                                 horaAtual &&
-                            produtoSelecionado.quantidadeRestante > 0
+                            produtoSelecionado.quantidadeRestante > 0 &&
+                            !Autenticacao.bloqueado
                         ? Colors.principalTheOffer
                         : Colors.grey),
               ),
@@ -616,7 +601,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                                 horaAtual &&
                             getHoraFimProdutoHoje(produtoSelecionado) >
                                 horaAtual &&
-                            produtoSelecionado.quantidadeRestante > 0) {
+                            produtoSelecionado.quantidadeRestante > 0 &&
+                            !Autenticacao.bloqueado) {
                           if (widget.produto.possuiSabores) {
                             MaterialPageRoute pagamentoRoute =
                                 MaterialPageRoute(

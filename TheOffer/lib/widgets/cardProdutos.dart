@@ -34,7 +34,8 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
       return FlatButton(
         onPressed: getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
                 getHoraFimProdutoHoje(widget.produto) > horaAtual &&
-                widget.produto.quantidadeRestante > 0
+                widget.produto.quantidadeRestante > 0 &&
+                !Autenticacao.bloqueado
             ? () async {
                 print('selectedProductIndex');
                 print(widget.index);
@@ -44,7 +45,8 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 if (getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
                     getHoraFimProdutoHoje(widget.produto) > horaAtual &&
                     widget.produto.quantidadeRestante > 0) {
-                  if (Autenticacao.codigoUsuario > 0) {
+                  if (Autenticacao.codigoUsuario > 0 &&
+                      !Autenticacao.bloqueado) {
                     setState(() {
                       if (widget.produto.possuiSabores) {
                         MaterialPageRoute pagamentoRoute = MaterialPageRoute(
@@ -83,12 +85,14 @@ Widget buttonContent(int index, Produto produto) {
   int horaAtual =
       (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
   return Text(
-    getHoraInicioProdutoHoje(produto) < horaAtual &&
-            getHoraFimProdutoHoje(produto) > horaAtual
-        ? produto.quantidadeRestante > 0
-            ? 'ADIQUIRIR CUPOM'
-            : 'FORA DE ESTOQUE'
-        : 'ESTABELECIMENTO FECHADO',
+    Autenticacao.bloqueado
+        ? 'USUÁRIO BLOQUEADO'
+        : getHoraInicioProdutoHoje(produto) < horaAtual &&
+                getHoraFimProdutoHoje(produto) > horaAtual
+            ? produto.quantidadeRestante > 0
+                ? 'ADIQUIRIR CUPOM'
+                : 'FORA DE ESTOQUE'
+            : 'ESTABELECIMENTO FECHADO',
     /*
         ? produto.quantidadeRestante > 0
             ? 'ADICIONAR AO CARRINHO'
@@ -97,7 +101,8 @@ Widget buttonContent(int index, Produto produto) {
     style: TextStyle(
         color: getHoraInicioProdutoHoje(produto) < horaAtual &&
                 getHoraFimProdutoHoje(produto) > horaAtual &&
-                produto.quantidadeRestante > 0
+                produto.quantidadeRestante > 0 &&
+                !Autenticacao.bloqueado
             ? Colors.principalTheOffer
             : Colors.grey,
         fontSize: 14,

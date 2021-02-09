@@ -9,6 +9,9 @@ class Autenticacao {
   static String nomeUsuario = '';
   static String token = '';
   static String notificacao = '';
+  static bool bloqueado = false;
+  static DateTime dataBloqueio;
+  static DateTime dataBloqueioAbriuApp;
 }
 
 class CidadeSelecionada {
