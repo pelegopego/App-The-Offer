@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
     String nomeUsuarioAuxiliar;
     String token;
 
-    storage.write(key: "dataBloqueio", value: '2021-02-01');
+    //storage.write(key: "dataBloqueio", value: '2021-02-01');
     Map<String, String> allValues = await storage.readAll();
     if (allValues.length > 0) {
       codigoUsuarioAuxiliar = allValues["codigoUsuario"];
@@ -124,7 +124,7 @@ class _MyAppState extends State<MyApp> {
     }
     if (Autenticacao.codigoUsuario > 0) {
       if (Autenticacao.dataBloqueio == null ||
-          !Autenticacao.dataBloqueio.isAfter(DateTime.now())) {
+          Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
         Map<String, String> headers = getHeaders();
         Map<dynamic, dynamic> oMapSalvarNotificacao = {
           'usuario': Autenticacao.codigoUsuario.toString()
@@ -140,7 +140,7 @@ class _MyAppState extends State<MyApp> {
             }
 
             if (Autenticacao.dataBloqueio == null ||
-                !Autenticacao.dataBloqueio.isAfter(DateTime.now())) {
+                Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
               Autenticacao.bloqueado = false;
             } else {
               Autenticacao.bloqueado = true;
