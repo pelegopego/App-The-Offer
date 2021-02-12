@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string name="app_name">The Offer</string>
+        <string name="facebook_app_id">174676464417629</string> <string name="fb_login_protocol_scheme">fb174676464417629</string>
+    </resources>

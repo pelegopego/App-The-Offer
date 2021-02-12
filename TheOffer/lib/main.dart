@@ -75,7 +75,8 @@ class _MyAppState extends State<MyApp> {
       nomeUsuarioAuxiliar = allValues["nomeUsuario"];
 
       if (allValues["dataBloqueio"] != null &&
-          allValues["dataBloqueio"] != '') {
+          allValues["dataBloqueio"] != '' &&
+          allValues["dataBloqueio"] != 'null') {
         Autenticacao.dataBloqueio = DateTime.parse(allValues["dataBloqueio"]);
         Autenticacao.dataBloqueioAbriuApp = Autenticacao.dataBloqueio;
       }

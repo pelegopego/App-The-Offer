@@ -13,7 +13,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:theoffer/screens/produtos.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -31,6 +34,7 @@ class _AuthenticationState extends State<Authentication>
   final GlobalKey<FormState> _formKeyForLogin = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _passwordTextController = TextEditingController();
+  bool entrouFacebook = false;
   final UnderlineInputBorder _underlineInputBorder = UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.secundariaTheOffer));
 
@@ -74,50 +78,49 @@ class _AuthenticationState extends State<Authentication>
         primarySwatch: Colors.secundariaTheOffer,
         accentColor: Colors.white,
       ),
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            centerTitle: false,
-            backgroundColor: Colors.secundariaTheOffer,
-            leading: IconButton(
-              icon: Icon(Icons.close, color: Colors.principalTheOffer),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            bottom: TabBar(
-              indicatorWeight: 4.0,
-              controller: _tabController,
-              indicatorColor: Colors.principalTheOffer,
-              tabs: [
-                Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    "ENTRAR",
-                    style: TextStyle(
-                        fontSize: 13, color: Colors.principalTheOffer),
-                  ),
-                ),
-                Text(
-                  "CRIAR CONTA",
+      home: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          centerTitle: false,
+          backgroundColor: Colors.secundariaTheOffer,
+          leading: IconButton(
+            icon: Icon(Icons.close, color: Colors.principalTheOffer),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          bottom: TabBar(
+            indicatorWeight: 4.0,
+            controller: _tabController,
+            indicatorColor: Colors.principalTheOffer,
+            tabs: [
+              Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Text(
+                  "ENTRAR",
                   style:
                       TextStyle(fontSize: 13, color: Colors.principalTheOffer),
-                )
-              ],
-            ),
-            title: Image.asset(
-              'images/logos/appBar.png',
-              fit: BoxFit.fill,
-              height: 60,
+                ),
+              ),
+              Text(
+                "CRIAR CONTA",
+                style: TextStyle(fontSize: 13, color: Colors.principalTheOffer),
+              )
+            ],
+          ),
+          title: Image.asset(
+            'images/logos/appBar.png',
+            fit: BoxFit.fill,
+            height: 60,
+          ),
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/fundoBranco.png"),
+              fit: BoxFit.cover,
             ),
           ),
-          body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("images/fundoBranco.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
+          child: DefaultTabController(
+            length: 2,
             child: TabBarView(
               controller: _tabController,
               children: [
@@ -200,18 +203,32 @@ class _AuthenticationState extends State<Authentication>
                   _isLoader
                       ? CircularProgressIndicator(
                           backgroundColor: Colors.secundariaTheOffer)
-                      : Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(15),
-                          child: FlatButton(
-                            textColor: Colors.principalTheOffer,
-                            color: Colors.secundariaTheOffer,
-                            child: Text(
-                              'ENTRAR',
-                              style: TextStyle(fontSize: 12.0),
-                            ),
-                            onPressed: () => _realizarLogin(model),
-                          )),
+                      : Column(children: <Widget>[
+                          Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.all(15),
+                              child: FlatButton(
+                                textColor: Colors.principalTheOffer,
+                                color: Colors.secundariaTheOffer,
+                                child: Text(
+                                  'ENTRAR',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                                onPressed: () => _realizarLogin(model),
+                              )),
+                          Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.all(15),
+                              child: FlatButton(
+                                textColor: Colors.principalTheOffer,
+                                color: Colors.secundariaTheOffer,
+                                child: Text(
+                                  'ENTRAR COM FACEBOOK',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                                onPressed: () => entrarFacebook(context, model),
+                              )),
+                        ]),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -257,204 +274,199 @@ class _AuthenticationState extends State<Authentication>
 
   Widget _renderSignup(double targetWidth) {
     final format = DateFormat("dd/MM/yyyy");
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-        child: Container(
-          width: targetWidth,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Container(
+            width: targetWidth,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
                   ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      labelText: 'Nome completo',
-                      enabledBorder: _underlineInputBorder),
-                  keyboardType: TextInputType.text,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Informe o nome completo';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    _formData['nome'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      labelText: 'Email',
-                      enabledBorder: _underlineInputBorder),
-                  keyboardType: TextInputType.text,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Informe email válido';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    _formData['email'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelText: 'Senha (Mínimo de 6 dígitos)',
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      enabledBorder: _underlineInputBorder),
-                  obscureText: true,
-                  controller: _passwordTextController,
-                  validator: (String value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'A senha precisa possuir pelo menos 6 dígitos.';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    _formData['senha'] = value;
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(
-                        color: Colors.secundariaTheOffer,
-                        fontWeight: FontWeight.bold),
-                    labelText: 'Confirmar senha',
-                    enabledBorder: _underlineInputBorder,
-                  ),
-                  obscureText: true,
-                  validator: (String value) {
-                    if (_passwordTextController.text != value) {
-                      return 'As senhas estão diferentes.';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                TextFormField(
-                  inputFormatters: [maskFormatter],
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      labelText: 'Telefone',
-                      enabledBorder: _underlineInputBorder),
-                  keyboardType: TextInputType.phone,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Informe um telefone válido';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    _formData['telefone'] = maskFormatter.getUnmaskedText();
-                  },
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                DateTimeField(
-                  style: TextStyle(
-                    color: Colors.secundariaTheOffer,
-                  ),
-                  decoration: InputDecoration(
-                      labelStyle: TextStyle(
-                          color: Colors.secundariaTheOffer,
-                          fontWeight: FontWeight.bold),
-                      labelText: 'Nascimento',
-                      enabledBorder: _underlineInputBorder),
-                  format: format,
-                  onShowPicker: (context, currentValue) {
-                    return showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1900),
-                        initialDate: currentValue ?? DateTime.now(),
-                        lastDate: DateTime(2100));
-                  },
-                  onSaved: (DateTime value) {
-                    _formData['nascimento'] = value.toString();
-                  },
-                ),
-                _isLoader
-                    ? CircularProgressIndicator(
-                        backgroundColor: Colors.secundariaTheOffer)
-                    : Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(15),
-                        child: FlatButton(
-                            textColor: Colors.principalTheOffer,
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelStyle: TextStyle(
                             color: Colors.secundariaTheOffer,
-                            child: Text('CRIAR CONTA',
-                                style: TextStyle(fontSize: 12.0)),
-                            onPressed: () => {
-                                  if (_formKey.currentState.validate())
-                                    {
-                                      _abrirCadastroUsuario(),
-                                      Navigator.of(context).pop(),
-                                    }
-                                })),
-                SizedBox(
-                  height: 20.0,
-                ),
-              ],
+                            fontWeight: FontWeight.bold),
+                        labelText: 'Nome completo',
+                        enabledBorder: _underlineInputBorder),
+                    keyboardType: TextInputType.text,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Informe o nome completo';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      _formData['nome'] = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold),
+                        labelText: 'Email',
+                        enabledBorder: _underlineInputBorder),
+                    keyboardType: TextInputType.text,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Informe email válido';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      _formData['email'] = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelText: 'Senha (Mínimo de 6 dígitos)',
+                        labelStyle: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold),
+                        enabledBorder: _underlineInputBorder),
+                    obscureText: true,
+                    controller: _passwordTextController,
+                    validator: (String value) {
+                      if (value.isEmpty || value.length < 5) {
+                        return 'A senha precisa possuir pelo menos 6 dígitos.';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      _formData['senha'] = value;
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(
+                          color: Colors.secundariaTheOffer,
+                          fontWeight: FontWeight.bold),
+                      labelText: 'Confirmar senha',
+                      enabledBorder: _underlineInputBorder,
+                    ),
+                    obscureText: true,
+                    validator: (String value) {
+                      if (_passwordTextController.text != value) {
+                        return 'As senhas estão diferentes.';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  TextFormField(
+                    inputFormatters: [maskFormatter],
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold),
+                        labelText: 'Telefone',
+                        enabledBorder: _underlineInputBorder),
+                    keyboardType: TextInputType.phone,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Informe um telefone válido';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      _formData['telefone'] = maskFormatter.getUnmaskedText();
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  DateTimeField(
+                    style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                    ),
+                    decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                            color: Colors.secundariaTheOffer,
+                            fontWeight: FontWeight.bold),
+                        labelText: 'Nascimento',
+                        enabledBorder: _underlineInputBorder),
+                    format: format,
+                    onShowPicker: (context, currentValue) {
+                      return showDatePicker(
+                          context: context,
+                          firstDate: DateTime(1900),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime(2100));
+                    },
+                    onSaved: (DateTime value) {
+                      _formData['nascimento'] = value.toString();
+                    },
+                  ),
+                  _isLoader
+                      ? CircularProgressIndicator(
+                          backgroundColor: Colors.secundariaTheOffer)
+                      : Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(15),
+                          child: FlatButton(
+                              textColor: Colors.principalTheOffer,
+                              color: Colors.secundariaTheOffer,
+                              child: Text('CRIAR CONTA',
+                                  style: TextStyle(fontSize: 12.0)),
+                              onPressed: () => {
+                                    _abrirCadastroUsuario(true),
+                                  })),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
-  void _realizarLogin(MainModel model) {
+  void _realizarLoginRedeSocial(MainModel model) {
+    /* 
+       0 - Normal
+       1 - Rede Social
+    */
     Map<dynamic, dynamic> responseBody;
     Map<String, String> headers = getHeaders();
 
     setState(() {
       _isLoader = true;
     });
-    if (!_formKeyForLogin.currentState.validate()) {
-      setState(() {
-        _isLoader = false;
-      });
-      return;
-    }
-
-    _formKeyForLogin.currentState.save();
 
     Map<dynamic, dynamic> oMapLogin = {
       'email': _formData['email'],
@@ -467,20 +479,27 @@ class _AuthenticationState extends State<Authentication>
         .post(Configuracoes.BASE_URL + 'usuario/logar/',
             headers: headers, body: oMapLogin)
         .then((response) {
-      String message = 'Ocorreu algum erro.';
+      String message = '';
+      int status = 0;
 
       responseBody = json.decode(response.body);
       message = responseBody['message'];
-      if (message.isEmpty) {
-        message = "Entrou com sucesso.";
-
+      status = responseBody['status'];
+      if (status == 100) {
         responseBody['usuario'].forEach((usuarioJson) {
           Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
           Autenticacao.nomeUsuario = usuarioJson['nome'];
-          Autenticacao.dataBloqueio =
-              DateTime.parse(usuarioJson['dataBloqueio']);
-          Autenticacao.bloqueado =
-              !Autenticacao.dataBloqueio.isBefore(DateTime.now());
+          Autenticacao.dataBloqueioAbriuApp = null;
+          if (usuarioJson['dataBloqueio'] != null &&
+              usuarioJson['dataBloqueio'] != '') {
+            Autenticacao.dataBloqueio =
+                DateTime.parse(usuarioJson['dataBloqueio']);
+            Autenticacao.bloqueado =
+                !Autenticacao.dataBloqueio.isBefore(DateTime.now());
+          } else {
+            Autenticacao.bloqueado = false;
+          }
+
           Autenticacao.token = usuarioJson['token'];
           if (Autenticacao.notificacao != usuarioJson['notificacao']) {
             Map<String, String> headers = getHeaders();
@@ -497,17 +516,121 @@ class _AuthenticationState extends State<Authentication>
           }
           writeStorage();
         });
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text("Entrou com sucesso"),
-          duration: Duration(seconds: 104),
-        ));
         hasError = false;
-        //model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+        //if (model != null) {
+        //  model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+        //}
+      } else {
+        if (status == 400) {
+          _abrirCadastroUsuario(false);
+        } else if (status == 300) {
+          message = 'Você já possui uma conta cadastrada com esse email.';
+        }
+        setState(() {
+          _isLoader = false;
+        });
+      }
+      if (status != 400) {
+        final Map<String, dynamic> successInformation = {
+          'success': !hasError,
+          'message': message
+        };
+        if (successInformation['success']) {
+          MaterialPageRoute produtosRoute = MaterialPageRoute(
+              builder: (context) => TelaProdutos(idCategoria: 0));
+          Navigator.push(context, produtosRoute);
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text('${successInformation['message']}'),
+            duration: Duration(seconds: 1),
+          ));
+        } else {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text('${successInformation['message']}'),
+            duration: Duration(seconds: 1),
+          ));
+        }
+      }
+      return responseBody['message'];
+    });
+  }
+
+  void _realizarLogin(MainModel model) {
+    /* 
+       0 - Normal
+       1 - Rede Social
+    */
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+
+    setState(() {
+      _isLoader = true;
+    });
+    if (!_formKeyForLogin.currentState.validate()) {
+      setState(() {
+        _isLoader = false;
+      });
+      return;
+    }
+    _formKeyForLogin.currentState.save();
+
+    Map<dynamic, dynamic> oMapLogin = {
+      'email': _formData['email'],
+      'senha':
+          md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
+    };
+
+    bool hasError = true;
+    http
+        .post(Configuracoes.BASE_URL + 'usuario/logar/',
+            headers: headers, body: oMapLogin)
+        .then((response) {
+      String message = '';
+      int status = 0;
+
+      responseBody = json.decode(response.body);
+      message = responseBody['message'];
+      status = responseBody['status'];
+      if (status == 100) {
+        responseBody['usuario'].forEach((usuarioJson) {
+          Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
+          Autenticacao.nomeUsuario = usuarioJson['nome'];
+          Autenticacao.dataBloqueioAbriuApp = null;
+          if (usuarioJson['dataBloqueio'] != null &&
+              usuarioJson['dataBloqueio'] != '') {
+            Autenticacao.dataBloqueio =
+                DateTime.parse(usuarioJson['dataBloqueio']);
+            Autenticacao.bloqueado =
+                !Autenticacao.dataBloqueio.isBefore(DateTime.now());
+          } else {
+            Autenticacao.bloqueado = false;
+          }
+
+          Autenticacao.token = usuarioJson['token'];
+          if (Autenticacao.notificacao != usuarioJson['notificacao']) {
+            Map<String, String> headers = getHeaders();
+            Map<dynamic, dynamic> oMapSalvarNotificacao = {
+              'usuario': Autenticacao.codigoUsuario.toString(),
+              'notificacao': Autenticacao.notificacao
+            };
+            http.post(
+                Configuracoes.BASE_URL + 'usuario/salvarTokenNotificacao/',
+                headers: headers,
+                body: oMapSalvarNotificacao);
+
+            print('ATUALIZANDO TOKEN DE NOTIFICAÇÃO.');
+          }
+          writeStorage();
+        });
+        hasError = false;
+        //if (model != null) {
+        //  model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+        //}
       } else {
         setState(() {
           _isLoader = false;
         });
       }
+
       final Map<String, dynamic> successInformation = {
         'success': !hasError,
         'message': message
@@ -528,17 +651,20 @@ class _AuthenticationState extends State<Authentication>
     });
   }
 
-  void _abrirCadastroUsuario() {
+  void _abrirCadastroUsuario(bool solicitarConfirmacao) {
     setState(() {
       _isLoader = true;
     });
-    if (!_formKey.currentState.validate()) {
+    if (solicitarConfirmacao && !_formKey.currentState.validate()) {
       setState(() {
         _isLoader = false;
       });
       return;
     }
-    _formKey.currentState.save();
+    if (solicitarConfirmacao) {
+      _formKey.currentState.save();
+    }
+
     Map<String, String> headers = getHeaders();
 
     Map<dynamic, dynamic> oMapCadastrarLogin = {
@@ -546,8 +672,10 @@ class _AuthenticationState extends State<Authentication>
       'nome': _formData['nome'],
       'senha':
           md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
-      'telefone': _formData['telefone'],
-      'nascimento': _formData['nascimento'],
+      'telefone': solicitarConfirmacao ? _formData['telefone'] : '0',
+      'nascimento':
+          _formData['nascimento'] != null ? _formData['nascimento'] : '',
+      'solicitarConfirmacao': solicitarConfirmacao ? 'true' : 'false',
       'notificacao':
           Autenticacao.notificacao != null ? Autenticacao.notificacao : ''
     };
@@ -556,15 +684,67 @@ class _AuthenticationState extends State<Authentication>
             headers: headers, body: oMapCadastrarLogin)
         .then((response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      if (responseData['token'] != '' &&
-          responseData['token'] != null &&
-          responseData['status']) {
-        confirmarEmail(responseData['token']);
+      if (solicitarConfirmacao) {
+        if (responseData['token'] != '' &&
+            responseData['token'] != null &&
+            responseData['status']) {
+          confirmarEmail(responseData['token']);
+        }
+
+        Navigator.of(context).pop();
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('${responseData['message']}'),
+          duration: Duration(seconds: 1),
+        ));
+      } else {
+        _realizarLoginRedeSocial(null);
       }
       setState(() {
         _isLoader = false;
       });
     });
+  }
+
+  void entrarFacebook(BuildContext aContext, model) async {
+    void onLoginStatusChanged(MainModel model, bool isLoggedIn) {
+      setState(() {
+        entrouFacebook = isLoggedIn;
+        if (entrouFacebook) {
+          _realizarLoginRedeSocial(model);
+        } else {
+          model.limparPedido();
+          model.clearData();
+          Autenticacao.codigoUsuario = 0;
+          Autenticacao.nomeUsuario = '';
+          Autenticacao.dataBloqueio = null;
+          Autenticacao.bloqueado = false;
+          final storage = FlutterSecureStorage();
+          storage.deleteAll();
+        }
+      });
+    }
+
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult =
+        await facebookLogin.logInWithReadPermissions(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        onLoginStatusChanged(model, false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        onLoginStatusChanged(model, false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,email&access_token=${facebookLoginResult.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        _formData['email'] = profile['email'];
+        _formData['senha'] = profile['id'];
+        _formData['nome'] = profile['name'];
+        onLoginStatusChanged(model, true);
+        break;
+    }
   }
 
   writeStorage() async {

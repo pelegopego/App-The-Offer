@@ -55,10 +55,6 @@ class _TelaProdutos extends State<TelaProdutos>
   void initState() {
     super.initState();
 
-    if (Autenticacao.bloqueado &&
-        Autenticacao.dataBloqueio != Autenticacao.dataBloqueioAbriuApp) {
-      _showDialog();
-    }
     getProdutos();
     //_localizarCarrinho = true;
     locator<ConnectivityManager>().initConnectivity(context);
@@ -72,6 +68,11 @@ class _TelaProdutos extends State<TelaProdutos>
 
   @override
   Widget build(BuildContext context) {
+    if (Autenticacao.bloqueado &&
+        Autenticacao.dataBloqueio != Autenticacao.dataBloqueioAbriuApp) {
+      _showDialog();
+      Autenticacao.dataBloqueioAbriuApp = Autenticacao.dataBloqueio;
+    }
     _deviceSize = MediaQuery.of(context).size;
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {

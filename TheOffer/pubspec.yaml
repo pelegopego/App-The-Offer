@@ -46,6 +46,7 @@ dependencies:
   flutter_webview_plugin: 
     git:
       url: https://github.com/sakina1403/flutter_webview_plugin.git
+  flutter_facebook_login: ^1.1.1
 
 dev_dependencies:
   flutter_test:
