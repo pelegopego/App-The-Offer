@@ -689,9 +689,9 @@ class _AuthenticationState extends State<Authentication>
             responseData['token'] != null &&
             responseData['status']) {
           confirmarEmail(responseData['token']);
+          Navigator.of(context).pop();
         }
 
-        Navigator.of(context).pop();
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text('${responseData['message']}'),
           duration: Duration(seconds: 1),
