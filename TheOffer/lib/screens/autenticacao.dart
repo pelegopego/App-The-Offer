@@ -15,8 +15,10 @@ import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:theoffer/screens/produtos.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
+//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -44,6 +46,48 @@ class _AuthenticationState extends State<Authentication>
   bool _isLoader = false;
   TabController _tabController;
 
+/*
+  Future<String> signInWithGoogle() async {
+    await Firebase.initializeApp();
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential authResult =
+        await _auth.signInWithCredential(credential);
+    final User user = authResult.user;
+
+    if (user != null) {
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final User currentUser = _auth.currentUser;
+      assert(user.uid == currentUser.uid);
+
+      print('signInWithGoogle succeeded: $user');
+
+      return '$user';
+    }
+
+    return null;
+  }
+
+  Future<void> signOutGoogle() async {
+    await Firebase.initializeApp();
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
+
+    print("User Signed Out");
+  }
+*/
   @override
   void initState() {
     super.initState();
@@ -227,7 +271,25 @@ class _AuthenticationState extends State<Authentication>
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                                 onPressed: () => entrarFacebook(context, model),
-                              )),
+                              )),/*
+                          Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.all(15),
+                              child: FlatButton(
+                                textColor: Colors.principalTheOffer,
+                                color: Colors.secundariaTheOffer,
+                                child: Text(
+                                  'ENTRAR COM Google',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                                onPressed: () {
+                                  signInWithGoogle().then((result) {
+                                    if (result != null) {
+                                      print(result);
+                                    }
+                                  });
+                                },
+                              ))*/
                         ]),
                   SizedBox(
                     height: 20.0,
@@ -724,9 +786,8 @@ class _AuthenticationState extends State<Authentication>
       });
     }
 
-    var facebookLogin = FacebookLogin();
-    var facebookLoginResult =
-        await facebookLogin.logInWithReadPermissions(['email']);
+    final facebookLogin = FacebookLogin();
+    final facebookLoginResult = await facebookLogin.logIn(['email']);
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         onLoginStatusChanged(model, false);
