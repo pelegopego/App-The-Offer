@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:theoffer/utils/headers.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class HomeDrawer extends StatefulWidget {
   @override
@@ -59,6 +60,7 @@ class _HomeDrawer extends State<HomeDrawer> {
       builder: (BuildContext context, Widget child, MainModel model) {
         if (Autenticacao.codigoUsuario > 0) {
           return ListTile(
+            dense: true,
             leading: Icon(
               Icons.call_made,
               color: Colors.secundariaTheOffer,
@@ -82,6 +84,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+        dense: true,
         leading: Icon(
           Icons.favorite,
           color: Colors.secundariaTheOffer,
@@ -135,6 +138,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+            dense: true,
         leading: Icon(
           Icons.map,
           color: Colors.secundariaTheOffer,
@@ -163,6 +167,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+        dense: true,
         leading: Icon(
           Icons.add_comment,
           color: Colors.secundariaTheOffer,
@@ -256,6 +261,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+            dense: true,
         leading: Icon(
           Icons.library_books,
           color: Colors.secundariaTheOffer,
@@ -284,6 +290,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+        dense: true,
         leading: Icon(
           Icons.library_books,
           color: Colors.secundariaTheOffer,
@@ -321,6 +328,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+        dense: true,
         leading: Icon(
           Icons.refresh,
           color: Colors.secundariaTheOffer,
@@ -342,6 +350,7 @@ class _HomeDrawer extends State<HomeDrawer> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return ListTile(
+        dense: true,
         leading: Icon(
           Icons.refresh,
           color: Colors.secundariaTheOffer,
@@ -470,8 +479,10 @@ class _HomeDrawer extends State<HomeDrawer> {
   }
 
   logoutUser(MainModel model) async {
+    final facebookLogin = FacebookLogin();
     model.limparPedido();
     model.clearData();
+    await facebookLogin.logOut();
     Autenticacao.codigoUsuario = 0;
     Autenticacao.nomeUsuario = '';
     Autenticacao.dataBloqueio = null;
@@ -505,6 +516,7 @@ class _HomeDrawer extends State<HomeDrawer> {
             decoration: BoxDecoration(color: Colors.secundariaTheOffer),
           ),
           ListTile(
+            dense: true,
             onTap: () {
               MaterialPageRoute produtosRoute = MaterialPageRoute(
                   builder: (context) => TelaProdutos(idCategoria: 0));
@@ -527,6 +539,7 @@ class _HomeDrawer extends State<HomeDrawer> {
           sugestao(),
           Divider(color: Colors.secundariaTheOffer),
           ListTile(
+            dense: true,
             title: Text(
               'Ajuda',
               style: TextStyle(color: Colors.secundariaTheOffer),
@@ -537,6 +550,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               _callMe('+55 (49) 9 9903-1587');
             },
             child: ListTile(
+              dense: true,
               leading: Icon(
                 Icons.call,
                 color: Colors.secundariaTheOffer,
@@ -552,6 +566,7 @@ class _HomeDrawer extends State<HomeDrawer> {
               _sendMail('supporte@theoffer.com.br');
             },
             child: ListTile(
+              dense: true,
               leading: Icon(
                 Icons.mail,
                 color: Colors.secundariaTheOffer,

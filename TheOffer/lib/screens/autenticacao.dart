@@ -19,6 +19,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 //import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -250,7 +251,8 @@ class _AuthenticationState extends State<Authentication>
                       : Column(children: <Widget>[
                           Container(
                               width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.all(15),
+                              padding: EdgeInsets.only(
+                                  left: 15, right: 15, top: 5, bottom: 5),
                               child: FlatButton(
                                 textColor: Colors.principalTheOffer,
                                 color: Colors.secundariaTheOffer,
@@ -261,17 +263,16 @@ class _AuthenticationState extends State<Authentication>
                                 onPressed: () => _realizarLogin(model),
                               )),
                           Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.all(15),
-                              child: FlatButton(
-                                textColor: Colors.principalTheOffer,
-                                color: Colors.secundariaTheOffer,
-                                child: Text(
-                                  'ENTRAR COM FACEBOOK',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                onPressed: () => entrarFacebook(context, model),
-                              )),/*
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            child: SignInButton(
+                              Buttons.FacebookNew,
+                              text: 'Entrar com o Facebook',
+                              onPressed: () => entrarFacebook(context, model),
+                            ),
+                          ),
+                          /*
                           Container(
                               width: MediaQuery.of(context).size.width,
                               padding: EdgeInsets.all(15),
@@ -347,8 +348,14 @@ class _AuthenticationState extends State<Authentication>
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  SizedBox(
-                    height: 30.0,
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                    child: SignInButton(
+                      Buttons.FacebookNew,
+                      text: 'Registrar com o Facebook',
+                      onPressed: () => entrarFacebook(context, model),
+                    ),
                   ),
                   TextFormField(
                     style: TextStyle(

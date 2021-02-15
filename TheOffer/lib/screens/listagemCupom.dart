@@ -65,7 +65,7 @@ class _ListagemCupom extends State<ListagemCupom> {
                     child: Container(),
                     preferredSize: Size.fromHeight(10),
                   )),
-        body: !_cupomLoading || listaCupom.length > 0
+        body: !_cupomLoading && listaCupom.length > 0
             ? Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -81,7 +81,33 @@ class _ListagemCupom extends State<ListagemCupom> {
                     fit: BoxFit.cover,
                   ),
                 ),
-              ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Align(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            width: 1,
+                          ),
+                          color: Colors.secundariaTheOffer,
+                        ),
+                        height: 100,
+                        width: 300,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Você não possui cupons ainda.',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
       );
     });
   }
@@ -317,94 +343,96 @@ class _ListagemCupom extends State<ListagemCupom> {
               headers: headers, body: objetoCupom)
           .then((response) {
         responseBody = json.decode(response.body);
-        responseBody['cupom'].forEach((cupomJson) {
-          if (cupomJson['endereco_id'] != null) {
-            bairro = Bairro(
-                id: int.parse(cupomJson['bairro_id']),
-                nome: cupomJson['nomeBairro']);
+        if (responseBody['possuiCupom']) {
+          responseBody['cupom'].forEach((cupomJson) {
+            if (cupomJson['endereco_id'] != null) {
+              bairro = Bairro(
+                  id: int.parse(cupomJson['bairro_id']),
+                  nome: cupomJson['nomeBairro']);
 
-            cidade = Cidade(
-                id: int.parse(cupomJson['cidade_id']),
-                nome: cupomJson['nomeCidade']);
+              cidade = Cidade(
+                  id: int.parse(cupomJson['cidade_id']),
+                  nome: cupomJson['nomeCidade']);
 
-            endereco = Endereco(
-              id: int.parse(cupomJson['endereco_id']),
-              nome: cupomJson['nomeEndereco'],
-              cidade: cidade,
-              bairro: bairro,
-              rua: cupomJson['rua'],
-              numero: int.parse(cupomJson['numero']),
-              complemento: cupomJson['complemento'],
-              referencia: cupomJson['referencia'],
-              dataCadastro: cupomJson['dataCadastroEndereco'],
-              dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
-            );
-          }
-          cupom = Cupom(
-              id: int.parse(cupomJson['cupom_id']),
-              usuarioId: int.parse(cupomJson['usuario_id']),
-              empresa: int.parse(cupomJson['produto_empresa']),
-              modalidadeEntrega: cupomJson['modalidadeEntrega'] != null
-                  ? int.parse(cupomJson['modalidadeEntrega'])
-                  : 0,
-              formaPagamento: cupomJson['formaPagamento'] != null
-                  ? int.parse(cupomJson['formaPagamento'])
-                  : 0,
-              horaPrevista: cupomJson['horaPrevista'],
-              dataInclusao: cupomJson['dataInclusao'],
-              dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
-              status: int.parse(cupomJson['status']),
-              endereco: endereco,
-              listaItensCupom: []);
-
-          cupomAdicionado = false;
-          for (final cupomAux in listaCupom) {
-            if (cupomAux.id == cupom.id) {
-              cupomAdicionado = true;
-              break;
+              endereco = Endereco(
+                id: int.parse(cupomJson['endereco_id']),
+                nome: cupomJson['nomeEndereco'],
+                cidade: cidade,
+                bairro: bairro,
+                rua: cupomJson['rua'],
+                numero: int.parse(cupomJson['numero']),
+                complemento: cupomJson['complemento'],
+                referencia: cupomJson['referencia'],
+                dataCadastro: cupomJson['dataCadastroEndereco'],
+                dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
+              );
             }
-          }
-          if (!cupomAdicionado) {
-            listaCupom.add(cupom);
-          }
-        });
+            cupom = Cupom(
+                id: int.parse(cupomJson['cupom_id']),
+                usuarioId: int.parse(cupomJson['usuario_id']),
+                empresa: int.parse(cupomJson['produto_empresa']),
+                modalidadeEntrega: cupomJson['modalidadeEntrega'] != null
+                    ? int.parse(cupomJson['modalidadeEntrega'])
+                    : 0,
+                formaPagamento: cupomJson['formaPagamento'] != null
+                    ? int.parse(cupomJson['formaPagamento'])
+                    : 0,
+                horaPrevista: cupomJson['horaPrevista'],
+                dataInclusao: cupomJson['dataInclusao'],
+                dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
+                status: int.parse(cupomJson['status']),
+                endereco: endereco,
+                listaItensCupom: []);
 
-        responseBody['cupom'].forEach((cupomJson) {
-          setState(() {
+            cupomAdicionado = false;
             for (final cupomAux in listaCupom) {
-              if (cupomAux.id == int.parse(cupomJson['cupom_id'])) {
-                if (cupomJson['produto_id'] != null) {
-                  produto = Produto(
-                      id: int.parse(cupomJson['produto_id']),
-                      titulo: cupomJson['titulo'],
-                      descricao: cupomJson['descricao'],
-                      imagem: cupomJson['imagem'],
-                      valor: cupomJson['valor'],
-                      valorNumerico: double.parse(cupomJson['valorNumerico']),
-                      quantidade: int.parse(cupomJson['quantidade']),
-                      quantidadeRestante:
-                          int.parse(cupomJson['quantidadeRestante']),
-                      dataInicial: cupomJson['dataInicial'],
-                      dataFinal: cupomJson['dataFinal'],
-                      dataCadastro: cupomJson['DataCadastro'],
-                      usuarioId: int.parse(cupomJson['usuario_id']));
-                  cupomAux.listaItensCupom.add(ItemCupom(
-                      cupomId: int.parse(cupomJson['cupom_id']),
-                      produtoId: int.parse(cupomJson['produto_id']),
-                      quantidade: int.parse(cupomJson['quantidade_item']),
-                      sabores: cupomJson['sabores_item'],
-                      produto: produto));
-                }
+              if (cupomAux.id == cupom.id) {
+                cupomAdicionado = true;
+                break;
               }
             }
+            if (!cupomAdicionado) {
+              listaCupom.add(cupom);
+            }
           });
-        });
+
+          responseBody['cupom'].forEach((cupomJson) {
+            setState(() {
+              for (final cupomAux in listaCupom) {
+                if (cupomAux.id == int.parse(cupomJson['cupom_id'])) {
+                  if (cupomJson['produto_id'] != null) {
+                    produto = Produto(
+                        id: int.parse(cupomJson['produto_id']),
+                        titulo: cupomJson['titulo'],
+                        descricao: cupomJson['descricao'],
+                        imagem: cupomJson['imagem'],
+                        valor: cupomJson['valor'],
+                        valorNumerico: double.parse(cupomJson['valorNumerico']),
+                        quantidade: int.parse(cupomJson['quantidade']),
+                        quantidadeRestante:
+                            int.parse(cupomJson['quantidadeRestante']),
+                        dataInicial: cupomJson['dataInicial'],
+                        dataFinal: cupomJson['dataFinal'],
+                        dataCadastro: cupomJson['DataCadastro'],
+                        usuarioId: int.parse(cupomJson['usuario_id']));
+                    cupomAux.listaItensCupom.add(ItemCupom(
+                        cupomId: int.parse(cupomJson['cupom_id']),
+                        produtoId: int.parse(cupomJson['produto_id']),
+                        quantidade: int.parse(cupomJson['quantidade_item']),
+                        sabores: cupomJson['sabores_item'],
+                        produto: produto));
+                  }
+                }
+              }
+            });
+          });
+        }
         setState(() {
           _cupomLoading = false;
         });
       });
     } catch (error) {
-      _cupomLoading = true;
+      _cupomLoading = false;
     }
   }
 
