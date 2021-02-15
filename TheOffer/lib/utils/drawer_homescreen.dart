@@ -55,6 +55,7 @@ class _HomeDrawer extends State<HomeDrawer> {
   String userName = '';
   String observacao = '';
   Map<dynamic, dynamic> objetoSugestao = Map();
+
   Widget logOutButton() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, MainModel model) {
@@ -71,6 +72,31 @@ class _HomeDrawer extends State<HomeDrawer> {
             ),
             onTap: () {
               _showDialog(context, model);
+            },
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget apagarDadosButton() {
+    return ScopedModelDescendant(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        if (Autenticacao.codigoUsuario > 0) {
+          return ListTile(
+            dense: true,
+            leading: Icon(
+              Icons.delete_forever,
+              color: Colors.red,
+            ),
+            title: Text(
+              'Apagar meus dados',
+              style: TextStyle(color: Colors.red),
+            ),
+            onTap: () {
+              _showDialogApagarDados(context, model);
             },
           );
         } else {
@@ -438,7 +464,88 @@ class _HomeDrawer extends State<HomeDrawer> {
     });
   }
 
-  void _showDialog(context, model) {
+  void _showDialogApagarDadosAgain(acontext, model) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Sair",
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold)),
+            content: new Text(
+                "Tem certeza? Após confirmar não é possível obter os dados novamente.",
+                style: TextStyle(color: Colors.secundariaTheOffer)),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text(
+                  "Cancelar",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  excluirDados(context, model);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showDialogApagarDados(acontext, model) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Sair",
+                style: TextStyle(
+                    color: Colors.secundariaTheOffer,
+                    fontWeight: FontWeight.bold)),
+            content: new Text("Você deseja realmente apagar seus dados?",
+                style: TextStyle(color: Colors.secundariaTheOffer)),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text(
+                  "Cancelar",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                      color: Colors.secundariaTheOffer,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(acontext).pop();
+                  _showDialogApagarDadosAgain(context, model);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showDialog(acontext, model) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -472,23 +579,42 @@ class _HomeDrawer extends State<HomeDrawer> {
                   Navigator.of(context).pop();
                   logoutUser(model);
                 },
-              )
+              ),
             ],
           );
         });
   }
 
   logoutUser(MainModel model) async {
-    final facebookLogin = FacebookLogin();
-    model.limparPedido();
-    model.clearData();
-    await facebookLogin.logOut();
     Autenticacao.codigoUsuario = 0;
     Autenticacao.nomeUsuario = '';
     Autenticacao.dataBloqueio = null;
     Autenticacao.bloqueado = false;
+    final facebookLogin = FacebookLogin();
+    model.limparPedido();
+    model.clearData();
+    await facebookLogin.logOut();
     final storage = FlutterSecureStorage();
     await storage.deleteAll();
+  }
+
+  excluirDados(acontext, model) async {
+    Map<String, String> headers = getHeaders();
+    objetoSugestao = {"usuario": Autenticacao.codigoUsuario.toString()};
+    http
+        .post(Configuracoes.BASE_URL + 'usuario/excluir/',
+            headers: headers, body: objetoSugestao)
+        .then((response) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(json.decode(response.body)['message']),
+        duration: Duration(seconds: 3),
+      ));
+      Navigator.of(acontext).pop();
+      if (json.decode(response.body)['status'] == 100 ||
+          json.decode(response.body)['status'] == 300) {
+        logoutUser(model);
+      }
+    });
   }
 
   @override
@@ -578,7 +704,8 @@ class _HomeDrawer extends State<HomeDrawer> {
             ),
           ),
           Divider(color: Colors.secundariaTheOffer),
-          logOutButton()
+          apagarDadosButton(),
+          logOutButton(),
         ],
       ),
     );
