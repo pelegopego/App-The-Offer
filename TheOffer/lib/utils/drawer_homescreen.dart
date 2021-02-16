@@ -609,11 +609,11 @@ class _HomeDrawer extends State<HomeDrawer> {
         content: Text(json.decode(response.body)['message']),
         duration: Duration(seconds: 3),
       ));
-      Navigator.of(acontext).pop();
       if (json.decode(response.body)['status'] == 100 ||
           json.decode(response.body)['status'] == 300) {
         logoutUser(model);
       }
+      Navigator.of(context).pop();
     });
   }
 
@@ -632,7 +632,7 @@ class _HomeDrawer extends State<HomeDrawer> {
                 height: 90,
               ),
               Text(
-                '1.1.8',
+                '1.1.9',
                 style: TextStyle(
                     color: Colors.principalTheOffer,
                     fontWeight: FontWeight.w300),

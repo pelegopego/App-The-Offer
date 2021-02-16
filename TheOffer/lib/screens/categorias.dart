@@ -138,7 +138,9 @@ class _TelaCategorias extends State<TelaCategorias> {
                     CachedNetworkImage(imageUrl: listaCategoria[index].imagem),
               ),
               Container(
+                margin: EdgeInsets.only(left: 20, top: 5),
                 height: 20,
+                width: 150,
                 color: Colors.principalTheOffer,
                 alignment: Alignment.center,
                 child: RichText(
