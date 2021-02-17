@@ -462,7 +462,42 @@ class _TelaProdutos extends State<TelaProdutos>
     _refreshController.refreshCompleted();
   }
 
+  getBloqueio() {
+    if (Autenticacao.codigoUsuario > 0) {
+      if (Autenticacao.dataBloqueio == null ||
+          Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
+        Map<String, String> headers = getHeaders();
+        Map<dynamic, dynamic> oMapSalvarNotificacao = {
+          'usuario': Autenticacao.codigoUsuario.toString()
+        };
+        http
+            .post(Configuracoes.BASE_URL + 'usuario/getBloqueio/',
+                headers: headers, body: oMapSalvarNotificacao)
+            .then((response) {
+          setState(() {
+            if (json.decode(response.body)[0]['dataBloqueio'] != null) {
+              Autenticacao.dataBloqueio =
+                  DateTime.parse(json.decode(response.body)[0]['dataBloqueio']);
+            }
+
+            if (Autenticacao.dataBloqueio == null ||
+                Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
+              Autenticacao.bloqueado = false;
+            } else {
+              Autenticacao.bloqueado = true;
+            }
+          });
+        });
+      } else {
+        Autenticacao.bloqueado = true;
+      }
+    } else {
+      Autenticacao.bloqueado = false;
+    }
+  }
+
   getProdutos() async {
+    getBloqueio();
     Map<dynamic, dynamic> objetoItemPedido = Map();
     Map<String, String> headers = getHeaders();
     setState(() {

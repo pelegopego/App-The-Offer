@@ -30,6 +30,40 @@ class TelaProdutoDetalhado extends StatefulWidget {
 
 class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     with SingleTickerProviderStateMixin {
+  getBloqueio() {
+    if (Autenticacao.codigoUsuario > 0) {
+      if (Autenticacao.dataBloqueio == null ||
+          Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
+        Map<String, String> headers = getHeaders();
+        Map<dynamic, dynamic> oMapSalvarNotificacao = {
+          'usuario': Autenticacao.codigoUsuario.toString()
+        };
+        http
+            .post(Configuracoes.BASE_URL + 'usuario/getBloqueio/',
+                headers: headers, body: oMapSalvarNotificacao)
+            .then((response) {
+          setState(() {
+            if (json.decode(response.body)[0]['dataBloqueio'] != null) {
+              Autenticacao.dataBloqueio =
+                  DateTime.parse(json.decode(response.body)[0]['dataBloqueio']);
+            }
+
+            if (Autenticacao.dataBloqueio == null ||
+                Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
+              Autenticacao.bloqueado = false;
+            } else {
+              Autenticacao.bloqueado = true;
+            }
+          });
+        });
+      } else {
+        Autenticacao.bloqueado = true;
+      }
+    } else {
+      Autenticacao.bloqueado = false;
+    }
+  }
+
   bool _isFavorite = false;
   bool discount = true;
   TabController _tabController;
@@ -53,6 +87,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     htmlDescription =
         widget.produto.descricao != null ? widget.produto.descricao : '';
     getProdutosRelacionados();
+    getBloqueio();
     locator<ConnectivityManager>().initConnectivity(context);
     // _dropDownVariantItems = getVariants();
     super.initState();
@@ -492,14 +527,19 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               child: Text(
                 Autenticacao.bloqueado
                     ? 'USUÁRIO BLOQUEADO'
-                    : getHoraInicioProdutoHoje(produtoSelecionado) <
-                                horaAtual &&
-                            getHoraFimProdutoHoje(produtoSelecionado) >
-                                horaAtual
-                        ? produtoSelecionado.quantidadeRestante > 0
-                            ? 'COMPRAR AGORA'
-                            : 'FORA DE ESTOQUE'
-                        : 'ESTABELECIMENTO FECHADO',
+                    : produtoSelecionado.dataInicial != '' &&
+                            produtoSelecionado.dataInicial != null &&
+                            (DateTime.parse(produtoSelecionado.dataInicial)
+                                .isAfter(DateTime.now().toLocal()))
+                        ? 'EM BREVE'
+                        : getHoraInicioProdutoHoje(produtoSelecionado) <
+                                    horaAtual &&
+                                getHoraFimProdutoHoje(produtoSelecionado) >
+                                    horaAtual
+                            ? produtoSelecionado.quantidadeRestante > 0
+                                ? 'COMPRAR AGORA'
+                                : 'FORA DE ESTOQUE'
+                            : 'ESTABELECIMENTO FECHADO',
                 style: TextStyle(
                     color: getHoraInicioProdutoHoje(produtoSelecionado) <
                                 horaAtual &&
@@ -568,14 +608,19 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
               child: Text(
                 Autenticacao.bloqueado
                     ? 'USUÁRIO BLOQUEADO'
-                    : getHoraInicioProdutoHoje(produtoSelecionado) <
-                                horaAtual &&
-                            getHoraFimProdutoHoje(produtoSelecionado) >
-                                horaAtual
-                        ? produtoSelecionado.quantidadeRestante > 0
-                            ? 'ADIQUIRIR CUPOM'
-                            : 'FORA DE ESTOQUE'
-                        : 'ESTABELECIMENTO FECHADO',
+                    : produtoSelecionado.dataInicial != '' &&
+                            produtoSelecionado.dataInicial != null &&
+                            (DateTime.parse(produtoSelecionado.dataInicial)
+                                .isAfter(DateTime.now().toLocal()))
+                        ? 'EM BREVE'
+                        : getHoraInicioProdutoHoje(produtoSelecionado) <
+                                    horaAtual &&
+                                getHoraFimProdutoHoje(produtoSelecionado) >
+                                    horaAtual
+                            ? produtoSelecionado.quantidadeRestante > 0
+                                ? 'ADQUIRIR CUPOM'
+                                : 'FORA DE ESTOQUE'
+                            : 'ESTABELECIMENTO FECHADO',
                 /*
                     ? produtoSelecionado.quantidadeRestante > 0
                         ? 'ADICIONAR AO CARRINHO'
@@ -587,7 +632,11 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             getHoraFimProdutoHoje(produtoSelecionado) >
                                 horaAtual &&
                             produtoSelecionado.quantidadeRestante > 0 &&
-                            !Autenticacao.bloqueado
+                            !Autenticacao.bloqueado &&
+                            (produtoSelecionado.dataInicial == '' ||
+                                produtoSelecionado.dataInicial == null ||
+                                !(DateTime.parse(produtoSelecionado.dataInicial)
+                                    .isAfter(DateTime.now().toLocal())))
                         ? Colors.principalTheOffer
                         : Colors.grey),
               ),
@@ -602,7 +651,11 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                             getHoraFimProdutoHoje(produtoSelecionado) >
                                 horaAtual &&
                             produtoSelecionado.quantidadeRestante > 0 &&
-                            !Autenticacao.bloqueado) {
+                            !Autenticacao.bloqueado &&
+                            (produtoSelecionado.dataInicial == '' ||
+                                produtoSelecionado.dataInicial == null ||
+                                !(DateTime.parse(produtoSelecionado.dataInicial)
+                                    .isAfter(DateTime.now().toLocal())))) {
                           if (widget.produto.possuiSabores) {
                             MaterialPageRoute pagamentoRoute =
                                 MaterialPageRoute(
