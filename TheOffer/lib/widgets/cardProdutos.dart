@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:theoffer/screens/sabores.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
@@ -11,6 +12,9 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/autenticacao.dart';
 import 'package:theoffer/utils/Hora.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:theoffer/utils/headers.dart';
 
 class AddToCarrinho extends StatefulWidget {
   final List<Produto> todaysDealProducts;
@@ -24,6 +28,40 @@ class AddToCarrinho extends StatefulWidget {
 }
 
 class _AddToCarrinhoState extends State<AddToCarrinho> {
+  getBloqueio() {
+    if (Autenticacao.codigoUsuario > 0) {
+      if (Autenticacao.dataBloqueio == null ||
+          Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
+        Map<String, String> headers = getHeaders();
+        Map<dynamic, dynamic> oMapSalvarNotificacao = {
+          'usuario': Autenticacao.codigoUsuario.toString()
+        };
+        http
+            .post(Configuracoes.BASE_URL + 'usuario/getBloqueio/',
+                headers: headers, body: oMapSalvarNotificacao)
+            .then((response) {
+          setState(() {
+            if (json.decode(response.body)[0]['dataBloqueio'] != null) {
+              Autenticacao.dataBloqueio =
+                  DateTime.parse(json.decode(response.body)[0]['dataBloqueio']);
+            }
+
+            if (Autenticacao.dataBloqueio == null ||
+                Autenticacao.dataBloqueio.isBefore(DateTime.now())) {
+              Autenticacao.bloqueado = false;
+            } else {
+              Autenticacao.bloqueado = true;
+            }
+          });
+        });
+      } else {
+        Autenticacao.bloqueado = true;
+      }
+    } else {
+      Autenticacao.bloqueado = false;
+    }
+  }
+
   int selectedIndex;
   int horaAtual =
       (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
@@ -35,7 +73,11 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
         onPressed: getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
                 getHoraFimProdutoHoje(widget.produto) > horaAtual &&
                 widget.produto.quantidadeRestante > 0 &&
-                !Autenticacao.bloqueado
+                !Autenticacao.bloqueado &&
+                (widget.produto.dataInicial == '' ||
+                    widget.produto.dataInicial == null ||
+                    !(DateTime.parse(widget.produto.dataInicial)
+                        .isAfter(DateTime.now().toLocal())))
             ? () async {
                 print('selectedProductIndex');
                 print(widget.index);
@@ -44,7 +86,11 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                 });
                 if (getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
                     getHoraFimProdutoHoje(widget.produto) > horaAtual &&
-                    widget.produto.quantidadeRestante > 0) {
+                    widget.produto.quantidadeRestante > 0 &&
+                    (widget.produto.dataInicial == '' ||
+                        widget.produto.dataInicial == null ||
+                        !(DateTime.parse(widget.produto.dataInicial)
+                            .isAfter(DateTime.now().toLocal())))) {
                   if (Autenticacao.codigoUsuario > 0 &&
                       !Autenticacao.bloqueado) {
                     setState(() {
@@ -54,6 +100,7 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
                                 TelaSabores(widget.produto.id, 1));
                         Navigator.push(context, pagamentoRoute);
                       } else {
+                        getBloqueio();
                         model.pegarCupom(
                             usuarioId: Autenticacao.codigoUsuario,
                             produtoId: widget.produto.id,
@@ -87,12 +134,17 @@ Widget buttonContent(int index, Produto produto) {
   return Text(
     Autenticacao.bloqueado
         ? 'USUÁRIO BLOQUEADO'
-        : getHoraInicioProdutoHoje(produto) < horaAtual &&
-                getHoraFimProdutoHoje(produto) > horaAtual
-            ? produto.quantidadeRestante > 0
-                ? 'ADIQUIRIR CUPOM'
-                : 'FORA DE ESTOQUE'
-            : 'ESTABELECIMENTO FECHADO',
+        : produto.dataInicial != '' &&
+                produto.dataInicial != null &&
+                (DateTime.parse(produto.dataInicial)
+                    .isAfter(DateTime.now().toLocal()))
+            ? 'EM BREVE'
+            : getHoraInicioProdutoHoje(produto) < horaAtual &&
+                    getHoraFimProdutoHoje(produto) > horaAtual
+                ? produto.quantidadeRestante > 0
+                    ? 'ADQUIRIR CUPOM'
+                    : 'FORA DE ESTOQUE'
+                : 'ESTABELECIMENTO FECHADO',
     /*
         ? produto.quantidadeRestante > 0
             ? 'ADICIONAR AO CARRINHO'
@@ -102,7 +154,11 @@ Widget buttonContent(int index, Produto produto) {
         color: getHoraInicioProdutoHoje(produto) < horaAtual &&
                 getHoraFimProdutoHoje(produto) > horaAtual &&
                 produto.quantidadeRestante > 0 &&
-                !Autenticacao.bloqueado
+                !Autenticacao.bloqueado &&
+                (produto.dataInicial == '' ||
+                    produto.dataInicial == null ||
+                    !(DateTime.parse(produto.dataInicial)
+                        .isAfter(DateTime.now().toLocal())))
             ? Colors.principalTheOffer
             : Colors.grey,
         fontSize: 14,
