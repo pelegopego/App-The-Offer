@@ -1,25 +1,27 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:intl/intl.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:theoffer/scoped-models/main.dart';
-import 'package:theoffer/utils/connectivity_state.dart';
-import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/utils/locator.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:crypto/crypto.dart';
 import 'package:theoffer/utils/headers.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:theoffer/utils/constants.dart';
 import 'package:theoffer/screens/produtos.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:theoffer/scoped-models/main.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:theoffer/utils/connectivity_state.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+//import 'package:firebase_core/firebase_core.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-//import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class Authentication extends StatefulWidget {
   final int index;
@@ -272,6 +274,19 @@ class _AuthenticationState extends State<Authentication>
                               onPressed: () => entrarFacebook(context, model),
                             ),
                           ),
+                          Platform.isIOS
+                              ? Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.only(
+                                      left: 15, right: 15, top: 5, bottom: 5),
+                                  child: SignInButton(
+                                    Buttons.AppleDark,
+                                    text: 'Entrar com a Apple',
+                                    onPressed: () =>
+                                        entrarApple(context, model),
+                                  ),
+                                )
+                              : Container(),
                           /*
                           Container(
                               width: MediaQuery.of(context).size.width,
@@ -355,6 +370,15 @@ class _AuthenticationState extends State<Authentication>
                       Buttons.FacebookNew,
                       text: 'Registrar com o Facebook',
                       onPressed: () => entrarFacebook(context, model),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                    child: SignInButton(
+                      Buttons.AppleDark,
+                      text: 'Registrar com a Apple',
+                      onPressed: () => entrarApple(context, model),
                     ),
                   ),
                   TextFormField(
@@ -772,6 +796,54 @@ class _AuthenticationState extends State<Authentication>
         _isLoader = false;
       });
     });
+  }
+
+  void entrarApple(BuildContext aContext, model) async {
+    void onLoginStatusChanged(MainModel model, bool isLoggedIn) {
+      setState(() {
+        entrouFacebook = isLoggedIn;
+        if (entrouFacebook) {
+          _realizarLoginRedeSocial(model);
+        } else {
+          model.limparPedido();
+          model.clearData();
+          Autenticacao.codigoUsuario = 0;
+          Autenticacao.nomeUsuario = '';
+          Autenticacao.dataBloqueio = null;
+          Autenticacao.bloqueado = false;
+          final storage = FlutterSecureStorage();
+          storage.deleteAll();
+        }
+      });
+    }
+
+    if (await AppleSignIn.isAvailable()) {
+      final AuthorizationResult result = await AppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      ]);
+      switch (result.status) {
+        case AuthorizationStatus.authorized:
+          print(result.credential.user);
+          //_formData['email'] = profile['email'];
+          //_formData['senha'] = profile['id'];
+          //_formData['nome'] = profile['name'];
+          onLoginStatusChanged(model, true);
+          break;
+        case AuthorizationStatus.error:
+          onLoginStatusChanged(model, false);
+          break;
+        case AuthorizationStatus.cancelled:
+          onLoginStatusChanged(model, false);
+          break;
+      }
+    } else {
+      onLoginStatusChanged(model, false);
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content:
+            Text('Login com a apple não está disponível para seu dispositivo.'),
+        duration: Duration(seconds: 1),
+      ));
+    }
   }
 
   void entrarFacebook(BuildContext aContext, model) async {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,7 @@ import 'package:theoffer/utils/locator.dart';
 import 'package:theoffer/screens/cidades.dart';
 import 'package:theoffer/utils/constants.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:theoffer/scoped-models/main.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,6 +34,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    if (Platform.isIOS) {
+      //check for ios if developing for both android & ios
+      AppleSignIn.onCredentialRevoked.listen((_) {
+        print("Credentials revoked");
+      });
+    }
     initPlatformState();
     getUser();
     if (Autenticacao.token != "") {
