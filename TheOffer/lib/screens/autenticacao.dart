@@ -928,12 +928,17 @@ class _AuthenticationState extends State<Authentication>
       ]);
       switch (result.status) {
         case AuthorizationStatus.authorized:
-          _formData['email'] = result.credential.email;
           _formData['senha'] = result.credential.user;
-          _formData['nome'] = result.credential.fullName.givenName +
-              ' ' +
-              result.credential.fullName.familyName;
-          onLoginStatusChanged(null, model, true);
+          if (result.credential.user != '' &&
+              result.credential.email != null &&
+              result.credential.fullName.givenName != null &&
+              result.credential.fullName.familyName != null) {
+            _formData['email'] = result.credential.email;
+            _formData['nome'] = result.credential.fullName.givenName +
+                ' ' +
+                result.credential.fullName.familyName;
+          }
+          onLoginStatusChanged(result, model, true);
           break;
         case AuthorizationStatus.error:
           onLoginStatusChanged(null, model, false);
