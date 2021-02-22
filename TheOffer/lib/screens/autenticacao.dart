@@ -647,6 +647,101 @@ class _AuthenticationState extends State<Authentication>
     });
   }
 
+  void _recuperarLoginApple(MainModel model) {
+    /* 
+       0 - Normal
+       1 - Rede Social
+    */
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+
+    setState(() {
+      _isLoader = true;
+    });
+
+    Map<dynamic, dynamic> oMapLogin = {
+      'senha':
+          md5.convert(utf8.encode('*/666%%' + _formData['senha'])).toString(),
+    };
+
+    bool hasError = true;
+    http
+        .post(Configuracoes.BASE_URL + 'usuario/logarApple/',
+            headers: headers, body: oMapLogin)
+        .then((response) {
+      String message = '';
+      int status = 0;
+
+      responseBody = json.decode(response.body);
+      message = responseBody['message'];
+      status = responseBody['status'];
+      if (status == 100) {
+        responseBody['usuario'].forEach((usuarioJson) {
+          Autenticacao.codigoUsuario = int.parse(usuarioJson['id']);
+          Autenticacao.nomeUsuario = usuarioJson['nome'];
+          Autenticacao.dataBloqueioAbriuApp = null;
+          if (usuarioJson['dataBloqueio'] != null &&
+              usuarioJson['dataBloqueio'] != '') {
+            Autenticacao.dataBloqueio =
+                DateTime.parse(usuarioJson['dataBloqueio']);
+            Autenticacao.bloqueado =
+                !Autenticacao.dataBloqueio.isBefore(DateTime.now());
+          } else {
+            Autenticacao.bloqueado = false;
+          }
+
+          Autenticacao.token = usuarioJson['token'];
+          if (Autenticacao.notificacao != usuarioJson['notificacao']) {
+            Map<String, String> headers = getHeaders();
+            Map<dynamic, dynamic> oMapSalvarNotificacao = {
+              'usuario': Autenticacao.codigoUsuario.toString(),
+              'notificacao': Autenticacao.notificacao
+            };
+            http.post(
+                Configuracoes.BASE_URL + 'usuario/salvarTokenNotificacao/',
+                headers: headers,
+                body: oMapSalvarNotificacao);
+
+            print('ATUALIZANDO TOKEN DE NOTIFICAÇÃO.');
+          }
+          writeStorage();
+        });
+        hasError = false;
+        //if (model != null) {
+        //  model.localizarCarrinho(null, Autenticacao.codigoUsuario);
+        //}
+      } else {
+        if (status == 300) {
+          message = 'Você já possui uma conta cadastrada com esse email.';
+        }
+        setState(() {
+          _isLoader = false;
+        });
+      }
+      if (status != 400) {
+        final Map<String, dynamic> successInformation = {
+          'success': !hasError,
+          'message': message
+        };
+        if (successInformation['success']) {
+          MaterialPageRoute produtosRoute = MaterialPageRoute(
+              builder: (context) => TelaProdutos(idCategoria: 0));
+          Navigator.push(context, produtosRoute);
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text('${successInformation['message']}'),
+            duration: Duration(seconds: 1),
+          ));
+        } else {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text('${successInformation['message']}'),
+            duration: Duration(seconds: 1),
+          ));
+        }
+      }
+      return responseBody['message'];
+    });
+  }
+
   void _realizarLogin(MainModel model) {
     /* 
        0 - Normal
@@ -799,11 +894,21 @@ class _AuthenticationState extends State<Authentication>
   }
 
   void entrarApple(BuildContext aContext, model) async {
-    void onLoginStatusChanged(MainModel model, bool isLoggedIn) {
+    void onLoginStatusChanged(
+        AuthorizationResult result, MainModel model, bool isLoggedIn) {
       setState(() {
         entrouFacebook = isLoggedIn;
         if (entrouFacebook) {
-          _realizarLoginRedeSocial(model);
+          if (result.credential.user != '' &&
+              result.credential.email != null &&
+              result.credential.fullName.givenName != null &&
+              result.credential.fullName.familyName != null) {
+            //primeiro login com apple id
+            _realizarLoginRedeSocial(model);
+          } else {
+            //recuperar login já feito
+            _recuperarLoginApple(model);
+          }
         } else {
           model.limparPedido();
           model.clearData();
@@ -823,21 +928,22 @@ class _AuthenticationState extends State<Authentication>
       ]);
       switch (result.status) {
         case AuthorizationStatus.authorized:
-          print(result.credential.user);
-          //_formData['email'] = profile['email'];
-          //_formData['senha'] = profile['id'];
-          //_formData['nome'] = profile['name'];
-          onLoginStatusChanged(model, true);
+          _formData['email'] = result.credential.email;
+          _formData['senha'] = result.credential.user;
+          _formData['nome'] = result.credential.fullName.givenName +
+              ' ' +
+              result.credential.fullName.familyName;
+          onLoginStatusChanged(null, model, true);
           break;
         case AuthorizationStatus.error:
-          onLoginStatusChanged(model, false);
+          onLoginStatusChanged(null, model, false);
           break;
         case AuthorizationStatus.cancelled:
-          onLoginStatusChanged(model, false);
+          onLoginStatusChanged(null, model, false);
           break;
       }
     } else {
-      onLoginStatusChanged(model, false);
+      onLoginStatusChanged(null, model, false);
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content:
             Text('Login com a apple não está disponível para seu dispositivo.'),
