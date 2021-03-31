@@ -71,38 +71,40 @@ mixin CarrinhoModel on Model {
         .get(Configuracoes.BASE_URL + 'produto/$id/', headers: headers);
     responseBody = json.decode(response.body);
     responseBody['empresas'].forEach((empresaJson) {
-      empresaJson['produtos'].forEach((produtoJson) {
-        produtoDetalhado = Produto(
-            empresa: int.parse(produtoJson['empresa_id']),
-            id: int.parse(produtoJson['id']),
-            titulo: produtoJson['titulo'],
-            descricao: produtoJson['descricao'],
-            imagem: produtoJson['imagem'],
-            valor: produtoJson['valor'],
-            valorNumerico: double.parse(produtoJson['valorNumerico']),
-            quantidade: int.parse(produtoJson['quantidade']),
-            quantidadeRestante: int.parse(produtoJson['quantidadeRestante']),
-            dataInicial: produtoJson['dataInicial'],
-            dataFinal: produtoJson['dataFinal'],
-            dataCadastro: produtoJson['dataCadastro'],
-            usuarioId: int.parse(produtoJson['usuario_id']),
-            empresaSegundaInicio: double.parse(empresaJson['segundaInicio']),
-            empresaSegundaFim: double.parse(empresaJson['segundaFim']),
-            empresaTercaInicio: double.parse(empresaJson['tercaInicio']),
-            empresaTercaFim: double.parse(empresaJson['tercaFim']),
-            empresaQuartaInicio: double.parse(empresaJson['quartaInicio']),
-            empresaQuartaFim: double.parse(empresaJson['quartaFim']),
-            empresaQuintaInicio: double.parse(empresaJson['quintaInicio']),
-            empresaQuintaFim: double.parse(empresaJson['quintaFim']),
-            empresaSextaInicio: double.parse(empresaJson['sextaInicio']),
-            empresaSextaFim: double.parse(empresaJson['sextaFim']),
-            empresaSabadoInicio: double.parse(empresaJson['sabadoInicio']),
-            empresaSabadoFim: double.parse(empresaJson['sabadoFim']),
-            empresaDomingoInicio: double.parse(empresaJson['domingoInicio']),
-            empresaDomingoFim: double.parse(empresaJson['domingoFim']),
-            possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
-            categoria: int.parse(produtoJson['categoria_id']));
-      });
+      if (empresaJson['produtos'] != null) {
+        empresaJson['produtos'].forEach((produtoJson) {
+          produtoDetalhado = Produto(
+              empresa: int.parse(produtoJson['empresa_id']),
+              id: int.parse(produtoJson['id']),
+              titulo: produtoJson['titulo'],
+              descricao: produtoJson['descricao'],
+              imagem: produtoJson['imagem'],
+              valor: produtoJson['valor'],
+              valorNumerico: double.parse(produtoJson['valorNumerico']),
+              quantidade: int.parse(produtoJson['quantidade']),
+              quantidadeRestante: int.parse(produtoJson['quantidadeRestante']),
+              dataInicial: produtoJson['dataInicial'],
+              dataFinal: produtoJson['dataFinal'],
+              dataCadastro: produtoJson['dataCadastro'],
+              usuarioId: int.parse(produtoJson['usuario_id']),
+              empresaSegundaInicio: double.parse(empresaJson['segundaInicio']),
+              empresaSegundaFim: double.parse(empresaJson['segundaFim']),
+              empresaTercaInicio: double.parse(empresaJson['tercaInicio']),
+              empresaTercaFim: double.parse(empresaJson['tercaFim']),
+              empresaQuartaInicio: double.parse(empresaJson['quartaInicio']),
+              empresaQuartaFim: double.parse(empresaJson['quartaFim']),
+              empresaQuintaInicio: double.parse(empresaJson['quintaInicio']),
+              empresaQuintaFim: double.parse(empresaJson['quintaFim']),
+              empresaSextaInicio: double.parse(empresaJson['sextaInicio']),
+              empresaSextaFim: double.parse(empresaJson['sextaFim']),
+              empresaSabadoInicio: double.parse(empresaJson['sabadoInicio']),
+              empresaSabadoFim: double.parse(empresaJson['sabadoFim']),
+              empresaDomingoInicio: double.parse(empresaJson['domingoInicio']),
+              empresaDomingoFim: double.parse(empresaJson['domingoFim']),
+              possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
+              subCategoria: int.parse(produtoJson['subCategoria_id']));
+        });
+      }
     });
 
     MaterialPageRoute route = MaterialPageRoute(
