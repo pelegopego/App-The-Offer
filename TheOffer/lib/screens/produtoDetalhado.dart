@@ -226,6 +226,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
     });
   }
 
+/*
   Widget linhaQuantidade(MainModel model, Produto produtoSelecionado) {
     print("PRODUTO SELECIONADO ---> ${produtoSelecionado.id}");
     return Container(
@@ -270,7 +271,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
           },
         ));
   }
-
+*/
   Widget highlightsTab() {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
@@ -420,9 +421,10 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       ),
                     )
                   : Container(),
+              /*
               produtoSelecionado.quantidade > 0
                   ? linhaQuantidade(model, produtoSelecionado)
-                  : Container(),
+                  : Container(),*/
               Divider(color: Colors.secundariaTheOffer),
               discount
                   ? SizedBox(
@@ -579,8 +581,8 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                         }*/
                         if (produtoSelecionado.possuiSabores) {
                           MaterialPageRoute pagamentoRoute = MaterialPageRoute(
-                              builder: (context) => TelaSabores(
-                                  produtoSelecionado.id, quantidade));
+                              builder: (context) =>
+                                  TelaSabores(produtoSelecionado.id, 1));
                           Navigator.push(context, pagamentoRoute);
                         }
                       }
