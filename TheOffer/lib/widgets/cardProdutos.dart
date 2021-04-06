@@ -68,7 +68,9 @@ class _AddToCarrinhoState extends State<AddToCarrinho> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      return FlatButton(
+      return RawMaterialButton(
+        constraints: BoxConstraints(),
+        padding: EdgeInsets.all(5.0),
         onPressed: getHoraInicioProdutoHoje(widget.produto) < horaAtual &&
                 getHoraFimProdutoHoje(widget.produto) > horaAtual &&
                 widget.produto.quantidadeRestante > 0 &&
@@ -132,7 +134,7 @@ Widget buttonContent(int index, Produto produto) {
       (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
   return Text(
     Autenticacao.bloqueado
-        ? 'USU√ÅRIO BLOQUEADO'
+        ? 'USU¡RIO BLOQUEADO'
         : produto.dataInicial != '' &&
                 produto.dataInicial != null &&
                 (DateTime.parse(produto.dataInicial)
@@ -160,7 +162,7 @@ Widget buttonContent(int index, Produto produto) {
                         .isAfter(DateTime.now().toLocal())))
             ? Colors.principalTheOffer
             : Colors.grey,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: FontWeight.w500),
   );
 }
@@ -202,7 +204,7 @@ Widget cardProdutosEmpresa(int index, List<ProdutoEmpresa> listaProdutoEmpresa,
                                     .toLowerCase()
                                     .substring(1),
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.secundariaTheOffer)),
                       ],
@@ -247,7 +249,7 @@ Widget cardProdutosCategoria(
               Container(
                   width: _deviceSize.width,
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: Row(
                       children: <Widget>[
                         Icon(
@@ -318,8 +320,9 @@ Widget cardProdutos(int index, List<Produto> listaProdutos, Size _deviceSize,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(5)),
                     margin: EdgeInsets.all(5),
-                    child:
-                        CachedNetworkImage(imageUrl: produtoDetalhado.imagem),
+                    child: produtoDetalhado.imagem != null
+                        ? CachedNetworkImage(imageUrl: produtoDetalhado.imagem)
+                        : Container(),
                     height: 140,
                     width: 140,
                   ),

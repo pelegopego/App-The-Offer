@@ -467,7 +467,7 @@ class _TelaProdutoDetalhado extends State<TelaProdutoDetalhado>
                       ),
                     )
                   : Container(
-                      height: _deviceSize.height * 0.381,
+                      height: _deviceSize.height * 0.500,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: listaProdutosRelacionados.length,

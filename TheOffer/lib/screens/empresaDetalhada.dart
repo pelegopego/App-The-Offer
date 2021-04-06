@@ -31,6 +31,7 @@ class TelaEmpresaDetalhada extends StatefulWidget {
 class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
   Size _deviceSize;
   Map<dynamic, dynamic> responseBody;
+  bool possuiProduto = false;
   bool _empresasLoading = true;
   EmpresaDetalhada empresaDetalhada;
   List<BannerImage> banners = [];
@@ -153,7 +154,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                               borderRadius:
                                                   BorderRadius.circular(12)),
                                           elevation: 1,
-                                          margin: EdgeInsets.all(8.0),
+                                          margin: EdgeInsets.all(5.0),
                                           child: Container(
                                               color: Colors.secundariaTheOffer,
                                               child: Row(
@@ -164,9 +165,17 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                     children: <Widget>[
                                                       Container(
                                                         padding:
-                                                            EdgeInsets.all(15),
-                                                        height: 170,
-                                                        width: 180,
+                                                            EdgeInsets.all(5),
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.40,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.50,
                                                         decoration: BoxDecoration(
                                                             color: Colors
                                                                 .secundariaTheOffer,
@@ -174,10 +183,14 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         5)),
-                                                        child: CachedNetworkImage(
-                                                            imageUrl:
-                                                                empresaDetalhada
-                                                                    .imagem),
+                                                        child: empresaDetalhada
+                                                                    .imagem !=
+                                                                null
+                                                            ? CachedNetworkImage(
+                                                                imageUrl:
+                                                                    empresaDetalhada
+                                                                        .imagem)
+                                                            : Container(),
                                                       ),
                                                     ],
                                                   ),
@@ -202,7 +215,11 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                               padding: EdgeInsets
                                                                   .only(
                                                                       top: 10),
-                                                              width: 150,
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.30,
                                                               child: RichText(
                                                                 text: TextSpan(
                                                                     children: [
@@ -237,6 +254,9 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                               color: Colors
                                                                   .secundariaTheOffer,
                                                             ),
+                                                            contentPadding:
+                                                                EdgeInsets.only(
+                                                                    left: 3),
                                                             title: Text(
                                                               empresaDetalhada
                                                                   .maskTelefone(),
@@ -244,7 +264,7 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12,
+                                                                  fontSize: 10,
                                                                   color: Colors
                                                                       .secundariaTheOffer),
                                                             ),
@@ -263,6 +283,9 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                               color: Colors
                                                                   .secundariaTheOffer,
                                                             ),
+                                                            contentPadding:
+                                                                EdgeInsets.only(
+                                                                    left: 3),
                                                             onTap: () {
                                                               showDialog(
                                                                   context:
@@ -304,13 +327,13 @@ class _TelaEmpresaDetalhada extends State<TelaEmpresaDetalhada> {
                                                                   });
                                                             },
                                                             title: Text(
-                                                              getHora(getHoraInicioEmpresaHoje(
+                                                              getDiaSemana() +
+                                                                  ', ' +
+                                                                  getHora(getHoraInicioEmpresaHoje(
                                                                       empresaDetalhada)) +
                                                                   ' às ' +
                                                                   getHora(getHoraFimEmpresaHoje(
-                                                                      empresaDetalhada)) +
-                                                                  ', ' +
-                                                                  getDiaSemana(),
+                                                                      empresaDetalhada)),
                                                               style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
