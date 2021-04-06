@@ -101,8 +101,7 @@ mixin CarrinhoModel on Model {
               empresaSabadoFim: double.parse(empresaJson['sabadoFim']),
               empresaDomingoInicio: double.parse(empresaJson['domingoInicio']),
               empresaDomingoFim: double.parse(empresaJson['domingoFim']),
-              possuiSabores: int.parse(produtoJson['possuiSabores']) > 0,
-              subCategoria: int.parse(produtoJson['subCategoria_id']));
+              possuiSabores: int.parse(produtoJson['possuiSabores']) > 0);
         });
       }
     });

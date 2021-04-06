@@ -142,7 +142,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                           children: <Widget>[
                             Card(
                               child: Container(
-                                height: 95,
+                                height: 85,
                                 color: Colors.secundariaTheOffer,
                                 child: GestureDetector(
                                   child: Row(
@@ -165,7 +165,10 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                       .spaceBetween,
                                               children: <Widget>[
                                                 Container(
-                                                  width: 140,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.30,
                                                   child: RichText(
                                                     text: TextSpan(
                                                       text: 'Pedido ' +
@@ -191,7 +194,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                       style: TextStyle(
                                                           color: Colors
                                                               .principalTheOffer,
-                                                          fontSize: 17),
+                                                          fontSize: 14),
                                                     ),
                                                   ),
                                                 ),
@@ -237,13 +240,17 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                 style: TextStyle(
                                                     color: Colors
                                                         .principalTheOffer,
-                                                    fontSize: 17.0),
+                                                    fontSize: 12.0),
                                               )),
                                             ),
                                           ])),
                                           Container(
                                               child: Row(children: <Widget>[
                                             Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.50,
                                               alignment: Alignment.topLeft,
                                               child: RichText(
                                                   text: TextSpan(
@@ -257,22 +264,21 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                 style: TextStyle(
                                                     color: Colors
                                                         .principalTheOffer,
-                                                    fontSize: 17.0,
+                                                    fontSize: 12.0,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )),
                                             ),
-                                            SizedBox(
-                                              width: 80,
-                                            ),
                                             Expanded(
                                               child: Column(children: <Widget>[
                                                 Container(
-                                                  width: 300,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.30,
                                                   color: Colors
                                                       .principalTheOffer,
-                                                  alignment:
-                                                      Alignment.bottomRight,
+                                                  alignment: Alignment.center,
                                                   child: RichText(
                                                     text: TextSpan(
                                                       text: getStatus(
@@ -281,12 +287,12 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                                                       style: TextStyle(
                                                           color: Colors
                                                               .secundariaTheOffer,
-                                                          fontSize: 15.0,
+                                                          fontSize: 12.0,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                   ),
-                                                )
+                                                ),
                                               ]),
                                             ),
                                             SizedBox(
@@ -314,7 +320,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
     } else if (status == 2) {
       return 'EFETUADO';
     } else if (status == 3) {
-      return 'PAGO';
+      return 'AGUARDANDO';
     } else if (status == 4) {
       return 'CONFIRMADO';
     } else if (status == 5) {
@@ -427,6 +433,7 @@ class _ListagemPedidos extends State<ListagemPedidos> {
                       produtoId: int.parse(pedidosJson['produto_id']),
                       quantidade: int.parse(pedidosJson['quantidade_item']),
                       sabores: pedidosJson['sabores_item'],
+                      valor: double.parse(pedidosJson['valor_item']),
                       produto: produto));
                 }
               }

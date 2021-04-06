@@ -81,33 +81,7 @@ class _ListagemCupom extends State<ListagemCupom> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 70,
-                    ),
-                    Align(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            width: 1,
-                          ),
-                          color: Colors.secundariaTheOffer,
-                        ),
-                        height: 100,
-                        width: 300,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Você não possui cupons ainda.',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
+              ),
       );
     });
   }
@@ -167,7 +141,7 @@ class _ListagemCupom extends State<ListagemCupom> {
                           children: <Widget>[
                             Card(
                               child: Container(
-                                height: 95,
+                                height: 85,
                                 color: Colors.secundariaTheOffer,
                                 child: GestureDetector(
                                   child: Row(
@@ -190,7 +164,10 @@ class _ListagemCupom extends State<ListagemCupom> {
                                                       .spaceBetween,
                                               children: <Widget>[
                                                 Container(
-                                                  width: 140,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.30,
                                                   child: RichText(
                                                     text: TextSpan(
                                                       text: 'Cupom ' +
@@ -216,7 +193,7 @@ class _ListagemCupom extends State<ListagemCupom> {
                                                       style: TextStyle(
                                                           color: Colors
                                                               .principalTheOffer,
-                                                          fontSize: 17),
+                                                          fontSize: 14),
                                                     ),
                                                   ),
                                                 ),
@@ -262,7 +239,7 @@ class _ListagemCupom extends State<ListagemCupom> {
                                                 style: TextStyle(
                                                     color: Colors
                                                         .principalTheOffer,
-                                                    fontSize: 17.0),
+                                                    fontSize: 12.0),
                                               )),
                                             ),
                                           ])),
@@ -271,7 +248,10 @@ class _ListagemCupom extends State<ListagemCupom> {
                                             Expanded(
                                               child: Column(children: <Widget>[
                                                 Container(
-                                                  width: 100,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.30,
                                                   color:
                                                       Colors.principalTheOffer,
                                                   alignment: Alignment.center,
@@ -283,12 +263,12 @@ class _ListagemCupom extends State<ListagemCupom> {
                                                       style: TextStyle(
                                                           color: Colors
                                                               .secundariaTheOffer,
-                                                          fontSize: 15.0,
+                                                          fontSize: 12.0,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                   ),
-                                                )
+                                                ),
                                               ]),
                                             ),
                                             SizedBox(
