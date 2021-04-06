@@ -167,7 +167,11 @@ class _ListagemCupom extends State<ListagemCupom> {
                           children: <Widget>[
                             Card(
                               child: Container(
-                                height: 85,
+                                height:
+                                    listaCupom[index].horaCancelamento != '' &&
+                                            listaCupom[index].status != 4
+                                        ? 85
+                                        : 70,
                                 color: Colors.secundariaTheOffer,
                                 child: GestureDetector(
                                   child: Row(
@@ -252,55 +256,112 @@ class _ListagemCupom extends State<ListagemCupom> {
                                               ],
                                             ),
                                           ),
-                                          Container(
-                                              child: Row(children: <Widget>[
-                                            Container(
-                                              alignment: Alignment.topLeft,
-                                              child: RichText(
-                                                  text: TextSpan(
-                                                text: 'Itens ' +
-                                                    listaCupom[index]
-                                                        .somaQuantidadeCupom()
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    color: Colors
-                                                        .principalTheOffer,
-                                                    fontSize: 12.0),
-                                              )),
-                                            ),
-                                          ])),
-                                          Container(
-                                              child: Row(children: <Widget>[
-                                            Expanded(
-                                              child: Column(children: <Widget>[
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.30,
-                                                  color:
-                                                      Colors.principalTheOffer,
-                                                  alignment: Alignment.center,
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      text: getStatus(
+                                          listaCupom[index].horaCancelamento !=
+                                                      '' &&
+                                                  listaCupom[index].status != 4
+                                              ? Container(
+                                                  child: Row(children: <Widget>[
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: RichText(
+                                                        text: TextSpan(
+                                                      text: 'Cupom expira a partir das ' +
                                                           listaCupom[index]
-                                                              .status),
+                                                              .horaCancelamento +
+                                                          '.',
                                                       style: TextStyle(
                                                           color: Colors
-                                                              .secundariaTheOffer,
-                                                          fontSize: 12.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
+                                                              .principalTheOffer,
+                                                          fontSize: 12.0),
+                                                    )),
                                                   ),
-                                                ),
-                                              ]),
-                                            ),
-                                            SizedBox(
-                                              width: 20,
-                                            )
-                                          ]))
+                                                ]))
+                                              : Container(),
+                                          Expanded(
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Container(
+                                                      child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: <Widget>[
+                                                        Column(
+                                                            children: <Widget>[
+                                                              Container(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.30,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .topLeft,
+                                                                child: RichText(
+                                                                  text:
+                                                                      TextSpan(
+                                                                    text: getStatus(
+                                                                        listaCupom[index]
+                                                                            .status),
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .principalTheOffer,
+                                                                        fontSize:
+                                                                            12.0,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ]),
+                                                        listaCupom[index]
+                                                                    .status ==
+                                                                1
+                                                            ? Column(
+                                                                children: <
+                                                                    Widget>[
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(
+                                                                          right:
+                                                                              5),
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.30,
+                                                                      height:
+                                                                          20,
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      color: Colors
+                                                                          .principalTheOffer,
+                                                                      child:
+                                                                          FlatButton(
+                                                                        child:
+                                                                            Text(
+                                                                          "CANCELAR",
+                                                                          style: TextStyle(
+                                                                              color: Colors.secundariaTheOffer,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          cancelarCupom(
+                                                                              listaCupom[index],
+                                                                              context);
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ])
+                                                            : Container(),
+                                                      ])),
+                                                ]),
+                                          )
                                         ],
                                       )),
                                     ],
@@ -316,13 +377,44 @@ class _ListagemCupom extends State<ListagemCupom> {
     );
   }
 
+  cancelarCupom(Cupom cupom, BuildContext context) {
+    Map<dynamic, dynamic> responseBody;
+    Map<String, String> headers = getHeaders();
+    Map<dynamic, dynamic> objetoCupom = Map();
+    print("COMPRANDO PRODUTO");
+    objetoCupom = {
+      "usuario": cupom.usuarioId.toString(),
+      "status": cupom.status.toString(),
+      "cupom": cupom.id.toString()
+    };
+    http
+        .post(Configuracoes.BASE_URL + 'cupom/cancelarCupom/',
+            headers: headers, body: objetoCupom)
+        .then((response) {
+      print("CUPOM ADQUIRIDO");
+      print(json.decode(response.body).toString());
+      responseBody = json.decode(response.body);
+      final snackBar = SnackBar(
+          content: Text(responseBody['message']),
+          duration: Duration(seconds: 8));
+      Scaffold.of(context).showSnackBar(snackBar);
+      if (int.parse(responseBody['id']) > 0) {
+        setState(() {
+          cupom.status = 4;
+        });
+      }
+    });
+  }
+
   getStatus(int status) {
     if (status == 1) {
-      return 'ADQUIRIDO';
+      return 'EM ABERTO';
     } else if (status == 2) {
       return 'UTILIZADO';
     } else if (status == 3) {
-      return 'Expirado';
+      return 'EXPIRADO';
+    } else if (status == 4) {
+      return 'CANCELADO';
     }
   }
 
@@ -384,6 +476,9 @@ class _ListagemCupom extends State<ListagemCupom> {
                     ? int.parse(cupomJson['formaPagamento'])
                     : 0,
                 horaPrevista: cupomJson['horaPrevista'],
+                horaCancelamento: cupomJson['horaCancelamento'] != null
+                    ? cupomJson['horaCancelamento']
+                    : '',
                 dataInclusao: cupomJson['dataInclusao'],
                 dataConfirmacao: cupomJson['dataConfirmacaoEndereco'],
                 status: int.parse(cupomJson['status']),

@@ -134,7 +134,7 @@ Widget buttonContent(int index, Produto produto) {
       (DateTime.now().toLocal().hour * 60) + (DateTime.now().toLocal().minute);
   return Text(
     Autenticacao.bloqueado
-        ? 'USUÁRIO BLOQUEADO'
+        ? 'USUï¿½RIO BLOQUEADO'
         : produto.dataInicial != '' &&
                 produto.dataInicial != null &&
                 (DateTime.parse(produto.dataInicial)

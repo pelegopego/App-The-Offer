@@ -12,6 +12,7 @@ class Cupom {
   int modalidadeEntrega;
   int formaPagamento;
   String horaPrevista;
+  String horaCancelamento;
   List<ItemCupom> listaItensCupom;
 
   Cupom(
@@ -25,6 +26,7 @@ class Cupom {
       this.modalidadeEntrega,
       this.formaPagamento,
       this.horaPrevista,
+      this.horaCancelamento,
       this.listaItensCupom});
 
   double somaValorTotalCupom() {

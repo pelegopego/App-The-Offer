@@ -365,11 +365,16 @@ mixin CarrinhoModel on Model {
         Scaffold.of(context).showSnackBar(snackBar);
       } else {
         final snackBar = SnackBar(
-            content: Text(responseBody['message'] +
-                '\n O cupom expira em: ' +
-                responseBody['tempoCancelamento'].toString().substring(0,
-                    responseBody['tempoCancelamento'].toString().length - 3) +
-                ' hora(s).'),
+            content: responseBody['tempoCancelamento'] != null
+                ? Text(responseBody['message'] +
+                    '\n O cupom expira em: ' +
+                    responseBody['tempoCancelamento'].toString().substring(
+                        0,
+                        responseBody['tempoCancelamento'].toString().length -
+                            3) +
+                    ' hora(s).'
+                        '')
+                : Text(responseBody['message']),
             duration: Duration(seconds: 8));
         Scaffold.of(context).showSnackBar(snackBar);
       }
