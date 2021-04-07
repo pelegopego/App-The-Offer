@@ -17,6 +17,7 @@ import 'package:theoffer/models/banners.dart';
 import 'package:theoffer/utils/headers.dart';
 import 'package:theoffer/screens/empresaDetalhada.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:theoffer/screens/categorias.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TelaProdutos extends StatefulWidget {
@@ -84,6 +85,7 @@ class _TelaProdutos extends State<TelaProdutos>
       }*/
       return Scaffold(
         appBar: AppBar(
+            elevation: 0,
             title: Image.asset(
               'images/logos/appBar.png',
               fit: BoxFit.fill,
@@ -108,7 +110,6 @@ class _TelaProdutos extends State<TelaProdutos>
               ),
             ),
             child: Container(
-              padding: EdgeInsets.only(top: 10),
               child: SmartRefresher(
                   enablePullDown: true,
                   enablePullUp: false,
@@ -130,33 +131,76 @@ class _TelaProdutos extends State<TelaProdutos>
                                 )
                               ]))
                             : SliverToBoxAdapter(
-                                child: Container(
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: listaProdutoEmpresa.length,
-                                      shrinkWrap: true,
-                                      physics: const BouncingScrollPhysics(),
-                                      itemBuilder: (context, index) {
-                                        if (listaProdutoEmpresa[index]
-                                                .listaProduto
-                                                .length >
-                                            0) {
-                                          return Container(
-                                              padding:
-                                                  listaProdutoEmpresa[index]
-                                                          .cardVisivel
-                                                      ? EdgeInsets.all(0)
-                                                      : EdgeInsets.only(
-                                                          left: 5, right: 5),
-                                              child:
-                                                  montarCardProdutosEmpresaCollapse(
-                                                      index));
-                                        } else {
-                                          return Container();
-                                        }
-                                      }),
-                                ),
-                              ),
+                                child: Column(
+                                children: <Widget>[
+                                  Row(children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () {
+                                        MaterialPageRoute route =
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    TelaCategorias());
+                                        Navigator.of(context).push(route);
+                                      },
+                                      child: Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.only(
+                                              left: 5, right: 5),
+                                          width: _deviceSize.width * 0.30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.secundariaTheOffer,
+                                            borderRadius: BorderRadius.only(
+                                                bottomRight: Radius.circular(2),
+                                                bottomLeft: Radius.circular(2)),
+                                          ),
+                                          child: Row(children: <Widget>[
+                                            Icon(
+                                              Icons.refresh,
+                                              color: Colors.principalTheOffer,
+                                              size: 17,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "Categoria",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color:
+                                                      Colors.principalTheOffer),
+                                            ),
+                                          ])),
+                                    ),
+                                  ]),
+                                  Container(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: listaProdutoEmpresa.length,
+                                        shrinkWrap: true,
+                                        physics: const BouncingScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          if (listaProdutoEmpresa[index]
+                                                  .listaProduto
+                                                  .length >
+                                              0) {
+                                            return Container(
+                                                padding:
+                                                    listaProdutoEmpresa[index]
+                                                            .cardVisivel
+                                                        ? EdgeInsets.all(0)
+                                                        : EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                child:
+                                                    montarCardProdutosEmpresaCollapse(
+                                                        index));
+                                          } else {
+                                            return Container();
+                                          }
+                                        }),
+                                  ),
+                                ],
+                              )),
                       ])),
             )),
         bottomNavigationBar: bottomNavigationBar(),
