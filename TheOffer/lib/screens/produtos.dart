@@ -519,7 +519,8 @@ class _TelaProdutos extends State<TelaProdutos>
                 headers: headers, body: oMapSalvarNotificacao)
             .then((response) {
           setState(() {
-            if (json.decode(response.body)[0]['dataBloqueio'] != null) {
+            if (response.body != '' &&
+                json.decode(response.body)[0]['dataBloqueio'] != null) {
               Autenticacao.dataBloqueio =
                   DateTime.parse(json.decode(response.body)[0]['dataBloqueio']);
             }

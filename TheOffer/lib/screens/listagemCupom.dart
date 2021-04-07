@@ -86,26 +86,29 @@ class _ListagemCupom extends State<ListagemCupom> {
                     SizedBox(
                       height: 70,
                     ),
-                    Align(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            width: 1,
-                          ),
-                          color: Colors.secundariaTheOffer,
-                        ),
-                        height: 100,
-                        width: 300,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Você não possui cupons ainda.',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ),
-                      ),
-                    ),
+                    !_cupomLoading
+                        ? Align(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  width: 1,
+                                ),
+                                color: Colors.secundariaTheOffer,
+                              ),
+                              height: 100,
+                              width: 300,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Você não possui cupons ainda.',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 )),
       );
