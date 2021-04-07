@@ -75,12 +75,14 @@ class _MyAppState extends State<MyApp> {
     String codigoUsuarioAuxiliar;
     String nomeUsuarioAuxiliar;
     String token;
+    bool fezCincoPedidos;
 
     //storage.write(key: "dataBloqueio", value: '2021-02-01');
     Map<String, String> allValues = await storage.readAll();
     if (allValues.length > 0) {
       codigoUsuarioAuxiliar = allValues["codigoUsuario"];
       nomeUsuarioAuxiliar = allValues["nomeUsuario"];
+      fezCincoPedidos = allValues["fezCincoPedidos"] == 'true';
 
       if (allValues["dataBloqueio"] != null &&
           allValues["dataBloqueio"] != '' &&
@@ -103,6 +105,13 @@ class _MyAppState extends State<MyApp> {
       if (token != null) {
         setState(() {
           Autenticacao.token = token;
+        });
+      }
+      //para teste
+      //await storage.delete(key: 'fezCincoPedidos');
+      if (fezCincoPedidos) {
+        setState(() {
+          Autenticacao.fezCincoPedidos = fezCincoPedidos;
         });
       }
 

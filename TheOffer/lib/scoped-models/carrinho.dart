@@ -1,19 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/cupertino.dart';
+import 'package:theoffer/models/Pedido.dart';
+import 'package:theoffer/utils/headers.dart';
+import 'package:theoffer/models/Produto.dart';
+import 'package:theoffer/utils/constants.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:theoffer/models/itemPedido.dart';
+import 'package:theoffer/screens/produtoDetalhado.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+//import 'package:theoffer/screens/finalizarPedido.dart';
 //import 'package:theoffer/models/endereco.dart';
 //import 'package:theoffer/models/cidade.dart';
 //import 'package:theoffer/models/bairro.dart';
-import 'package:theoffer/models/itemPedido.dart';
-import 'package:theoffer/models/Pedido.dart';
-import 'package:theoffer/models/Produto.dart';
-import 'package:theoffer/screens/produtoDetalhado.dart';
-import 'package:theoffer/utils/constants.dart';
-import 'package:theoffer/utils/headers.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/cupertino.dart';
-//import 'package:theoffer/screens/finalizarPedido.dart';
 
 mixin CarrinhoModel on Model {
   bool hi = false;
@@ -188,16 +189,17 @@ mixin CarrinhoModel on Model {
 
   void pegarCupom({int usuarioId, int produtoId, BuildContext context}) {
     //verificar quantidade de pedidos
-    perguntarPegarCupom(usuarioId, produtoId, context);
-
-    /*
+    if (!Autenticacao.fezCincoPedidos) {
+      perguntarPegarCupom(usuarioId, produtoId, context);
+    } else {
       _isLoading = true;
       notifyListeners();
       print("QUANTIDADE COMPRADA");
       _listaItensPedido.clear();
       adquirirCupom(usuarioId, produtoId, context);
       _isLoading = false;
-      notifyListeners();*/
+      notifyListeners();
+    }
   }
 /*
   void alterarStatus(int pedidoId, int status) {
@@ -345,6 +347,7 @@ mixin CarrinhoModel on Model {
 
   void adquirirCupom(int usuarioId, int produtoId, BuildContext context) {
     Map<dynamic, dynamic> responseBody;
+    final storage = FlutterSecureStorage();
     Map<String, String> headers = getHeaders();
     print("COMPRANDO PRODUTO");
     objetoItemPedido = {
@@ -377,6 +380,20 @@ mixin CarrinhoModel on Model {
                 : Text(responseBody['message']),
             duration: Duration(seconds: 8));
         Scaffold.of(context).showSnackBar(snackBar);
+      }
+      if (!Autenticacao.fezCincoPedidos) {
+        http
+            .post(
+                Configuracoes.BASE_URL + 'cupom/verificarCupomPrimeirosCinco/',
+                headers: headers,
+                body: objetoItemPedido)
+            .then((response) {
+          print("CUPOM ADQUIRIDO");
+          if (response.body == 'false') {
+            Autenticacao.fezCincoPedidos = true;
+            storage.write(key: "fezCincoPedidos", value: 'true');
+          }
+        });
       }
     });
     _isLoading = false;

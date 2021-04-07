@@ -12,6 +12,7 @@ class Autenticacao {
   static bool bloqueado = false;
   static DateTime dataBloqueio;
   static DateTime dataBloqueioAbriuApp;
+  static bool fezCincoPedidos = false;
 }
 
 class CidadeSelecionada {

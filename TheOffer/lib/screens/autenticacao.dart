@@ -1008,5 +1008,6 @@ class _AuthenticationState extends State<Authentication>
     await storage.write(key: "notificacao", value: Autenticacao.notificacao);
     await storage.write(
         key: "dataBloqueio", value: Autenticacao.dataBloqueio.toString());
+    await storage.write(key: "fezCincoPedidos", value: 'true');
   }
 }
